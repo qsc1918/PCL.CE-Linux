@@ -4,11 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App;
@@ -57,21 +54,21 @@ public partial class PageInstanceScreenshot : IRefreshable
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
         screenshotPath = PageInstanceLeft.McInstance.PathIndie + @"screenshots\";
         if (!Directory.Exists(screenshotPath))
             Directory.CreateDirectory(screenshotPath);
         Dispatcher.BeginInvoke(new Func<Task>(ReloadAsync));
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoad)
             return;
         isLoad = true;
     }
 
     /// <summary>
-    ///     确保当前页面上的信息已正确显示。
+    ///     纭繚褰撳墠椤甸潰涓婄殑淇℃伅宸叉纭樉绀恒€?
     /// </summary>
     public async Task ReloadAsync()
     {
@@ -99,7 +96,7 @@ public partial class PageInstanceScreenshot : IRefreshable
     
     private async Task LoadFileListAsync()
     {
-        ModBase.Log("[Screenshot] 刷新截图文件");
+        ModBase.Log("[Screenshot] 鍒锋柊鎴浘鏂囦欢");
         fileList.Clear();
         if (Directory.Exists(screenshotPath))
         {
@@ -110,9 +107,9 @@ public partial class PageInstanceScreenshot : IRefreshable
         }
         PanList.Children.Clear();
         RefreshTip();
-        //FileList = FileList.Where(e => !e.ContainsF(@"\debug\")).ToList(); // 排除资源包调试输出
+        //FileList = FileList.Where(e => !e.ContainsF(@"\debug\")).ToList(); // 鎺掗櫎璧勬簮鍖呰皟璇曡緭鍑?
         //FileList.Sort((a, b) => new FileInfo(a).CreationTime > new FileInfo(b).CreationTime);
-        ModBase.Log("[Screenshot] 共发现 " + fileList.Count + " 个截图文件");
+        ModBase.Log("[Screenshot] 鍏卞彂鐜?" + fileList.Count + " 涓埅鍥炬枃浠?);
         if (fileList.Count == 0)
             return;
         await ListAppendAsync(20, 0);
@@ -151,16 +148,16 @@ public partial class PageInstanceScreenshot : IRefreshable
             try
             {
                 if (!File.Exists(i))
-                    continue; // 文件在加载途中消失了
+                    continue; // 鏂囦欢鍦ㄥ姞杞介€斾腑娑堝け浜?
                 if (File.GetAttributes(i).HasFlag(FileAttributes.Hidden))
-                    continue; // 隐藏文件
+                    continue; // 闅愯棌鏂囦欢
                 if (new FileInfo(i).Length == 0L)
-                    continue; // 空文件
+                    continue; // 绌烘枃浠?
                 var myCard = new MyCard
                 {
                     Margin = new Thickness(7),
                     Tag = i,
-                    ToolTip = i.Replace(screenshotPath, "") // 适配高清截图模组
+                    ToolTip = i.Replace(screenshotPath, "") // 閫傞厤楂樻竻鎴浘妯＄粍
                 };
                 var grid = new Grid();
                 myCard.Children.Add(grid);
@@ -169,7 +166,7 @@ public partial class PageInstanceScreenshot : IRefreshable
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(120d) });
                 grid.RowDefinitions.Add(new RowDefinition());
 
-                // 图片
+                // 鍥剧墖
                 var image = new Image();
                 image.Source = await Task.Run(() =>
                 {
@@ -188,7 +185,7 @@ public partial class PageInstanceScreenshot : IRefreshable
 
                     return bitmapImage;
                 });
-                image.Stretch = Stretch.Uniform; // 使图片自适应控件大小
+                image.Stretch = Stretch.Uniform; // 浣垮浘鐗囪嚜閫傚簲鎺т欢澶у皬
                 image.Cursor = Cursors.Hand;
                 image.MouseLeftButtonDown += (sender, e) =>
                 {
@@ -204,11 +201,11 @@ public partial class PageInstanceScreenshot : IRefreshable
                             ModBase.LogLevel.Hint,
                             userSummary: Lang.Text("Instance.Screenshot.OpenFailed"));
                     }
-                }; // 使用系统默认程序打开
+                }; // 浣跨敤绯荤粺榛樿绋嬪簭鎵撳紑
                 Grid.SetRow(image, 1);
                 grid.Children.Add(image);
 
-                // 按钮
+                // 鎸夐挳
                 var stackPanel = new StackPanel();
                 stackPanel.Orientation = Orientation.Horizontal;
                 stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
@@ -252,7 +249,7 @@ public partial class PageInstanceScreenshot : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"[Screenshot] 创建 {i} 截图预览失败，图像可能损坏");
+                ModBase.Log(ex, $"[Screenshot] 鍒涘缓 {i} 鎴浘棰勮澶辫触锛屽浘鍍忓彲鑳芥崯鍧?);
             }
         }
 
@@ -274,7 +271,7 @@ public partial class PageInstanceScreenshot : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "未能找到对应 UI");
+            ModBase.Log(ex, "鏈兘鎵惧埌瀵瑰簲 UI");
         }
     }
 
@@ -317,7 +314,7 @@ public partial class PageInstanceScreenshot : IRefreshable
             while (tryTime <= 5)
                 try
                 {
-                    ModBase.Log("[Screenshot] 尝试复制" + imagePath + "到剪贴板");
+                    ModBase.Log("[Screenshot] 灏濊瘯澶嶅埗" + imagePath + "鍒板壀璐存澘");
                     Clipboard.SetImage(new BitmapImage(new Uri(imagePath)));
                     HintService.Hint(Lang.Text("Instance.Screenshot.CopiedToClipboard"));
                     tryTime = 6;
@@ -326,7 +323,7 @@ public partial class PageInstanceScreenshot : IRefreshable
                 catch (Exception ex)
                 {
                     tryTime += 1;
-                    ModBase.Log(ex, $"[Screenshot]第 {tryTime} 次复制尝试失败");
+                    ModBase.Log(ex, $"[Screenshot]绗?{tryTime} 娆″鍒跺皾璇曞け璐?);
                 }
 
             HintService.Hint(Lang.Text("Instance.Screenshot.CopyFailed"), HintType.Error);

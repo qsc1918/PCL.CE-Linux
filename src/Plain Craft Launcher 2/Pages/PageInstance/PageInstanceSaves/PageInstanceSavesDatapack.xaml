@@ -1,9 +1,7 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceSavesDatapack"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceSavesDatapack"
     PanScroll="{Binding ElementName=PanBack}">
     <Grid>
         <Grid x:Name="PanAllBack">
@@ -45,14 +43,14 @@
                             <local:MyIconTextButton x:Name="BtnSort" Text="{DynamicResource Instance.Resource.Sort.Text}"
                                                     SvgIcon="lucide/arrow-up-down" />
                         </StackPanel>
-                        <StackPanel Margin="20,48,18,22" Name="PanList" VerticalAlignment="Top" />
+                        <StackPanel Margin="20,48,18,22" x:Name="PanList" VerticalAlignment="Top" />
                     </local:MyCard>
                 </StackPanel>
             </local:MyScrollViewer>
             <local:MyCard HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" x:Name="PanEmpty">
                 <StackPanel Margin="20,17">
                     <TextBlock x:Name="TxtEmptyTitle" Margin="0,0,0,9" HorizontalAlignment="Center" Text="{DynamicResource Instance.Resource.Datapack.Empty.Title}"
-                               FontSize="19" UseLayoutRounding="True"
+                               FontSize="19"
                                Foreground="{DynamicResource ColorBrush3}" />
                     <Rectangle HorizontalAlignment="Stretch" Height="2" Fill="{DynamicResource ColorBrush3}" />
                     <TextBlock x:Name="TxtEmptyDescription" Margin="10,10,10,0"

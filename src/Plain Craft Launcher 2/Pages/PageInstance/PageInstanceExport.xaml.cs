@@ -5,9 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using DotNet.Globbing;
@@ -43,8 +41,8 @@ public class ExportOption : AvaloniaObject
     public string Rules { get; set; }
 
     /// <summary>
-    ///     如果 Rules 为空，则根据 ShowRules 的内容判断是否应该显示这个复选框。
-    ///     如果 ShowRules 也为空，则始终显示。
+    ///     濡傛灉 Rules 涓虹┖锛屽垯鏍规嵁 ShowRules 鐨勫唴瀹瑰垽鏂槸鍚﹀簲璇ユ樉绀鸿繖涓閫夋銆?
+    ///     濡傛灉 ShowRules 涔熶负绌猴紝鍒欏缁堟樉绀恒€?
     /// </summary>
     public string ShowRules { get; set; }
 
@@ -80,13 +78,13 @@ public partial class PageInstanceExport : IRefreshable
     {
         ModAnimation.AniControlEnabled += 1;
         if ((currentVersion ?? "") != (PageInstanceLeft.McInstance.PathInstance ?? ""))
-            RefreshAll(); // 切换到了另一个实例，重置页面
+            RefreshAll(); // 鍒囨崲鍒颁簡鍙︿竴涓疄渚嬶紝閲嶇疆椤甸潰
         ModAnimation.AniControlEnabled -= 1;
     }
 
     public void RefreshAll()
     {
-        ModBase.Log("[Export] 刷新导出页面");
+        ModBase.Log("[Export] 鍒锋柊瀵煎嚭椤甸潰");
         HintOptiFine.Visibility =
             PageInstanceLeft.McInstance.Info.HasOptiFine ? Visibility.Visible : Visibility.Collapsed;
         currentVersion = PageInstanceLeft.McInstance.PathInstance;
@@ -103,7 +101,7 @@ public partial class PageInstanceExport : IRefreshable
         PanBack.ScrollToHome();
     }
 
-    // 自动填写整合包名称
+    // 鑷姩濉啓鏁村悎鍖呭悕绉?
     private void TextExportName_GotFocus(object sender, RoutedEventArgs routedEventArgs)
     {
         if (string.IsNullOrEmpty(TextExportName.Text))
@@ -113,7 +111,7 @@ public partial class PageInstanceExport : IRefreshable
         }
     }
 
-    // 勾选 Modrinth 上传模式时，禁止打包 PCL
+    // 鍕鹃€?Modrinth 涓婁紶妯″紡鏃讹紝绂佹鎵撳寘 PCL
     private void CheckAdvancedModrinth_Change(object sender, bool user)
     {
         if (CheckAdvancedModrinth.Checked == true)
@@ -121,7 +119,7 @@ public partial class PageInstanceExport : IRefreshable
         CheckOptionsPcl.IsEnabled = (bool)!CheckAdvancedModrinth.Checked;
     }
 
-    // 勾选"其他文件夹"时，同步勾选/取消所有子选项
+    // 鍕鹃€?鍏朵粬鏂囦欢澶?鏃讹紝鍚屾鍕鹃€?鍙栨秷鎵€鏈夊瓙閫夐」
     private void CheckOptionsOtherFolders_Change(object sender, bool user)
     {
         if (!user) return;
@@ -130,7 +128,7 @@ public partial class PageInstanceExport : IRefreshable
                 childBox.Checked = CheckOptionsOtherFolders.Checked;
     }
 
-    // 勾选打包资源文件时，禁止开启 Modrinth 上传模式
+    // 鍕鹃€夋墦鍖呰祫婧愭枃浠舵椂锛岀姝㈠紑鍚?Modrinth 涓婁紶妯″紡
     private void CheckAdvancedInclude_Change(object sender, bool user)
     {
         if (CheckAdvancedInclude.Checked == true)
@@ -138,12 +136,12 @@ public partial class PageInstanceExport : IRefreshable
         CheckAdvancedModrinth.IsEnabled = (bool)!CheckAdvancedInclude.Checked;
     }
 
-    #region 子选项
+    #region 瀛愰€夐」
 
     private readonly string[] subOptionBlackList = new[] { "Quark Programmer Art.zip", "+ EuphoriaPatches_" };
 
     /// <summary>
-    ///     动态生成子文件夹下的选项，例如资源包、存档等。
+    ///     鍔ㄦ€佺敓鎴愬瓙鏂囦欢澶逛笅鐨勯€夐」锛屼緥濡傝祫婧愬寘銆佸瓨妗ｇ瓑銆?
     /// </summary>
     private void ReloadAllSubOptions()
     {
@@ -154,7 +152,7 @@ public partial class PageInstanceExport : IRefreshable
     }
 
     /// <summary>
-    ///     扫描实例根目录下未被已有选项覆盖的文件夹，生成独立的复选框。
+    ///     鎵弿瀹炰緥鏍圭洰褰曚笅鏈宸叉湁閫夐」瑕嗙洊鐨勬枃浠跺す锛岀敓鎴愮嫭绔嬬殑澶嶉€夋銆?
     /// </summary>
     private void ReloadOtherFolders()
     {
@@ -170,33 +168,33 @@ public partial class PageInstanceExport : IRefreshable
 
         var coveredFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            // 模组
+            // 妯＄粍
             "mods", "coremods", "lib",
-            // 整合包重要数据
+            // 鏁村悎鍖呴噸瑕佹暟鎹?
             "addons", "multiblocked", "modpack-update-checker", "global_packs",
             "global_resource_packs", "global_data_packs", "optional_data_packs", "maps",
             "mods-resourcepacks", "matmos", "resource_assorts",
             "patchouli_books", "datapacks",
             "openloader", "worldshape", "resources", "scripts", "structures",
             "fontfiles", "oresources", "packmenu", "craftpresence", "pointblanks",
-            // 模组设置
+            // 妯＄粍璁剧疆
             "config", "defaultconfigs", "journeymap", "local", "essential", "gg.essential.mod",
             "CustomSkinLoader",
-            // 地图
+            // 鍦板浘
             "xaero", "XaeroWaypoints", "XaeroWorldMap",
-            // 资源包
+            // 璧勬簮鍖?
             "resourcepacks", "texturepacks",
-            // 光影
+            // 鍏夊奖
             "shaderpacks",
-            // 截图 / 结构 / 录像
+            // 鎴浘 / 缁撴瀯 / 褰曞儚
             "screenshots", "schematics",
             "replay_recordings", "replay_videos",
-            // 存档 / 设置文件夹
+            // 瀛樻。 / 璁剧疆鏂囦欢澶?
             "saves", "configureddefaults",
-            // 始终跳过（大量文件或无用缓存）
+            // 濮嬬粓璺宠繃锛堝ぇ閲忔枃浠舵垨鏃犵敤缂撳瓨锛?
             "assets", "versions", "libraries", "structureCacheV1",
             ".fabric", ".git", "avatar-cache", "cosmetic-cache",
-            // PCL 单独处理
+            // PCL 鍗曠嫭澶勭悊
             "PCL",
         };
 
@@ -237,7 +235,7 @@ public partial class PageInstanceExport : IRefreshable
             var targetFolder = new DirectoryInfo(PageInstanceLeft.McInstance.PathIndie + Folder);
             if (!targetFolder.Exists)
                 continue;
-            // 查找文件夹下的对应项
+            // 鏌ユ壘鏂囦欢澶逛笅鐨勫搴旈」
             if (acceptCompressedFile)
                 foreach (var File in targetFolder.EnumerateFiles("*.zip").Concat(targetFolder.EnumerateFiles("*.rar")))
                 {
@@ -251,7 +249,7 @@ public partial class PageInstanceExport : IRefreshable
                             Rules = ModBase.EscapeLikePattern($"{Folder}/{File.Name}")
                         }
                     });
-                    if (Folder == "shaderpacks") // 处理光影包的配置文件
+                    if (Folder == "shaderpacks") // 澶勭悊鍏夊奖鍖呯殑閰嶇疆鏂囦欢
                     {
                         var shaderConfig = new FileInfo(Path.Combine(File.Directory.FullName,
                             $"{File.Name}.txt"));
@@ -288,7 +286,7 @@ public partial class PageInstanceExport : IRefreshable
                         GetExportOption(newCheckBox).Description =
                             Lang.Date(SubFolder.LastWriteTime, "g");
                     panel.Children.Add(newCheckBox);
-                    if (Folder == "shaderpacks") // 处理文件夹形式光影包的配置文件
+                    if (Folder == "shaderpacks") // 澶勭悊鏂囦欢澶瑰舰寮忓厜褰卞寘鐨勯厤缃枃浠?
                     {
                         var shaderConfig = new FileInfo(Path.Combine(targetFolder.FullName,
                             $"{SubFolder.Name}.txt"));
@@ -310,14 +308,14 @@ public partial class PageInstanceExport : IRefreshable
 
     #endregion
 
-    #region 选项
+    #region 閫夐」
 
     /// <summary>
-    ///     重新确认是否应该显示每个选项，并将 ExportOption 同步到 UI。
+    ///     閲嶆柊纭鏄惁搴旇鏄剧ず姣忎釜閫夐」锛屽苟灏?ExportOption 鍚屾鍒?UI銆?
     /// </summary>
     private void RefreshAllOptionsUI()
     {
-        // 预先归纳所有至多二级的文件/文件夹
+        // 棰勫厛褰掔撼鎵€鏈夎嚦澶氫簩绾х殑鏂囦欢/鏂囦欢澶?
         var allEntries = new List<string>();
 
         bool IsValidDirectory(DirectoryInfo folder)
@@ -333,8 +331,8 @@ public partial class PageInstanceExport : IRefreshable
             }
         }
 
-        ; // 检查文件夹不为空
-        // 一般是由于无法访问，或是一个指向已不存在的文件夹的链接（例如使用 mklink 创造的 resource 文件夹链接）
+        ; // 妫€鏌ユ枃浠跺す涓嶄负绌?
+        // 涓€鑸槸鐢变簬鏃犳硶璁块棶锛屾垨鏄竴涓寚鍚戝凡涓嶅瓨鍦ㄧ殑鏂囦欢澶圭殑閾炬帴锛堜緥濡備娇鐢?mklink 鍒涢€犵殑 resource 鏂囦欢澶归摼鎺ワ級
         var pathInfo = new DirectoryInfo(PageInstanceLeft.McInstance.PathIndie);
         allEntries.AddRange(pathInfo.EnumerateFiles().Select(f => f.Name));
         foreach (var SubFolder in pathInfo.EnumerateDirectories().Where(IsValidDirectory))
@@ -345,12 +343,12 @@ public partial class PageInstanceExport : IRefreshable
                 .Select(d => $@"{SubFolder.Name}\{d.Name}\"));
         }
 
-        ModBase.Log($"[Export] 共发现 {allEntries.Count} 个可行的二级文件/文件夹");
+        ModBase.Log($"[Export] 鍏卞彂鐜?{allEntries.Count} 涓彲琛岀殑浜岀骇鏂囦欢/鏂囦欢澶?);
 
-        // 确认选项是否应该被显示
+        // 纭閫夐」鏄惁搴旇琚樉绀?
         bool IsVisible(ExportOption targetOption)
         {
-            // 检查需要 OptiFine 或 Mod 加载器
+            // 妫€鏌ラ渶瑕?OptiFine 鎴?Mod 鍔犺浇鍣?
             if (targetOption.RequireOptiFine && !PageInstanceLeft.McInstance.Info.HasOptiFine)
                 return false;
             if (targetOption.RequireModLoader && !PageInstanceLeft.McInstance.Modable)
@@ -358,12 +356,12 @@ public partial class PageInstanceExport : IRefreshable
             if (targetOption.RequireModLoaderOrOptiFine && !PageInstanceLeft.McInstance.Info.HasOptiFine &&
                 !PageInstanceLeft.McInstance.Modable)
                 return false;
-            // 粗略检查是否可能有符合规则的文件/文件夹
+            // 绮楃暐妫€鏌ユ槸鍚﹀彲鑳芥湁绗﹀悎瑙勫垯鐨勬枃浠?鏂囦欢澶?
             return StandardizeLines((targetOption.Rules ?? targetOption.ShowRules).Split('|'), true).Any(rule =>
             {
                 if (rule.StartsWithF("!"))
-                    return false; // 只看正向规则
-                // 检查前两级
+                    return false; // 鍙湅姝ｅ悜瑙勫垯
+                // 妫€鏌ュ墠涓ょ骇
                 try
                 {
                     if (allEntries.Any(entry => LikeString(entry, rule)))
@@ -373,21 +371,21 @@ public partial class PageInstanceExport : IRefreshable
                 {
                     ModBase.Log(
                         ex,
-                        $"错误的规则：{rule}",
+                        $"閿欒鐨勮鍒欙細{rule}",
                         ModBase.LogLevel.Hint,
                         userSummary: Lang.Text("Instance.Export.Error.OperationFailed"));
                     return false;
                 }
 
-                // 粗略检查所有级
+                // 绮楃暐妫€鏌ユ墍鏈夌骇
                 rule = rule.Trim("*?".ToCharArray());
                 if (rule.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Count() >= 3)
                 {
                     if (rule.EndsWithF(@"\"))
-                        return IsValidDirectory(new DirectoryInfo(PageInstanceLeft.McInstance.PathIndie + rule)); // 文件夹有效
+                        return IsValidDirectory(new DirectoryInfo(PageInstanceLeft.McInstance.PathIndie + rule)); // 鏂囦欢澶规湁鏁?
 
                     return File.Exists(PageInstanceLeft.McInstance.PathIndie + rule);
-                    // 文件有效
+                    // 鏂囦欢鏈夋晥
                 }
 
                 return false;
@@ -395,16 +393,16 @@ public partial class PageInstanceExport : IRefreshable
         }
 
         ;
-        // 逐个检查选项
+        // 閫愪釜妫€鏌ラ€夐」
         foreach (var CheckBox in GetAllOptions(true))
         {
             var targetOption = GetExportOption(CheckBox);
-            // 名称与简介
+            // 鍚嶇О涓庣畝浠?
             CheckBox.Inlines.Clear();
             CheckBox.Inlines.Add(new Run(targetOption.Title));
             if (!string.IsNullOrEmpty(targetOption.Description))
                 CheckBox.Inlines.Add(new Run("   " + targetOption.Description) { Foreground = ThemeManager.colorGray5 });
-            // 可见性、默认勾选
+            // 鍙鎬с€侀粯璁ゅ嬀閫?
             if (string.IsNullOrEmpty(targetOption.Rules) && string.IsNullOrEmpty(targetOption.ShowRules))
             {
                 CheckBox.Visibility = Visibility.Visible;
@@ -420,7 +418,7 @@ public partial class PageInstanceExport : IRefreshable
     }
 
     /// <summary>
-    ///     对文本行进行标准化处理，以便使用 Like 进行匹配。
+    ///     瀵规枃鏈杩涜鏍囧噯鍖栧鐞嗭紝浠ヤ究浣跨敤 Like 杩涜鍖归厤銆?
     /// </summary>
     private IEnumerable<string> StandardizeLines(IEnumerable<string> raw, bool addSuffixStarToFolderPath)
     {
@@ -436,7 +434,7 @@ public partial class PageInstanceExport : IRefreshable
     }
 
     /// <summary>
-    ///     获取所有可作为选项的 CheckBox。
+    ///     鑾峰彇鎵€鏈夊彲浣滀负閫夐」鐨?CheckBox銆?
     /// </summary>
     private IEnumerable<MyCheckBox> GetAllOptions(bool includeHidden)
     {
@@ -459,7 +457,7 @@ public partial class PageInstanceExport : IRefreshable
     }
 
     /// <summary>
-    ///     获取该 CheckBox 对应的 ExportOption。
+    ///     鑾峰彇璇?CheckBox 瀵瑰簲鐨?ExportOption銆?
     /// </summary>
     private ExportOption GetExportOption(MyCheckBox checkBox)
     {
@@ -468,15 +466,15 @@ public partial class PageInstanceExport : IRefreshable
 
     #endregion
 
-    #region 配置文件
+    #region 閰嶇疆鏂囦欢
 
     private const string sperator = "==============================================================";
 
-    // ================ 导出内容段 ================
+    // ================ 瀵煎嚭鍐呭娈?================
 
     /// <summary>
-    ///     从配置文件中读取的规则。
-    ///     如果不为 Nothing，则会覆写当前勾选的规则并禁用对应 UI。
+    ///     浠庨厤缃枃浠朵腑璇诲彇鐨勮鍒欍€?
+    ///     濡傛灉涓嶄负 Nothing锛屽垯浼氳鍐欏綋鍓嶅嬀閫夌殑瑙勫垯骞剁鐢ㄥ搴?UI銆?
     /// </summary>
     private List<string> RulesOverrides
     {
@@ -496,26 +494,26 @@ public partial class PageInstanceExport : IRefreshable
                 BtnOverrideCancel.Visibility = Visibility.Visible;
                 PanOptions.Visibility = Visibility.Collapsed;
                 CardOptions.Inlines.Clear();
-                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle") + ":    ") { FontWeight = FontWeights.Bold });
+                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle") + ":鈥娾€娾€娾€?) { FontWeight = FontWeights.Bold });
                 CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionList.FromConfig")) { FontWeight = FontWeights.Normal });
             }
         }
     }
 
     /// <summary>
-    ///     获取当前实际生效的所有规则。
+    ///     鑾峰彇褰撳墠瀹為檯鐢熸晥鐨勬墍鏈夎鍒欍€?
     /// </summary>
     private IEnumerable<string> GetAllRules()
     {
         if (RulesOverrides is not null)
         {
-            // 返回覆盖的列表
+            // 杩斿洖瑕嗙洊鐨勫垪琛?
             foreach (var Rule in RulesOverrides)
                 yield return Rule;
         }
         else
         {
-            // 从当前勾选的所有选项中获取所有规则行
+            // 浠庡綋鍓嶅嬀閫夌殑鎵€鏈夐€夐」涓幏鍙栨墍鏈夎鍒欒
             yield return "";
             yield return "# " + Lang.Text("Instance.Export.Config.Comment.ModifyRules");
             yield return "# " + Lang.Text("Instance.Export.Config.Comment.ReverseMatch");
@@ -543,24 +541,24 @@ public partial class PageInstanceExport : IRefreshable
         }
     }
 
-    // ================ 追加内容段 ================
+    // ================ 杩藉姞鍐呭娈?================
 
     private List<string> extraFiles;
 
     /// <summary>
-    ///     获取当前实际生效的追加内容。
+    ///     鑾峰彇褰撳墠瀹為檯鐢熸晥鐨勮拷鍔犲唴瀹广€?
     /// </summary>
     private IEnumerable<string> GetExtraFileLines()
     {
         if (extraFiles is not null)
         {
-            // 返回覆盖的列表
+            // 杩斿洖瑕嗙洊鐨勫垪琛?
             foreach (var File in extraFiles)
                 yield return File;
         }
         else
         {
-            // 从当前勾选的所有选项中获取所有规则行
+            // 浠庡綋鍓嶅嬀閫夌殑鎵€鏈夐€夐」涓幏鍙栨墍鏈夎鍒欒
             yield return "";
             yield return "# " + Lang.Text("Instance.Export.Config.Comment.ExtraFiles");
             yield return "# " + Lang.Text("Instance.Export.Config.Comment.ExtraFiles2");
@@ -568,10 +566,10 @@ public partial class PageInstanceExport : IRefreshable
         }
     }
 
-    // ================ 重置 ================
+    // ================ 閲嶇疆 ================
 
     /// <summary>
-    ///     重置配置文件所带来的影响。
+    ///     閲嶇疆閰嶇疆鏂囦欢鎵€甯︽潵鐨勫奖鍝嶃€?
     /// </summary>
     private void ResetConfigOverrides()
     {
@@ -588,9 +586,9 @@ public partial class PageInstanceExport : IRefreshable
         ResetConfigOverrides();
     }
 
-    // ================ 保存 / 读取 ================
+    // ================ 淇濆瓨 / 璇诲彇 ================
 
-    // 保存配置文件
+    // 淇濆瓨閰嶇疆鏂囦欢
     private void ExportConfig(object sender, MouseButtonEventArgs e)
     {
         try
@@ -601,7 +599,7 @@ public partial class PageInstanceExport : IRefreshable
                 return;
             States.System.ExportConfigPath = configPath;
             var configLines = new List<string>();
-            // ini 段
+            // ini 娈?
             configLines.Add("Name:" + TextExportName.Text);
             configLines.Add("Version:" + TextExportVersion.Text);
             configLines.Add("");
@@ -626,13 +624,13 @@ public partial class PageInstanceExport : IRefreshable
             configLines.Add("# " + Lang.Text("Instance.Export.Config.Comment.PackPath3"));
             configLines.Add("PackPath:" + (configPackPath ?? ""));
             configLines.Add("");
-            // 导出内容段
+            // 瀵煎嚭鍐呭娈?
             configLines.Add(sperator);
             configLines.AddRange(GetAllRules());
-            // 追加内容段
+            // 杩藉姞鍐呭娈?
             configLines.Add(sperator);
             configLines.AddRange(GetExtraFileLines());
-            // 结束
+            // 缁撴潫
             ModBase.WriteFile(configPath, configLines.Join("\r\n"));
             HintService.Hint(Lang.Text("Instance.Export.SaveSuccess", configPath), HintType.Success);
             ModBase.OpenExplorer(configPath);
@@ -641,23 +639,23 @@ public partial class PageInstanceExport : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "保存配置失败",
+                "淇濆瓨閰嶇疆澶辫触",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Export.Error.OperationFailed"));
         }
     }
 
-    #region 配置文件核心读取逻辑
+    #region 閰嶇疆鏂囦欢鏍稿績璇诲彇閫昏緫
 
     /// <summary>
-    ///     从指定路径读取配置文件（供按钮和拖放调用）
+    ///     浠庢寚瀹氳矾寰勮鍙栭厤缃枃浠讹紙渚涙寜閽拰鎷栨斁璋冪敤锛?
     /// </summary>
-    /// <param name="configPath">配置文件路径</param>
+    /// <param name="configPath">閰嶇疆鏂囦欢璺緞</param>
     private void ReadConfigFile(string configPath)
     {
         try
         {
-            // 保存配置文件路径到缓存
+            // 淇濆瓨閰嶇疆鏂囦欢璺緞鍒扮紦瀛?
             States.System.ExportConfigPath = configPath;
 
             var fileContent = ModBase.ReadFile(configPath);
@@ -669,7 +667,7 @@ public partial class PageInstanceExport : IRefreshable
                 return;
             }
 
-            // === 解析INI段 ===
+            // === 瑙ｆ瀽INI娈?===
             var ini = new Dictionary<string, string>();
             foreach (var LineRaw in segments[0].Split("\r\n".ToCharArray()))
             {
@@ -681,7 +679,7 @@ public partial class PageInstanceExport : IRefreshable
                 if (index > 0) ini[line.Substring(0, index)] = line.Substring(index + 1);
             }
 
-            // 赋值到界面控件
+            // 璧嬪€煎埌鐣岄潰鎺т欢
             TextExportName.Text = ini.GetOrDefault("Name", "");
             TextExportVersion.Text = ini.GetOrDefault("Version", "");
             CheckOptionsPcl.Checked =
@@ -694,18 +692,18 @@ public partial class PageInstanceExport : IRefreshable
                 Convert.ToBoolean(ini.GetOrDefault("DontCheckHostedAssets", false.ToString()));
             configPackPath = ini.GetOrDefault("PackPath");
 
-            // === 解析导出内容段 ===
+            // === 瑙ｆ瀽瀵煎嚭鍐呭娈?===
             RulesOverrides = segments[1].Replace("\r", "\n")
                 .Replace("\n" + "\n", "\n").Split("\n").ToList();
 
-            // === 解析追加内容段 ===
+            // === 瑙ｆ瀽杩藉姞鍐呭娈?===
             if (segments.Length > 2)
                 extraFiles = segments[2].Replace("\r", "\n")
                     .Replace("\n" + "\n", "\n").Split("\n").ToList();
             else
                 extraFiles = null;
 
-            // 提示成功
+            // 鎻愮ず鎴愬姛
             HintService.Hint(Lang.Text("Instance.Export.ReadSuccess", configPath), HintType.Success);
         }
 
@@ -713,7 +711,7 @@ public partial class PageInstanceExport : IRefreshable
         {
             ModBase.Log(
                 ex,
-                $"读取配置文件失败：{configPath}",
+                $"璇诲彇閰嶇疆鏂囦欢澶辫触锛歿configPath}",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Export.Error.OperationFailed"));
         }
@@ -721,7 +719,7 @@ public partial class PageInstanceExport : IRefreshable
 
     #endregion
 
-    // 读取配置文件
+    // 璇诲彇閰嶇疆鏂囦欢
     private void ImportConfig(object sender, MouseButtonEventArgs e)
     {
         try
@@ -731,7 +729,7 @@ public partial class PageInstanceExport : IRefreshable
             if (string.IsNullOrEmpty(configPath))
                 return;
 
-            // 调用核心读取逻辑
+            // 璋冪敤鏍稿績璇诲彇閫昏緫
             ReadConfigFile(configPath);
         }
 
@@ -739,31 +737,31 @@ public partial class PageInstanceExport : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "选择配置文件失败",
+                "閫夋嫨閰嶇疆鏂囦欢澶辫触",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Export.Error.OperationFailed"));
         }
     }
 
-    #region 拖放事件处理
+    #region 鎷栨斁浜嬩欢澶勭悊
 
     /// <summary>
-    ///     文件拖入界面时触发：验证文件类型
+    ///     鏂囦欢鎷栧叆鐣岄潰鏃惰Е鍙戯細楠岃瘉鏂囦欢绫诲瀷
     /// </summary>
     private void PanAllBack_DragEnter(object sender, DragEventArgs e)
     {
-        // 检查是否包含文件拖放数据
+        // 妫€鏌ユ槸鍚﹀寘鍚枃浠舵嫋鏀炬暟鎹?
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
-            // 获取拖入的文件路径数组
+            // 鑾峰彇鎷栧叆鐨勬枃浠惰矾寰勬暟缁?
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            // 验证：仅允许单个.txt文件
+            // 楠岃瘉锛氫粎鍏佽鍗曚釜.txt鏂囦欢
             if (files.Length == 1 &&
                 files[0].EndsWithF(".txt", true))
-                e.Effects = DragDropEffects.Copy; // 设置拖放效果为“复制”
+                e.Effects = DragDropEffects.Copy; // 璁剧疆鎷栨斁鏁堟灉涓衡€滃鍒垛€?
             else
-                e.Effects = DragDropEffects.None; // 不允许拖放
+                e.Effects = DragDropEffects.None; // 涓嶅厑璁告嫋鏀?
         }
         else
         {
@@ -774,17 +772,17 @@ public partial class PageInstanceExport : IRefreshable
     }
 
     /// <summary>
-    ///     文件放下时触发：读取配置文件
+    ///     鏂囦欢鏀句笅鏃惰Е鍙戯細璇诲彇閰嶇疆鏂囦欢
     /// </summary>
     private void PanAllBack_Drop(object sender, DragEventArgs e)
     {
-        // 获取拖入的文件路径
+        // 鑾峰彇鎷栧叆鐨勬枃浠惰矾寰?
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             var configPath = files[0];
 
-            // 调用核心读取逻辑
+            // 璋冪敤鏍稿績璇诲彇閫昏緫
             ReadConfigFile(configPath);
         }
 
@@ -795,22 +793,22 @@ public partial class PageInstanceExport : IRefreshable
 
     #endregion
 
-    #region 导出
+    #region 瀵煎嚭
 
     /// <summary>
-    ///     配置文件中指定的导出位置。
+    ///     閰嶇疆鏂囦欢涓寚瀹氱殑瀵煎嚭浣嶇疆銆?
     /// </summary>
     private string configPackPath;
 
     /// <summary>
-    ///     开始导出。
+    ///     寮€濮嬪鍑恒€?
     /// </summary>
     private void StartExport(object sender, MouseButtonEventArgs e)
     {
         var packName = string.IsNullOrEmpty(TextExportName.Text) ? TextExportName.HintText : TextExportName.Text;
         var packVersion = string.IsNullOrEmpty(TextExportVersion.Text) ? "1.0.0" : TextExportVersion.Text;
 
-        // 重复任务检查
+        // 閲嶅浠诲姟妫€鏌?
         var loaderName = Lang.Text("Instance.Export.ExportTask.Prefix") + packName;
         foreach (var OngoingLoader in ModLoader.loaderTaskbar)
         {
@@ -820,7 +818,7 @@ public partial class PageInstanceExport : IRefreshable
             return;
         }
 
-        // 确认导出位置
+        // 纭瀵煎嚭浣嶇疆
         string packPath = null;
         if (!string.IsNullOrWhiteSpace(configPackPath) && !configPackPath.EndsWithF(@"\") &&
             !configPackPath.EndsWithF("/"))
@@ -828,11 +826,11 @@ public partial class PageInstanceExport : IRefreshable
             {
                 Directory.CreateDirectory(ModBase.GetPathFromFullPath(configPackPath));
                 packPath = configPackPath;
-                ModBase.Log($"[Export] 使用配置文件中指定的导出路径：{configPackPath}");
+                ModBase.Log($"[Export] 浣跨敤閰嶇疆鏂囦欢涓寚瀹氱殑瀵煎嚭璺緞锛歿configPackPath}");
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"无法使用配置文件中指定的导出路径（{configPackPath}）");
+                ModBase.Log(ex, $"鏃犳硶浣跨敤閰嶇疆鏂囦欢涓寚瀹氱殑瀵煎嚭璺緞锛坽configPackPath}锛?);
                 if (ModMain.MyMsgBox(
                         Lang.Text("Instance.Export.PackPathInvalid.WithDetail", configPackPath, ex.ToString()),
                         Lang.Text("Instance.Export.PackPathInvalid.Title"), Lang.Text("Common.Action.Confirm"),
@@ -850,13 +848,13 @@ public partial class PageInstanceExport : IRefreshable
             packPath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Export.SelectSaveLocation"),
                 packName + (string.IsNullOrEmpty(TextExportVersion.Text) ? "" : " " + TextExportVersion.Text),
                 extensions.Join("|"));
-            ModBase.Log($"[Export] 手动指定的导出路径：{packPath}");
+            ModBase.Log($"[Export] 鎵嬪姩鎸囧畾鐨勫鍑鸿矾寰勶細{packPath}");
         }
 
         if (string.IsNullOrEmpty(packPath))
             return;
 
-        // 缓存所需参数
+        // 缂撳瓨鎵€闇€鍙傛暟
         var cacheFolder = ModMain.RequestTaskTempFolder();
         var overridesFolder = Path.Combine(cacheFolder, "modpack", "overrides");
         var mcInstance = PageInstanceLeft.McInstance;
@@ -867,12 +865,12 @@ public partial class PageInstanceExport : IRefreshable
         var includePCLCustom = (bool)(includePCL ? CheckOptionsPclCustom.Checked : (bool?)false);
         var allRules = StandardizeLines(GetAllRules(), true).ToList();
         var allExtraFiles = StandardizeLines(GetExtraFileLines(), false).ToList();
-        ModBase.Log($"[Export] 准备导出整合包，共有 {allRules.Count} 条规则，{allExtraFiles.Count} 条追加内容行");
+        ModBase.Log($"[Export] 鍑嗗瀵煎嚭鏁村悎鍖咃紝鍏辨湁 {allRules.Count} 鏉¤鍒欙紝{allExtraFiles.Count} 鏉¤拷鍔犲唴瀹硅");
 
-        // 构造步骤加载器
+        // 鏋勯€犳楠ゅ姞杞藉櫒
         var loaders = new List<ModLoader.LoaderBase>();
 
-        #region 准备 PCL 文件
+        #region 鍑嗗 PCL 鏂囦欢
         
         #if !RELEASE
         if (includePCL)
@@ -891,21 +889,21 @@ public partial class PageInstanceExport : IRefreshable
 
         #endregion
 
-        #region 复制文件
+        #region 澶嶅埗鏂囦欢
 
         loaders.Add(new ModLoader.LoaderTask<int, List<ModLocalComp.LocalCompFile>>(
             Lang.Text("Instance.Export.Task.CopyContent"), loader =>
             {
                 loader.output = [];
-                // 复制实例文件
+                // 澶嶅埗瀹炰緥鏂囦欢
                 var progress = 0;
             Action<DirectoryInfo> searchFolder = null;
             searchFolder = folder =>
             {
-                // 文件夹：进一步搜索
+                // 鏂囦欢澶癸細杩涗竴姝ユ悳绱?
                 foreach (var SubFolder in folder.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
-                    // 跳过部分又没用文件又多的文件夹，加快搜索
+                    // 璺宠繃閮ㄥ垎鍙堟病鐢ㄦ枃浠跺張澶氱殑鏂囦欢澶癸紝鍔犲揩鎼滅储
                     if ((folder.FullName ?? "") == (pathIndie ?? "") &&
                         new[] { "assets", "versions", "libraries" }.Contains(SubFolder.Name))
                         continue;
@@ -915,11 +913,11 @@ public partial class PageInstanceExport : IRefreshable
                     searchFolder(SubFolder);
                 }
 
-                // 文件：检查规则并复制
+                // 鏂囦欢锛氭鏌ヨ鍒欏苟澶嶅埗
                 foreach (var Entry in folder.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
                 {
                     var relativePath = Entry.FullName.AfterFirst(pathIndie);
-                    // 检查规则
+                    // 妫€鏌ヨ鍒?
                     var shouldKeep = false;
                     foreach (var Rule in allRules)
                     {
@@ -932,18 +930,18 @@ public partial class PageInstanceExport : IRefreshable
                         continue;
                     var targetPath = Path.Combine(overridesFolder, relativePath);
                     ModBase.CopyFile(Entry.FullName, targetPath);
-                    // 若为压缩包，考虑联网获取路径
+                    // 鑻ヤ负鍘嬬缉鍖咃紝鑰冭檻鑱旂綉鑾峰彇璺緞
                     if (checkHostedAssets &&
                         new[] { ".zip", ".rar", ".jar", ".disabled", ".old" }.Contains(Entry.Extension.ToLower()) &&
                         new[] { "mods", "packs", "openloader", "resource" }.Any(s => relativePath.Contains(s)))
                     {
                         var modFile = new ModLocalComp.LocalCompFile(targetPath);
-                        var unused = modFile.ModrinthHash; // 提前计算 Hash
+                        var unused = modFile.ModrinthHash; // 鎻愬墠璁＄畻 Hash
                         unused = modFile.CurseForgeHash.ToString();
                         loader.output.Add(modFile);
                     }
 
-                    // 更新进度（进度并不准确，主要突出一个我还没似）
+                    // 鏇存柊杩涘害锛堣繘搴﹀苟涓嶅噯纭紝涓昏绐佸嚭涓€涓垜杩樻病浼硷級
                     progress += 1;
                     if (progress == 25)
                     {
@@ -953,9 +951,9 @@ public partial class PageInstanceExport : IRefreshable
                 }
             };
             searchFolder(new DirectoryInfo(pathIndie));
-            ModBase.Log($"[Export] 复制 overrides 文件完成，有 {loader.output.Count} 个文件需要联网检查");
+            ModBase.Log($"[Export] 澶嶅埗 overrides 鏂囦欢瀹屾垚锛屾湁 {loader.output.Count} 涓枃浠堕渶瑕佽仈缃戞鏌?);
             loader.Progress = 0.95d;
-            // 复制追加内容到根目录
+            // 澶嶅埗杩藉姞鍐呭鍒版牴鐩綍
             var baseFolder = includePCL ? cacheFolder : Path.Combine(cacheFolder, "modpack");
             foreach (var Line in allExtraFiles)
                 if (Line.EndsWithF(@"\") || Line.EndsWithF("/"))
@@ -975,13 +973,13 @@ public partial class PageInstanceExport : IRefreshable
                 }
 
             loader.Progress = 0.97d;
-            // 复制 PCL 实例设置
+            // 澶嶅埗 PCL 瀹炰緥璁剧疆
             ModBase.CopyDirectory(Path.Combine(mcInstance.PathInstance, "PCL"), Path.Combine(overridesFolder, "PCL"));
             #if RELEASE
-                        // 复制 PCL 本体
+                        // 澶嶅埗 PCL 鏈綋
                         if (includePCL) ModBase.CopyFile(Basics.ExecutablePath, Path.Combine(cacheFolder, Basics.ExecutableName));
             #endif
-            // 复制 PCL 个性化内容
+            // 澶嶅埗 PCL 涓€у寲鍐呭
             if (includePCLCustom)
             {
                 if (Directory.Exists(Path.Combine(ModBase.exePath, "PCL", "Pictures")))
@@ -1004,7 +1002,7 @@ public partial class PageInstanceExport : IRefreshable
 
         #endregion
 
-        #region 联网检查
+        #region 鑱旂綉妫€鏌?
 
         loaders.Add(
             new ModLoader.LoaderTask<List<ModLocalComp.LocalCompFile>,
@@ -1014,23 +1012,23 @@ public partial class PageInstanceExport : IRefreshable
                     loader.output = new Dictionary<ModLocalComp.LocalCompFile, List<string>>();
                     if (!checkHostedAssets)
                     {
-                        ModBase.Log("[Export] 要求跳过联网获取步骤");
+                        ModBase.Log("[Export] 瑕佹眰璺宠繃鑱旂綉鑾峰彇姝ラ");
                         return;
                     }
 
                     if (!loader.input.Any())
                     {
-                        ModBase.Log("[Export] 没有需要联网检查的文件，跳过联网获取步骤");
+                        ModBase.Log("[Export] 娌℃湁闇€瑕佽仈缃戞鏌ョ殑鏂囦欢锛岃烦杩囪仈缃戣幏鍙栨楠?);
                         return;
                     }
 
-                    // 分平台获取下载地址
+                    // 鍒嗗钩鍙拌幏鍙栦笅杞藉湴鍧€
                     var endedThreadCount = 0;
                     var failedExceptions = new List<Exception>();
 
-                    // 从 Modrinth 获取信息
-                    // 查找对应的文件
-                    // 写入下载地址
+                    // 浠?Modrinth 鑾峰彇淇℃伅
+                    // 鏌ユ壘瀵瑰簲鐨勬枃浠?
+                    // 鍐欏叆涓嬭浇鍦板潃
                     ModBase.RunInNewThread(() =>
                     {
                         try
@@ -1049,11 +1047,11 @@ public partial class PageInstanceExport : IRefreshable
                                     (string)modrinthRaw[ModFile.ModrinthHash]["files"][0]["url"]);
                             }
 
-                            ModBase.Log($"[Export] 从 Modrinth 获取到 {modrinthRaw.Count} 个本地资源项的对应信息");
+                            ModBase.Log($"[Export] 浠?Modrinth 鑾峰彇鍒?{modrinthRaw.Count} 涓湰鍦拌祫婧愰」鐨勫搴斾俊鎭?);
                         }
                         catch (Exception ex)
                         {
-                            ModBase.Log(ex, "从 Modrinth 获取本地 Mod 信息失败");
+                            ModBase.Log(ex, "浠?Modrinth 鑾峰彇鏈湴 Mod 淇℃伅澶辫触");
                             failedExceptions.Add(ex);
                         }
                         finally
@@ -1063,9 +1061,9 @@ public partial class PageInstanceExport : IRefreshable
                         }
                     }, "Modrinth - " + loaderName);
 
-                    // 从 CurseForge 获取信息
-                    // 查找对应的文件
-                    // 写入下载地址
+                    // 浠?CurseForge 鑾峰彇淇℃伅
+                    // 鏌ユ壘瀵瑰簲鐨勬枃浠?
+                    // 鍐欏叆涓嬭浇鍦板潃
                     ModBase.RunInNewThread(() =>
                     {
                         try
@@ -1089,11 +1087,11 @@ public partial class PageInstanceExport : IRefreshable
                                     ModComp.CompFile.HandleCurseForgeDownloadUrls(file["downloadUrl"].ToString()));
                             }
 
-                            ModBase.Log($"[Export] 从 CurseForge 获取到 {curseForgeRaw.AsArray().Count} 个本地资源项的对应信息");
+                            ModBase.Log($"[Export] 浠?CurseForge 鑾峰彇鍒?{curseForgeRaw.AsArray().Count} 涓湰鍦拌祫婧愰」鐨勫搴斾俊鎭?);
                         }
                         catch (Exception ex)
                         {
-                            ModBase.Log(ex, "从 CurseForge 获取本地 Mod 信息失败");
+                            ModBase.Log(ex, "浠?CurseForge 鑾峰彇鏈湴 Mod 淇℃伅澶辫触");
                             failedExceptions.Add(ex);
                         }
                         finally
@@ -1101,9 +1099,9 @@ public partial class PageInstanceExport : IRefreshable
                             endedThreadCount += 1;
                             loader.Progress += 0.45d;
                         }
-                    }, "CurseForge - " + loaderName); // Modrinth 上传模式下，不能从 CurseForge 获取信息
+                    }, "CurseForge - " + loaderName); // Modrinth 涓婁紶妯″紡涓嬶紝涓嶈兘浠?CurseForge 鑾峰彇淇℃伅
 
-                    // 等待线程结束
+                    // 绛夊緟绾跨▼缁撴潫
                     while (endedThreadCount != 2)
                     {
                         if (loader.IsAborted)
@@ -1111,7 +1109,7 @@ public partial class PageInstanceExport : IRefreshable
                         Thread.Sleep(10);
                     }
 
-                    // 若失败，确认是否继续
+                    // 鑻ュけ璐ワ紝纭鏄惁缁х画
                     if (failedExceptions.Count == 1)
                     {
                         if (ModMain.MyMsgBox(
@@ -1136,13 +1134,13 @@ public partial class PageInstanceExport : IRefreshable
 
         #endregion
 
-        #region 生成压缩包
+        #region 鐢熸垚鍘嬬缉鍖?
 
         loaders.Add(new ModLoader.LoaderTask<Dictionary<ModLocalComp.LocalCompFile, List<string>>, int>(
             Lang.Text("Instance.Export.Task.CreateArchive"),
             loader =>
             {
-                // 整理文件列表
+                // 鏁寸悊鏂囦欢鍒楄〃
                 var files = new JsonArray();
                 foreach (var Pair in loader.input)
                 {
@@ -1164,7 +1162,7 @@ public partial class PageInstanceExport : IRefreshable
                 }
 
                 loader.Progress = 0.2d;
-                // 导出最终 JSON 文件
+                // 瀵煎嚭鏈€缁?JSON 鏂囦欢
                 var dependencies = new JsonObject { { "minecraft", mcInstance.Info.VanillaName } };
                 if (mcInstance.Info.HasForge)
                     dependencies.Add("forge", mcInstance.Info.Forge);
@@ -1179,24 +1177,24 @@ public partial class PageInstanceExport : IRefreshable
                 };
                 File.WriteAllText(Path.Combine(cacheFolder, "modpack", "modrinth.index.json"),
                     resultJson.ToJsonString(new JsonSerializerOptions(JsonCompat.SerializerOptions) { WriteIndented = true }));
-                // 打包
+                // 鎵撳寘
                 Directory.CreateDirectory(ModBase.GetPathFromFullPath(packPath));
                 if (File.Exists(packPath))
                     File.Delete(packPath);
                 if (includePCL)
                 {
-                    // 首次压缩整合包
+                    // 棣栨鍘嬬缉鏁村悎鍖?
                     ZipFile.CreateFromDirectory(Path.Combine(cacheFolder, "modpack"), Path.Combine(cacheFolder, "modpack.mrpack"));
                     loader.Progress = 0.5d;
                     Directory.Delete(Path.Combine(cacheFolder, "modpack"), true);
                     loader.Progress = 0.6d;
-                    // 二次压缩整合包
+                    // 浜屾鍘嬬缉鏁村悎鍖?
                     ZipFile.CreateFromDirectory(cacheFolder, packPath);
                     loader.Progress = 0.9d;
                 }
                 else
                 {
-                    // 直接压缩整合包
+                    // 鐩存帴鍘嬬缉鏁村悎鍖?
                     ZipFile.CreateFromDirectory(Path.Combine(cacheFolder, "modpack"), packPath);
                     loader.Progress = 0.8d;
                 }
@@ -1210,7 +1208,7 @@ public partial class PageInstanceExport : IRefreshable
 
         #endregion
 
-        // 启动
+        // 鍚姩
         var mainLoader = new ModLoader.LoaderCombo<string>(loaderName, loaders)
             { OnStateChanged = ModDownloadLib.LoaderStateChangedHintOnly };
         mainLoader.Start();

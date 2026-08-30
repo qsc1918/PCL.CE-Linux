@@ -32,7 +32,7 @@
         HorizontalAlignment="Right"
         VerticalAlignment="Center"
         CornerRadius="6"
-        FallbackSource="pack://application:,,,/images/Icons/NoIcon.png"
+        FallbackSource="avares://PCL/Images/Icons/NoIcon.png"
         IsHitTestVisible="False"
         RenderOptions.BitmapScalingMode="HighQuality" />
     <!-- 标题 -->
@@ -42,8 +42,7 @@
         Grid.Column="3"
         Grid.ColumnSpan="2"
         Margin="0,1,0,0"
-        VerticalAlignment="Center"
-        UseLayoutRounding="False">
+        VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="ColumnTitle" Width="Auto" />
             <ColumnDefinition x:Name="ColumnSubtitle" Width="Auto" />
@@ -91,7 +90,7 @@
         IsHitTestVisible="False"
         Orientation="Horizontal"
         Visibility="Collapsed">
-        <!--<corelocal:BlurBorder Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0" UseLayoutRounding="False">
+        <!--<corelocal:BlurBorder Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0">
             <TextBlock Text="科技" Foreground="{DynamicResource ColorBrush2}" FontSize="11" />
         </corelocal:BlurBorder>-->
     </StackPanel>
@@ -104,6 +103,5 @@
         FontSize="12"
         Foreground="{DynamicResource ColorBrushGray4}"
         IsHitTestVisible="False"
-        TextTrimming="CharacterEllipsis"
-        UseLayoutRounding="False" />
+        TextTrimming="CharacterEllipsis" />
 </Grid>

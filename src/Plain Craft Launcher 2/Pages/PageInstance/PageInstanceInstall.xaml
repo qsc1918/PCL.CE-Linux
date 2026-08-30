@@ -1,16 +1,14 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceInstall"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceInstall"
     PanScroll="{Binding ElementName=PanBack}">
     <Grid>
         <Grid x:Name="PanAllBack">
             <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                   x:Name="PanBack">
                 <Grid Margin="25,10,25,75">
-                    <StackPanel Grid.Row="1" Name="PanMinecraft" Grid.IsSharedSizeScope="True" Margin="0,0,0,-10"
+                    <StackPanel Grid.Row="1" x:Name="PanMinecraft" Grid.IsSharedSizeScope="True" Margin="0,0,0,-10"
                                 Visibility="Collapsed">
                         <StackPanel.RenderTransform>
                             <TranslateTransform />
@@ -73,7 +71,7 @@
                         <local:MyCard Title="{DynamicResource Common.Installation.Forge}" Height="40" Margin="0,15,0,0"
                                       x:Name="CardForge" IsSwapped="True"
                                       CanSwap="True" SwapLogoRight="True" PreviewSwap="CardForge_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanForge" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanForge" />
                             <Grid x:Name="PanForgeInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -85,12 +83,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgForge" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Anvil.png" />
+                                       Source="avares://PCL/Images/Blocks/Anvil.png" />
                                 <TextBlock x:Name="LabForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnForgeClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="Forge_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Forge_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnForgeClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -102,7 +100,7 @@
                                       Margin="0,15,0,0" x:Name="CardCleanroom"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardCleanroom_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanCleanroom" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanCleanroom" />
                             <Grid x:Name="PanCleanroomInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -114,12 +112,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgCleanroom" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Cleanroom.png" />
+                                       Source="avares://PCL/Images/Blocks/Cleanroom.png" />
                                 <TextBlock x:Name="LabCleanroom" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnCleanroomClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="Cleanroom_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Cleanroom_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnCleanroomClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -131,7 +129,7 @@
                                       Margin="0,15,0,0" x:Name="CardNeoForge"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardNeoForge_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanNeoForge" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanNeoForge" />
                             <Grid x:Name="PanNeoForgeInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -143,12 +141,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgNeoForge" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/NeoForge.png" />
+                                       Source="avares://PCL/Images/Blocks/NeoForge.png" />
                                 <TextBlock x:Name="LabNeoForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnNeoForgeClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="NeoForge_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="NeoForge_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnNeoForgeClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -159,7 +157,7 @@
                         <local:MyCard Title="{DynamicResource Common.Installation.Fabric}" Height="40" Margin="0,15,0,0"
                                       x:Name="CardFabric" IsSwapped="True"
                                       CanSwap="True" SwapLogoRight="True" PreviewSwap="CardFabric_PreviewSwap">
-                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" Name="PanFabric" />
+                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" x:Name="PanFabric" />
                             <Grid x:Name="PanFabricInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -171,12 +169,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="Fabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Fabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -188,7 +186,7 @@
                                       Margin="0,12,0,0" x:Name="CardLegacyFabric"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardLegacyFabric_PreviewSwap">
-                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" Name="PanLegacyFabric" />
+                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" x:Name="PanLegacyFabric" />
                             <Grid x:Name="PanLegacyFabricInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -200,12 +198,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLegacyFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="LegacyFabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="LegacyFabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLegacyFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -217,7 +215,7 @@
                                       Margin="0,15,0,0" x:Name="CardFabricApi"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardFabricApi_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanFabricApi" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanFabricApi" />
                             <Grid x:Name="PanFabricApiInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -229,12 +227,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabricApi" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnFabricApiClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="FabricApi_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="FabricApi_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnFabricApiClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -246,7 +244,7 @@
                                       Margin="0,12,0,0"
                                       x:Name="CardLegacyFabricApi" IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardLegacyFabricApi_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanLegacyFabricApi" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanLegacyFabricApi" />
                             <Grid x:Name="PanLegacyFabricApiInfo" Height="18" Margin="132,11,15,0"
                                   VerticalAlignment="Top" Tag="True">
                                 <Grid.RenderTransform>
@@ -258,12 +256,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabricApi" Margin="0,0,7,0"
                                        Height="18" RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLegacyFabricApiClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="LegacyFabricApi_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="LegacyFabricApi_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLegacyFabricApiClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -275,7 +273,7 @@
                                       x:Name="CardLabyMod"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardLabyMod_PreviewSwap">
-                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" Name="PanLabyMod" />
+                            <StackPanel Margin="20,40,18,0" VerticalAlignment="Top" x:Name="PanLabyMod" />
                             <Grid x:Name="PanLabyModInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -287,12 +285,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLabyMod" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/LabyMod.png" />
+                                       Source="avares://PCL/Images/Blocks/LabyMod.png" />
                                 <TextBlock x:Name="LabLabyMod" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLabyModClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  MouseLeftButtonUp="LabyMod_Clear"
+                                  PointerReleased="LabyMod_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLabyModClearInner" Height="10" Width="10" Stretch="Uniform"
@@ -306,7 +304,7 @@
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardOptiFine_PreviewSwap">
                             <StackPanel Margin="20,40,18,15" VerticalAlignment="Top">
-                                <StackPanel Name="PanOptiFine" />
+                                <StackPanel x:Name="PanOptiFine" />
                             </StackPanel>
                             <Grid x:Name="PanOptiFineInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
@@ -319,12 +317,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFine" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/GrassPath.png" />
+                                       Source="avares://PCL/Images/Blocks/GrassPath.png" />
                                 <TextBlock x:Name="LabOptiFine" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnOptiFineClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  MouseLeftButtonUp="OptiFine_Clear"
+                                  PointerReleased="OptiFine_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnOptiFineClearInner" Height="10" Width="10" Stretch="Uniform"
@@ -337,7 +335,7 @@
                                       Margin="0,15,0,0" x:Name="CardOptiFabric"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True"
                                       PreviewSwap="CardOptiFabric_PreviewSwap">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanOptiFabric" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanOptiFabric" />
                             <Grid x:Name="PanOptiFabricInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -349,12 +347,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="HighQuality"
-                                       Source="pack://application:,,,/images/Blocks/OptiFabric.png" />
+                                       Source="avares://PCL/Images/Blocks/OptiFabric.png" />
                                 <TextBlock x:Name="LabOptiFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnOptiFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" MouseLeftButtonUp="OptiFabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="OptiFabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnOptiFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -366,7 +364,7 @@
                                       Margin="0,15,0,0" x:Name="CardLiteLoader"
                                       PreviewSwap="CardLiteLoader_PreviewSwap"
                                       IsSwapped="True" CanSwap="True" SwapLogoRight="True">
-                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" Name="PanLiteLoader" />
+                            <StackPanel Margin="20,40,18,15" VerticalAlignment="Top" x:Name="PanLiteLoader" />
                             <Grid x:Name="PanLiteLoaderInfo" Height="18" Margin="132,11,15,0" VerticalAlignment="Top"
                                   Tag="True">
                                 <Grid.RenderTransform>
@@ -378,12 +376,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLiteLoader" Margin="-1,0,6,0" Height="20"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Egg.png" />
+                                       Source="avares://PCL/Images/Blocks/Egg.png" />
                                 <TextBlock x:Name="LabLiteLoader" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLiteLoaderClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  MouseLeftButtonUp="LiteLoader_Clear"
+                                  PointerReleased="LiteLoader_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLiteLoaderClearInner" Height="10" Width="10" Stretch="Uniform"

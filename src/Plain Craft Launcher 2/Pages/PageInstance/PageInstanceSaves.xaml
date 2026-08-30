@@ -1,9 +1,7 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceSaves"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceSaves"
     PanScroll="{Binding ElementName=PanBack}" Grid.IsSharedSizeScope="True">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <Grid>
@@ -24,7 +22,6 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,0,9" HorizontalAlignment="Center"
                                Text="{DynamicResource Instance.Saves.Empty.Title}" FontSize="19"
-                               UseLayoutRounding="True"
                                Foreground="{DynamicResource ColorBrush3}" />
                     <Rectangle Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Height="2"
                                Fill="{DynamicResource ColorBrush3}" />
@@ -86,7 +83,7 @@
                                                     SvgIcon="lucide/arrow-up-down" />
                         </StackPanel>
                     </Grid>
-                    <StackPanel Margin="20,48,18,22" Name="PanList" VerticalAlignment="Top" />
+                    <StackPanel Margin="20,48,18,22" x:Name="PanList" VerticalAlignment="Top" />
                 </local:MyCard>
             </StackPanel>
         </Grid>

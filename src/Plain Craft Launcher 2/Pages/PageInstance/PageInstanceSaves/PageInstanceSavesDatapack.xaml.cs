@@ -5,9 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -24,11 +22,11 @@ namespace PCL;
 
 public partial class PageInstanceSavesDatapack : IRefreshable
 {
-    #region 数据包信息缓存
+    #region 鏁版嵁鍖呬俊鎭紦瀛?
 
     private readonly Dictionary<string, (DateTime CreationTime, long Length)> datapackFileInfoCache = new();
 
-    // 获取数据包信息（带缓存）
+    // 鑾峰彇鏁版嵁鍖呬俊鎭紙甯︾紦瀛橈級
     private (DateTime CreationTime, long Length) GetDatapackFileInfo(string path)
     {
         (DateTime CreationTime, long Length) cacheItem;
@@ -43,12 +41,12 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "获取数据包信息失败: " + path);
+            ModBase.Log(ex, "鑾峰彇鏁版嵁鍖呬俊鎭け璐? " + path);
             return (DateTime.MinValue, 0L);
         }
     }
 
-    // 页面关闭时清理缓存
+    // 椤甸潰鍏抽棴鏃舵竻鐞嗙紦瀛?
     private void Page_Unloaded(object sender, RoutedEventArgs e)
     {
         datapackFileInfoCache.Clear();
@@ -56,7 +54,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 初始化
+    #region 鍒濆鍖?
 
     private readonly MyLocalCompItem.SwipeSelect currentSwipSelect;
 
@@ -120,19 +118,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ChangeAllSelected(false);
         ModAnimation.AniControlEnabled -= 1;
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoad)
             return;
         isLoad = true;
 
         ModMain.frmMain.KeyDown += FrmMain_KeyDown;
-        // 调整按钮边距（这玩意儿没法从 XAML 改）
+        // 璋冩暣鎸夐挳杈硅窛锛堣繖鐜╂剰鍎挎病娉曚粠 XAML 鏀癸級
         foreach (MyRadioButton Btn in PanFilter.Children)
             Btn.LabText.Margin = new Thickness(-2, 0d, 8d, 0d);
     }
 
     /// <summary>
-    ///     刷新数据包列表。
+    ///     鍒锋柊鏁版嵁鍖呭垪琛ㄣ€?
     /// </summary>
     public void ReloadDatapackFileList(bool forceReload = false)
     {
@@ -140,7 +138,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 ? ModLoader.LoaderFolderRunType.ForceRun
                 : ModLoader.LoaderFolderRunType.RunOnUpdated))
         {
-            ModBase.Log("[System] 已刷新数据包列表");
+            ModBase.Log("[System] 宸插埛鏂版暟鎹寘鍒楄〃");
             datapackFileInfoCache.Clear();
 
             ModBase.RunInUi(() =>
@@ -152,7 +150,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
     }
 
-    // 强制刷新
+    // 寮哄埗鍒锋柊
     private void RefreshSelf()
     {
         Refresh();
@@ -166,7 +164,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     public void Refresh()
     {
         ModMain.frmInstanceSavesDatapack.ReloadDatapackFileList(true);
-        ModBase.Log("[Datapack] 刷新数据包列表");
+        ModBase.Log("[Datapack] 鍒锋柊鏁版嵁鍖呭垪琛?);
     }
 
     private void LoaderInit()
@@ -190,21 +188,21 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region UI 化
+    #region UI 鍖?
 
     /// <summary>
-    ///     已加载的数据包 UI 缓存。Key 为数据包的 RawPath。
+    ///     宸插姞杞界殑鏁版嵁鍖?UI 缂撳瓨銆侹ey 涓烘暟鎹寘鐨?RawPath銆?
     /// </summary>
     public Dictionary<string, MyLocalCompItem> datapackItems = new();
 
     /// <summary>
-    ///     将加载器结果的数据包列表加载为 UI。
+    ///     灏嗗姞杞藉櫒缁撴灉鐨勬暟鎹寘鍒楄〃鍔犺浇涓?UI銆?
     /// </summary>
     private void LoadUIFromLoaderOutput()
     {
         try
         {
-            // 判断应该显示哪一个页面
+            // 鍒ゆ柇搴旇鏄剧ず鍝竴涓〉闈?
             if (ModLocalComp.compResourceListLoader.output.Any())
             {
                 PanBack.Visibility = Visibility.Visible;
@@ -212,7 +210,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             }
             else
             {
-                // 根据组件类型设置 PanEmpty 的文本内容
+                // 鏍规嵁缁勪欢绫诲瀷璁剧疆 PanEmpty 鐨勬枃鏈唴瀹?
                 TxtEmptyTitle.Text = Lang.Text("Instance.Resource.Datapack.Empty.Title");
                 TxtEmptyDescription.Text = Lang.Text("Instance.Resource.Datapack.Empty.Description");
 
@@ -221,18 +219,18 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 return;
             }
 
-            // 修改缓存
+            // 淇敼缂撳瓨
             datapackItems.Clear();
             var itemsToShow = ModLocalComp.compResourceListLoader.output.ToList();
 
             foreach (var DatapackEntity in itemsToShow)
                 datapackItems[DatapackEntity.RawPath] = BuildLocalCompItem(DatapackEntity);
 
-            // 显示结果
+            // 鏄剧ず缁撴灉
             ModBase.RunInUi(() =>
             {
                 Filter = FilterType.All;
-                SearchBox.Text = ""; // 这会触发结果刷新，所以需要在 DatapackItems 更新之后
+                SearchBox.Text = ""; // 杩欎細瑙﹀彂缁撴灉鍒锋柊锛屾墍浠ラ渶瑕佸湪 DatapackItems 鏇存柊涔嬪悗
                 RefreshUI();
                 SetSortMethod(SortMethod.CompName);
             });
@@ -241,7 +239,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "加载数据包列表 UI 失败",
+                "鍔犺浇鏁版嵁鍖呭垪琛?UI 澶辫触",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
@@ -254,7 +252,6 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             ModAnimation.AniControlEnabled += 1;
             var newItem = new MyLocalCompItem
             {
-                SnapsToDevicePixels = true,
                 Entry = entry,
                 buttonHandler = BuildLocalCompItemBtnHandler,
                 Checked = selectedDatapacks.Contains(entry.RawPath)
@@ -269,24 +266,24 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         catch (Exception ex)
         {
             ModAnimation.AniControlEnabled -= 1;
-            ModBase.Log(ex, $"创建 UI 项失败：{entry.RawPath}");
+            ModBase.Log(ex, $"鍒涘缓 UI 椤瑰け璐ワ細{entry.RawPath}");
             throw;
         }
     }
 
     private void BuildLocalCompItemBtnHandler(MyLocalCompItem sender, EventArgs e)
     {
-        // 点击事件
+        // 鐐瑰嚮浜嬩欢
         sender.Changed += (ss, e) => CheckChanged((MyLocalCompItem)ss, e);
 
-        // 文件项的点击事件：切换选中状态
+        // 鏂囦欢椤圭殑鐐瑰嚮浜嬩欢锛氬垏鎹㈤€変腑鐘舵€?
         sender.Click += (ss, e) =>
         {
             var s = (MyLocalCompItem)ss;
             s.Checked = !s.Checked;
         };
 
-        // 图标按钮
+        // 鍥炬爣鎸夐挳
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
         btnOpen.ToolTip = Lang.Text("Instance.Saves.OpenFileLocation");
         ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
@@ -336,7 +333,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     刷新整个 UI。
+    ///     鍒锋柊鏁翠釜 UI銆?
     /// </summary>
     public void RefreshUI()
     {
@@ -345,14 +342,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         var showingDatapacks = (IsSearching ? searchResult : datapackItems.Values.Select(i => i.Entry))
             .Where(m => CanPassFilter(m)).ToList();
 
-        // 对显示的数据包进行排序
+        // 瀵规樉绀虹殑鏁版嵁鍖呰繘琛屾帓搴?
         if (showingDatapacks.Any())
         {
             var sortMethod = GetSortMethod(currentSortMethod);
             showingDatapacks.Sort((a, b) => sortMethod(a, b));
         }
 
-        // 重新列出列表
+        // 閲嶆柊鍒楀嚭鍒楄〃
         ModAnimation.AniControlEnabled += 1;
         if (showingDatapacks.Any())
         {
@@ -364,14 +361,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     continue;
                 var item = datapackItems[TargetDatapack.RawPath];
 
-                // 确保元素没有父容器，避免重复添加异常
+                // 纭繚鍏冪礌娌℃湁鐖跺鍣紝閬垮厤閲嶅娣诲姞寮傚父
                 if (item.Parent is not null) ((Panel)item.Parent).Children.Remove(item);
 
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabTitle.Text, item.LabTitle,
                     ThemeService.IsDarkMode);
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabInfo.Text, item.LabInfo,
                     ThemeService.IsDarkMode);
-                item.Checked = selectedDatapacks.Contains(TargetDatapack.RawPath); // 更新选中状态
+                item.Checked = selectedDatapacks.Contains(TargetDatapack.RawPath); // 鏇存柊閫変腑鐘舵€?
                 PanList.Children.Add(item);
             }
         }
@@ -388,17 +385,17 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     刷新顶栏和底栏显示。
+    ///     鍒锋柊椤舵爮鍜屽簳鏍忔樉绀恒€?
     /// </summary>
     public void RefreshBars()
     {
         Dispatcher.BeginInvoke(new Func<Task>(async () =>
         {
             // -----------------
-            // 顶部栏
+            // 椤堕儴鏍?
             // -----------------
 
-            // 计数
+            // 璁℃暟
             var anyCount = 0;
             var enabledCount = 0;
             var disabledCount = 0;
@@ -416,7 +413,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     if (item.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable) unavalialeCount += 1;
                 }
             });
-            // 显示
+            // 鏄剧ず
             BtnFilterAll.Text = IsSearching ? Lang.Text("Instance.Resource.Filter.SearchResult") : Lang.Text("Instance.Resource.Filter.AllWithCount", anyCount);
             BtnFilterCanUpdate.Text = Lang.Text("Instance.Resource.Filter.UpdatableWithCount", updateCount);
             BtnFilterCanUpdate.Visibility = Filter == FilterType.CanUpdate || updateCount > 0
@@ -436,16 +433,16 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 : Visibility.Collapsed;
 
             // -----------------
-            // 底部栏
+            // 搴曢儴鏍?
             // -----------------
 
-            // 计数
+            // 璁℃暟
             var newCount = selectedDatapacks.Count;
             var selected = newCount > 0;
             if (selected)
                 LabSelect.Text = Lang.Text("Instance.Resource.SelectedCount", newCount);
 
-            // 按钮可用性
+            // 鎸夐挳鍙敤鎬?
             if (selected)
             {
                 var hasUpdate = false;
@@ -454,7 +451,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 var canFavoriteAndShare = true;
 
 
-                // 检查是否所有选中的数据包都有有效的项目信息
+                // 妫€鏌ユ槸鍚︽墍鏈夐€変腑鐨勬暟鎹寘閮芥湁鏈夋晥鐨勯」鐩俊鎭?
                 await Task.Run(() =>
                 {
                     foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
@@ -477,13 +474,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 BtnSelectShare.IsEnabled = canFavoriteAndShare;
             }
 
-            // 更新显示状态
+            // 鏇存柊鏄剧ず鐘舵€?
             if (ModAnimation.AniControlEnabled == 0)
             {
                 PanListBack.Margin = new Thickness(0d, 0d, 0d, selected ? 95 : 15);
                 if (selected)
                 {
-                    // 仅在数量增加时播放出现/跳跃动画
+                    // 浠呭湪鏁伴噺澧炲姞鏃舵挱鏀惧嚭鐜?璺宠穬鍔ㄧ敾
                     if (bottomBarShownCount >= newCount)
                     {
                         bottomBarShownCount = newCount;
@@ -491,7 +488,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
 
                     bottomBarShownCount = newCount;
-                    // 出现/跳跃动画
+                    // 鍑虹幇/璺宠穬鍔ㄧ敾
                     CardSelect.Visibility = Visibility.Visible;
                     ModAnimation.AniStart(
                         new[]
@@ -507,11 +504,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 }
                 else
                 {
-                    // 不重复播放隐藏动画
+                    // 涓嶉噸澶嶆挱鏀鹃殣钘忓姩鐢?
                     if (bottomBarShownCount == 0)
                         return;
                     bottomBarShownCount = 0;
-                    // 隐藏动画
+                    // 闅愯棌鍔ㄧ敾
                     ModAnimation.AniStart(
                         new[]
                         {
@@ -546,10 +543,10 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 管理
+    #region 绠＄悊
 
     /// <summary>
-    ///     打开 datapacks 文件夹。
+    ///     鎵撳紑 datapacks 鏂囦欢澶广€?
     /// </summary>
     private void BtnManageOpen_Click(object sender, EventArgs e)
     {
@@ -563,14 +560,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "打开 datapacks 文件夹失败",
+                "鎵撳紑 datapacks 鏂囦欢澶瑰け璐?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     全选。
+    ///     鍏ㄩ€夈€?
     /// </summary>
     private void BtnManageSelectAll_Click(object sender, MouseButtonEventArgs e)
     {
@@ -578,7 +575,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     安装数据包。
+    ///     瀹夎鏁版嵁鍖呫€?
     /// </summary>
     private void BtnManageInstall_Click(object sender, MouseButtonEventArgs e)
     {
@@ -592,7 +589,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     安装数据包文件。
+    ///     瀹夎鏁版嵁鍖呮枃浠躲€?
     /// </summary>
     public static void InstallDatapackFiles(IEnumerable<string> filePathList)
     {
@@ -601,23 +598,23 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
         var extension = filePathList.First().AfterLast(".").ToLower();
 
-        // 检查文件扩展名
+        // 妫€鏌ユ枃浠舵墿灞曞悕
         if (extension != "zip")
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.UnsupportedFormat", extension, Lang.Text("Download.Comp.Type.DataPack"), "zip"), HintType.Error);
             return;
         }
 
-        // 检查回收站
+        // 妫€鏌ュ洖鏀剁珯
         if (filePathList.First().Contains(@":\$RECYCLE.BIN\"))
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.RestoreFromRecycleBin"), HintType.Error);
             return;
         }
 
-        ModBase.Log($"[System] 文件为 {extension} 格式，尝试作为数据包安装");
+        ModBase.Log($"[System] 鏂囦欢涓?{extension} 鏍煎紡锛屽皾璇曚綔涓烘暟鎹寘瀹夎");
 
-        // 确认安装
+        // 纭瀹夎
         if (!(ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup &&
               ModMain.frmMain.PageCurrentSub == FormMain.PageSubType.VersionSavesDatapack))
             if (ModMain.MyMsgBox(Lang.Text("Instance.Saves.Datapack.Install.Message"),
@@ -625,7 +622,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     Lang.Text("Common.Action.Cancel")) != 1)
                 return;
 
-        // 执行安装
+        // 鎵ц瀹夎
         try
         {
             var datapackFolder = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
@@ -648,7 +645,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             else
                 HintService.Hint(Lang.Text("Instance.Resource.Install.SuccessMultiple", filePathList.Count(), Lang.Text("Download.Comp.Type.DataPack")), HintType.Success);
 
-            // 刷新列表
+            // 鍒锋柊鍒楄〃
             if (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup &&
                 ModMain.frmMain.PageCurrentSub == FormMain.PageSubType.VersionSavesDatapack)
                 if (ModMain.frmInstanceSavesDatapack is not null)
@@ -659,14 +656,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "复制数据包文件失败",
+                "澶嶅埗鏁版嵁鍖呮枃浠跺け璐?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     下载数据包。
+    ///     涓嬭浇鏁版嵁鍖呫€?
     /// </summary>
     private void BtnManageDownload_Click(object sender, MouseButtonEventArgs e)
     {
@@ -674,11 +671,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         Directory.CreateDirectory(datapackPath);
         PageDownloadCompDetail.cachedFolder[ModComp.CompType.DataPack] = datapackPath;
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadDataPack);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 将当前实例设置为筛选器
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
     }
 
     /// <summary>
-    ///     导出信息。
+    ///     瀵煎嚭淇℃伅銆?
     /// </summary>
     private void BtnManageInfoExport_Click(object sender, MouseButtonEventArgs e)
     {
@@ -701,7 +698,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "导出数据包信息失败",
+                    "瀵煎嚭鏁版嵁鍖呬俊鎭け璐?,
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -716,19 +713,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
                     exportContent.Add(DatapackEntity.FileName);
                 ExportText(exportContent.Join("\r\n"),
-                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "的数据包信息.txt");
+                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "鐨勬暟鎹寘淇℃伅.txt");
                 break;
             }
 
             case 2: // CSV
             {
                 var exportContent = new List<string>();
-                exportContent.Add("文件名,数据包名称,数据包版本,此版本更新时间,工程 ID,文件大小（字节）,文件路径");
+                exportContent.Add("鏂囦欢鍚?鏁版嵁鍖呭悕绉?鏁版嵁鍖呯増鏈?姝ょ増鏈洿鏂版椂闂?宸ョ▼ ID,鏂囦欢澶у皬锛堝瓧鑺傦級,鏂囦欢璺緞");
                 foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
                     exportContent.Add(
                         $"{DatapackEntity.FileName},{DatapackEntity.Comp?.TranslatedName},{DatapackEntity.Version},{DatapackEntity.compFile?.ReleaseDate},{DatapackEntity.Comp?.Id},{GetDatapackFileInfo(DatapackEntity.path).Length},{DatapackEntity.path}");
                 ExportText(exportContent.Join("\r\n"),
-                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "的数据包信息.csv");
+                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "鐨勬暟鎹寘淇℃伅.csv");
                 break;
             }
         }
@@ -736,19 +733,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 选择
+    #region 閫夋嫨
 
     /// <summary>
-    ///     选择的数据包的路径。
+    ///     閫夋嫨鐨勬暟鎹寘鐨勮矾寰勩€?
     /// </summary>
     public HashSet<string> selectedDatapacks = new();
 
-    // 单项切换选择状态
+    // 鍗曢」鍒囨崲閫夋嫨鐘舵€?
     public void CheckChanged(MyLocalCompItem sender, ModBase.RouteEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
             return;
-        // 更新选择了的内容
+        // 鏇存柊閫夋嫨浜嗙殑鍐呭
         var selectedKey = sender.Entry.RawPath;
         if (sender.Checked)
             selectedDatapacks.Add(selectedKey);
@@ -757,7 +754,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         RefreshBars();
     }
 
-    // 切换所有项的选择状态
+    // 鍒囨崲鎵€鏈夐」鐨勯€夋嫨鐘舵€?
     private void ChangeAllSelected(bool value)
     {
         ModAnimation.AniControlEnabled += 1;
@@ -792,7 +789,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     private void SearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        // Ctrl + A 会被搜索框捕获，导致无法全选，所以在按下 Ctrl + A 时转移焦点以便捕获
+        // Ctrl + A 浼氳鎼滅储妗嗘崟鑾凤紝瀵艰嚧鏃犳硶鍏ㄩ€夛紝鎵€浠ュ湪鎸変笅 Ctrl + A 鏃惰浆绉荤劍鐐逛互渚挎崟鑾?
         if (SearchBox.Text.Any())
             return;
         if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
@@ -801,7 +798,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 筛选
+    #region 绛涢€?
 
     public FilterType Filter
     {
@@ -855,7 +852,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     检查该数据包项是否符合当前筛选的类别。
+    ///     妫€鏌ヨ鏁版嵁鍖呴」鏄惁绗﹀悎褰撳墠绛涢€夌殑绫诲埆銆?
     /// </summary>
     private bool CanPassFilter(ModLocalComp.LocalCompFile checkingDatapack)
     {
@@ -889,7 +886,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
     }
 
-    // 点击筛选项触发的改变
+    // 鐐瑰嚮绛涢€夐」瑙﹀彂鐨勬敼鍙?
     private void ChangeFilter(MyRadioButton sender, bool raiseByMouse)
     {
         Filter = (FilterType)Convert.ToInt32(sender.Tag);
@@ -899,7 +896,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 排序
+    #region 鎺掑簭
 
     private SortMethod currentSortMethod = SortMethod.CompName;
 
@@ -975,19 +972,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 if (PanList is null || PanList.Children.Count < 2)
                     return;
 
-                // 将子元素转换为可排序的列表
+                // 灏嗗瓙鍏冪礌杞崲涓哄彲鎺掑簭鐨勫垪琛?
                 var items = PanList.Children.OfType<MyLocalCompItem>().ToList();
                 var method = GetSortMethod(currentSortMethod);
 
-                // 分离有效和无效项（保持原始相对顺序）
+                // 鍒嗙鏈夋晥鍜屾棤鏁堥」锛堜繚鎸佸師濮嬬浉瀵归『搴忥級
                 var invalid = items.Where(i => i.Entry is null).ToList();
                 var valid = items.Except(invalid).ToList();
-                // 仅对有效项进行排序
+                // 浠呭鏈夋晥椤硅繘琛屾帓搴?
                 valid.Sort((x, y) => method(x.Entry, y.Entry));
-                // 合并保持无效项的原始顺序
+                // 鍚堝苟淇濇寔鏃犳晥椤圭殑鍘熷椤哄簭
                 items = valid.Concat(invalid).ToList();
 
-                // 批量更新UI元素
+                // 鎵归噺鏇存柊UI鍏冪礌
                 PanList.Children.Clear();
                 items.ForEach(i => PanList.Children.Add(i));
             }
@@ -996,7 +993,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "执行排序时出错",
+                    "鎵ц鎺掑簭鏃跺嚭閿?,
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -1055,9 +1052,9 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 下边栏
+    #region 涓嬭竟鏍?
 
-    // 启用
+    // 鍚敤
     private void BtnSelectEnable_Click(object sender, ModBase.RouteEventArgs e)
     {
         ToggleDatapacks(
@@ -1066,7 +1063,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ChangeAllSelected(false);
     }
 
-    // 禁用
+    // 绂佺敤
     private void BtnSelectDisable_Click(object sender, ModBase.RouteEventArgs e)
     {
         ToggleDatapacks(
@@ -1076,7 +1073,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     启用/禁用数据包（通过重命名文件夹为 .disabled）
+    ///     鍚敤/绂佺敤鏁版嵁鍖咃紙閫氳繃閲嶅懡鍚嶆枃浠跺す涓?.disabled锛?
     /// </summary>
     private void ToggleDatapacks(IEnumerable<ModLocalComp.LocalCompFile> datapackList, bool isEnable)
     {
@@ -1087,15 +1084,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             string newPath = null;
 
             if (datapackEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine && !isEnable)
-                // 禁用 - 添加 .disabled 后缀
+                // 绂佺敤 - 娣诲姞 .disabled 鍚庣紑
                 newPath = datapackEntity.path + ".disabled";
             else if (datapackEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Disabled && isEnable)
-                // 启用 - 移除 .disabled 后缀
+                // 鍚敤 - 绉婚櫎 .disabled 鍚庣紑
                 newPath = datapackEntity.RawPath;
             else
                 continue;
 
-            // 重命名
+            // 閲嶅懡鍚?
             try
             {
                 if (File.Exists(newPath))
@@ -1110,7 +1107,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"未找到需要重命名的数据包（{datapackEntity.path ?? "null"}）",
+                    $"鏈壘鍒伴渶瑕侀噸鍛藉悕鐨勬暟鎹寘锛坽datapackEntity.path ?? "null"}锛?,
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
                 ReloadDatapackFileList(true);
@@ -1118,11 +1115,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"重命名数据包失败（{datapackEntity.path ?? "null"}）");
+                ModBase.Log(ex, $"閲嶅懡鍚嶆暟鎹寘澶辫触锛坽datapackEntity.path ?? "null"}锛?);
                 isSuccessful = false;
             }
 
-            // 更改 Loader 中的列表
+            // 鏇存敼 Loader 涓殑鍒楄〃
             var newDatapackEntity = new ModLocalComp.LocalCompFile(newPath);
             newDatapackEntity.FromJson(datapackEntity.ToJson());
             if (ModLocalComp.compResourceListLoader.output.Contains(datapackEntity))
@@ -1139,7 +1136,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 searchResult.Insert(indexOfResult, newDatapackEntity);
             }
 
-            // 更改 UI 中的列表
+            // 鏇存敼 UI 涓殑鍒楄〃
             try
             {
                 var newItem = BuildLocalCompItem(newDatapackEntity);
@@ -1155,7 +1152,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"更新 UI 列表项失败：{datapackEntity.FileName}",
+                    $"鏇存柊 UI 鍒楄〃椤瑰け璐ワ細{datapackEntity.FileName}",
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -1176,7 +1173,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 更新
+    // 鏇存柊
     private void BtnSelectUpdate_Click(object sender, ModBase.RouteEventArgs e)
     {
         var updateList = ModLocalComp.compResourceListLoader.output
@@ -1188,7 +1185,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     记录正在进行数据包更新的 datapacks 文件夹路径。
+    ///     璁板綍姝ｅ湪杩涜鏁版嵁鍖呮洿鏂扮殑 datapacks 鏂囦欢澶硅矾寰勩€?
     /// </summary>
     public static List<string> updatingVersions = new();
 
@@ -1223,7 +1220,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     public void UpdateResource(IEnumerable<ModLocalComp.LocalCompFile> datapackList)
     {
-        // 更新前警告
+        // 鏇存柊鍓嶈鍛?
         if (!States.Hint.FunctionDatapackUpdate || datapackList.Count() >= 15)
         {
             if (ModMain.MyMsgBox(
@@ -1236,8 +1233,8 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
         try
         {
-            // 构造下载信息
-            datapackList = datapackList.ToList(); // 防止刷新影响迭代器
+            // 鏋勯€犱笅杞戒俊鎭?
+            datapackList = datapackList.ToList(); // 闃叉鍒锋柊褰卞搷杩唬鍣?
             var fileList = new List<DownloadFile>();
             var fileCopyList = new Dictionary<string, string>();
             var updateEntryList = new List<ModLocalComp.LocalCompFile>();
@@ -1254,11 +1251,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     !TryBuildDatapackUpdatePath(datapackRoot, safeFileName, out var realAddress))
                 {
                     skippedUnsafeFileCount++;
-                    ModBase.Log($"[DatapackUpdate] 已跳过不安全的数据包更新文件名：{file.FileName}", ModBase.LogLevel.Debug);
+                    ModBase.Log($"[DatapackUpdate] 宸茶烦杩囦笉瀹夊叏鐨勬暟鎹寘鏇存柊鏂囦欢鍚嶏細{file.FileName}", ModBase.LogLevel.Debug);
                     continue;
                 }
 
-                // 添加到下载列表
+                // 娣诲姞鍒颁笅杞藉垪琛?
                 fileList.Add(file.ToNetFile(tempAddress, ModComp.DownloadReason.Update,
                     file.RawGameVersions.FirstOrDefault()));
                 fileCopyList[tempAddress] = realAddress;
@@ -1272,7 +1269,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             if (!fileList.Any())
                 return;
 
-            // 构造加载器
+            // 鏋勯€犲姞杞藉櫒
             var installLoaders = new List<ModLoader.LoaderBase>();
             var finishedFileNames = new List<string>();
             installLoaders.Add(
@@ -1289,7 +1286,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                                 Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.path, UIOption.AllDialogs,
                                     RecycleOption.SendToRecycleBin);
                             else
-                                ModBase.Log($"[DatapackUpdate] 未找到更新前的数据包文件，跳过对它的删除：{Entry.path}",
+                                ModBase.Log($"[DatapackUpdate] 鏈壘鍒版洿鏂板墠鐨勬暟鎹寘鏂囦欢锛岃烦杩囧瀹冪殑鍒犻櫎锛歿Entry.path}",
                                     ModBase.LogLevel.Debug);
 
                         foreach (var Entry in fileCopyList)
@@ -1298,7 +1295,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                             {
                                 Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.Value, UIOption.AllDialogs,
                                     RecycleOption.SendToRecycleBin);
-                                ModBase.Log($"[Datapack] 更新后的数据包文件已存在，将会把它放入回收站：{Entry.Value}", ModBase.LogLevel.Debug);
+                                ModBase.Log($"[Datapack] 鏇存柊鍚庣殑鏁版嵁鍖呮枃浠跺凡瀛樺湪锛屽皢浼氭妸瀹冩斁鍏ュ洖鏀剁珯锛歿Entry.Value}", ModBase.LogLevel.Debug);
                             }
 
                             if (Directory.Exists(ModBase.GetPathFromFullPath(Entry.Value)))
@@ -1308,17 +1305,17 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                             }
                             else
                             {
-                                ModBase.Log($"[Datapack] 更新后的目标文件夹已被删除：{Entry.Value}", ModBase.LogLevel.Debug);
+                                ModBase.Log($"[Datapack] 鏇存柊鍚庣殑鐩爣鏂囦欢澶瑰凡琚垹闄わ細{Entry.Value}", ModBase.LogLevel.Debug);
                             }
                         }
                     }
                     catch (OperationCanceledException ex)
                     {
-                        ModBase.Log(ex, "替换旧版数据包文件时被主动取消");
+                        ModBase.Log(ex, "鏇挎崲鏃х増鏁版嵁鍖呮枃浠舵椂琚富鍔ㄥ彇娑?);
                     }
                 }));
 
-            // 结束处理
+            // 缁撴潫澶勭悊
             var loader = new ModLoader.LoaderCombo<IEnumerable<ModLocalComp.LocalCompFile>>(
                 Lang.Text("Instance.Saves.Datapack.Update.Task.Title",
                     ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave)), installLoaders);
@@ -1334,7 +1331,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                         {
                             case 0:
                             {
-                                ModBase.Log("[DatapackUpdate] 没有数据包被成功更新");
+                                ModBase.Log("[DatapackUpdate] 娌℃湁鏁版嵁鍖呰鎴愬姛鏇存柊");
                                 break;
                             }
                             case 1:
@@ -1369,10 +1366,10 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
                 }
 
-                ModBase.Log($"[DatapackUpdate] 已从正在进行数据包更新的文件夹列表移除：{pathDatapacks}");
+                ModBase.Log($"[DatapackUpdate] 宸蹭粠姝ｅ湪杩涜鏁版嵁鍖呮洿鏂扮殑鏂囦欢澶瑰垪琛ㄧЩ闄わ細{pathDatapacks}");
                 updatingVersions.Remove(pathDatapacks);
 
-                // 清理缓存
+                // 娓呯悊缂撳瓨
                 ModBase.RunInNewThread(() =>
                 {
                     try
@@ -1383,13 +1380,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
                     catch (Exception ex)
                     {
-                        ModBase.Log(ex, "清理数据包更新缓存失败");
+                        ModBase.Log(ex, "娓呯悊鏁版嵁鍖呮洿鏂扮紦瀛樺け璐?);
                     }
                 }, "Clean Datapack Update Cache", ThreadPriority.BelowNormal);
             };
 
-            // 启动加载器
-            ModBase.Log($"[DatapackUpdate] 开始更新 {datapackList.Count()} 个数据包：{pathDatapacks}");
+            // 鍚姩鍔犺浇鍣?
+            ModBase.Log($"[DatapackUpdate] 寮€濮嬫洿鏂?{datapackList.Count()} 涓暟鎹寘锛歿pathDatapacks}");
             updatingVersions.Add(pathDatapacks);
             loader.Start();
             ModLoader.LoaderTaskbarAdd(loader);
@@ -1399,11 +1396,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "初始化数据包更新失败");
+            ModBase.Log(ex, "鍒濆鍖栨暟鎹寘鏇存柊澶辫触");
         }
     }
 
-    // 删除
+    // 鍒犻櫎
     private void BtnSelectDelete_Click(object sender, ModBase.RouteEventArgs e)
     {
         DeleteDatapacks(ModLocalComp.compResourceListLoader.output.Where(m => selectedDatapacks.Contains(m.RawPath)));
@@ -1417,7 +1414,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             var isSuccessful = true;
             var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
-            // 确认需要删除的文件
+            // 纭闇€瑕佸垹闄ょ殑鏂囦欢
             datapackList = datapackList.SelectMany(target =>
             {
                 if (target.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine)
@@ -1426,7 +1423,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 return new[] { target.path, target.RawPath };
             }).Distinct().Where(m => File.Exists(m)).Select(m => new ModLocalComp.LocalCompFile(m)).ToList();
 
-            // 实际删除文件
+            // 瀹為檯鍒犻櫎鏂囦欢
             foreach (var DatapackEntity in datapackList)
             {
                 try
@@ -1439,7 +1436,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 }
                 catch (OperationCanceledException ex)
                 {
-                    ModBase.Log(ex, "删除数据包被主动取消");
+                    ModBase.Log(ex, "鍒犻櫎鏁版嵁鍖呰涓诲姩鍙栨秷");
                     ReloadDatapackFileList(true);
                     return;
                 }
@@ -1447,15 +1444,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 {
                     ModBase.Log(
                         ex,
-                        $"删除数据包失败（{DatapackEntity.path}）",
+                        $"鍒犻櫎鏁版嵁鍖呭け璐ワ紙{DatapackEntity.path}锛?,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
                     isSuccessful = false;
                 }
 
-                // 取消选中
+                // 鍙栨秷閫変腑
                 selectedDatapacks.Remove(DatapackEntity.RawPath);
-                // 更改 Loader 和 UI 中的列表
+                // 鏇存敼 Loader 鍜?UI 涓殑鍒楄〃
                 ModLocalComp.compResourceListLoader.output.Remove(DatapackEntity);
                 searchResult?.Remove(DatapackEntity);
                 datapackItems.Remove(DatapackEntity.RawPath);
@@ -1500,14 +1497,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log(ex, "删除数据包被主动取消");
+            ModBase.Log(ex, "鍒犻櫎鏁版嵁鍖呰涓诲姩鍙栨秷");
             ReloadDatapackFileList(true);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                "删除数据包出现未知错误",
+                "鍒犻櫎鏁版嵁鍖呭嚭鐜版湭鐭ラ敊璇?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             ReloadDatapackFileList(true);
@@ -1516,13 +1513,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 取消选择
+    // 鍙栨秷閫夋嫨
     private void BtnSelectCancel_Click(object sender, ModBase.RouteEventArgs e)
     {
         ChangeAllSelected(false);
     }
 
-    // 收藏
+    // 鏀惰棌
     private void BtnSelectFavorites_Click(object sender, ModBase.RouteEventArgs e)
     {
         var selected = ModLocalComp.compResourceListLoader.output
@@ -1530,7 +1527,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ModComp.CompFavorites.ShowMenu(selected, (Control)sender);
     }
 
-    // 分享
+    // 鍒嗕韩
     private void BtnSelectShare_Click(object sender, ModBase.RouteEventArgs e)
     {
         var shareList = ModLocalComp.compResourceListLoader.output
@@ -1541,16 +1538,16 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 单个资源项
+    #region 鍗曚釜璧勬簮椤?
 
-    // 详情
+    // 璇︽儏
     public void Info_Click(object sender, EventArgs e)
     {
         try
         {
             var datapackEntry = ((MyLocalCompItem)(sender is MyIconButton iconBtn ? iconBtn.Tag : sender)).Entry;
 
-            // 加载失败信息
+            // 鍔犺浇澶辫触淇℃伅
             if (datapackEntry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable)
             {
                 ModMain.MyMsgBox(
@@ -1563,7 +1560,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
             if (datapackEntry.Comp is not null)
             {
-                // 跳转到数据包下载页面
+                // 璺宠浆鍒版暟鎹寘涓嬭浇椤甸潰
                 ModMain.frmMain.PageChange(new FormMain.PageStackData
                 {
                     page = FormMain.PageType.CompDetail,
@@ -1573,15 +1570,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             }
             else
             {
-                // 获取信息
+                // 鑾峰彇淇℃伅
                 var contentLines = new List<string>();
 
                 if (datapackEntry.Description is not null)
                     contentLines.Add(datapackEntry.Description + "\r\n");
                 if (datapackEntry.Authors is not null)
                     contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.Author") + datapackEntry.Authors);
-                contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.File") + datapackEntry.FileName + "（" +
-                                 ModBase.GetString(GetDatapackFileInfo(datapackEntry.path).Length) + "）");
+                contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.File") + datapackEntry.FileName + "锛? +
+                                 ModBase.GetString(GetDatapackFileInfo(datapackEntry.path).Length) + "锛?);
                 if (datapackEntry.Version is not null)
                     contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.Version") + datapackEntry.Version);
 
@@ -1593,7 +1590,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     contentLines.AddRange(debugInfo);
                 }
 
-                // 显示详情信息
+                // 鏄剧ず璇︽儏淇℃伅
                 if (datapackEntry.Url is null)
                     ModMain.MyMsgBox(contentLines.Join("\r\n"), datapackEntry.Name, Lang.Text("Instance.Resource.Item.Info.Return"));
                 else if (ModMain.MyMsgBox(contentLines.Join("\r\n"), datapackEntry.Name, Lang.Text("Instance.Resource.Item.Info.OpenWebsite"), Lang.Text("Instance.Resource.Item.Info.Return")) == 1)
@@ -1604,13 +1601,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "获取数据包详情失败",
+                "鑾峰彇鏁版嵁鍖呰鎯呭け璐?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
-    // 打开文件所在的位置
+    // 鎵撳紑鏂囦欢鎵€鍦ㄧ殑浣嶇疆
     public void Open_Click(MyIconButton sender, EventArgs e)
     {
         try
@@ -1622,27 +1619,27 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "打开数据包文件位置失败",
+                "鎵撳紑鏁版嵁鍖呮枃浠朵綅缃け璐?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
-    // 删除
+    // 鍒犻櫎
     public void Delete_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
         DeleteDatapacks(new[] { listItem.Entry });
     }
 
-    // 启用
+    // 鍚敤
     public void Enable_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
         ToggleDatapacks(new[] { listItem.Entry }, true);
     }
 
-    // 禁用
+    // 绂佺敤
     public void Disable_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
@@ -1651,7 +1648,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 搜索
+    #region 鎼滅储
 
     public bool IsSearching => !string.IsNullOrWhiteSpace(SearchBox.Text);
     private List<ModLocalComp.LocalCompFile> searchResult;
@@ -1662,7 +1659,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             if (IsSearching)
             {
-                // 构造请求
+                // 鏋勯€犺姹?
                 var queryList = new List<ModBase.SearchEntry<ModLocalComp.LocalCompFile>>();
                 foreach (var Entry in ModLocalComp.compResourceListLoader.output)
                 {
@@ -1688,7 +1685,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                         { item = Entry, searchSource = searchSource });
                 }
 
-                // 进行搜索
+                // 杩涜鎼滅储
                 searchResult = ModBase.Search(queryList, SearchBox.Text, ModBase.MaxLocalSearchDepth, 0.35d).Select(r => r.item).ToList();
             }
 
@@ -1696,7 +1693,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "搜索过程中发生异常");
+            ModBase.Log(ex, "鎼滅储杩囩▼涓彂鐢熷紓甯?);
         }
     }
 

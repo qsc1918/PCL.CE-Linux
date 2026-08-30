@@ -1,11 +1,7 @@
 <local:MyPageRight x:Class="PCL.PageInstanceModDisabled"
                    xmlns="https://github.com/avaloniaui"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:local="clr-namespace:PCL"
-                   mc:Ignorable="d"
-                   d:DesignHeight="450" d:DesignWidth="800">
+                   xmlns:local="clr-namespace:PCL">
     <local:MyCard HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" x:Name="PanMain">
         <Grid Margin="20,17">
             <Grid.RowDefinitions>
@@ -21,7 +17,7 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,0,9" HorizontalAlignment="Center"
-                       Text="{DynamicResource Instance.Resource.Mod.Disabled.Title}" FontSize="19" UseLayoutRounding="True"
+                       Text="{DynamicResource Instance.Resource.Mod.Disabled.Title}" FontSize="19"
                        Foreground="{DynamicResource ColorBrush3}" />
             <Rectangle Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Height="2"
                        Fill="{DynamicResource ColorBrush3}" />

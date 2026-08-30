@@ -5,9 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -62,20 +60,20 @@ public partial class PageInstanceSaves : IRefreshable
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
         worldPath = PageInstanceLeft.McInstance.PathIndie + @"saves\";
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
         Reload();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoad)
             return;
         isLoad = true;
         CheckQuickPlay();
 
-        // 初始化文件系统监视器和排序按钮
+        // 鍒濆鍖栨枃浠剁郴缁熺洃瑙嗗櫒鍜屾帓搴忔寜閽?
         SetupFileSystemWatcher();
         BtnSort.Click += BtnSortClick;
         SetSortMethod(_currentSortMethod);
@@ -96,7 +94,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         if (fileSystemWatcher is not null) fileSystemWatcher.Dispose();
 
-        // 确保目录存在
+        // 纭繚鐩綍瀛樺湪
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
 
@@ -140,7 +138,7 @@ public partial class PageInstanceSaves : IRefreshable
     }
 
     /// <summary>
-    ///     确保当前页面上的信息已正确显示。
+    ///     纭繚褰撳墠椤甸潰涓婄殑淇℃伅宸叉纭樉绀恒€?
     /// </summary>
     public void Reload()
     {
@@ -189,7 +187,7 @@ public partial class PageInstanceSaves : IRefreshable
 
                 foreach (var curFolder in showingSaves)
                 {
-                    // 检查文件夹是否仍然存在
+                    // 妫€鏌ユ枃浠跺す鏄惁浠嶇劧瀛樺湪
                     if (!Directory.Exists(curFolder)) continue;
 
                     var saveLogo = Path.Combine(curFolder, "icon.png");
@@ -337,7 +335,7 @@ public partial class PageInstanceSaves : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "检查存档快捷启动失败",
+                "妫€鏌ュ瓨妗ｅ揩鎹峰惎鍔ㄥけ璐?,
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
@@ -347,7 +345,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         try
         {
-            ModBase.Log("[World] 刷新存档文件");
+            ModBase.Log("[World] 鍒锋柊瀛樻。鏂囦欢");
             saveFolders.Clear();
             if (Directory.Exists(worldPath))
                 saveFolders = Directory.EnumerateDirectories(worldPath).ToList();
@@ -355,19 +353,19 @@ public partial class PageInstanceSaves : IRefreshable
                 saveFolders = new List<string>();
 
             if (ModBase.modeDebug)
-                ModBase.Log("[World] 共发现 " + saveFolders.Count + " 个存档文件夹", ModBase.LogLevel.Debug);
+                ModBase.Log("[World] 鍏卞彂鐜?" + saveFolders.Count + " 涓瓨妗ｆ枃浠跺す", ModBase.LogLevel.Debug);
             PanList.Children.Clear();
             CheckQuickPlay();
 
             if (ModBase.modeDebug)
             {
                 if ((bool)quickPlayFeature)
-                    ModBase.Log("[World] 该实例支持存档快捷启动", ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 璇ュ疄渚嬫敮鎸佸瓨妗ｅ揩鎹峰惎鍔?, ModBase.LogLevel.Debug);
                 else
-                    ModBase.Log("[World] 该实例不支持存档快捷启动", ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 璇ュ疄渚嬩笉鏀寔瀛樻。蹇嵎鍚姩", ModBase.LogLevel.Debug);
             }
 
-            RefreshUI(); // 确保UI刷新
+            RefreshUI(); // 纭繚UI鍒锋柊
         }
         catch (Exception ex)
         {
@@ -443,10 +441,10 @@ public partial class PageInstanceSaves : IRefreshable
     private void BtnDownloadNew_Click(object sender, MouseButtonEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadWorld);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 将当前实例设置为筛选器
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
     }
 
-    #region 搜索和排序
+    #region 鎼滅储鍜屾帓搴?
 
     private SortMethod _currentSortMethod = SortMethod.FileName;
     private List<string> _searchResult;

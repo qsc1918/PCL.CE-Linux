@@ -183,7 +183,7 @@ public partial class PageDownloadInstall
         autoSelectedFabricApi = false;
         autoSelectedOptiFabric = false;
         isSelectNameEdited = false;
-        PanSelect.Visibility = Visibility.Visible;
+        PanSelect.IsVisible = true;
         PanSelect.IsHitTestVisible = true;
         PanMinecraft.IsHitTestVisible = false;
         PanBack.IsHitTestVisible = false;
@@ -251,7 +251,7 @@ public partial class PageDownloadInstall
                 OptiFabric_Loaded();
                 LabyMod_Loaded();
                 ReloadSelected();
-                PanMinecraft.Visibility = Visibility.Collapsed;
+                PanMinecraft.IsVisible = false;
             }, after: true),
             ModAnimation.AaOpacity(PanSelect, 1d - PanSelect.Opacity, 70, 100),
             ModAnimation.AaTranslateX(PanSelect, -((TranslateTransform)PanSelect.RenderTransform).X, 160, 100,
@@ -301,7 +301,7 @@ public partial class PageDownloadInstall
         disabledPageAnimControls.Add(BtnStart);
         BtnStart.Show = false;
         ClearSelected(); // 清除已选择项
-        PanMinecraft.Visibility = Visibility.Visible;
+        PanMinecraft.IsVisible = true;
         PanSelect.IsHitTestVisible = false;
         PanMinecraft.IsHitTestVisible = true;
         PanBack.IsHitTestVisible = false;
@@ -317,7 +317,7 @@ public partial class PageDownloadInstall
                 new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.ExtraStrong)),
             ModAnimation.AaCode(() =>
             {
-                PanSelect.Visibility = Visibility.Collapsed;
+                PanSelect.IsVisible = false;
                 PanBack.IsHitTestVisible = true;
             }, after: true)
         }, "FrmDownloadInstall SelectPageSwitch");
@@ -405,27 +405,27 @@ public partial class PageDownloadInstall
         // OptiFine
         if (!McVersionComparer.CompareVersionGe(_vanillaName, "1.7.2"))
         {
-            CardOptiFine.Visibility = Visibility.Collapsed;
+            CardOptiFine.IsVisible = false;
         }
         else
         {
-            CardOptiFine.Visibility = Visibility.Visible;
+            CardOptiFine.IsVisible = true;
             var optiFineError = LoadOptiFineGetError();
-            CardOptiFine.MainSwap.Visibility = optiFineError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardOptiFine.MainSwap.IsVisible = optiFineError is null ? true : false;
             if (optiFineError is not null)
                 CardOptiFine.IsSwapped = true;
             SetPanelVisibility(PanOptiFineInfo, CardOptiFine.IsSwapped);
             if (selectedOptiFine is null)
             {
-                BtnOptiFineClear.Visibility = Visibility.Collapsed;
-                ImgOptiFine.Visibility = Visibility.Collapsed;
+                BtnOptiFineClear.IsVisible = false;
+                ImgOptiFine.IsVisible = false;
                 LabOptiFine.Text = optiFineError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabOptiFine.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnOptiFineClear.Visibility = Visibility.Visible;
-                ImgOptiFine.Visibility = Visibility.Visible;
+                BtnOptiFineClear.IsVisible = true;
+                ImgOptiFine.IsVisible = true;
                 LabOptiFine.Text = selectedOptiFine.DisplayName.Replace(_vanillaName + " ", "");
                 LabOptiFine.Foreground = ThemeManager.colorGray1;
             }
@@ -436,27 +436,27 @@ public partial class PageDownloadInstall
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.5.2")
             || !McVersionComparer.CompareVersionGe("1.12.2", _vanillaName))
         {
-            CardLiteLoader.Visibility = Visibility.Collapsed;
+            CardLiteLoader.IsVisible = false;
         }
         else
         {
-            CardLiteLoader.Visibility = Visibility.Visible;
+            CardLiteLoader.IsVisible = true;
             var liteLoaderError = LoadLiteLoaderGetError();
-            CardLiteLoader.MainSwap.Visibility = liteLoaderError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLiteLoader.MainSwap.IsVisible = liteLoaderError is null ? true : false;
             if (liteLoaderError is not null)
                 CardLiteLoader.IsSwapped = true; // 例如在同时展开卡片时选择了不兼容项则强制折叠
             SetPanelVisibility(PanLiteLoaderInfo, CardLiteLoader.IsSwapped);
             if (selectedLiteLoader is null)
             {
-                BtnLiteLoaderClear.Visibility = Visibility.Collapsed;
-                ImgLiteLoader.Visibility = Visibility.Collapsed;
+                BtnLiteLoaderClear.IsVisible = false;
+                ImgLiteLoader.IsVisible = false;
                 LabLiteLoader.Text = liteLoaderError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLiteLoader.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLiteLoaderClear.Visibility = Visibility.Visible;
-                ImgLiteLoader.Visibility = Visibility.Visible;
+                BtnLiteLoaderClear.IsVisible = true;
+                ImgLiteLoader.IsVisible = true;
                 LabLiteLoader.Text = selectedLiteLoader.Inherit;
                 LabLiteLoader.Foreground = ThemeManager.colorGray1;
             }
@@ -466,27 +466,27 @@ public partial class PageDownloadInstall
         if (!McInstanceInfo.IsFormatFit(_vanillaName)
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.1"))
         {
-            CardForge.Visibility = Visibility.Collapsed;
+            CardForge.IsVisible = false;
         }
         else
         {
-            CardForge.Visibility = Visibility.Visible;
+            CardForge.IsVisible = true;
             var forgeError = LoadForgeGetError();
-            CardForge.MainSwap.Visibility = forgeError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardForge.MainSwap.IsVisible = forgeError is null ? true : false;
             if (forgeError is not null)
                 CardForge.IsSwapped = true;
             SetPanelVisibility(PanForgeInfo, CardForge.IsSwapped);
             if (selectedForge is null)
             {
-                BtnForgeClear.Visibility = Visibility.Collapsed;
-                ImgForge.Visibility = Visibility.Collapsed;
+                BtnForgeClear.IsVisible = false;
+                ImgForge.IsVisible = false;
                 LabForge.Text = forgeError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabForge.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnForgeClear.Visibility = Visibility.Visible;
-                ImgForge.Visibility = Visibility.Visible;
+                BtnForgeClear.IsVisible = true;
+                ImgForge.IsVisible = true;
                 LabForge.Text = selectedForge.VersionName;
                 LabForge.Foreground = ThemeManager.colorGray1;
             }
@@ -495,56 +495,56 @@ public partial class PageDownloadInstall
         // Cleanroom
         if (_vanillaName == "1.12.2")
         {
-            CardCleanroom.Visibility = Visibility.Visible;
+            CardCleanroom.IsVisible = true;
             var cleanroomError = LoadCleanroomGetError();
-            CardCleanroom.MainSwap.Visibility = cleanroomError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardCleanroom.MainSwap.IsVisible = cleanroomError is null ? true : false;
             if (cleanroomError is not null)
                 CardCleanroom.IsSwapped = true;
             SetPanelVisibility(PanCleanroomInfo, CardCleanroom.IsSwapped);
             if (selectedCleanroom is null)
             {
-                BtnCleanroomClear.Visibility = Visibility.Collapsed;
-                ImgCleanroom.Visibility = Visibility.Collapsed;
+                BtnCleanroomClear.IsVisible = false;
+                ImgCleanroom.IsVisible = false;
                 LabCleanroom.Text = cleanroomError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabCleanroom.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnCleanroomClear.Visibility = Visibility.Visible;
-                ImgCleanroom.Visibility = Visibility.Visible;
+                BtnCleanroomClear.IsVisible = true;
+                ImgCleanroom.IsVisible = true;
                 LabCleanroom.Text = selectedCleanroom.VersionName;
                 LabCleanroom.Foreground = ThemeManager.colorGray1;
             }
         }
         else
         {
-            CardCleanroom.Visibility = Visibility.Collapsed;
+            CardCleanroom.IsVisible = false;
         }
 
         // NeoForge
         if (!McVersionComparer.CompareVersionGe(_vanillaName, "1.20.1"))
         {
-            CardNeoForge.Visibility = Visibility.Collapsed;
+            CardNeoForge.IsVisible = false;
         }
         else
         {
-            CardNeoForge.Visibility = Visibility.Visible;
+            CardNeoForge.IsVisible = true;
             var neoForgeError = LoadNeoForgeGetError();
-            CardNeoForge.MainSwap.Visibility = neoForgeError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardNeoForge.MainSwap.IsVisible = neoForgeError is null ? true : false;
             if (neoForgeError is not null)
                 CardNeoForge.IsSwapped = true;
             SetPanelVisibility(PanNeoForgeInfo, CardNeoForge.IsSwapped);
             if (selectedNeoForge is null)
             {
-                BtnNeoForgeClear.Visibility = Visibility.Collapsed;
-                ImgNeoForge.Visibility = Visibility.Collapsed;
+                BtnNeoForgeClear.IsVisible = false;
+                ImgNeoForge.IsVisible = false;
                 LabNeoForge.Text = neoForgeError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabNeoForge.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnNeoForgeClear.Visibility = Visibility.Visible;
-                ImgNeoForge.Visibility = Visibility.Visible;
+                BtnNeoForgeClear.IsVisible = true;
+                ImgNeoForge.IsVisible = true;
                 LabNeoForge.Text = selectedNeoForge.VersionName;
                 LabNeoForge.Foreground = ThemeManager.colorGray1;
             }
@@ -554,27 +554,27 @@ public partial class PageDownloadInstall
         if (VanillaDrop < 130 
             || (VanillaDrop == 130 && !McVersionComparer.CompareVersionGe(_vanillaName, "18w43b")))
         {
-            CardFabric.Visibility = Visibility.Collapsed;
+            CardFabric.IsVisible = false;
         }
         else
         {
-            CardFabric.Visibility = Visibility.Visible;
+            CardFabric.IsVisible = true;
             var fabricError = LoadFabricGetError();
-            CardFabric.MainSwap.Visibility = fabricError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardFabric.MainSwap.IsVisible = fabricError is null ? true : false;
             if (fabricError is not null)
                 CardFabric.IsSwapped = true;
             SetPanelVisibility(PanFabricInfo, CardFabric.IsSwapped);
             if (selectedFabric is null)
             {
-                BtnFabricClear.Visibility = Visibility.Collapsed;
-                ImgFabric.Visibility = Visibility.Collapsed;
+                BtnFabricClear.IsVisible = false;
+                ImgFabric.IsVisible = false;
                 LabFabric.Text = fabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnFabricClear.Visibility = Visibility.Visible;
-                ImgFabric.Visibility = Visibility.Visible;
+                BtnFabricClear.IsVisible = true;
+                ImgFabric.IsVisible = true;
                 LabFabric.Text = selectedFabric.Replace("+build", "");
                 LabFabric.Foreground = ThemeManager.colorGray1;
             }
@@ -583,27 +583,27 @@ public partial class PageDownloadInstall
         // FabricApi
         if (selectedFabric is null)
         {
-            CardFabricApi.Visibility = Visibility.Collapsed;
+            CardFabricApi.IsVisible = false;
         }
         else
         {
-            CardFabricApi.Visibility = Visibility.Visible;
+            CardFabricApi.IsVisible = true;
             var fabricApiError = LoadFabricApiGetError();
-            CardFabricApi.MainSwap.Visibility = fabricApiError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardFabricApi.MainSwap.IsVisible = fabricApiError is null ? true : false;
             if (fabricApiError is not null || selectedFabric is null)
                 CardFabricApi.IsSwapped = true;
             SetPanelVisibility(PanFabricApiInfo, CardFabricApi.IsSwapped);
             if (selectedFabricApi is null)
             {
-                BtnFabricApiClear.Visibility = Visibility.Collapsed;
-                ImgFabricApi.Visibility = Visibility.Collapsed;
+                BtnFabricApiClear.IsVisible = false;
+                ImgFabricApi.IsVisible = false;
                 LabFabricApi.Text = fabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabFabricApi.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnFabricApiClear.Visibility = Visibility.Visible;
-                ImgFabricApi.Visibility = Visibility.Visible;
+                BtnFabricApiClear.IsVisible = true;
+                ImgFabricApi.IsVisible = true;
                 LabFabricApi.Text = selectedFabricApi.DisplayName.Split("]")[1].Replace("Fabric API ", "")
                     .Replace(" build ", ".").Trim();
                 LabFabricApi.Foreground = ThemeManager.colorGray1;
@@ -613,28 +613,28 @@ public partial class PageDownloadInstall
         // LegacyFabric
         if (VanillaDrop < 30 || VanillaDrop > 130)
         {
-            CardLegacyFabric.Visibility = Visibility.Collapsed;
+            CardLegacyFabric.IsVisible = false;
         }
         else
         {
-            CardLegacyFabric.Visibility = Visibility.Visible;
+            CardLegacyFabric.IsVisible = true;
             var legacyFabricError = LoadLegacyFabricGetError();
-            CardLegacyFabric.MainSwap.Visibility =
-                legacyFabricError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLegacyFabric.MainSwap.IsVisible =
+                legacyFabricError is null ? true : false;
             if (legacyFabricError is not null)
                 CardLegacyFabric.IsSwapped = true;
             SetPanelVisibility(PanLegacyFabricInfo, CardLegacyFabric.IsSwapped);
             if (selectedLegacyFabric is null)
             {
-                BtnLegacyFabricClear.Visibility = Visibility.Collapsed;
-                ImgLegacyFabric.Visibility = Visibility.Collapsed;
+                BtnLegacyFabricClear.IsVisible = false;
+                ImgLegacyFabric.IsVisible = false;
                 LabLegacyFabric.Text = legacyFabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLegacyFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLegacyFabricClear.Visibility = Visibility.Visible;
-                ImgLegacyFabric.Visibility = Visibility.Visible;
+                BtnLegacyFabricClear.IsVisible = true;
+                ImgLegacyFabric.IsVisible = true;
                 LabLegacyFabric.Text = selectedLegacyFabric.Replace("+build", "");
                 LabLegacyFabric.Foreground = ThemeManager.colorGray1;
             }
@@ -643,28 +643,28 @@ public partial class PageDownloadInstall
         // LegacyFabricApi
         if (selectedLegacyFabric is null)
         {
-            CardLegacyFabricApi.Visibility = Visibility.Collapsed;
+            CardLegacyFabricApi.IsVisible = false;
         }
         else
         {
-            CardLegacyFabricApi.Visibility = Visibility.Visible;
+            CardLegacyFabricApi.IsVisible = true;
             var legacyFabricApiError = LoadLegacyFabricApiGetError();
-            CardLegacyFabricApi.MainSwap.Visibility =
-                legacyFabricApiError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLegacyFabricApi.MainSwap.IsVisible =
+                legacyFabricApiError is null ? true : false;
             if (legacyFabricApiError is not null || selectedLegacyFabric is null)
                 CardLegacyFabricApi.IsSwapped = true;
             SetPanelVisibility(PanLegacyFabricApiInfo, CardLegacyFabricApi.IsSwapped);
             if (selectedLegacyFabricApi is null)
             {
-                BtnLegacyFabricApiClear.Visibility = Visibility.Collapsed;
-                ImgLegacyFabricApi.Visibility = Visibility.Collapsed;
+                BtnLegacyFabricApiClear.IsVisible = false;
+                ImgLegacyFabricApi.IsVisible = false;
                 LabLegacyFabricApi.Text = legacyFabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLegacyFabricApi.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLegacyFabricApiClear.Visibility = Visibility.Visible;
-                ImgLegacyFabricApi.Visibility = Visibility.Visible;
+                BtnLegacyFabricApiClear.IsVisible = true;
+                ImgLegacyFabricApi.IsVisible = true;
                 LabLegacyFabricApi.Text = selectedLegacyFabricApi.DisplayName.Replace("Legacy Fabric API ", "");
                 LabLegacyFabricApi.Foreground = ThemeManager.colorGray1;
             }
@@ -674,27 +674,27 @@ public partial class PageDownloadInstall
         if (!McInstanceInfo.IsFormatFit(_vanillaName) 
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.8.9"))
         {
-            CardLabyMod.Visibility = Visibility.Collapsed;
+            CardLabyMod.IsVisible = false;
         }
         else
         {
-            CardLabyMod.Visibility = Visibility.Visible;
+            CardLabyMod.IsVisible = true;
             var labyModError = LoadLabyModGetError();
-            CardLabyMod.MainSwap.Visibility = labyModError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLabyMod.MainSwap.IsVisible = labyModError is null ? true : false;
             if (labyModError is not null)
                 CardLabyMod.IsSwapped = true;
             SetPanelVisibility(PanLabyModInfo, CardLabyMod.IsSwapped);
             if (selectedLabyModVersion is null)
             {
-                BtnLabyModClear.Visibility = Visibility.Collapsed;
-                ImgLabyMod.Visibility = Visibility.Collapsed;
+                BtnLabyModClear.IsVisible = false;
+                ImgLabyMod.IsVisible = false;
                 LabLabyMod.Text = labyModError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLabyMod.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLabyModClear.Visibility = Visibility.Visible;
-                ImgLabyMod.Visibility = Visibility.Visible;
+                BtnLabyModClear.IsVisible = true;
+                ImgLabyMod.IsVisible = true;
                 LabLabyMod.Text = selectedLabyModVersion;
                 LabLabyMod.Foreground = ThemeManager.colorGray1;
             }
@@ -703,27 +703,27 @@ public partial class PageDownloadInstall
         // OptiFabric
         if (selectedFabric is null || selectedOptiFine is null)
         {
-            CardOptiFabric.Visibility = Visibility.Collapsed;
+            CardOptiFabric.IsVisible = false;
         }
         else
         {
-            CardOptiFabric.Visibility = Visibility.Visible;
+            CardOptiFabric.IsVisible = true;
             var optiFabricError = LoadOptiFabricGetError();
-            CardOptiFabric.MainSwap.Visibility = optiFabricError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardOptiFabric.MainSwap.IsVisible = optiFabricError is null ? true : false;
             if (optiFabricError is not null || selectedFabric is null)
                 CardOptiFabric.IsSwapped = true;
             SetPanelVisibility(PanOptiFabricInfo, CardOptiFabric.IsSwapped);
             if (selectedOptiFabric is null)
             {
-                BtnOptiFabricClear.Visibility = Visibility.Collapsed;
-                ImgOptiFabric.Visibility = Visibility.Collapsed;
+                BtnOptiFabricClear.IsVisible = false;
+                ImgOptiFabric.IsVisible = false;
                 LabOptiFabric.Text = optiFabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabOptiFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnOptiFabricClear.Visibility = Visibility.Visible;
-                ImgOptiFabric.Visibility = Visibility.Visible;
+                BtnOptiFabricClear.IsVisible = true;
+                ImgOptiFabric.IsVisible = true;
                 LabOptiFabric.Text = selectedOptiFabric.DisplayName.ToLower().Replace("optifabric-", "")
                     .Replace(".jar", "").Trim().TrimStart('v');
                 LabOptiFabric.Foreground = ThemeManager.colorGray1;
@@ -732,48 +732,48 @@ public partial class PageDownloadInstall
 
         // 主警告
         if (selectedFabric is not null && selectedFabricApi is null)
-            HintFabricAPI.Visibility = Visibility.Visible;
+            HintFabricAPI.IsVisible = true;
         else
-            HintFabricAPI.Visibility = Visibility.Collapsed;
+            HintFabricAPI.IsVisible = false;
         if (selectedLegacyFabric is not null && selectedLegacyFabricApi is null)
-            HintLegacyFabricAPI.Visibility = Visibility.Visible;
+            HintLegacyFabricAPI.IsVisible = true;
         else
-            HintLegacyFabricAPI.Visibility = Visibility.Collapsed;
+            HintLegacyFabricAPI.IsVisible = false;
 
         if ((selectedFabric is not null || selectedLegacyFabric is not null) && selectedOptiFine is not null &&
             selectedOptiFabric is null)
         {
             if (VanillaDrop >= 140 && VanillaDrop <= 150)
             {
-                HintOptiFabric.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
-                HintOptiFabricOld.Visibility = Visibility.Visible;
+                HintOptiFabric.IsVisible = false;
+                HintLegacyOptiFabric.IsVisible = false;
+                HintOptiFabricOld.IsVisible = true;
             }
             else if (selectedLegacyFabric is not null)
             {
-                HintOptiFabric.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Visible;
-                HintOptiFabricOld.Visibility = Visibility.Collapsed;
+                HintOptiFabric.IsVisible = false;
+                HintLegacyOptiFabric.IsVisible = true;
+                HintOptiFabricOld.IsVisible = false;
             }
             else
             {
-                HintOptiFabric.Visibility = Visibility.Visible;
-                HintOptiFabricOld.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
+                HintOptiFabric.IsVisible = true;
+                HintOptiFabricOld.IsVisible = false;
+                HintLegacyOptiFabric.IsVisible = false;
             }
         }
         else
         {
-            HintOptiFabric.Visibility = Visibility.Collapsed;
-            HintOptiFabricOld.Visibility = Visibility.Collapsed;
-            HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
+            HintOptiFabric.IsVisible = false;
+            HintOptiFabricOld.IsVisible = false;
+            HintLegacyOptiFabric.IsVisible = false;
         }
 
         if (VanillaDrop >= 160 && selectedOptiFine is not null &&
             (selectedForge is not null || selectedFabric is not null))
-            HintModOptiFine.Visibility = Visibility.Visible;
+            HintModOptiFine.IsVisible = true;
         else
-            HintModOptiFine.Visibility = Visibility.Collapsed;
+            HintModOptiFine.IsVisible = false;
         // 结束
         }
         finally

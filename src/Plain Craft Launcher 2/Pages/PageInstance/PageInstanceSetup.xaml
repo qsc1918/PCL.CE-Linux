@@ -3,10 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:PCL"
     xmlns:val="https://ce.pclc.cc/core/utils/validate"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:System="clr-namespace:System;assembly=mscorlib"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceSetup"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="PCL.PageInstanceSetup"
     PanScroll="{Binding ElementName=PanBack}">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <StackPanel x:Name="PanMain" Margin="25,25,25,25">
@@ -200,7 +197,7 @@
                     <local:MyHint x:Name="LabServerAuthServerSecurity"
                                   Text="{DynamicResource Instance.Setup.Server.HttpWarning}"
                                   Visibility="Collapsed" />
-                    <TextBlock Name="LabServerAuthServerSecurityCL" Text="&#xA;" Visibility="Collapsed" />
+                    <TextBlock x:Name="LabServerAuthServerSecurityCL" Text="&#xA;" Visibility="Collapsed" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
@@ -230,7 +227,7 @@
                             <local:MyComboBoxItem
                                 Content="{DynamicResource Instance.Setup.Server.LoginMethod.MicrosoftOrAuth}" />
                         </local:MyComboBox>
-                        <TextBlock Name="LabServerAuthServer" Grid.Row="1" VerticalAlignment="Center"
+                        <TextBlock x:Name="LabServerAuthServer" Grid.Row="1" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.AuthServer}"
                                    Margin="0,8,25,0" Visibility="Collapsed" />
                         <local:MyTextBox x:Name="TextServerAuthServer" Grid.Row="1" Grid.ColumnSpan="2"
@@ -241,7 +238,7 @@
                                 <val:HttpValidator />
                             </local:MyTextBox.ValidateRules>
                         </local:MyTextBox>
-                        <TextBlock Name="LabServerAuthRegister" Grid.Row="2" VerticalAlignment="Center"
+                        <TextBlock x:Name="LabServerAuthRegister" Grid.Row="2" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.Register}"
                                    Margin="0,8,25,0" Visibility="Collapsed" />
                         <local:MyTextBox x:Name="TextServerAuthRegister" Grid.Row="2" Grid.ColumnSpan="2"
@@ -252,7 +249,7 @@
                                 <val:HttpValidator AllowsNullOrEmpty="True" />
                             </local:MyTextBox.ValidateRules>
                         </local:MyTextBox>
-                        <TextBlock Name="LabServerAuthName" Grid.Row="3" VerticalAlignment="Center"
+                        <TextBlock x:Name="LabServerAuthName" Grid.Row="3" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.Name}"
                                    Margin="0,8,25,0" Visibility="Collapsed" />
                         <local:MyTextBox x:Name="TextServerAuthName" Grid.Row="3" Grid.ColumnSpan="2"

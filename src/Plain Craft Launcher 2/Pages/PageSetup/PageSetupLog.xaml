@@ -1,11 +1,7 @@
 <local:MyPageRight x:Class="PCL.PageSetupLog"
                    xmlns="https://github.com/avaloniaui"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:local="clr-namespace:PCL"
-                   mc:Ignorable="d"
-                   d:DesignHeight="450" d:DesignWidth="800"
                    PanScroll="{Binding ElementName=PanBack}" RenderOptions.BitmapScalingMode="LowQuality">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <DockPanel>
@@ -21,7 +17,7 @@
                 </WrapPanel>
             </local:MyCard>
             <local:MyCard Title="{DynamicResource Setup.Log.AllLogs}" Margin="25,10,25,25" x:Name="PanContent">
-                <StackPanel Name="PanList" Orientation="Vertical" Margin="20,36,18,18" />
+                <StackPanel x:Name="PanList" Orientation="Vertical" Margin="20,36,18,18" />
             </local:MyCard>
         </DockPanel>
 

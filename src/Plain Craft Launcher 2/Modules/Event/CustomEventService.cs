@@ -15,11 +15,9 @@ namespace PCL
                 typeof(CustomEventService),
                 new PropertyMetadata(null));
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static void SetEvents(AvaloniaObject d, CustomEventCollection value) =>
             d.SetValue(EventsProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static CustomEventCollection GetEvents(AvaloniaObject d)
         {
             if (d.GetValue(EventsProperty) is null)
@@ -34,11 +32,9 @@ namespace PCL
                 typeof(CustomEventService),
                 new PropertyMetadata(EventType.None));
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static void SetEventType(AvaloniaObject d, EventType value) =>
             d.SetValue(EventTypeProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static EventType GetEventType(AvaloniaObject d) =>
             (EventType)d.GetValue(EventTypeProperty);
 
@@ -49,11 +45,9 @@ namespace PCL
                 typeof(CustomEventService),
                 new PropertyMetadata(null));
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static void SetEventData(AvaloniaObject d, string value) =>
             d.SetValue(EventDataProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
         public static string GetEventData(AvaloniaObject d) =>
             (string)d.GetValue(EventDataProperty);
     }

@@ -5,9 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using FluentValidation;
 using Microsoft.VisualBasic.FileIO;
@@ -55,14 +53,14 @@ public partial class PageInstanceOverall
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 更新设置
+        // 鏇存柊璁剧疆
         ItemDisplayLogoCustom.Tag = @"PCL\Logo.png";
         Reload();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoad)
             return;
         isLoad = true;
@@ -70,26 +68,26 @@ public partial class PageInstanceOverall
     }
 
     /// <summary>
-    ///     确保当前页面上的信息已正确显示。
+    ///     纭繚褰撳墠椤甸潰涓婄殑淇℃伅宸叉纭樉绀恒€?
     /// </summary>
     private void Reload()
     {
         ModAnimation.AniControlEnabled += 1;
 
         var instance = PageInstanceLeft.McInstance;
-        // 刷新设置项目
+        // 鍒锋柊璁剧疆椤圭洰
         ComboDisplayType.SelectedIndex = States.Instance.CardType[instance.PathInstance];
         BtnDisplayStar.Text = instance.IsStar ? Lang.Text("Instance.Overall.Unfavorite") : Lang.Text("Instance.Overall.Favorite");
         BtnFolderMods.Visibility = instance.Modable ? Visibility.Visible : Visibility.Collapsed;
-        // 刷新实例显示
+        // 鍒锋柊瀹炰緥鏄剧ず
         PanDisplayItem.Children.Clear();
         itemVersion = PageSelectRight.McVersionListItem(instance);
         itemVersion.IsHitTestVisible = false;
         PanDisplayItem.Children.Add(itemVersion);
         ModMain.frmMain.PageNameRefresh();
-        // 刷新实例信息
+        // 鍒锋柊瀹炰緥淇℃伅
         GetInstanceInfo();
-        // 刷新实例图标
+        // 鍒锋柊瀹炰緥鍥炬爣
         ComboDisplayLogo.SelectedIndex = 0;
         var logo = States.Instance.LogoPath[instance.PathInstance];
         var logoCustom = States.Instance.IsLogoCustom[instance.PathInstance];
@@ -230,24 +228,24 @@ public partial class PageInstanceOverall
         instanceInfoLoader.Start();
     }
 
-    #region 卡片：个性化
+    #region 鍗＄墖锛氫釜鎬у寲
 
-    // 实例分类
+    // 瀹炰緥鍒嗙被
     private void ComboDisplayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (!(isLoad && ModAnimation.AniControlEnabled == 0))
             return;
         if (ComboDisplayType.SelectedIndex != 1)
         {
-            // 改为不隐藏
+            // 鏀逛负涓嶉殣钘?
             try
             {
-                // 若设置分类为可安装 Mod，则显示正常的 Mod 管理页面
+                // 鑻ヨ缃垎绫讳负鍙畨瑁?Mod锛屽垯鏄剧ず姝ｅ父鐨?Mod 绠＄悊椤甸潰
                 States.Instance.CardType[PageInstanceLeft.McInstance.PathInstance] = ComboDisplayType.SelectedIndex;
                 PageInstanceLeft.McInstance.displayType = (McInstanceCardType)States.Instance.CardType[PageInstanceLeft.McInstance.PathInstance];
                 ModMain.frmInstanceLeft.RefreshModDisabled();
 
-                ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 要求刷新缓存
+                ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 瑕佹眰鍒锋柊缂撳瓨
                 ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,
                     ModLoader.LoaderFolderRunType.ForceRun, 1, @"versions\");
             }
@@ -255,16 +253,16 @@ public partial class PageInstanceOverall
             {
                 ModBase.Log(
                     ex,
-                    $"修改实例分类失败（{PageInstanceLeft.McInstance.Name}）",
+                    $"淇敼瀹炰緥鍒嗙被澶辫触锛坽PageInstanceLeft.McInstance.Name}锛?,
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
             }
 
-            Reload(); // 更新 “打开 Mod 文件夹” 按钮
+            Reload(); // 鏇存柊 鈥滄墦寮€ Mod 鏂囦欢澶光€?鎸夐挳
         }
         else
         {
-            // 改为隐藏
+            // 鏀逛负闅愯棌
             try
             {
                 if (!States.Hint.HideGameInstance)
@@ -281,7 +279,7 @@ public partial class PageInstanceOverall
 
                 States.Instance.CardType[PageInstanceLeft.McInstance.PathInstance] =
                     (int)McInstanceCardType.Hidden;
-                ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 要求刷新缓存
+                ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 瑕佹眰鍒锋柊缂撳瓨
                 ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,
                     ModLoader.LoaderFolderRunType.ForceRun, 1, @"versions\");
             }
@@ -289,14 +287,14 @@ public partial class PageInstanceOverall
             {
                 ModBase.Log(
                     ex,
-                    $"隐藏实例 {PageInstanceLeft.McInstance.Name} 失败",
+                    $"闅愯棌瀹炰緥 {PageInstanceLeft.McInstance.Name} 澶辫触",
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
             }
         }
     }
 
-    // 更改描述
+    // 鏇存敼鎻忚堪
     private void BtnDisplayDesc_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -315,31 +313,31 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"实例 {PageInstanceLeft.McInstance.Name} 描述更改失败",
+                $"瀹炰緥 {PageInstanceLeft.McInstance.Name} 鎻忚堪鏇存敼澶辫触",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 重命名实例
+    // 閲嶅懡鍚嶅疄渚?
     private void BtnDisplayRename_Click(object sender, MouseButtonEventArgs e)
     {
         try
         {
-            // 确认输入的新名称
+            // 纭杈撳叆鐨勬柊鍚嶇О
             var oldName = PageInstanceLeft.McInstance.Name;
             var oldPath = PageInstanceLeft.McInstance.PathInstance;
-            // 修改此部分的同时修改快速安装的实例名检测*
+            // 淇敼姝ら儴鍒嗙殑鍚屾椂淇敼蹇€熷畨瑁呯殑瀹炰緥鍚嶆娴?
             var newName = ModMain.MyMsgBoxInput(Lang.Text("Instance.Overall.Name.EditTitle"), "", oldName,
                 [new FolderNameValidator(ModFolder.mcFolderSelected + "versions", ignoreCase: false)]);
             if (string.IsNullOrWhiteSpace(newName))
                 return;
             var newPath = Path.Combine(ModFolder.mcFolderSelected, "versions", newName);
-            // 获取临时中间名，以防止仅修改大小写的重命名失败
+            // 鑾峰彇涓存椂涓棿鍚嶏紝浠ラ槻姝粎淇敼澶у皬鍐欑殑閲嶅懡鍚嶅け璐?
             var tempName = newName + "_temp";
             var tempPath = Path.Combine(ModFolder.mcFolderSelected, "versions", tempName);
             var isCaseChangedOnly = (newName.ToLower() ?? "") == (oldName.ToLower() ?? "");
-            // 重新加载实例 Json 信息，避免 HMCL 项被合并
+            // 閲嶆柊鍔犺浇瀹炰緥 Json 淇℃伅锛岄伩鍏?HMCL 椤硅鍚堝苟
             JsonObject jsonObject;
             try
             {
@@ -348,17 +346,17 @@ public partial class PageInstanceOverall
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, "重命名读取 Json 时失败");
+                ModBase.Log(ex, "閲嶅懡鍚嶈鍙?Json 鏃跺け璐?);
                 jsonObject = PageInstanceLeft.McInstance.JsonObject;
             }
 
-            // 重命名主文件夹
+            // 閲嶅懡鍚嶄富鏂囦欢澶?
             FileSystem.RenameDirectory(oldPath, tempName);
             FileSystem.RenameDirectory(tempPath, newName);
-            // 清理 ini 缓存
+            // 娓呯悊 ini 缂撳瓨
             ModBase.IniClearCache(Path.Combine(PageInstanceLeft.McInstance.PathIndie, "options.txt"));
-            // 重命名 Jar 文件与 natives 文件夹
-            // 不能进行遍历重命名，否则在实例名很短的时候容易误伤其他文件（Meloong-Git/#6443）
+            // 閲嶅懡鍚?Jar 鏂囦欢涓?natives 鏂囦欢澶?
+            // 涓嶈兘杩涜閬嶅巻閲嶅懡鍚嶏紝鍚﹀垯鍦ㄥ疄渚嬪悕寰堢煭鐨勬椂鍊欏鏄撹浼ゅ叾浠栨枃浠讹紙Meloong-Git/#6443锛?
             if (Directory.Exists(Path.Combine(newPath, $"{oldName}-natives")))
             {
                 if (isCaseChangedOnly)
@@ -387,14 +385,14 @@ public partial class PageInstanceOverall
                 }
             }
 
-            // 替换实例设置文件中的路径
+            // 鏇挎崲瀹炰緥璁剧疆鏂囦欢涓殑璺緞
             if (File.Exists(Path.Combine(newPath, "PCL", "Setup.ini")))
                 ModBase.WriteFile(Path.Combine(newPath, "PCL", "Setup.ini"),
                     ModBase.ReadFile(Path.Combine(newPath, "PCL", "Setup.ini")).Replace(oldPath, newPath));
-            // 更改已选中的实例
+            // 鏇存敼宸查€変腑鐨勫疄渚?
             if ((ModBase.ReadIni(ModFolder.mcFolderSelected + "PCL.ini", "Version") ?? "") == (oldName ?? ""))
                 ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "Version", newName);
-            // 写入实例 Json，并删除旧的 Json
+            // 鍐欏叆瀹炰緥 Json锛屽苟鍒犻櫎鏃х殑 Json
             try
             {
                 jsonObject["id"] = newName;
@@ -404,10 +402,10 @@ public partial class PageInstanceOverall
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, "重命名实例 Json 失败");
+                ModBase.Log(ex, "閲嶅懡鍚嶅疄渚?Json 澶辫触");
             }
 
-            // 刷新与提示
+            // 鍒锋柊涓庢彁绀?
             HintService.Hint(Lang.Text("Instance.Overall.Name.RenameSuccess"), HintType.Success);
             PageInstanceLeft.McInstance = new McInstance(newName).Load();
             if (ModInstanceList.McMcInstanceSelected is not null &&
@@ -421,18 +419,18 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                "重命名实例失败",
+                "閲嶅懡鍚嶅疄渚嬪け璐?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 实例图标
+    // 瀹炰緥鍥炬爣
     private void ComboDisplayLogo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (!(isLoad && ModAnimation.AniControlEnabled == 0))
             return;
-        // 选择 自定义 时修改图片
+        // 閫夋嫨 鑷畾涔?鏃朵慨鏀瑰浘鐗?
         try
         {
             if (ReferenceEquals(ComboDisplayLogo.SelectedItem, ItemDisplayLogoCustom))
@@ -440,7 +438,7 @@ public partial class PageInstanceOverall
                 var fileName = SystemDialogs.SelectFile(Lang.Text("Instance.Overall.Icon.SelectFile.Filter"), Lang.Text("Instance.Overall.Icon.SelectFile.Title"));
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    Reload(); // 还原选项
+                    Reload(); // 杩樺師閫夐」
                     return;
                 }
 
@@ -455,19 +453,19 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"更改自定义实例图标失败（{PageInstanceLeft.McInstance.Name}）",
+                $"鏇存敼鑷畾涔夊疄渚嬪浘鏍囧け璐ワ紙{PageInstanceLeft.McInstance.Name}锛?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
 
-        // 进行更改
+        // 杩涜鏇存敼
         try
         {
             string newLogo = ((MyComboBoxItem)ComboDisplayLogo.SelectedItem).Tag?.ToString();
             States.Instance.LogoPath[PageInstanceLeft.McInstance.PathInstance] = newLogo;
             States.Instance.IsLogoCustom[PageInstanceLeft.McInstance.PathInstance] = !string.IsNullOrEmpty(newLogo);
-            // 刷新显示
-            ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 要求刷新缓存
+            // 鍒锋柊鏄剧ず
+            ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "InstanceCache", ""); // 瑕佹眰鍒锋柊缂撳瓨
             PageInstanceLeft.McInstance = new McInstance(PageInstanceLeft.McInstance.Name).Load();
             Reload();
             ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,
@@ -477,13 +475,13 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"更改实例图标失败（{PageInstanceLeft.McInstance.Name}）",
+                $"鏇存敼瀹炰緥鍥炬爣澶辫触锛坽PageInstanceLeft.McInstance.Name}锛?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 收藏夹
+    // 鏀惰棌澶?
     private void BtnDisplayStar_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -499,7 +497,7 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"实例 {PageInstanceLeft.McInstance.Name} 收藏状态更改失败",
+                $"瀹炰緥 {PageInstanceLeft.McInstance.Name} 鏀惰棌鐘舵€佹洿鏀瑰け璐?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
@@ -507,9 +505,9 @@ public partial class PageInstanceOverall
 
     #endregion
 
-    #region 卡片：快捷方式
+    #region 鍗＄墖锛氬揩鎹锋柟寮?
 
-    // 实例文件夹
+    // 瀹炰緥鏂囦欢澶?
     private void BtnFolderVersion_Click(object sender, MouseButtonEventArgs mouseButtonEventArgs)
     {
         OpenVersionFolder(PageInstanceLeft.McInstance);
@@ -520,7 +518,7 @@ public partial class PageInstanceOverall
         ModBase.OpenExplorer(version.PathInstance);
     }
 
-    // 存档文件夹
+    // 瀛樻。鏂囦欢澶?
     private void BtnFolderSaves_Click(object sender, MouseButtonEventArgs mouseButtonEventArgs)
     {
         var folderPath = PageInstanceLeft.McInstance.PathIndie + @"saves\";
@@ -528,7 +526,7 @@ public partial class PageInstanceOverall
         ModBase.OpenExplorer(folderPath);
     }
 
-    // Mod 文件夹
+    // Mod 鏂囦欢澶?
     private void BtnFolderMods_Click(object sender, MouseButtonEventArgs mouseButtonEventArgs)
     {
         var folderPath = PageInstanceLeft.McInstance.PathIndie + @"mods\";
@@ -538,26 +536,26 @@ public partial class PageInstanceOverall
 
     #endregion
 
-    #region 卡片：管理
+    #region 鍗＄墖锛氱鐞?
 
-    // 导出启动脚本
+    // 瀵煎嚭鍚姩鑴氭湰
     private void BtnManageScript_Click(object sender, MouseButtonEventArgs mouseButtonEventArgs)
     {
         try
         {
-            // 弹窗要求指定脚本的保存位置
-            var savePath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Overall.Script.SelectSaveTitle"), "启动 " + PageInstanceLeft.McInstance.Name + ".bat",
+            // 寮圭獥瑕佹眰鎸囧畾鑴氭湰鐨勪繚瀛樹綅缃?
+            var savePath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Overall.Script.SelectSaveTitle"), "鍚姩 " + PageInstanceLeft.McInstance.Name + ".bat",
                 Lang.Text("Instance.Overall.Script.FileFilter"));
             if (string.IsNullOrEmpty(savePath))
                 return;
-            // 检查中断（等玩家选完弹窗指不定任务就结束了呢……）
+            // 妫€鏌ヤ腑鏂紙绛夌帺瀹堕€夊畬寮圭獥鎸囦笉瀹氫换鍔″氨缁撴潫浜嗗憿鈥︹€︼級
             if (ModLaunch.mcLaunchLoader.State == ModBase.LoadState.Loading)
             {
                 HintService.Hint(Lang.Text("Instance.Overall.Script.WaitForLaunchTask"), HintType.Error);
                 return;
             }
 
-            // 生成脚本
+            // 鐢熸垚鑴氭湰
             if (ModLaunch.McLaunchStart(new ModLaunch.McLaunchOptions
                     { SaveBatch = savePath, instance = PageInstanceLeft.McInstance }))
             {
@@ -571,25 +569,25 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"导出启动脚本失败（{PageInstanceLeft.McInstance.Name}）",
+                $"瀵煎嚭鍚姩鑴氭湰澶辫触锛坽PageInstanceLeft.McInstance.Name}锛?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 补全文件
+    // 琛ュ叏鏂囦欢
     private void BtnManageCheck_Click(object sender, MouseButtonEventArgs e)
     {
         try
         {
-            // 忽略文件检查提示
+            // 蹇界暐鏂囦欢妫€鏌ユ彁绀?
             if ((bool)ModLibrary.ShouldIgnoreFileCheck(PageInstanceLeft.McInstance))
             {
                 HintService.Hint(Lang.Text("Instance.Overall.Repair.DisableVerificationHint"));
                 return;
             }
 
-            // 重复任务检查
+            // 閲嶅浠诲姟妫€鏌?
             var taskName = PageInstanceLeft.McInstance.Name + " " + Lang.Text("Instance.Overall.Repair.TaskName");
             foreach (var OngoingLoader in ModLoader.loaderTaskbar)
             {
@@ -599,7 +597,7 @@ public partial class PageInstanceOverall
                 return;
             }
 
-            // 启动
+            // 鍚姩
             var loader = new ModLoader.LoaderCombo<string>(taskName,
                 ModDownload.DlClientFix(PageInstanceLeft.McInstance, true,
                     ModDownload.AssetsIndexExistsBehaviour.AlwaysDownload));
@@ -637,13 +635,13 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"尝试补全文件失败（{PageInstanceLeft.McInstance.Name}）",
+                $"灏濊瘯琛ュ叏鏂囦欢澶辫触锛坽PageInstanceLeft.McInstance.Name}锛?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 重置
+    // 閲嶇疆
     private void BtnManageRestore_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -662,19 +660,19 @@ public partial class PageInstanceOverall
                 return;
             }
 
-            // 确认操作
+            // 纭鎿嶄綔
             if (ModMain.MyMsgBox(
                     Lang.Text("Instance.Overall.Reset.ConfirmMessage", PageInstanceLeft.McInstance.Name), Lang.Text("Instance.Overall.Reset.ConfirmTitle"), Lang.Text("Common.Action.Confirm"), Lang.Text("Common.Action.Cancel")) == 2)
                 return;
 
-            // 备份实例核心文件
+            // 澶囦唤瀹炰緥鏍稿績鏂囦欢
             ModBase.CopyFile(PageInstanceLeft.McInstance.PathInstance + PageInstanceLeft.McInstance.Name + ".json",
                 PageInstanceLeft.McInstance.PathInstance + @"PCLInstallBackups\" + PageInstanceLeft.McInstance.Name +
                 ".json");
             ModBase.CopyFile(PageInstanceLeft.McInstance.PathInstance + PageInstanceLeft.McInstance.Name + ".jar",
                 PageInstanceLeft.McInstance.PathInstance + @"PCLInstallBackups\" + PageInstanceLeft.McInstance.Name +
                 ".jar");
-            // 提交安装申请
+            // 鎻愪氦瀹夎鐢宠
             var request = new ModDownloadLib.McInstallRequest
             {
                 targetInstanceName = PageInstanceLeft.McInstance.Name,
@@ -709,13 +707,13 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                $"重置实例 {PageInstanceLeft.McInstance.Name} 失败",
+                $"閲嶇疆瀹炰緥 {PageInstanceLeft.McInstance.Name} 澶辫触",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 测试游戏
+    // 娴嬭瘯娓告垙
     private void BtnManageTest_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -728,14 +726,14 @@ public partial class PageInstanceOverall
         {
             ModBase.Log(
                 ex,
-                "测试游戏失败",
+                "娴嬭瘯娓告垙澶辫触",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 删除实例
-    // 修改此代码时，同时修改 PageSelectRight 中的代码
+    // 鍒犻櫎瀹炰緥
+    // 淇敼姝や唬鐮佹椂锛屽悓鏃朵慨鏀?PageSelectRight 涓殑浠ｇ爜
     private void BtnManageDelete_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -802,19 +800,19 @@ public partial class PageInstanceOverall
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log(ex, "删除实例 " + PageInstanceLeft.McInstance.Name + " 被主动取消");
+            ModBase.Log(ex, "鍒犻櫎瀹炰緥 " + PageInstanceLeft.McInstance.Name + " 琚富鍔ㄥ彇娑?);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                $"删除实例 {PageInstanceLeft.McInstance.Name} 失败",
+                $"鍒犻櫎瀹炰緥 {PageInstanceLeft.McInstance.Name} 澶辫触",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Overall.Error.OperationFailed"));
         }
     }
 
-    // 修补核心
+    // 淇ˉ鏍稿績
     private void BtnManagePatch_Click(object sender, MouseButtonEventArgs e)
     {
         switch (ModMain.MyMsgBox(

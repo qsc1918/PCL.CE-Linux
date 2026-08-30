@@ -1,9 +1,7 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceExport"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceExport"
     PanScroll="{Binding ElementName=PanBack}">
     <Grid x:Name="PanAllBack" AllowDrop="True">
         <Grid.Resources>
@@ -43,7 +41,7 @@
                                             Text="{DynamicResource Common.Action.Reset}"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
-                    <StackPanel Margin="25,38,15,15" Name="PanOptions">
+                    <StackPanel Margin="25,38,15,15" x:Name="PanOptions">
                         <local:MyCheckBox IsEnabled="False" x:Name="CheckOptionsBasic">
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption

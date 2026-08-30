@@ -1,14 +1,12 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceOverall"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceOverall"
     PanScroll="{Binding ElementName=PanBack}" Grid.IsSharedSizeScope="True">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <StackPanel x:Name="PanMain" Margin="25,10">
             <local:MyCard Margin="0,15" Title="">
-                <Grid Margin="10,7" Name="PanDisplayItem" />
+                <Grid Margin="10,7" x:Name="PanDisplayItem" />
             </local:MyCard>
             <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Instance.Overall.Info.Title}">
                 <StackPanel x:Name="PanInfo" Margin="15,40,25,5">
@@ -32,28 +30,28 @@
                             <local:MyComboBoxItem Content="{DynamicResource Common.Option.Auto}" IsSelected="True" Tag="" />
                             <local:MyComboBoxItem Content="{DynamicResource Common.Option.Customize}" x:Name="ItemDisplayLogoCustom" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Cobblestone}"
-                                                  Tag="pack://application:,,,/images/Blocks/CobbleStone.png" />
+                                                  Tag="avares://PCL/Images/Blocks/CobbleStone.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.CommandBlock}"
-                                                  Tag="pack://application:,,,/images/Blocks/CommandBlock.png" />
-                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.GoldBlock}" Tag="pack://application:,,,/images/Blocks/GoldBlock.png" />
-                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.GrassBlock}" Tag="pack://application:,,,/images/Blocks/Grass.png" />
-                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.DirtPath}" Tag="pack://application:,,,/images/Blocks/GrassPath.png" />
-                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Anvil}" Tag="pack://application:,,,/images/Blocks/Anvil.png" />
+                                                  Tag="avares://PCL/Images/Blocks/CommandBlock.png" />
+                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.GoldBlock}" Tag="avares://PCL/Images/Blocks/GoldBlock.png" />
+                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.GrassBlock}" Tag="avares://PCL/Images/Blocks/Grass.png" />
+                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.DirtPath}" Tag="avares://PCL/Images/Blocks/GrassPath.png" />
+                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Anvil}" Tag="avares://PCL/Images/Blocks/Anvil.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.RedstoneBlock}"
-                                                  Tag="pack://application:,,,/images/Blocks/RedstoneBlock.png" />
+                                                  Tag="avares://PCL/Images/Blocks/RedstoneBlock.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.RedstoneLampOn}"
-                                                  Tag="pack://application:,,,/images/Blocks/RedstoneLampOn.png" />
+                                                  Tag="avares://PCL/Images/Blocks/RedstoneLampOn.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.RedstoneLampOff}"
-                                                  Tag="pack://application:,,,/images/Blocks/RedstoneLampOff.png" />
-                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Egg}" Tag="pack://application:,,,/images/Blocks/Egg.png" />
+                                                  Tag="avares://PCL/Images/Blocks/RedstoneLampOff.png" />
+                            <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Egg}" Tag="avares://PCL/Images/Blocks/Egg.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Fabric}"
-                                                  Tag="pack://application:,,,/images/Blocks/Fabric.png" />
+                                                  Tag="avares://PCL/Images/Blocks/Fabric.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Quilt}"
-                                                  Tag="pack://application:,,,/images/Blocks/Quilt.png" />
+                                                  Tag="avares://PCL/Images/Blocks/Quilt.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.NeoForgeFox}"
-                                                  Tag="pack://application:,,,/images/Blocks/NeoForge.png" />
+                                                  Tag="avares://PCL/Images/Blocks/NeoForge.png" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Icon.Cleanroom}"
-                                                  Tag="pack://application:,,,/images/Blocks/Cleanroom.png" />
+                                                  Tag="avares://PCL/Images/Blocks/Cleanroom.png" />
                         </local:MyComboBox>
                         <TextBlock VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Left" Text="{DynamicResource Instance.Overall.Category.Title}"
                                    Margin="0,0,25,0" />
