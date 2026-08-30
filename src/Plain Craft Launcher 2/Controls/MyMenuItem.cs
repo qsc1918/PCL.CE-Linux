@@ -9,7 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using Avalonia.Shapes;
+using Avalonia.Controls.Shapes;
 using PCL.Core.App;
 using PCL.Core.UI.Controls.SvgIcon;
 

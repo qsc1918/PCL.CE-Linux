@@ -19,7 +19,7 @@
         <Configurations>Beta;Debug;Release;CI</Configurations>
         <Platforms>AnyCPU;x64;ARM64</Platforms>
         <ImplicitUsings>enable</ImplicitUsings>
-        <!-- app.manifest 为 Windows 专属（DPI/兼容性声明），Linux 无需 -->
+        <!-- app.manifest �?Windows 专属（DPI/兼容性声明），Linux 无需 -->
         <NoWarn>
             41999;42016;42017;42018;42019;42020;42021;42022;42032;42036;42314;
             VSTHRD002;VSTHRD003;VSTHRD110;VSTHRD200
@@ -97,7 +97,6 @@
             Pages\PageLaunch\MySkin.xaml.cs;
             Pages\PageLaunch\MySkin.xaml;
             Pages\PageTools\**;
-            Pages\PageHomepage\**;
             Controls\MyMsg\MyMsgMarkdown.xaml.cs;
             Controls\MyMsg\MyMsgMarkdown.xaml;
             Resources\Markdown.xaml;

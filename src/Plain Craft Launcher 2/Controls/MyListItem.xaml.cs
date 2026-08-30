@@ -13,7 +13,7 @@ using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Markup;
 using Avalonia.Media;
-using Avalonia.Shapes;
+using Avalonia.Controls.Shapes;
 using PCL.Core.UI.Controls.SvgIcon;
 
 namespace PCL;

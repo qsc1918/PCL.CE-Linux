@@ -9,7 +9,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Controls.Documents;
 using Avalonia.Markup;
-using Avalonia.Shapes;
+using Avalonia.Controls.Shapes;
 
 using PCL.Core.App.Localization;
 namespace PCL;

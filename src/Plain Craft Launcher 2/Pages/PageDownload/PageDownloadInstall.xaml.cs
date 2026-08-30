@@ -12,7 +12,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Shapes;
+using Avalonia.Controls.Shapes;
 using PCL.Core.App;
 using PCL.Core.Utils.Validate;
 using PCL.Core.App.Localization;
