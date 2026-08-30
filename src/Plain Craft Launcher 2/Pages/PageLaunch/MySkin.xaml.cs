@@ -17,7 +17,7 @@ namespace PCL;
 
 public partial class MySkin
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
 
     // 皮肤储存
     private bool isChanging;
@@ -29,10 +29,10 @@ public partial class MySkin
     public MySkin()
     {
         InitializeComponent();
-        MouseEnter += PanSkin_MouseEnter;
-        MouseLeave += PanSkin_MouseLeave;
-        MouseLeftButtonDown += PanSkin_MouseLeftButtonDown;
-        MouseLeftButtonUp += PanSkin_MouseLeftButtonUp;
+        PointerEntered += PanSkin_PointerEntered;
+        PointerExited += PanSkin_PointerExited;
+        PointerPressed += PanSkin_PointerPressed;
+        PointerReleased += PanSkin_PointerReleased;
         // Handles
         BtnSkinSave.Click += BtnSkinSave_Click;
         BtnSkinSave.Checked += BtnSkinSave_Checked;
@@ -55,20 +55,20 @@ public partial class MySkin
     // 披风
     public bool HasCape
     {
-        get => BtnSkinCape.Visibility == Visibility.Collapsed;
-        set => BtnSkinCape.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        get => BtnSkinCape.Visibility == false;
+        set => BtnSkinCape.IsVisible = value ? true : false;
     }
 
     // 事件
     public event ClickEventHandler? Click;
 
     // 控件动画
-    private void PanSkin_MouseEnter(object sender, MouseEventArgs e)
+    private void PanSkin_PointerEntered(object sender, PointerEventArgs e)
     {
         ModAnimation.AniStart(ModAnimation.AaOpacity(ShadowSkin, 0.8d - ShadowSkin.Opacity, 200, 100), "Skin Shadow");
     }
 
-    private void PanSkin_MouseLeave(object sender, MouseEventArgs e)
+    private void PanSkin_PointerExited(object sender, PointerEventArgs e)
     {
         ModAnimation.AniStart(ModAnimation.AaOpacity(ShadowSkin, 0.2d - ShadowSkin.Opacity, 200), "Skin Shadow");
         isSkinMouseDown = false;
@@ -77,7 +77,7 @@ public partial class MySkin
                 ease: new ModAnimation.AniEaseOutFluent()), "Skin Scale");
     }
 
-    private void PanSkin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void PanSkin_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         isSkinMouseDown = true;
         ModAnimation.AniStart(
@@ -85,7 +85,7 @@ public partial class MySkin
                 ease: new ModAnimation.AniEaseOutFluent()), "Skin Scale");
     }
 
-    private void PanSkin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void PanSkin_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         ModAnimation.AniStart(
             ModAnimation.AaScaleTransform(this, 1d - ((ScaleTransform)RenderTransform).ScaleX, 60,

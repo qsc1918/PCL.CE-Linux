@@ -61,7 +61,7 @@ public partial class PageToolsGameLink
             var loaders = new List<ModLoader.LoaderBase>();
             loaders.Add(new ModLoader.LoaderTask<int, int>(Lang.Text("Link.Mod.Task.InitLobbyUi"), _ => ModBase.RunInUi(() =>
             {
-                HintAnnounce.Visibility = Visibility.Visible;
+                HintAnnounce.IsVisible = true;
                 HintAnnounce.Theme = MyHint.Themes.Blue;
                 HintAnnounce.Text = Lang.Text("Tools.GameLink.Loading.ConnectingServer");
             })));
@@ -96,7 +96,7 @@ public partial class PageToolsGameLink
 
     public async void Reload()
     {
-        HintAnnounce.Visibility = Visibility.Visible;
+        HintAnnounce.IsVisible = true;
         HintAnnounce.Text = Lang.Text("Tools.GameLink.Loading.ConnectingServer");
         HintAnnounce.Theme = MyHint.Themes.Blue;
 
@@ -111,7 +111,7 @@ public partial class PageToolsGameLink
         await LobbyService.InitializeAsync().ConfigureAwait(false);
     }
 
-    private void BtnAgreeEula_Click(object sender, MouseButtonEventArgs e)
+    private void BtnAgreeEula_Click(object sender, PointerPressedEventArgs e)
     {
         States.Link.LinkEula = true;
         CurrentSubpage = Subpages.PanSelect;
@@ -345,7 +345,7 @@ public partial class PageToolsGameLink
             }
             else
             {
-                HintAnnounce.Visibility = Visibility.Collapsed;
+                HintAnnounce.IsVisible = false;
             }
 
             try
@@ -556,7 +556,7 @@ public partial class PageToolsGameLink
         return newItem;
     }
 
-    private void PlayerInfoClick(object sender, MouseButtonEventArgs e)
+    private void PlayerInfoClick(object sender, PointerPressedEventArgs e)
     {
         var info = (PlayerProfile)((MyListItem)sender).Tag;
         ModMain.MyMsgBox(Lang.Text("Tools.GameLink.Player.InfoMessage", info.Name, info.Vendor), Lang.Text("Tools.GameLink.Player.InfoTitle", info.Name));
@@ -641,7 +641,7 @@ public partial class PageToolsGameLink
         }, "Natayark Profile Refresh");
     }
 
-    private void LabNatayarkUserName_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void LabNatayarkUserName_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         // If Not IsLobbyAvailable Then
         // Hint("大厅功能暂不可用，请稍后再试", HintType.Critical)
@@ -678,7 +678,7 @@ public partial class PageToolsGameLink
     #endregion
 
     // 网络测试功能
-    private async void BtnNetTest_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnNetTest_Click(object sender, PointerPressedEventArgs e)
     {
         try
         {
@@ -705,7 +705,7 @@ public partial class PageToolsGameLink
         }
     }
 
-    private void PasteLobbyId(object sender, MouseButtonEventArgs e)
+    private void PasteLobbyId(object sender, PointerPressedEventArgs e)
     {
         string lobbyId;
         try
@@ -724,7 +724,7 @@ public partial class PageToolsGameLink
             HintService.Hint(Lang.Text("Tools.GameLink.Join.InvalidText"));
     }
 
-    private void ClearLobbyId(object sender, MouseButtonEventArgs e)
+    private void ClearLobbyId(object sender, PointerPressedEventArgs e)
     {
         TextJoinLobbyId.Text = string.Empty;
     }
@@ -734,12 +734,12 @@ public partial class PageToolsGameLink
     #region PanSelect | 种类选择页面
 
     // 刷新按钮
-    private void BtnRefresh_Click(object sender, MouseButtonEventArgs e)
+    private void BtnRefresh_Click(object sender, PointerPressedEventArgs e)
     {
         var lobby = LobbyService.DiscoverWorldAsync();
     }
 
-    private async void BtnInputPort_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnInputPort_Click(object sender, PointerPressedEventArgs e)
     {
         try
         {
@@ -765,7 +765,7 @@ public partial class PageToolsGameLink
     }
 
     // 创建大厅
-    private async void BtnCreate_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnCreate_Click(object sender, PointerPressedEventArgs e)
     {
         if (ComboWorldList.SelectedItem is null)
         {
@@ -794,16 +794,16 @@ public partial class PageToolsGameLink
 
         ModBase.RunInUi(() =>
         {
-            BtnFinishPing.Visibility = Visibility.Collapsed;
+            BtnFinishPing.IsVisible = false;
             LabFinishPing.Text = "-ms";
-            BtnConnectType.Visibility = Visibility.Collapsed;
+            BtnConnectType.IsVisible = false;
             LabConnectType.Text = Lang.Text("Tools.GameLink.Finish.Connecting");
             CardPlayerList.Title = Lang.Text("Tools.GameLink.Member.ListLoading");
             StackPlayerList.Children.Clear();
             LabConnectUserName.Text = username;
             LabConnectUserType.Text = Lang.Text("Tools.GameLink.Finish.Host");
             LabFinishId.Text = LobbyService.CurrentLobbyCode;
-            BtnFinishCopyIp.Visibility = Visibility.Collapsed;
+            BtnFinishCopyIp.IsVisible = false;
             BtnCreate.IsEnabled = true;
             BtnFinishExit.Text = Lang.Text("Tools.GameLink.Finish.CloseLobby");
             CurrentSubpage = Subpages.PanFinish;
@@ -821,7 +821,7 @@ public partial class PageToolsGameLink
     }
 
     // 加入大厅
-    private async void BtnJoin_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnJoin_Click(object sender, PointerPressedEventArgs e)
     {
         if (!ModLink.LobbyPrecheck())
             return;
@@ -833,16 +833,16 @@ public partial class PageToolsGameLink
 
         ModBase.RunInUi(() =>
         {
-            BtnFinishPing.Visibility = Visibility.Visible;
+            BtnFinishPing.IsVisible = true;
             LabFinishPing.Text = "-ms";
-            BtnConnectType.Visibility = Visibility.Visible;
+            BtnConnectType.IsVisible = true;
             LabConnectType.Text = Lang.Text("Tools.GameLink.Finish.Connecting");
             CardPlayerList.Title = Lang.Text("Tools.GameLink.Member.ListLoading");
             StackPlayerList.Children.Clear();
             LabConnectUserName.Text = username;
             LabConnectUserType.Text = Lang.Text("Tools.GameLink.Finish.Guest");
             LabFinishId.Text = id;
-            BtnFinishCopyIp.Visibility = Visibility.Visible;
+            BtnFinishCopyIp.IsVisible = true;
             CurrentSubpage = Subpages.PanFinish;
         });
 
@@ -888,7 +888,7 @@ public partial class PageToolsGameLink
     }
 
     // 承接重试
-    private void CardLoad_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void CardLoad_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (initLoader.State != ModBase.LoadState.Failed)
             return;
@@ -1009,11 +1009,11 @@ public partial class PageToolsGameLink
     private void PageLinkLobby_OnPageEnter()
     {
         ModMain.frmToolsGameLink.PanEula.Visibility =
-            CurrentSubpage == Subpages.PanEula ? Visibility.Visible : Visibility.Collapsed;
+            CurrentSubpage == Subpages.PanEula ? true : false;
         ModMain.frmToolsGameLink.PanSelect.Visibility =
-            CurrentSubpage == Subpages.PanSelect ? Visibility.Visible : Visibility.Collapsed;
+            CurrentSubpage == Subpages.PanSelect ? true : false;
         ModMain.frmToolsGameLink.PanFinish.Visibility =
-            CurrentSubpage == Subpages.PanFinish ? Visibility.Visible : Visibility.Collapsed;
+            CurrentSubpage == Subpages.PanFinish ? true : false;
     }
 
     #endregion

@@ -13,9 +13,9 @@ namespace PCL;
 
 public partial class MyExtraButton
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e); // 自定义事件
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e); // 自定义事件
 
-    public delegate void RightClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void RightClickEventHandler(object sender, PointerPressedEventArgs e);
 
     public delegate bool ShowCheckDelegate();
 
@@ -24,7 +24,7 @@ public partial class MyExtraButton
     private const int animationColorIn = 120;
     private const int animationColorOut = 150;
 
-    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_MouseUp 先于 Button_MouseLeave 执行）
+    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_PointerReleased 先于 Button_PointerExited 执行）
     private bool isLeftMouseHeld;
     private bool isRightMouseHeld;
     public ShowCheckDelegate showCheck = null;
@@ -37,7 +37,7 @@ public partial class MyExtraButton
         Loaded += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshColor();
         InitializeComponent();
-        PanClick.MouseLeave += (_, _) => Button_MouseLeave();
+        PanClick.PointerExited += (_, _) => Button_PointerExited();
     }
 
     public double Progress
@@ -50,11 +50,11 @@ public partial class MyExtraButton
             field = value;
             if (value < 0.0001d)
             {
-                PanProgress.Visibility = Visibility.Collapsed;
+                PanProgress.IsVisible = false;
             }
             else
             {
-                PanProgress.Visibility = Visibility.Visible;
+                PanProgress.IsVisible = true;
                 RectProgress.Rect = new Rect(0d, 40d * (1d - value), 40d, 40d * value);
             }
         }
@@ -116,7 +116,7 @@ public partial class MyExtraButton
                 if (value)
                 {
                     // 有了
-                    Visibility = Visibility.Visible;
+                    Visibility = true;
                     ModAnimation.AniStart(
                         new[]
                         {
@@ -137,7 +137,7 @@ public partial class MyExtraButton
                             ModAnimation.AaScaleTransform(this, -((ScaleTransform)RenderTransform).ScaleX, 100,
                                 ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
                             ModAnimation.AaHeight(this, -Height, 400, 100, new ModAnimation.AniEaseOutFluent()),
-                            ModAnimation.AaCode(() => Visibility = Visibility.Collapsed, after: true)
+                            ModAnimation.AaCode(() => Visibility = false, after: true)
                         }, "MyExtraButton MainScale " + Uuid);
                 }
 
@@ -186,7 +186,7 @@ public partial class MyExtraButton
     }
 
     // 触发点击事件
-    private void Button_LeftMouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_LeftPointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (isLeftMouseHeld)
         {
@@ -194,11 +194,11 @@ public partial class MyExtraButton
                         (ToolTip is null or "" ? "" : "：" + ToolTip));
             Click?.Invoke(sender, e);
             e.Handled = true;
-            Button_LeftMouseUp();
+            Button_LeftPointerReleased();
         }
     }
 
-    private void Button_RightMouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_RightPointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (isRightMouseHeld)
         {
@@ -206,11 +206,11 @@ public partial class MyExtraButton
                         (ToolTip is null or "" ? "" : "：" + ToolTip));
             RightClick?.Invoke(sender, e);
             e.Handled = true;
-            Button_RightMouseUp();
+            Button_RightPointerReleased();
         }
     }
 
-    private void Button_LeftMouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_LeftMouseDown(object sender, PointerPressedEventArgs e)
     {
         if (!isLeftMouseHeld && !isRightMouseHeld)
             StartScaleAnimation(0.85d, -0.05d);
@@ -218,7 +218,7 @@ public partial class MyExtraButton
         Focus();
     }
 
-    private void Button_RightMouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_RightMouseDown(object sender, PointerPressedEventArgs e)
     {
         if (!CanRightClick)
             return;
@@ -228,26 +228,26 @@ public partial class MyExtraButton
         Focus();
     }
 
-    private void Button_LeftMouseUp()
+    private void Button_LeftPointerReleased()
     {
         if (!isRightMouseHeld)
             RefreshScaleAfterRelease();
         if (isLeftMouseHeld) ModMain.RaiseCustomEvent(this);
         isLeftMouseHeld = false;
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
-    private void Button_RightMouseUp()
+    private void Button_RightPointerReleased()
     {
         if (!CanRightClick)
             return;
         if (!isLeftMouseHeld)
             RefreshScaleAfterRelease();
         isRightMouseHeld = false;
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
-    private void Button_MouseLeave()
+    private void Button_PointerExited()
     {
         isLeftMouseHeld = false;
         isRightMouseHeld = false;
@@ -257,7 +257,7 @@ public partial class MyExtraButton
                 ModAnimation.AaScaleTransform(PanScale, 1d - ((ScaleTransform)PanScale.RenderTransform).ScaleX, 500,
                     ease: new ModAnimation.AniEaseOutFluent())
             }, "MyExtraButton Scale " + Uuid);
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
     public void RefreshColor()
@@ -322,7 +322,7 @@ public partial class MyExtraButton
         });
     }
 
-    private void PanClick_MouseEvent(object sender, MouseEventArgs e)
+    private void PanClick_MouseEvent(object sender, PointerEventArgs e)
     {
         RefreshColor();
     }

@@ -155,22 +155,22 @@ public partial class MyCompItem
     {
         InitializeComponent();
         Click += (sender, e) => MyCompItem_Click((MyCompItem)sender, e);
-        PointerReleased += Button_MouseUp;
+        PointerReleased += Button_PointerReleased;
         PointerPressed += Button_MouseDown;
-        PointerExited += Button_MouseLeave;
-        PointerReleased += Button_MouseLeave;
+        PointerExited += Button_PointerExited;
+        PointerReleased += Button_PointerExited;
         PointerEntered += RefreshColor;
         PointerExited += RefreshColor;
         PointerPressed += RefreshColor;
         PointerReleased += RefreshColor;
         // Handles
-        LabInfo.PointerEntered += LabInfo_MouseEnter;
+        LabInfo.PointerEntered += LabInfo_PointerEntered;
         BtnDelete.Click += BtnDelete_Click;
         BtnDownload.Click += _BtnDownload_Click;
     }
 
     // 指向时扩展描述
-    private void LabInfo_MouseEnter(object sender, PointerEventArgs e)
+    private void LabInfo_PointerEntered(object sender, PointerEventArgs e)
     {
         if (IsTextTrimmed(LabInfo))
         {
@@ -383,7 +383,7 @@ public partial class MyCompItem
     private bool isMouseDown;
 
     // 触发点击事件
-    private void Button_MouseUp(object sender, PointerReleasedEventArgs e)
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;
@@ -417,7 +417,7 @@ public partial class MyCompItem
         if (IsPointerOver || isClickOnLabInfo) isMouseDown = true;
     }
 
-    private void Button_MouseLeave(object sender, object e)
+    private void Button_PointerExited(object sender, object e)
     {
         isMouseDown = false;
     }

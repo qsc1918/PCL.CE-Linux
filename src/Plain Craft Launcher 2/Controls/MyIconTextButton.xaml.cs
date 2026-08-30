@@ -11,9 +11,9 @@ using Avalonia.Markup;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyIconTextButton
 {
     public delegate void ChangeEventHandler(object sender, bool raiseByMouse);
@@ -54,10 +54,10 @@ public partial class MyIconTextButton
         InitializeComponent();
         RefreshLogoHostVisibility();
 
-        MouseLeftButtonUp += (_, _) => MyIconTextButton_MouseUp();
-        MouseLeftButtonDown += (_, _) => MyIconTextButton_MouseDown();
-        MouseLeave += (_, _) => MyIconTextButton_MouseLeave();
-        MouseEnter += RefreshColor;
+        PointerReleased += (_, _) => MyIconTextButton_PointerReleased();
+        PointerPressed += (_, _) => MyIconTextButton_MouseDown();
+        PointerExited += (_, _) => MyIconTextButton_PointerExited();
+        PointerEntered += RefreshColor;
         Loaded += RefreshColor;
         IsEnabledChanged += (_, _) => RefreshColor();
     }
@@ -119,7 +119,7 @@ public partial class MyIconTextButton
 
         if (HasAnyIcon)
         {
-            LogoHost.Visibility = Visibility.Visible;
+            LogoHost.IsVisible = true;
             LogoHost.Width = 16;
             LogoHost.Height = 16;
             LogoHost.Margin = new Thickness(12, 0, 0, 0);
@@ -127,7 +127,7 @@ public partial class MyIconTextButton
         }
         else
         {
-            LogoHost.Visibility = Visibility.Collapsed;
+            LogoHost.IsVisible = false;
             LogoHost.Width = 0;
             LogoHost.Height = 16;
             LogoHost.Margin = new Thickness(0);
@@ -144,6 +144,7 @@ public partial class MyIconTextButton
             ApplyLogoScale();
         }
     } = 1d;
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
 
     public InlineCollection Inlines => LabText.Inlines;
 
@@ -210,7 +211,7 @@ public partial class MyIconTextButton
         ModAnimation.AniStart(ModAnimation.AaColor(this, BackgroundProperty, delta, duration), ColorAnimationKey);
     }
 
-    private void MyIconTextButton_MouseUp()
+    private void MyIconTextButton_PointerReleased()
     {
         if (!isMouseDown)
             return;
@@ -227,7 +228,7 @@ public partial class MyIconTextButton
         RefreshColor();
     }
 
-    private void MyIconTextButton_MouseLeave()
+    private void MyIconTextButton_PointerExited()
     {
         isMouseDown = false;
         RefreshColor();

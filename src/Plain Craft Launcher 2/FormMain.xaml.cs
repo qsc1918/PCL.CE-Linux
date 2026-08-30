@@ -31,10 +31,10 @@ namespace PCL;
 public partial class FormMain
 {
     // 愚人节鼠标位置
-    // [port] WPF MouseEventArgs → Avalonia PointerEventArgs（PointerMoved 事件参数）
+    // [port] WPF PointerEventArgs → Avalonia PointerEventArgs（PointerMoved 事件参数）
     public PointerEventArgs lastMouseArg;
 
-    // [port] WPF MouseMove → Avalonia PointerMoved；事件参数 MouseEventArgs → PointerEventArgs
+    // [port] WPF MouseMove → Avalonia PointerMoved；事件参数 PointerEventArgs → PointerEventArgs
     private void FormMain_MouseMove(object? sender, PointerEventArgs e)
     {
         lastMouseArg = e;
@@ -601,7 +601,7 @@ public partial class FormMain
     }
 
     // 移动
-    // [port] WPF MouseButtonEventArgs → Avalonia PointerPressedEventArgs；IsMouseDirectlyOver → IsPointerOver；DragMove() → Window.BeginMoveDrag(e)
+    // [port] WPF PointerPressedEventArgs → Avalonia PointerPressedEventArgs；IsMouseDirectlyOver → IsPointerOver；DragMove() → Window.BeginMoveDrag(e)
     private void FormDragMove(object? sender, PointerPressedEventArgs e)
     {
         // On Error Resume Next
@@ -785,7 +785,7 @@ public partial class FormMain
             e.Handled = true;
     }
 
-    // [port] WPF MouseButtonEventArgs/MouseButton.XButton1/2 → Avalonia PointerPressedEventArgs + PointerPointProperties.IsXButton1/2Pressed（侧键判定）
+    // [port] WPF PointerPressedEventArgs/MouseButton.XButton1/2 → Avalonia PointerPressedEventArgs + PointerPointProperties.IsXButton1/2Pressed（侧键判定）
     private void FormMain_MouseDown(object? sender, PointerPressedEventArgs e)
     {
         // 鼠标侧键返回上一级
@@ -2116,7 +2116,7 @@ public partial class FormMain
     #region 附加按钮
 
     // 更新重启
-    private void BtnExtraUpdateRestart_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraUpdateRestart_Click(object sender, PointerPressedEventArgs e)
     {
         UpdateManager.UpdateRestart(true);
     }
@@ -2127,18 +2127,18 @@ public partial class FormMain
     }
 
     // 音乐
-    private void BtnExtraMusic_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraMusic_Click(object sender, PointerPressedEventArgs e)
     {
         ModMusic.MusicControlPause();
     }
 
-    private void BtnExtraMusic_RightClick(object sender, MouseButtonEventArgs e)
+    private void BtnExtraMusic_RightClick(object sender, PointerPressedEventArgs e)
     {
         ModMusic.MusicControlNext();
     }
 
     // 任务管理
-    private void BtnExtraDownload_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraDownload_Click(object sender, PointerPressedEventArgs e)
     {
         PageChange(PageType.TaskManager);
     }
@@ -2161,7 +2161,7 @@ public partial class FormMain
         }
     }
 
-    private void BtnExtraApril_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraApril_Click(object sender, PointerPressedEventArgs e)
     {
         AprilGiveup();
     }
@@ -2172,7 +2172,7 @@ public partial class FormMain
     }
 
     // 关闭 Minecraft
-    private void BtnExtraShutdown_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraShutdown_Click(object sender, PointerPressedEventArgs e)
     {
         try
         {
@@ -2198,7 +2198,7 @@ public partial class FormMain
     }
 
     // 游戏日志
-    private void BtnExtraLog_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraLog_Click(object sender, PointerPressedEventArgs e)
     {
         PageChange(PageType.GameLog);
     }
@@ -2225,7 +2225,7 @@ public partial class FormMain
                 userSummary: Lang.Text("Main.Error.ScrollToTopFailed"));
     }
 
-    private void BtnExtraBack_Click(object sender, MouseButtonEventArgs e)
+    private void BtnExtraBack_Click(object sender, PointerPressedEventArgs e)
     {
         BackToTop();
     }

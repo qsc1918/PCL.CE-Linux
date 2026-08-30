@@ -597,12 +597,12 @@ public static class ModMain
             if (frmMain.PanMsg.Children.Count > 0)
             {
                 // 弹窗中
-                frmMain.PanMsgBackground.Visibility = Visibility.Visible;
+                frmMain.PanMsgBackground.IsVisible = true;
             }
             else if (WaitingMyMsgBox.Any())
             {
                 // 没有弹窗，显示一个等待的弹窗
-                frmMain.PanMsgBackground.Visibility = Visibility.Visible;
+                frmMain.PanMsgBackground.IsVisible = true;
                 switch (WaitingMyMsgBox[0].Type)
                 {
                     case MyMsgBoxType.Input:
@@ -635,9 +635,9 @@ public static class ModMain
                 WaitingMyMsgBox.RemoveAt(0);
             }
             // 没有弹窗，没有等待的弹窗
-            else if (!(frmMain.PanMsgBackground.Visibility == Visibility.Collapsed))
+            else if (!(frmMain.PanMsgBackground.Visibility == false))
             {
-                frmMain.PanMsgBackground.Visibility = Visibility.Collapsed;
+                frmMain.PanMsgBackground.IsVisible = false;
             }
         }
         catch (Exception ex)

@@ -54,8 +54,8 @@ public partial class MySearchBox : MyCard
         get => BtnSearch.Visibility;
         set
         {
-            BtnClear.Margin = new Thickness(0d, 0d, value == Visibility.Visible ? 70 : 10, 0d);
-            BtnSearch.Visibility = value;
+            BtnClear.Margin = new Thickness(0d, 0d, value == true ? 70 : 10, 0d);
+            BtnSearch.IsVisible = value;
         }
     }
 
@@ -82,7 +82,7 @@ public partial class MySearchBox : MyCard
 
     public event SearchEventHandler? Search;
 
-    private void BtnSearch_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSearch_Click(object sender, PointerPressedEventArgs e)
     {
         Search?.Invoke(sender, e);
     }

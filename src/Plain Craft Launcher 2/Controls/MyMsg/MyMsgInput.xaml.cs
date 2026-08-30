@@ -82,7 +82,7 @@ public partial class MyMsgInput
             // 动画
             Opacity = 0d;
             ModAnimation.AniStart(
-                ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground, BlurBorder.BackgroundProperty,
+                ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground, Border.BackgroundProperty,
                     (myConverter.IsWarn
                         ? new ModBase.MyColor(140d, 80d, 0d, 0d)
                         : new ModBase.MyColor(90d, 0d, 0d, 0d)) - ModMain.frmMain.PanMsgBackground.Background, 200),
@@ -123,7 +123,7 @@ public partial class MyMsgInput
             {
                 if (!ModMain.WaitingMyMsgBox.Any())
                     ModAnimation.AniStart(ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground,
-                        BlurBorder.BackgroundProperty,
+                        Border.BackgroundProperty,
                         new ModBase.MyColor(0d, 0d, 0d, 0d) - ModMain.frmMain.PanMsgBackground.Background, 200,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
             }, 30),
@@ -136,7 +136,7 @@ public partial class MyMsgInput
         }, "MyMsgBox " + uuid);
     }
 
-    public void Btn1_Click(object sender, MouseButtonEventArgs e)
+    public void Btn1_Click(object sender, PointerPressedEventArgs e)
     {
         TextArea.Validate(); // #5773
         if (myConverter.IsExited || !TextArea.IsValidated)
@@ -146,7 +146,7 @@ public partial class MyMsgInput
         Close();
     }
 
-    public void Btn2_Click(object sender, MouseButtonEventArgs e)
+    public void Btn2_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -160,7 +160,7 @@ public partial class MyMsgInput
         Btn1.IsEnabled = TextArea.IsValidated;
     }
 
-    private void Drag(object sender, MouseButtonEventArgs e)
+    private void Drag(object sender, PointerPressedEventArgs e)
     {
         try
         {

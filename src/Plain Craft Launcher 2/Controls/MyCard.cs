@@ -25,7 +25,7 @@ public class MyCard : AnimatedBackgroundGrid
     public static readonly AvaloniaProperty TitleProperty =
         AvaloniaProperty.Register("Title", typeof(string), typeof(MyCard), new PropertyMetadata(""));
 
-    private readonly BlurBorder mainBorder;
+    private readonly Border mainBorder; // [port] BlurBorder 暂缓 → Border
 
     // 控件
     private readonly Grid mainGrid;
@@ -33,7 +33,7 @@ public class MyCard : AnimatedBackgroundGrid
     private bool isLoad;
 
     // UI 建立
-    public MyCard() : base(BlurBorder.BackgroundProperty)
+    public MyCard() : base(Border.BackgroundProperty)
     {
         MainChrome = new MyDropShadow
         {
@@ -42,19 +42,20 @@ public class MyCard : AnimatedBackgroundGrid
         };
         MainChrome.SetResourceReference(MyDropShadow.ColorProperty, "ColorObject1");
         Children.Insert(0, MainChrome);
-        mainBorder = new BlurBorder { CornerRadius = new CornerRadius(5d), IsHitTestVisible = false };
+        // [port] BlurBorder(模糊特效族)暂缓 → Border
+        mainBorder = new Border { CornerRadius = new CornerRadius(5d), IsHitTestVisible = false };
         Children.Insert(1, mainBorder);
         mainGrid = new Grid();
         Children.Add(mainGrid);
         // 设置背景色
         SetResourceReference(BackgroundBrushProperty, "ColorBrushTransparentBackground");
         Loaded += (_, _) => Init();
-        MouseEnter += MyCard_MouseEnter;
-        MouseLeave += MyCard_MouseLeave;
+        PointerEntered += MyCard_PointerEntered;
+        PointerExited += MyCard_PointerExited;
         SizeChanged += MySizeChanged;
-        MouseLeftButtonDown += MyCard_MouseLeftButtonDown;
-        MouseLeftButtonUp += MyCard_MouseLeftButtonUp;
-        MouseLeave += MyCard_MouseLeave_Swap;
+        PointerPressed += MyCard_PointerPressed;
+        PointerReleased += MyCard_PointerReleased;
+        PointerExited += MyCard_PointerExited_Swap;
     }
 
     public MyDropShadow MainChrome { get; }
@@ -159,7 +160,7 @@ public class MyCard : AnimatedBackgroundGrid
         if (IsSwapped && SwapControl is not null)
         {
             MainSwap.RenderTransform = new RotateTransform(SwapLogoRight ? 270 : 0);
-            SwapControl.Visibility = Visibility.Collapsed;
+            SwapControl.IsVisible = false;
             // 取消由于高度变化被迫触发的高度动画
             var rawUseAnimation = UseAnimation;
             UseAnimation = false;
@@ -195,7 +196,7 @@ public class MyCard : AnimatedBackgroundGrid
         stack.Tag = null;
     }
 
-    private void MyCard_MouseEnter(object sender, MouseEventArgs e)
+    private void MyCard_PointerEntered(object sender, PointerEventArgs e)
     {
         if (!HasMouseAnimation)
             return;
@@ -213,7 +214,7 @@ public class MyCard : AnimatedBackgroundGrid
             ModAnimation.AniStart(aniList, "MyCard Mouse " + uuid);
     }
 
-    private void MyCard_MouseLeave(object sender, MouseEventArgs e)
+    private void MyCard_PointerExited(object sender, PointerEventArgs e)
     {
         if (!HasMouseAnimation)
             return;
@@ -314,7 +315,7 @@ public class MyCard : AnimatedBackgroundGrid
             isHeightAnimating = false;
             Height = actualUsedHeight;
             if (IsSwapped && SwapControl is not null)
-                SwapControl.Visibility = Visibility.Collapsed;
+                SwapControl.IsVisible = false;
         }, after: true));
         ModAnimation.AniStart(animList, "MyCard Height " + uuid);
         isHeightAnimating = true;
@@ -375,7 +376,7 @@ public class MyCard : AnimatedBackgroundGrid
                 return;
 
             // 更新控件的可见性和高度
-            SwapControl.Visibility = Visibility.Visible;
+            SwapControl.IsVisible = true;
             TriggerForceResize();
 
             // 根据折叠状态旋转箭头图标
@@ -411,7 +412,7 @@ public class MyCard : AnimatedBackgroundGrid
 
     public const int SwapedHeight = 40;
 
-    private void MyCard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void MyCard_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         double pos = Mouse.GetPosition(this).Y;
         if (!IsSwapped && (pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsMouseDirectlyOver)))
@@ -422,7 +423,7 @@ public class MyCard : AnimatedBackgroundGrid
         isSwapMouseDown = true;
     }
 
-    private void MyCard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void MyCard_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isCustomMouseDown) return;
         isCustomMouseDown = false;
@@ -448,7 +449,7 @@ public class MyCard : AnimatedBackgroundGrid
         Swap?.Invoke(this, e2);
     }
 
-    private void MyCard_MouseLeave_Swap(object sender, MouseEventArgs e)
+    private void MyCard_PointerExited_Swap(object sender, PointerEventArgs e)
     {
         isSwapMouseDown = false;
     }
@@ -478,7 +479,7 @@ public static partial class ModAnimation
                     }
                     else
                     {
-                        control.Visibility = Visibility.Collapsed;
+                        control.IsVisible = false;
                     }
 
                     if (callBack is not null)
@@ -496,7 +497,7 @@ public static partial class ModAnimation
             }
             else
             {
-                control.Visibility = Visibility.Collapsed;
+                control.IsVisible = false;
             }
 
             if (callBack is not null)

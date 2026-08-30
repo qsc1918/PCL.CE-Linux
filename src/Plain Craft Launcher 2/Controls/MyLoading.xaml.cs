@@ -13,7 +13,7 @@ namespace PCL;
 
 public partial class MyLoading
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
 
     public delegate void IsErrorChangedEventHandler(object sender, bool isError);
 
@@ -49,10 +49,10 @@ public partial class MyLoading
         Loaded += (_, _) => InitState();
         Loaded += (_, _) => RefreshState();
         Unloaded += (_, _) => RefreshState();
-        MouseLeftButtonUp += Button_MouseUp;
-        MouseLeftButtonDown += Button_MouseDown;
-        MouseLeave += Button_MouseLeave;
-        MouseLeftButtonUp += Button_MouseLeave;
+        PointerReleased += Button_PointerReleased;
+        PointerPressed += Button_MouseDown;
+        PointerExited += Button_PointerExited;
+        PointerReleased += Button_PointerExited;
     }
 
     #endregion
@@ -337,20 +337,20 @@ public partial class MyLoading
 
     #region 点击事件
 
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         Click?.Invoke(sender, e);
     }
 
     private bool isMouseDown;
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
-        // 鼠标点击判定（务必放在点击事件之后，以使得 Button_MouseUp 先于 Button_MouseLeave 执行）
+        // 鼠标点击判定（务必放在点击事件之后，以使得 Button_PointerReleased 先于 Button_PointerExited 执行）
         isMouseDown = true;
     }
 
-    private void Button_MouseLeave(object sender, object e)
+    private void Button_PointerExited(object sender, object e)
     {
         isMouseDown = false;
     }

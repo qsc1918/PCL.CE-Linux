@@ -51,9 +51,9 @@ public partial class MyToast
     {
         InitializeComponent();
         BtnClose.Click += (_, _) => Dismiss();
-        PreviewMouseLeftButtonDown += Toast_PreviewMouseLeftButtonDown;
+        PreviewPointerPressed += Toast_PreviewPointerPressed;
         PreviewMouseMove += Toast_PreviewMouseMove;
-        PreviewMouseLeftButtonUp += Toast_PreviewMouseLeftButtonUp;
+        PreviewPointerReleased += Toast_PreviewPointerReleased;
         LostMouseCapture += Toast_LostMouseCapture;
         Loaded += (_, _) =>
         {
@@ -235,7 +235,7 @@ public partial class MyToast
 
     #region 拖动关闭
 
-    private void Toast_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void Toast_PreviewPointerPressed(object sender, PointerPressedEventArgs e)
     {
         _dragPending = false;
         if (IsDismissing)
@@ -250,7 +250,7 @@ public partial class MyToast
         _dragStartPoint = e.GetPosition(_dragReference);
     }
 
-    private void Toast_PreviewMouseMove(object sender, MouseEventArgs e)
+    private void Toast_PreviewMouseMove(object sender, PointerEventArgs e)
     {
         if (_isDragging)
         {
@@ -285,7 +285,7 @@ public partial class MyToast
         BeginDrag(delta);
     }
 
-    private void Toast_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void Toast_PreviewPointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (_dragPending && !_isDragging)
         {
@@ -313,7 +313,7 @@ public partial class MyToast
         ReturnFromDrag();
     }
 
-    private void Toast_LostMouseCapture(object sender, MouseEventArgs e)
+    private void Toast_LostMouseCapture(object sender, PointerEventArgs e)
     {
         if (!_isDragging)
             return;

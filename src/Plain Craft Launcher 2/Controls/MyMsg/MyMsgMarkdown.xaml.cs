@@ -66,7 +66,7 @@ public partial class MyMsgMarkdown
     private static void ConfigureSecondaryButton(MyButton button, string text)
     {
         button.Text = text;
-        button.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+        button.IsVisible = string.IsNullOrEmpty(text) ? false : true;
     }
 
     private void Load(object sender, EventArgs e)
@@ -135,7 +135,7 @@ public partial class MyMsgMarkdown
         }, "MyMsgBox " + uuid);
     }
 
-    public void Btn1_Click(object sender, MouseButtonEventArgs e)
+    public void Btn1_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -151,7 +151,7 @@ public partial class MyMsgMarkdown
         }
     }
 
-    public void Btn2_Click(object sender, MouseButtonEventArgs e)
+    public void Btn2_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -167,7 +167,7 @@ public partial class MyMsgMarkdown
         }
     }
 
-    public void Btn3_Click(object sender, MouseButtonEventArgs e)
+    public void Btn3_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -183,7 +183,7 @@ public partial class MyMsgMarkdown
         }
     }
 
-    private void Drag(object? sender = null, MouseButtonEventArgs? e = null)
+    private void Drag(object? sender = null, PointerPressedEventArgs? e = null)
     {
         try
         {

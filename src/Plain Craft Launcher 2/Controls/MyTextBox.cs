@@ -24,13 +24,12 @@ public class MyTextBox : TextBox
     public static readonly AvaloniaProperty ValidateResultProperty = AvaloniaProperty.Register("ValidateResult",
         typeof(string), typeof(MyTextBox),
         new PropertyMetadata("",
-            (d, e) => d.SetValue(IsValidatedPropertyKey,
+            (d, e) => d.SetValue(IsValidatedProperty,
                 string.IsNullOrEmpty((string)e.NewValue))));
 
-    private static readonly DependencyPropertyKey IsValidatedPropertyKey =
-        AvaloniaProperty.RegisterReadOnly("IsValidated", typeof(bool), typeof(MyTextBox), new PropertyMetadata(true));
-
-    public static readonly AvaloniaProperty IsValidatedProperty = IsValidatedPropertyKey.AvaloniaProperty;
+    // [port] WPF DependencyPropertyKey 只读属性 → Avalonia 普通 StyledProperty（写入方仅限模板内部逻辑）
+    public static readonly StyledProperty<bool> IsValidatedProperty =
+        AvaloniaProperty.Register<MyTextBox, bool>("IsValidated", true);
 
     public static readonly AvaloniaProperty HintTextProperty = AvaloniaProperty.Register("HintText", typeof(string),
         typeof(MyTextBox), new PropertyMetadata("", (t, e) =>
@@ -61,8 +60,8 @@ public class MyTextBox : TextBox
         Loaded += (_, _) => Validate();
         TextChanged += (a, b) => MyTextBox_TextChanged((MyTextBox)a, b);
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
         GotFocus += (_, _) => RefreshColor();
         LostFocus += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshTextColor();
@@ -134,9 +133,9 @@ public class MyTextBox : TextBox
         set => SetValue(HintTextProperty, value);
     }
 
-    public override void OnApplyTemplate()
+    public override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        base.OnApplyTemplate();
+        base.OnApplyTemplate(e);
         if (string.IsNullOrEmpty(HintText) || !string.IsNullOrEmpty(labHint.Text))
             return;
         UpdateHintText();
@@ -229,14 +228,14 @@ public class MyTextBox : TextBox
                         ModAnimation.AaOpacity(labWrong, -labWrong.Opacity, 150),
                         ModAnimation.AaHeight(labWrong, -labWrong.Height, 150,
                             ease: new ModAnimation.AniEaseOutFluent()),
-                        ModAnimation.AaCode(() => labWrong.Visibility = Visibility.Collapsed, after: true)
+                        ModAnimation.AaCode(() => labWrong.IsVisible = false, after: true)
                     }, "MyTextBox Validate " + Uuid);
             }
             else if (ShowValidateResult)
             {
                 // 变为错误
                 shownValidateResult = ValidateState.FailedAndShowDetail;
-                labWrong.Visibility = Visibility.Visible;
+                labWrong.IsVisible = true;
                 ModAnimation.AniStart(
                     new[]
                     {

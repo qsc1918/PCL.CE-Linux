@@ -153,7 +153,7 @@ public partial class PageSpeedLeft
                             var tb = (TextBlock)ModBase.GetObjectFromXML(
                                 "<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\" HorizontalAlignment=\"Left\" ToolTip=\"" + Lang.Text("Speed.Error.ClickToCopy") + "\" Grid.Column=\"1\" Grid.Row=\"0\" Margin=\"0,0,0,5\" />");
                             tb.Text = loader.Error.ToString();
-                            tb.PointerPressed += (sender, _) => // [port] WPF MouseLeftButtonDown → Avalonia PointerPressed
+                            tb.PointerPressed += (sender, _) => // [port] WPF PointerPressed → Avalonia PointerPressed
                             {
                                 ModBase.ClipboardSet(((TextBlock)sender).Text, false);
                                 HintService.Hint(Lang.Text("Speed.Error.Copied"), HintType.Success);

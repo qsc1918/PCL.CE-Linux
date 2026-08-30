@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
@@ -62,7 +62,7 @@ public partial class PageInstanceServer : MyPageRight
             if (_cts is not null)
             {
                 _cts.Cancel();
-                _cts.Dispose(); // 濞撳懐鎮婇弮褏娈?CancellationTokenSource
+                _cts.Dispose(); // 清理旧的 CancellationTokenSource
                 _cts = null;
             }
     }
@@ -159,20 +159,20 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     閸掗攱鏌婇張宥呭閸ｃ劌鍨悰?
+    ///     刷新服务器列表
     /// </summary>
     public async void RefreshServers()
     {
-        ModBase.Log("閸掗攱鏌婇張宥呭閸ｃ劌鍨悰?);
+        ModBase.Log("刷新服务器列表");
         try
         {
-            // 鐠囪褰囬張宥呭閸ｃ劋淇婇幁?
+            // 读取服务器信息
             await LoadServersFromFileAsync();
 
-            // 閸︹晳I缁捐法鈻兼稉顓熸纯閺傛壆鏅棃?
+            // 在UI线程中更新界面
             ModBase.RunInUi(() => UpdateServerUi());
 
-            // 瀵倹顒瀙ing閹碘偓閺堝婀囬崝鈥虫珤
+            // 异步ping所有服务器
             PingAllServers();
         }
         catch (Exception ex)
@@ -188,7 +188,7 @@ public partial class PageInstanceServer : MyPageRight
         }
     }
 
-    private void BtnRefresh_Click(object sender, PointerReleasedEventArgs e)
+    private void BtnRefresh_Click(object sender, PointerPressedEventArgs e)
     {
         if ((DateTime.Now - _lastRefresh).TotalMilliseconds < debounceInterval)
         {
@@ -215,7 +215,7 @@ public partial class PageInstanceServer : MyPageRight
         }
     }
 
-    private async void BtnAddServer_Click(object sender, PointerReleasedEventArgs e)
+    private async void BtnAddServer_Click(object sender, PointerPressedEventArgs e)
     {
         var result = GetServerInfo(new MinecraftServerInfo { Name = Lang.Text("Instance.Server.DefaultName"), Address = "" });
         if (result.Success)
@@ -279,7 +279,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     娴犲窏ervers.dat閺傚洣娆㈢拠璇插絿閺堝秴濮熼崳銊や繆閹?
+    ///     从servers.dat文件读取服务器信息
     /// </summary>
     private async Task LoadServersFromFileAsync()
     {
@@ -291,7 +291,7 @@ public partial class PageInstanceServer : MyPageRight
 
         try
         {
-            // 鐠囪褰嘚BT閺嶇厧绱￠惃鍓唀rvers.dat閺傚洣娆?
+            // 读取NBT格式的servers.dat文件
             var nbtData = await NbtFileHandler.ReadTagInNbtFileAsync<NbtList>(serversFile, "servers");
             ParseServersFromNBT(nbtData);
         }
@@ -302,7 +302,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     鐟欙絾鐎絅BT閺嶇厧绱￠惃鍕箛閸斺€虫珤閺佺増宓?
+    ///     解析NBT格式的服务器数据
     /// </summary>
     private void ParseServersFromNBT(NbtList serversList)
     {
@@ -310,20 +310,20 @@ public partial class PageInstanceServer : MyPageRight
         {
             ModBase.Log($"Found {serversList.Count} servers:");
 
-            // 闁秴宸?servers 閸掓銆冩稉顓犳畱濮ｅ繋閲滈張宥呭閸?
+            // 遍历 servers 列表中的每个服务器
             for (int i = 0, loopTo = serversList.Count - 1; i <= loopTo; i++)
             {
                 var server = serversList[i] as NbtCompound;
                 if (server is not null)
                 {
-                    // 閹绘劕褰囬張宥呭閸ｃ劋淇婇幁?
+                    // 提取服务器信息
                     // Dim hidden As Byte = If(server.Get(Of NbtByte)("hidden")?.Value, 0)
                     var ip = server.Get<NbtString>("ip")?.Value ?? "Unknown";
                     var name = server.Get<NbtString>("name")?.Value ?? "Unknown";
                     var iconBase64 = server.Get<NbtString>("icon")?.Value;
 
-                    ModBase.Log($"閺堝秴濮熼崳?{i + 1}:");
-                    ModBase.Log($"  閸氬秴鐡? {name}");
+                    ModBase.Log($"服务器 {i + 1}:");
+                    ModBase.Log($"  名字: {name}");
                     ModBase.Log($"  IP: {ip}");
                     // Log($"  Hidden: {If(hidden = 1, "Yes", "No")}")
                     serverList.Add(new MinecraftServerInfo
@@ -343,7 +343,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     閺囧瓨鏌婇張宥呭閸ｂ晳I閺勫墽銇?
+    ///     更新服务器UI显示
     /// </summary>
     private void UpdateServerUi()
     {
@@ -367,16 +367,16 @@ public partial class PageInstanceServer : MyPageRight
         if (serverList.Count == 0)
         {
             ModBase.Log(Lang.Text("Instance.Server.NoServersFound"));
-            PanNoServer.Visibility = true;
-            PanContent.Visibility = false;
-            PanServers.Visibility = false;
+            PanNoServer.IsVisible = true;
+            PanContent.IsVisible = false;
+            PanServers.IsVisible = false;
             return;
         }
 
         ModBase.Log(Lang.Text("Instance.Server.FoundServers"));
-        PanNoServer.Visibility = false;
-        PanContent.Visibility = true;
-        PanServers.Visibility = true;
+        PanNoServer.IsVisible = false;
+        PanContent.IsVisible = true;
+        PanServers.IsVisible = true;
     }
 
     private async void PingAllServers()
@@ -389,7 +389,7 @@ public partial class PageInstanceServer : MyPageRight
 
         _cts = new CancellationTokenSource();
         var token = _cts.Token;
-        var semaphore = new SemaphoreSlim(5); // 闂勬劕鍩楅張鈧径?5 娑擃亜鑻熼崣鎴滄崲閸?
+        var semaphore = new SemaphoreSlim(5); // 限制最多 5 个并发任务
 
         var tasks = new List<Task>();
         try
@@ -407,7 +407,7 @@ public partial class PageInstanceServer : MyPageRight
                     }
                     catch (Exception ex)
                     {
-                        ModBase.Log(ex, $"Ping 閺堝秴濮熼崳銊ャ亼鐠? {currentServer}");
+                        ModBase.Log(ex, $"Ping 服务器失败: {currentServer}");
                     }
                     finally
                     {
@@ -416,20 +416,20 @@ public partial class PageInstanceServer : MyPageRight
                 }, token));
             }
 
-            await Task.WhenAll(tasks); // 缁涘绶熼幍鈧張澶夋崲閸斺€崇暚閹?
+            await Task.WhenAll(tasks); // 等待所有任务完成
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log("PingAllServers 鐞氼偄褰囧☉?, ModBase.LogLevel.Debug);
+            ModBase.Log("PingAllServers 被取消", ModBase.LogLevel.Debug);
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "PingAllServers 婢惰精瑙?);
+            ModBase.Log(ex, "PingAllServers 失败");
         }
     }
 
     /// <summary>
-    ///     ping閸楁洑閲滈張宥呭閸?
+    ///     ping单个服务器
     /// </summary>
     public static async Task<MinecraftServerInfo> PingServerAsync(MinecraftServerInfo server, CancellationToken token)
     {
@@ -440,7 +440,7 @@ public partial class PageInstanceServer : MyPageRight
             {
                 McPingResult? result;
                 ModBase.Log("Pinging server: " + server.Address + ":" + addr.Port);
-                result = await query.PingAsync(token); // 娴肩娀鈧?token
+                result = await query.PingAsync(token); // 传递 token
                 ModBase.Log("Ping result: " + (result is not null ? "Success" : "Failed"));
                 if (result is not null)
                 {
@@ -461,12 +461,12 @@ public partial class PageInstanceServer : MyPageRight
         catch (OperationCanceledException ex)
         {
             server.Status = ServerStatus.Offline;
-            ModBase.Log("Ping 閺堝秴濮熼崳銊潶閸欐牗绉? " + server.Address, ModBase.LogLevel.Debug);
+            ModBase.Log("Ping 服务器被取消: " + server.Address, ModBase.LogLevel.Debug);
         }
         catch (Exception ex)
         {
             server.Status = ServerStatus.Offline;
-            ModBase.Log(ex, $"Ping 閺堝秴濮熼崳銊ャ亼鐠? {server.Address}:{server.Port}");
+            ModBase.Log(ex, $"Ping 服务器失败: {server.Address}:{server.Port}");
         }
 
         return server;
@@ -474,7 +474,7 @@ public partial class PageInstanceServer : MyPageRight
 }
 
 /// <summary>
-///     Minecraft閺堝秴濮熼崳銊や繆閹垳琚?
+///     Minecraft服务器信息类
 /// </summary>
 public class MinecraftServerInfo
 {
@@ -491,7 +491,7 @@ public class MinecraftServerInfo
 }
 
 /// <summary>
-///     閺堝秴濮熼崳銊уЦ閹焦鐏囨稉?
+///     服务器状态枚举
 /// </summary>
 public enum ServerStatus
 {

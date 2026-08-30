@@ -8,12 +8,12 @@ using Avalonia.Input;
 using Avalonia.Markup;
 using Avalonia.Media;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyExtraTextButton
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e); // 自定义事件
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e); // 自定义事件
 
     // 自定义事件
     // 务必放在 IsMouseDown 更新之后
@@ -26,7 +26,7 @@ public partial class MyExtraTextButton
             ((MyExtraTextButton)sender)?.LabText.Text = (string)e.NewValue;
         }));
 
-    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_MouseUp 先于 Button_MouseLeave 执行）
+    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_PointerReleased 先于 Button_PointerExited 执行）
     private bool isLeftMouseHeld;
 
     // 自定义属性
@@ -39,11 +39,11 @@ public partial class MyExtraTextButton
 
         Loaded += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshColor();
-        PanClick.MouseLeftButtonDown += Button_LeftMouseDown;
-        PanClick.MouseLeftButtonUp += Button_LeftMouseUp;
-        PanClick.MouseLeave += Button_MouseLeave;
-        PanClick.MouseRightButtonUp += Button_RightMouseUp;
-        PanClick.MouseEnter += (sender, e) => RefreshColor();
+        PanClick.PointerPressed += Button_LeftMouseDown;
+        PanClick.PointerReleased += Button_LeftPointerReleased;
+        PanClick.PointerExited += Button_PointerExited;
+        PanClick.MouseRightButtonUp += Button_RightPointerReleased;
+        PanClick.PointerEntered += (sender, e) => RefreshColor();
     }
 
     public string Logo
@@ -101,14 +101,14 @@ public partial class MyExtraTextButton
 
         if (HasAnyIcon)
         {
-            IconHost.Visibility = Visibility.Visible;
+            IconHost.IsVisible = true;
             IconHost.Width = 16;
             IconHost.Margin = new Thickness(2, 12, 0, 12);
             LabText.Margin = new Thickness(12, 0, 0, 0.8);
         }
         else
         {
-            IconHost.Visibility = Visibility.Collapsed;
+            IconHost.IsVisible = false;
             IconHost.Width = 0;
             IconHost.Margin = new Thickness(0, 12, 0, 12);
             LabText.Margin = new Thickness(0, 0, 0, 0.8);
@@ -126,6 +126,7 @@ public partial class MyExtraTextButton
     } = 1d;
 
     // 显示文本
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
     public InlineCollection Inlines => LabText.Inlines;
 
     public string Text
@@ -204,17 +205,17 @@ public partial class MyExtraTextButton
     }
 
     // 触发点击事件
-    private void Button_LeftMouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_LeftPointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isLeftMouseHeld) return;
         ModBase.Log("[Control] 按下附加图标按钮：" + Text);
         Click?.Invoke(sender, e);
         e.Handled = true;
         ModMain.RaiseCustomEvent(this);
-        Button_LeftMouseUp();
+        Button_LeftPointerReleased();
     }
 
-    private void Button_LeftMouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_LeftMouseDown(object sender, PointerPressedEventArgs e)
     {
         if (!isLeftMouseHeld)
             StartScaleAnimation(0.85d, -0.05d);
@@ -222,21 +223,21 @@ public partial class MyExtraTextButton
         Focus();
     }
 
-    private void Button_LeftMouseUp()
+    private void Button_LeftPointerReleased()
     {
         RefreshScaleAfterRelease();
         isLeftMouseHeld = false;
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
-    private void Button_RightMouseUp(object sender, MouseEventArgs e)
+    private void Button_RightPointerReleased(object sender, PointerEventArgs e)
     {
         if (!isLeftMouseHeld)
             RefreshScaleAfterRelease();
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
-    private void Button_MouseLeave(object sender, MouseEventArgs e)
+    private void Button_PointerExited(object sender, PointerEventArgs e)
     {
         isLeftMouseHeld = false;
         ModAnimation.AniStart(
@@ -245,7 +246,7 @@ public partial class MyExtraTextButton
                 ModAnimation.AaScaleTransform(PanScale, 1d - ((ScaleTransform)PanScale.RenderTransform).ScaleX, 500,
                     ease: new ModAnimation.AniEaseOutFluent())
             }, "MyExtraTextButton Scale " + Uuid);
-        RefreshColor(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshColor(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
     public void RefreshColor()

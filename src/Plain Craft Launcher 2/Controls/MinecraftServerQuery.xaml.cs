@@ -17,7 +17,7 @@ public partial class MinecraftServerQuery : Grid
         InitializeComponent();
         BtnServerQuery.Click += BtnServerQuery_Click;
     }
-    private void BtnServerQuery_Click(object sender, MouseButtonEventArgs e)
+    private void BtnServerQuery_Click(object sender, PointerPressedEventArgs e)
     {
         Dispatcher.BeginInvoke(new Func<Task>(() => ServerQueryAsync()));
     }
@@ -25,6 +25,6 @@ public partial class MinecraftServerQuery : Grid
     private async Task ServerQueryAsync()
     {
         await PanMcServer.UpdateServerInfoAsync(LabServerIp.Text);
-        ServerInfo.Visibility = Visibility.Visible;
+        ServerInfo.IsVisible = true;
     }
 }

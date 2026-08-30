@@ -1,11 +1,13 @@
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -60,20 +62,20 @@ public partial class PageInstanceSaves : IRefreshable
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 闁插秴顦查崝鐘烘祰闁劌鍨?
+        // 重复加载部分
         PanBack.ScrollToHome();
         worldPath = PageInstanceLeft.McInstance.PathIndie + @"saves\";
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
         Reload();
 
-        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
+        // 非重复加载部分
         if (isLoad)
             return;
         isLoad = true;
         CheckQuickPlay();
 
-        // 閸掓繂顫愰崠鏍ㄦ瀮娴犲墎閮寸紒鐔烘磧鐟欏棗娅掗崪灞惧笓鎼村繑瀵滈柦?
+        // 初始化文件系统监视器和排序按钮
         SetupFileSystemWatcher();
         BtnSort.Click += BtnSortClick;
         SetSortMethod(_currentSortMethod);
@@ -94,7 +96,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         if (fileSystemWatcher is not null) fileSystemWatcher.Dispose();
 
-        // 绾喕绻氶惄顔肩秿鐎涙ê婀?
+        // 确保目录存在
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
 
@@ -138,7 +140,7 @@ public partial class PageInstanceSaves : IRefreshable
     }
 
     /// <summary>
-    ///     绾喕绻氳ぐ鎾冲妞ょ敻娼版稉濠勬畱娣団剝浼呭鍙夘劀绾喗妯夌粈鎭掆偓?
+    ///     确保当前页面上的信息已正确显示。
     /// </summary>
     public void Reload()
     {
@@ -187,7 +189,7 @@ public partial class PageInstanceSaves : IRefreshable
 
                 foreach (var curFolder in showingSaves)
                 {
-                    // 濡偓閺屻儲鏋冩禒璺恒仚閺勵垰鎯佹禒宥囧姧鐎涙ê婀?
+                    // 检查文件夹是否仍然存在
                     if (!Directory.Exists(curFolder)) continue;
 
                     var saveLogo = Path.Combine(curFolder, "icon.png");
@@ -335,7 +337,7 @@ public partial class PageInstanceSaves : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "濡偓閺屻儱鐡ㄥ锝呮彥閹瑰嘲鎯庨崝銊ャ亼鐠?,
+                "检查存档快捷启动失败",
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
@@ -345,7 +347,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         try
         {
-            ModBase.Log("[World] 閸掗攱鏌婄€涙ɑ銆傞弬鍥︽");
+            ModBase.Log("[World] 刷新存档文件");
             saveFolders.Clear();
             if (Directory.Exists(worldPath))
                 saveFolders = Directory.EnumerateDirectories(worldPath).ToList();
@@ -353,19 +355,19 @@ public partial class PageInstanceSaves : IRefreshable
                 saveFolders = new List<string>();
 
             if (ModBase.modeDebug)
-                ModBase.Log("[World] 閸忓崬褰傞悳?" + saveFolders.Count + " 娑擃亜鐡ㄥ锝嗘瀮娴犺泛銇?, ModBase.LogLevel.Debug);
+                ModBase.Log("[World] 共发现 " + saveFolders.Count + " 个存档文件夹", ModBase.LogLevel.Debug);
             PanList.Children.Clear();
             CheckQuickPlay();
 
             if (ModBase.modeDebug)
             {
                 if ((bool)quickPlayFeature)
-                    ModBase.Log("[World] 鐠囥儱鐤勬笟瀣暜閹镐礁鐡ㄥ锝呮彥閹瑰嘲鎯庨崝?, ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 该实例支持存档快捷启动", ModBase.LogLevel.Debug);
                 else
-                    ModBase.Log("[World] 鐠囥儱鐤勬笟瀣╃瑝閺€顖涘瘮鐎涙ɑ銆傝箛顐ｅ祹閸氼垰濮?, ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 该实例不支持存档快捷启动", ModBase.LogLevel.Debug);
             }
 
-            RefreshUI(); // 绾喕绻歎I閸掗攱鏌?
+            RefreshUI(); // 确保UI刷新
         }
         catch (Exception ex)
         {
@@ -385,12 +387,12 @@ public partial class PageInstanceSaves : IRefreshable
         RefreshUI();
     }
 
-    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerPressedEventArgs e)
     {
         ModBase.OpenExplorer(worldPath);
     }
 
-    private void BtnPaste_Click(object sender, PointerReleasedEventArgs e)
+    private void BtnPaste_Click(object sender, PointerPressedEventArgs e)
     {
         var files = Clipboard.GetFileDropList();
         var loaders = new List<ModLoader.LoaderBase>();
@@ -438,13 +440,13 @@ public partial class PageInstanceSaves : IRefreshable
         ModMain.frmMain.BtnExtraDownload.Ribble();
     }
 
-    private void BtnDownloadNew_Click(object sender, PointerReleasedEventArgs e)
+    private void BtnDownloadNew_Click(object sender, PointerPressedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadWorld);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 鐏忓棗缍嬮崜宥呯杽娓氬顔曠純顔昏礋缁涙盯鈧娅?
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 将当前实例设置为筛选器
     }
 
-    #region 閹兼粎鍌ㄩ崪灞惧笓鎼?
+    #region 搜索和排序
 
     private SortMethod _currentSortMethod = SortMethod.FileName;
     private List<string> _searchResult;

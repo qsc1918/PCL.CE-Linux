@@ -122,14 +122,8 @@ public class MyBitmap
     public MyBitmap(ImageBrush image) : this(image.Source) { }
 
     // 自动类型转换
-    // 支持的类：IImage，Bitmap，ImageBrush
-    public static implicit operator MyBitmap(IImage image)
-    {
-        if (image is null)
-            return null;
-        return new MyBitmap(image);
-    }
-
+    // 支持的类：IImage（经构造函数），Bitmap，ImageBrush
+    // [port] C# 不允许涉及接口的 implicit 用户转换，IImage → MyBitmap 请使用构造函数 new MyBitmap(image)
     public static implicit operator Bitmap(MyBitmap image)
     {
         if (image is null)

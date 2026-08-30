@@ -15,7 +15,7 @@ public partial class PageLoginProfileSkin
         InitializeComponent();
         Loaded += (_, _) => Reload();
         // Handles
-        // [port] MouseEnter → PointerEntered；MouseLeave → PointerExited
+        // [port] PointerEntered → PointerEntered；PointerExited → PointerExited
         PanData.PointerEntered += ShowPanel;
         PanData.PointerExited += HidePanel;
         BtnSkin.Click += BtnSkin_Click;
@@ -32,7 +32,7 @@ public partial class PageLoginProfileSkin
         Skin.Clear();
         if (ModProfile.selectedProfile.Type == ModLaunch.McLoginType.Ms)
         {
-            // [port] Visibility.Visible → IsVisible=true
+            // [port] true → IsVisible=true
             BtnEdit.IsVisible = true;
             ModBase.Log("[Profile] 使用正版皮肤加载器");
             Skin.loader = PageLaunchLeft.skinMs;
@@ -45,7 +45,7 @@ public partial class PageLoginProfileSkin
         }
         else
         {
-            // [port] Visibility.Collapsed → IsVisible=false
+            // [port] false → IsVisible=false
             BtnEdit.IsVisible = false;
             ModBase.Log("[Profile] 使用离线皮肤加载器");
             Skin.loader = PageLaunchLeft.skinLegacy;
@@ -59,7 +59,7 @@ public partial class PageLoginProfileSkin
     #region 控制与编辑
 
     // 显示 / 隐藏控制
-    private void ShowPanel(object sender, MouseEventArgs e)
+    private void ShowPanel(object sender, PointerEventArgs e)
     {
         ModAnimation.AniStart(ModAnimation.AaOpacity(PanButtons, 1d - PanButtons.Opacity, 120),
             "PageLoginProfileSkin Button");

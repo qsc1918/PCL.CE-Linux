@@ -16,14 +16,14 @@ using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 using PCL.Core.UI.Controls.SvgIcon;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyListItem : IMyRadio
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
 
-    public delegate void LogoClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void LogoClickEventHandler(object sender, PointerPressedEventArgs e);
 
     public bool isMouseOverAnimationEnabled = true;
 
@@ -268,7 +268,7 @@ public partial class MyListItem : IMyRadio
             if (value is string str) list = str.Split("|").ToList();
             if (value is List<string>) list = (List<string>)value;
             PanTags.Children.Clear();
-            PanTags.Visibility = list.Any() ? Visibility.Visible : Visibility.Collapsed;
+            PanTags.IsVisible = list.Any() ? true : false;
             foreach (var TagText in list)
             {
                 var newTag = new Border
@@ -308,7 +308,7 @@ public partial class MyListItem : IMyRadio
                     HorizontalAlignment = HorizontalAlignment.Left,
                     IsHitTestVisible = false,
                     TextTrimming = TextTrimming.CharacterEllipsis,
-                    Visibility = Visibility.Collapsed,
+                    Visibility = false,
                     FontSize = 12d,
                     Margin = new Thickness(4d, 0d, 0d, 0d),
                     Opacity = 0.6d
@@ -435,6 +435,7 @@ public partial class MyListItem : IMyRadio
     }
 
     // 标题
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
     public InlineCollection Inlines => LabTitle.Inlines;
 
     public string Title
@@ -477,14 +478,14 @@ public partial class MyListItem : IMyRadio
         InitializeComponent();
 
         SizeChanged += (_, _) => OnSizeChanged();
-        PreviewMouseLeftButtonUp += Button_MouseUp;
-        PreviewMouseLeftButtonDown += Button_MouseDown;
-        MouseLeave += Button_MouseLeave;
-        PreviewMouseLeftButtonUp += Button_MouseLeave;
-        MouseEnter += RefreshColor;
-        MouseLeave += RefreshColor;
-        MouseLeftButtonDown += RefreshColor;
-        MouseLeftButtonUp += RefreshColor;
+        PreviewPointerReleased += Button_PointerReleased;
+        PreviewPointerPressed += Button_MouseDown;
+        PointerExited += Button_PointerExited;
+        PreviewPointerReleased += Button_PointerExited;
+        PointerEntered += RefreshColor;
+        PointerExited += RefreshColor;
+        PointerPressed += RefreshColor;
+        PointerReleased += RefreshColor;
         Loaded += MyListItem_Loaded;
     }
 
@@ -493,7 +494,7 @@ public partial class MyListItem : IMyRadio
         var control = (MyListItem)d;
         var value = e.NewValue as string;
         control.LabInfo.Text = value;
-        control.LabInfo.Visibility = string.IsNullOrEmpty(value) ? Visibility.Collapsed : Visibility.Visible;
+        control.LabInfo.IsVisible = string.IsNullOrEmpty(value) ? false : true;
     }
 
     // 图片
@@ -639,9 +640,9 @@ public partial class MyListItem : IMyRadio
             // 图标的点击事件
             if (LogoClickable)
             {
-                pathLogo.MouseLeave += (sender, e) => isLogoDown = false;
-                pathLogo.MouseLeftButtonDown += (sender, e) => isLogoDown = true;
-                pathLogo.MouseLeftButtonUp += (sender, e) =>
+                pathLogo.PointerExited += (sender, e) => isLogoDown = false;
+                pathLogo.PointerPressed += (sender, e) => isLogoDown = true;
+                pathLogo.PointerReleased += (sender, e) =>
                 {
                     if (isLogoDown)
                     {
@@ -1054,7 +1055,7 @@ public partial class MyListItem : IMyRadio
     #region 点击
 
     // 触发点击事件
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isMouseDown)
             return;
@@ -1098,7 +1099,7 @@ public partial class MyListItem : IMyRadio
     // 鼠标点击判定
     private bool isMouseDown;
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
         if (IsMouseDirectlyOver && !(Type == CheckType.None))
         {
@@ -1108,7 +1109,7 @@ public partial class MyListItem : IMyRadio
         }
     }
 
-    private void Button_MouseLeave(object sender, object e)
+    private void Button_PointerExited(object sender, object e)
     {
         isMouseDown = false;
         if (buttonStack is not null)

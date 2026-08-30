@@ -1,9 +1,11 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Input;
 using PCL.Core.App.Localization;
 
@@ -13,7 +15,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
 {
     public static string currentSave;
 
-    // 閸掓繂顫愰崠?
+    // 初始化
     private bool isLoad;
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -23,16 +25,16 @@ public partial class PageInstanceSavesLeft : IRefreshable
         isLoad = true;
     }
 
-    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerPressedEventArgs e)
     {
         e.Handled = true;
         ModBase.OpenExplorer($@"{currentSave}\");
     }
 
-    #region 姒瑧灏楅悧?妞ょ敻娼扮粻锛勬倞
+    #region 龙猫牌 页面管理
 
     /// <summary>
-    ///     瑜版挸澧犳い鐢告桨閻ㄥ嫮绱崣鏋偓鍌欑矤 0 瀵偓婵顓哥粻妞尖偓?
+    ///     当前页面的编号。从 0 开始计算。
     /// </summary>
     public FormMain.PageSubType pageID = FormMain.PageSubType.Default;
 
@@ -46,7 +48,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
     }
 
     /// <summary>
-    ///     閸曢箖鈧绨ㄦ禒鑸垫暭閸欐﹢銆夐棃顫偓?
+    ///     勾选事件改变页面。
     /// </summary>
     private void PageCheck(object sender, ModBase.RouteEventArgs e)
     {
@@ -81,7 +83,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
     }
 
     /// <summary>
-    ///     閸掑洦宕查悳鐗堟箒妞ょ敻娼伴妴?
+    ///     切换现有页面。
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -109,7 +111,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 閸嬫粍顒涙稉濠氥€夐棃銏㈡畱閸欐娊銆夐棃銏犲瀼閹广垹濮╅悽浼欑礉闂冨弶顒涚€瑰啩绗岄張顒€濮╅悽璁崇鐠х柉袝閸欐垵顦垮▎?PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 停止主页面的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -124,14 +126,14 @@ public partial class PageInstanceSavesLeft : IRefreshable
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 瀵ゆ儼绻滅憴锕€褰傛い鐢告桨闁氨鏁ら崝銊ф暰閿涘奔浜掓担鍨繁閸?Loaded 娴滃娆㈡稉顓炲鏉炵晫娈戦幒褌娆㈠妞句簰婢跺嫮鎮?
+                // 延迟触发页面通用动画，以使得在 Loaded 事件中加载的控件得以处理
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)
         }, "PageLeft PageChange");
     }
 
-    public void RefreshButton_Click(object sender, EventArgs e) // 閻㈣精绔熼弽蹇斿瘻闁筋喖灏堕崥宥堢殶閻?
+    public void RefreshButton_Click(object sender, EventArgs e) // 由边栏按钮匿名调用
     {
         Refresh((FormMain.PageSubType)ModBase.Val(((MyIconButton)sender).Tag));
     }

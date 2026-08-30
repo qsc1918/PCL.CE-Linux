@@ -15,9 +15,9 @@ using PCL.Core.App;
 using PCL.Core.UI.Theme;
 
 using PCL.Core.App.Localization;
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyRadioButton
 {
     public delegate void ChangeEventHandler(MyRadioButton sender, bool raiseByMouse);
@@ -71,11 +71,11 @@ public partial class MyRadioButton
             ThemeService.ColorThemeChanged -= OnColorThemeChanged;
         };
 
-        MouseLeftButtonUp += (_, _) => Radiobox_MouseUp();
-        MouseLeftButtonDown += (_, _) => Radiobox_MouseDown();
-        MouseLeave += (_, _) => Radiobox_MouseLeave();
-        MouseEnter += RefreshColor;
-        MouseLeave += RefreshColor;
+        PointerReleased += (_, _) => Radiobox_PointerReleased();
+        PointerPressed += (_, _) => Radiobox_MouseDown();
+        PointerExited += (_, _) => Radiobox_PointerExited();
+        PointerEntered += RefreshColor;
+        PointerExited += RefreshColor;
         Loaded += RefreshColor;
     }
 
@@ -146,12 +146,12 @@ public partial class MyRadioButton
 
         if (HasAnyIcon)
         {
-            LogoHost.Visibility = Visibility.Visible;
+            LogoHost.IsVisible = true;
             LogoHost.Width = 16;
         }
         else
         {
-            LogoHost.Visibility = Visibility.Visible;
+            LogoHost.IsVisible = true;
             LogoHost.Width = 0;
         }
 
@@ -175,6 +175,7 @@ public partial class MyRadioButton
         get => _Checked;
         set => SetChecked(value, false, true);
     }
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
 
     public InlineCollection Inlines => LabText.Inlines;
 
@@ -292,7 +293,7 @@ public partial class MyRadioButton
 
     public event PreviewClickEventHandler? PreviewClick;
 
-    private void Radiobox_MouseUp()
+    private void Radiobox_PointerReleased()
     {
         if (Checked)
             return;
@@ -315,7 +316,7 @@ public partial class MyRadioButton
         RefreshColor();
     }
 
-    private void Radiobox_MouseLeave()
+    private void Radiobox_PointerExited()
     {
         isMouseDown = false;
     }

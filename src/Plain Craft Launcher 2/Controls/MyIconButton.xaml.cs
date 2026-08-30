@@ -29,7 +29,7 @@ public partial class MyIconButton
     private const int animationColorIn = 120;
     private const int animationColorOut = 150;
 
-    //鼠标点击判定（务必放在点击事件之后，以使得 Button_MouseUp 先于 Button_MouseLeave 执行）
+    //鼠标点击判定（务必放在点击事件之后，以使得 Button_PointerReleased 先于 Button_PointerExited 执行）
     private bool isMouseDown;
 
     // 自定义属性
@@ -48,12 +48,12 @@ public partial class MyIconButton
     {
         InitializeComponent();
 
-        MouseLeftButtonUp += Button_MouseUp;
-        MouseLeftButtonDown += Button_MouseDown;
-        MouseLeftButtonUp += (_, _) => Button_MouseUp();
-        MouseLeave += (_, _) => Button_MouseLeave();
-        MouseEnter += (_, _) => RefreshAnim();
-        MouseLeave += (_, _) => RefreshAnim();
+        PointerReleased += Button_PointerReleased;
+        PointerPressed += Button_MouseDown;
+        PointerReleased += (_, _) => Button_PointerReleased();
+        PointerExited += (_, _) => Button_PointerExited();
+        PointerEntered += (_, _) => RefreshAnim();
+        PointerExited += (_, _) => RefreshAnim();
         Loaded += (_, _) => RefreshAnim();
     }
 
@@ -361,18 +361,18 @@ public partial class MyIconButton
         PanBack.Background = GetTransparentBackground();
     }
 
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isMouseDown)
             return;
         ModBase.Log("[Control] 按下图标按钮" + (string.IsNullOrEmpty(Name) ? "" : "：" + Name));
         Click?.Invoke(sender, e);
         e.Handled = true;
-        Button_MouseUp();
+        Button_PointerReleased();
         ModMain.RaiseCustomEvent(this);
     }
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
         isMouseDown = true;
         Focus();
@@ -383,7 +383,7 @@ public partial class MyIconButton
             "MyIconButton Scale " + Uuid);
     }
 
-    private void Button_MouseUp()
+    private void Button_PointerReleased()
     {
         if (isMouseDown)
         {
@@ -398,10 +398,10 @@ public partial class MyIconButton
                 }, "MyIconButton Scale " + Uuid);
         }
 
-        RefreshAnim(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshAnim(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
-    private void Button_MouseLeave()
+    private void Button_PointerExited()
     {
         isMouseDown = false;
         ModAnimation.AniStart(
@@ -410,7 +410,7 @@ public partial class MyIconButton
                 ModAnimation.AaScaleTransform(PanBack, 1d - ((ScaleTransform)PanBack.RenderTransform).ScaleX, 250,
                     ease: new ModAnimation.AniEaseOutFluent())
             }, "MyIconButton Scale " + Uuid);
-        RefreshAnim(); // 直接刷新颜色以判断是否已触发 MouseLeave
+        RefreshAnim(); // 直接刷新颜色以判断是否已触发 PointerExited
     }
 
     public void RefreshAnim()
@@ -452,7 +452,7 @@ public static partial class ModAnimation
                 if (removeFromChildren)
                     ((Panel)control.Parent).Children.Remove(control);
                 else
-                    control.Visibility = Visibility.Collapsed;
+                    control.IsVisible = false;
                 if (callBack is not null)
                     callBack(control);
             }, after: true)

@@ -65,7 +65,7 @@ public class MyPageLeft : Grid
             foreach (var ElementRaw in GetAllAnimControls(true))
             {
                 var element = MyVirtualizingElement.TryInit(ElementRaw);
-                if (element.Visibility == Visibility.Collapsed)
+                if (element.Visibility == false)
                 {
                     // 还原之前的隐藏动画可能导致的改变（#2436）
                     element.Opacity = 1d;
@@ -148,7 +148,7 @@ public class MyPageLeft : Grid
     private void GetAllAnimControls(Control element, ref List<Control> allControls,
         bool ignoreInvisibility)
     {
-        if (!ignoreInvisibility && element.Visibility == Visibility.Collapsed)
+        if (!ignoreInvisibility && element.Visibility == false)
             return;
         if (element is MyTextButton)
             allControls.Add(element);

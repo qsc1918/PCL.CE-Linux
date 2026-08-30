@@ -33,11 +33,11 @@ public partial class MySlider
     {
         InitializeComponent();
         SizeChanged += RefreshWidth;
-        MouseLeftButtonDown += DragStart;
+        PointerPressed += DragStart;
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
-        MouseEnter += (_, _) => MySlider_MouseEnter();
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
+        PointerEntered += (_, _) => MySlider_PointerEntered();
         KeyDown += MySlider_KeyDown;
     }
 
@@ -148,7 +148,7 @@ public partial class MySlider
         ModBase.SetLeft(ShapeDot, newWidth);
     }
 
-    private void DragStart(object sender, MouseButtonEventArgs e)
+    private void DragStart(object sender, PointerPressedEventArgs e)
     {
         CaptureMouse();
         MouseMove += OnDragMouseMove;
@@ -173,7 +173,7 @@ public partial class MySlider
         RefreshPopup();
     }
     
-    private void OnDragMouseMove(object sender, MouseEventArgs e)
+    private void OnDragMouseMove(object sender, PointerEventArgs e)
     {
         DragDoing();
     }
@@ -259,7 +259,7 @@ public partial class MySlider
         }
     }
 
-    private void MySlider_MouseEnter()
+    private void MySlider_PointerEntered()
     {
         Focus(); // 确保按键能改变值
     }

@@ -204,7 +204,7 @@ public partial class PageLaunchLeft
     }
 
     // 实例选择按钮
-    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    // [port] PointerPressedEventArgs → PointerPressedEventArgs
     private void BtnInstance_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoader.State == ModBase.LoadState.Loading)
@@ -334,13 +334,13 @@ public partial class PageLaunchLeft
                 ModMain.frmLaunchLeft.LabVersion.Text = ModInstanceList.McMcInstanceSelected.Name;
                 break;
             }
-            // [port] 原: FrmLaunchLeft.BtnMore.Visibility = Visibility.Visible（由功能隐藏设置修改）
+            // [port] 原: FrmLaunchLeft.BtnMore.IsVisible = true（由功能隐藏设置修改）
         }
 
         ExitRefresh: ;
 
         // 功能隐藏
-        // [port] Visibility.Visible/Collapsed → IsVisible true/false
+        // [port] true/Collapsed → IsVisible true/false
         ModMain.frmLaunchLeft.BtnInstance.IsVisible =
             !PageSetupUI.HiddenForceShow && Config.Preference.Hide.FunctionSelect
                 ? false
@@ -349,7 +349,7 @@ public partial class PageLaunchLeft
     }
 
     // 取消按钮
-    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    // [port] PointerPressedEventArgs → PointerPressedEventArgs
     private void BtnCancel_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoaderReal is not null)
@@ -376,7 +376,7 @@ public partial class PageLaunchLeft
     }
 
     // 实例设置按钮
-    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    // [port] PointerPressedEventArgs → PointerPressedEventArgs
     private void BtnMore_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoader.State == ModBase.LoadState.Loading)
@@ -560,7 +560,7 @@ public partial class PageLaunchLeft
     }
 
     // 启动游戏按钮
-    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    // [port] PointerPressedEventArgs → PointerPressedEventArgs
     private void BtnLaunch_Click(object sender, PointerPressedEventArgs e)
     {
         LaunchButtonClick();

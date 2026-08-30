@@ -39,7 +39,7 @@ public partial class PageLaunchRight : IRefreshable
     {
         PanBack.ScrollToHome();
         PanScroll = PanBack; // 不知道为啥不能在 XAML 设置
-        // [port] Visibility.Visible/Collapsed → IsVisible true/false
+        // [port] true/Collapsed → IsVisible true/false
         PanLog.IsVisible = ModBase.modeDebug ? true : false;
         // 社区版提示
         PanHint.IsVisible = States.Hint.CEMessage

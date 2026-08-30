@@ -13,9 +13,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyHint
 {
     // 配色
@@ -52,9 +52,9 @@ public partial class MyHint
         UpdateUI();
         Loaded += (_, _) => UpdateUI();
         Loaded += MyHint_Loaded;
-        MouseLeftButtonUp += MyHint_MouseUp;
-        MouseLeftButtonDown += MyHint_MouseDown;
-        MouseLeave += (_, _) => MyHint_MouseLeave();
+        PointerReleased += MyHint_PointerReleased;
+        PointerPressed += MyHint_MouseDown;
+        PointerExited += (_, _) => MyHint_PointerExited();
         Unloaded += (_, _) => Dispose();
     }
 
@@ -89,6 +89,7 @@ public partial class MyHint
     }
 
     // 文本
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
     public InlineCollection Inlines => LabText.Inlines;
 
     public string Text
@@ -100,8 +101,8 @@ public partial class MyHint
     // 关闭按钮
     public bool CanClose
     {
-        get => BtnClose.Visibility == Visibility.Visible;
-        set => BtnClose.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        get => BtnClose.Visibility == true;
+        set => BtnClose.IsVisible = value ? true : false;
     }
 
     public string RelativeSetup { get; set; } = "";
@@ -143,7 +144,7 @@ public partial class MyHint
     {
         ThemeService.ColorModeChanged += (v, theme) => _ThemeChanged(v, theme);
         if (CanClose && ConfigService.TryGetConfigItemNoType(RelativeSetup, out var item) && item.GetValueNoType() is not null)
-            Visibility = Visibility.Collapsed;
+            Visibility = false;
     }
 
     private void BtnClose_Click(object sender, EventArgs e)
@@ -153,7 +154,7 @@ public partial class MyHint
         ModAnimation.AniDispose(this, false);
     }
 
-    private void MyHint_MouseUp(object sender, MouseButtonEventArgs e)
+    private void MyHint_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isMouseDown)
             return;
@@ -163,12 +164,12 @@ public partial class MyHint
         ModMain.RaiseCustomEvent(this);
     }
 
-    private void MyHint_MouseDown(object sender, MouseButtonEventArgs e)
+    private void MyHint_MouseDown(object sender, PointerPressedEventArgs e)
     {
         isMouseDown = true;
     }
 
-    private void MyHint_MouseLeave()
+    private void MyHint_PointerExited()
     {
         isMouseDown = false;
     }
@@ -201,7 +202,7 @@ public static partial class ModAnimation
                 if (removeFromChildren)
                     ((Panel)control.Parent).Children.Remove(control);
                 else
-                    control.Visibility = Visibility.Collapsed;
+                    control.IsVisible = false;
                 if (callBack is not null)
                     callBack(control);
             }, after: true)
