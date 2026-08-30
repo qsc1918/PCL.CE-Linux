@@ -8,12 +8,12 @@ using Avalonia.Input;
 using Avalonia.Markup;
 using Avalonia.Media;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyButton
 {
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e); // 自定义事件
+    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e); // 自定义事件
 
     public enum ColorState
     {
@@ -41,7 +41,7 @@ public partial class MyButton
     
     private ColorState _ColorType = ColorState.Normal; // 配色方案
 
-    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_MouseUp 先于 Button_MouseLeave 执行）
+    // 鼠标点击判定（务必放在点击事件之后，以使得 Button_PointerReleased 先于 Button_PointerExited 执行）
     
 
     // 自定义属性
@@ -51,16 +51,17 @@ public partial class MyButton
     {
         InitializeComponent();
 
-        MouseEnter += RefreshColor;
-        MouseLeave += RefreshColor;
+        PointerEntered += RefreshColor;
+        PointerExited += RefreshColor;
         Loaded += RefreshColor;
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseLeftButtonUp += Button_MouseUp;
-        MouseLeftButtonDown += Button_MouseDown;
-        MouseEnter += (_, _) => Button_MouseEnter();
-        MouseLeftButtonUp += (_, _) => Button_MouseUp();
-        MouseLeave += (_, _) => Button_MouseLeave();
+        PointerReleased += Button_PointerReleased;
+        PointerPressed += Button_MouseDown;
+        PointerEntered += (_, _) => Button_PointerEntered();
+        PointerReleased += (_, _) => Button_PointerReleased();
+        PointerExited += (_, _) => Button_PointerExited();
     }
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
 
     public InlineCollection Inlines => LabText.Inlines;
 
@@ -155,7 +156,7 @@ public partial class MyButton
 
     // 实现自定义事件
     private bool isMouseDown = false;
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isMouseDown)
             return;
@@ -164,7 +165,7 @@ public partial class MyButton
         ModMain.RaiseCustomEvent(this);
     }
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
         isMouseDown = true;
         Focus();
@@ -177,7 +178,7 @@ public partial class MyButton
             }, "MyButton Scale " + Uuid);
     }
 
-    private void Button_MouseEnter()
+    private void Button_PointerEntered()
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(PanFore, BackgroundProperty,
@@ -185,7 +186,7 @@ public partial class MyButton
             "MyButton Background " + Uuid);
     }
 
-    private void Button_MouseUp()
+    private void Button_PointerReleased()
     {
         if (!isMouseDown)
             return;
@@ -198,7 +199,7 @@ public partial class MyButton
             }, "MyButton Scale " + Uuid);
     }
 
-    private void Button_MouseLeave()
+    private void Button_PointerExited()
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(PanFore, BackgroundProperty, "ColorBrushHalfWhite", animationColorOut),

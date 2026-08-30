@@ -10,9 +10,9 @@ using Avalonia.Controls.Documents;
 using Avalonia.Markup;
 using Avalonia.Media;
 
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyCheckBox
 {
     public delegate void ChangeEventHandler(object sender, bool user);
@@ -62,12 +62,12 @@ public partial class MyCheckBox
     {
         InitializeComponent();
 
-        MouseLeftButtonUp += (_, _) => Checkbox_MouseUp();
-        MouseLeftButtonDown += (_, _) => Checkbox_MouseDown();
-        MouseLeave += (_, _) => Checkbox_MouseLeave();
+        PointerReleased += (_, _) => Checkbox_PointerReleased();
+        PointerPressed += (_, _) => Checkbox_MouseDown();
+        PointerExited += (_, _) => Checkbox_PointerExited();
         IsEnabledChanged += (_, _) => Checkbox_IsEnabledChanged();
-        MouseEnter += (_, _) => Checkbox_MouseEnterAnimation();
-        MouseLeave += (_, _) => Checkbox_MouseLeaveAnimation();
+        PointerEntered += (_, _) => Checkbox_PointerEnteredAnimation();
+        PointerExited += (_, _) => Checkbox_PointerExitedAnimation();
     }
 
     // 自定义属性
@@ -82,6 +82,7 @@ public partial class MyCheckBox
         get => (bool)GetValue(IsThreeStateProperty);
         set => SetValue(IsThreeStateProperty, value);
     } // 是否为三态复选框
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
 
     public InlineCollection Inlines => LabText.Inlines;
 
@@ -119,7 +120,7 @@ public partial class MyCheckBox
                 if (e.handled)
                 {
                     mouseDowned = true;
-                    Checkbox_MouseLeave();
+                    Checkbox_PointerExited();
                     mouseDowned = false;
                     return;
                 }
@@ -226,7 +227,7 @@ public partial class MyCheckBox
         }
     }
 
-    private void Checkbox_MouseUp()
+    private void Checkbox_PointerReleased()
     {
         if (!mouseDowned)
             return;
@@ -278,7 +279,7 @@ public partial class MyCheckBox
         ModAnimation.AniStart(scaleAnims.ToArray(), "MyCheckBox Scale " + Uuid);
     }
 
-    private void Checkbox_MouseLeave()
+    private void Checkbox_PointerExited()
     {
         if (!mouseDowned)
             return;
@@ -304,7 +305,7 @@ public partial class MyCheckBox
             if (IsEnabled)
             {
                 // 可用
-                Checkbox_MouseLeaveAnimation();
+                Checkbox_PointerExitedAnimation();
             }
             else
             {
@@ -330,7 +331,7 @@ public partial class MyCheckBox
         }
     }
 
-    private void Checkbox_MouseEnterAnimation()
+    private void Checkbox_PointerEnteredAnimation()
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty, "ColorBrush3", animationTimeOfMouseIn),
@@ -340,10 +341,10 @@ public partial class MyCheckBox
             "MyCheckBox BorderColor " + Uuid);
     }
 
-    private void Checkbox_MouseLeaveAnimation()
+    private void Checkbox_PointerExitedAnimation()
     {
         if (!IsEnabled)
-            return; // MouseLeave 比 IsEnabledChanged 后执行，所以如果自定义事件修改了 IsEnabled，将导致显示错误
+            return; // PointerExited 比 IsEnabledChanged 后执行，所以如果自定义事件修改了 IsEnabled，将导致显示错误
         ModAnimation.AniStart(
             ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
                 IsEnabled ? "ColorBrush1" : "ColorBrushGray4", animationTimeOfMouseOut),

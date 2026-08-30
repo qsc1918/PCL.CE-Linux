@@ -5,10 +5,12 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace PCL;
 
@@ -56,7 +58,7 @@ public class MyCollapseBar : StackPanel
         var header = new Grid { Height = HeaderHeight, Background = Brushes.Transparent, Cursor = Cursors.Hand };
         header.Children.Add(_titleBlock);
         header.Children.Add(_triangle);
-        header.MouseLeftButtonUp += (_, _) => IsCollapsed = !IsCollapsed;
+        header.PointerReleased += (_, _) => IsCollapsed = !IsCollapsed;
 
         _contentPanel = new StackPanel { Margin = new Thickness(6d, 2d, 0d, 0d) };
 
@@ -105,7 +107,7 @@ public class MyCollapseBar : StackPanel
             }
             else
             {
-                _contentPanel.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+                _contentPanel.IsVisible = value ? false : true;
             }
 
             Toggled?.Invoke(this, EventArgs.Empty);
@@ -127,7 +129,7 @@ public class MyCollapseBar : StackPanel
                 ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.ExtraStrong)),
             ModAnimation.AaCode(() =>
             {
-                _contentPanel.Visibility = Visibility.Collapsed;
+                _contentPanel.IsVisible = false;
                 Height = double.NaN;
                 RestoreParentCard();
             }, after: true)
@@ -140,7 +142,7 @@ public class MyCollapseBar : StackPanel
         RestoreParentCardOnInterrupt();
         SilenceParentCard();
 
-        _contentPanel.Visibility = Visibility.Visible;
+        _contentPanel.IsVisible = true;
         Height = double.NaN;
         Measure(new Size(ActualWidth, double.PositiveInfinity));
         var fullHeight = DesiredSize.Height;

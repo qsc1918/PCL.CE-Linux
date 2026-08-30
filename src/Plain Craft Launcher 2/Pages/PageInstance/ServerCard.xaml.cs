@@ -1,9 +1,11 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using PCL.Core.UI;
 using PCL.Core.UI.Theme;
@@ -22,7 +24,7 @@ public partial class ServerCard
 
         DataContext = new IconManager();
 
-        // 缁€杞扮伐閿涙艾褰查崷銊ゅ敩閻椒鑵戦崚鍥ㄥ床閸ョ偓鐖?
+        // 示例：可在代码中切换图标
         _manager = DataContext as IconManager;
         _manager.AddIconFromXaml("signal_1",
             "<Viewbox xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Width=\"20\" Height=\"20\"><Canvas UseLayoutRounding=\"False\" Width=\"1024.0\" Height=\"1024.0\"><Canvas.Clip><RectangleGeometry Rect=\"0.0,0.0,1024.0,1024.0\"/></Canvas.Clip><Canvas UseLayoutRounding=\"False\"><Rectangle RadiusX=\"0.0\" RadiusY=\"0.0\" Canvas.Left=\"234.666667\" Canvas.Top=\"610.56\" Width=\"80.853333\" Height=\"127.04\" Fill=\"#ff00ff21\"/></Canvas><Canvas UseLayoutRounding=\"False\"><Rectangle RadiusX=\"0.0\" RadiusY=\"0.0\" Canvas.Left=\"353.066667\" Canvas.Top=\"541.226667\" Width=\"80.853333\" Height=\"196.373333\" Fill=\"#ff888888\"/><Rectangle RadiusX=\"0.0\" RadiusY=\"0.0\" Canvas.Left=\"471.445333\" Canvas.Top=\"460.373333\" Width=\"80.896\" Height=\"277.226667\" Fill=\"#ff888888\"/><Rectangle RadiusX=\"0.0\" RadiusY=\"0.0\" Canvas.Left=\"589.866667\" Canvas.Top=\"379.52\" Width=\"80.853333\" Height=\"358.08\" Fill=\"#ff888888\"/><Rectangle RadiusX=\"0.0\" RadiusY=\"0.0\" Canvas.Left=\"708.266667\" Canvas.Top=\"298.666667\" Width=\"80.853333\" Height=\"438.933333\" Fill=\"#ff888888\"/></Canvas></Canvas></Viewbox>");
@@ -49,7 +51,7 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     閸掓繂顫愰崠鏍ㄦ箛閸斺€虫珤閸楋紕澧?
+    ///     初始化服务器卡片
     /// </summary>
     public void UpdateServerInfo(MinecraftServerInfo serverInfo)
     {
@@ -58,14 +60,14 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     閺囧瓨鏌婇張宥呭閸ｂ晳I
+    ///     更新服务器UI
     /// </summary>
     private async void UpdateServerUi()
     {
         if (server is null)
             return;
 
-        // 閺囧瓨鏌婇張宥呭閸ｃ劌鎮曠粔?
+        // 更新服务器名称
         ServerName.Text = server.Name;
         await ImageLoaderHelper.SetServerLogoAsync(server.Icon, ServerIcon);
         if (server.Status == ServerStatus.Online)
@@ -109,30 +111,30 @@ public partial class ServerCard
         {
             case var @case when 0 <= @case && @case <= 99:
             {
-                return "signal_5"; // 5 閺夆€蹭繆閸?
+                return "signal_5"; // 5 条信号
             }
             case var case1 when 100 <= case1 && case1 <= 299:
             {
-                return "signal_4"; // 4 閺夆€蹭繆閸?
+                return "signal_4"; // 4 条信号
             }
             case var case2 when 300 <= case2 && case2 <= 599:
             {
-                return "signal_3"; // 3 閺夆€蹭繆閸?
+                return "signal_3"; // 3 条信号
             }
             case var case3 when 600 <= case3 && case3 <= 999:
             {
-                return "signal_2"; // 2 閺夆€蹭繆閸?
+                return "signal_2"; // 2 条信号
             }
 
             default:
             {
-                return "signal_1"; // 1 閺夆€蹭繆閸?
+                return "signal_1"; // 1 条信号
             }
         }
     }
 
     /// <summary>
-    ///     閸掗攱鏌婇張宥呭閸ｃ劎濮搁幀?
+    ///     刷新服务器状态
     /// </summary>
     public async Task RefreshServerStatusAsync(bool withHint, CancellationToken token = default)
     {
@@ -144,7 +146,7 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     鏉╃偞甯撮崚鐗堟箛閸斺€虫珤
+    ///     连接到服务器
     /// </summary>
     private void BtnConnect_Click(object sender, EventArgs e)
     {
@@ -171,7 +173,7 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     婢跺秴鍩楅張宥呭閸ｃ劌婀撮崸鈧?
+    ///     复制服务器地址
     /// </summary>
     private void BtnCopy_Click(object sender, RoutedEventArgs e)
     {
@@ -188,7 +190,7 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     閸掗攱鏌婇張宥呭閸ｃ劎濮搁幀?
+    ///     刷新服务器状态
     /// </summary>
     private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
     {
@@ -196,7 +198,7 @@ public partial class ServerCard
     }
 
     /// <summary>
-    ///     缂傛牞绶張宥呭閸ｃ劋淇婇幁?
+    ///     编辑服务器信息
     /// </summary>
     private void BtnEdit_Click(object sender, RoutedEventArgs e)
     {

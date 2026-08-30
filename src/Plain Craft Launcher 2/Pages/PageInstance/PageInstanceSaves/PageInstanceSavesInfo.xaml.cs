@@ -1,9 +1,11 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Humanizer;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
@@ -15,10 +17,10 @@ namespace PCL;
 
 public partial class PageInstanceSavesInfo : IRefreshable
 {
-    /// <summary>閺冪姷濮搁幀浣规箛閸斺槄绱濈痪璺ㄢ柤鐎瑰鍙忛敍灞惧閺堝鐤勬笟瀣讲閸忓彉闊╅妴?/summary>
+    /// <summary>无状态服务，线程安全，所有实例可共享。</summary>
     private static readonly SaveManager SaveManager = new();
 
-    /// <summary>闂冩彃鑻熼崣鎴濆暱缁?/summary>
+    /// <summary>防并发冲突</summary>
     private static readonly SemaphoreSlim WriteLock = new(1, 1);
 
     private CancellationTokenSource? _cts;
@@ -35,7 +37,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
 
     void IRefreshable.Refresh() => Refresh();
     public void Refresh() => RefreshInfoAsync().ContinueWith(
-        t => LogWrapper.Warn(t.Exception, "Saves", "閸掗攱鏌婄€涙ɑ銆傛穱鈩冧紖瀵倸鐖?), //only 閸忔粌绨?
+        t => LogWrapper.Warn(t.Exception, "Saves", "刷新存档信息异常"), //only 兜底
         CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
 
     private async Task RefreshInfoAsync()
@@ -50,10 +52,10 @@ public partial class PageInstanceSavesInfo : IRefreshable
             ClearInfoTable();
             PanSettingsList.Children.Clear();
             PanSettingsList.RowDefinitions.Clear();
-            Hintversion1_9.Visibility = false;
-            Hintversion1_8.Visibility = false;
-            Hintversion1_3.Visibility = false;
-            PanSettings.Visibility = false;
+            Hintversion1_9.IsVisible = false;
+            Hintversion1_8.IsVisible = false;
+            Hintversion1_3.IsVisible = false;
+            PanSettings.IsVisible = false;
 
             var save = await SaveManager.LoadSaveAsync(PageInstanceSavesLeft.currentSave, ct);
 
@@ -96,7 +98,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
             if (save.Difficulty.HasValue)
                 BuildDifficultySetting(save.IsHardcore, save.IsDifficultyLocked, (int)save.Difficulty.Value);
 
-            PanContent.Visibility = true;
+            PanContent.IsVisible = true;
         }
         catch (OperationCanceledException) { }
         catch (Exception ex)
@@ -106,19 +108,19 @@ public partial class PageInstanceSavesInfo : IRefreshable
                 Lang.Text("Instance.Saves.Info.Error.LoadFailed"),
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Info.Error.LoadFailed"));
-            PanContent.Visibility = false;
-            PanSettings.Visibility = false;
+            PanContent.IsVisible = false;
+            PanSettings.IsVisible = false;
             PanSettingsList.Children.Clear();
             PanSettingsList.RowDefinitions.Clear();
-            Hintversion1_9.Visibility = false;
-            Hintversion1_8.Visibility = false;
-            Hintversion1_3.Visibility = false;
+            Hintversion1_9.IsVisible = false;
+            Hintversion1_8.IsVisible = false;
+            Hintversion1_3.IsVisible = false;
         }
     }
 
     private void BuildAllowCommandsSetting(bool allowCommands)
     {
-        PanSettings.Visibility = true;
+        PanSettings.IsVisible = true;
         var folder = PageInstanceSavesLeft.currentSave;
 
         var combo = new MyComboBox
@@ -166,7 +168,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
 
     private void BuildDifficultySetting(bool isHardcore, bool isLocked, int difficultyValue)
     {
-        PanSettings.Visibility = true;
+        PanSettings.IsVisible = true;
         var folder = PageInstanceSavesLeft.currentSave;
 
         var combo = new MyComboBox
@@ -243,7 +245,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
     private static void ShowHint(MyHint hint, string langKey)
     {
         hint.Text = Lang.Text(langKey);
-        hint.Visibility = true;
+        hint.IsVisible = true;
     }
 
     private void ClearInfoTable()

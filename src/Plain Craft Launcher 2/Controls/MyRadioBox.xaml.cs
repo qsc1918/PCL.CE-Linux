@@ -12,9 +12,9 @@ using Avalonia.Markup;
 using Avalonia.Controls.Shapes;
 
 using PCL.Core.App.Localization;
-namespace PCL;
+using Avalonia.Metadata;
 
-[ContentProperty("Inlines")]
+namespace PCL;
 public partial class MyRadioBox : IMyRadio
 {
     public delegate void PreviewChangeEventHandler(object sender, ModBase.RouteEventArgs e);
@@ -55,12 +55,12 @@ public partial class MyRadioBox : IMyRadio
     public MyRadioBox()
     {
         InitializeComponent();
-        MouseLeftButtonUp += (_, _) => Radiobox_MouseUp();
-        MouseLeftButtonDown += (_, _) => Radiobox_MouseDown();
-        MouseLeave += (_, _) => Radiobox_MouseLeave();
+        PointerReleased += (_, _) => Radiobox_PointerReleased();
+        PointerPressed += (_, _) => Radiobox_MouseDown();
+        PointerExited += (_, _) => Radiobox_PointerExited();
         IsEnabledChanged += (_, _) => Radiobox_IsEnabledChanged();
-        MouseEnter += (_, _) => Radiobox_MouseEnterAnimation();
-        MouseLeave += (_, _) => Radiobox_MouseLeaveAnimation();
+        PointerEntered += (_, _) => Radiobox_PointerEnteredAnimation();
+        PointerExited += (_, _) => Radiobox_PointerExitedAnimation();
     }
 
     // 自定义属性
@@ -69,6 +69,7 @@ public partial class MyRadioBox : IMyRadio
         get => (bool)GetValue(CheckedProperty);
         set => SetChecked(value, false);
     }
+    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
 
     public InlineCollection Inlines => LabText.Inlines;
 
@@ -99,7 +100,7 @@ public partial class MyRadioBox : IMyRadio
                 PreviewCheck?.Invoke(this, e);
                 if (e.handled)
                 {
-                    Radiobox_MouseLeave();
+                    Radiobox_PointerExited();
                     return;
                 }
             }
@@ -267,7 +268,7 @@ public partial class MyRadioBox : IMyRadio
         }
     }
 
-    private void Radiobox_MouseUp()
+    private void Radiobox_PointerReleased()
     {
         if (!mouseDowned)
             return;
@@ -291,7 +292,7 @@ public partial class MyRadioBox : IMyRadio
                 "MyRadioBox Border " + Uuid);
     }
 
-    private void Radiobox_MouseLeave()
+    private void Radiobox_PointerExited()
     {
         if (!mouseDowned)
             return;
@@ -313,7 +314,7 @@ public partial class MyRadioBox : IMyRadio
             if (IsEnabled)
             {
                 // 可用
-                Radiobox_MouseLeaveAnimation();
+                Radiobox_PointerExitedAnimation();
             }
             else
             {
@@ -338,7 +339,7 @@ public partial class MyRadioBox : IMyRadio
         }
     }
 
-    private void Radiobox_MouseEnterAnimation()
+    private void Radiobox_PointerEnteredAnimation()
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(ShapeBorder, Shape.StrokeProperty, "ColorBrush3", animationTimeOfMouseIn),
@@ -348,10 +349,10 @@ public partial class MyRadioBox : IMyRadio
             "MyRadioBox TextColor " + Uuid);
     }
 
-    private void Radiobox_MouseLeaveAnimation()
+    private void Radiobox_PointerExitedAnimation()
     {
         if (!IsEnabled)
-            return; // MouseLeave 比 IsEnabledChanged 后执行，所以如果自定义事件修改了 IsEnabled，将导致显示错误
+            return; // PointerExited 比 IsEnabledChanged 后执行，所以如果自定义事件修改了 IsEnabled，将导致显示错误
         if (ControlVisualHelpers.ShouldAnimate(this))
         {
             ModAnimation.AniStart(

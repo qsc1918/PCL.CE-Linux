@@ -200,7 +200,7 @@ public partial class PageLoginAuth
     }
 
     // 切换注册按钮可见性
-    // [port] Visibility.Visible/Collapsed → IsVisible true/false
+    // [port] true/Collapsed → IsVisible true/false
     private void ReloadRegisterButton()
     {
         var address = Config.InstanceAuth.AuthRegisterAddress.ToString();

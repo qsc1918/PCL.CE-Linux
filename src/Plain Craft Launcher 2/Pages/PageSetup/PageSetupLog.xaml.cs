@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using Avalonia;
@@ -37,10 +37,10 @@ public partial class PageSetupLog
 
     private void PageOtherLog_Loaded(object sender, RoutedEventArgs e)
     {
-        // 闁插秴顦查崝鐘烘祰闁劌鍨?
+        // 重复加载部分
         PanBack.ScrollToHome();
         LoadList();
-        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
+        // 非重复加载部分
         if (IsLoaded)
             return;
     }
@@ -135,12 +135,12 @@ public partial class PageSetupLog
         }
     }
 
-    private void ButtonOpenDir_OnClick(object sender, PointerReleasedEventArgs e)
+    private void ButtonOpenDir_OnClick(object sender, PointerPressedEventArgs e)
     {
         Basics.OpenPath(LogDirectory);
     }
 
-    private void ButtonClean_OnClick(object sender, PointerReleasedEventArgs e)
+    private void ButtonClean_OnClick(object sender, PointerPressedEventArgs e)
     {
         var r = ModMain.MyMsgBox(Lang.Text("Setup.Log.Clear.Confirm.Message"), Lang.Text("Setup.Log.Clear.Confirm.Title"), Lang.Text("Common.Action.Confirm"), Lang.Text("Common.Action.Cancel"), isWarn: true);
         if (r != 1)
@@ -153,12 +153,12 @@ public partial class PageSetupLog
         LoadList();
     }
 
-    private void ButtonExportAll_OnClick(object sender, PointerReleasedEventArgs e)
+    private void ButtonExportAll_OnClick(object sender, PointerPressedEventArgs e)
     {
         ExportLog(Directory.GetFiles(LogDirectory));
     }
 
-    private void ButtonExport_OnClick(object sender, PointerReleasedEventArgs e)
+    private void ButtonExport_OnClick(object sender, PointerPressedEventArgs e)
     {
         var pendingLogs = Array.FindAll(Directory.GetFiles(LogDirectory),
             s => s.IsMatch(RegexPatterns.LastPendingLogPath));

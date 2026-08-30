@@ -395,21 +395,21 @@ public class ModSetup
         {
             case 0: // 无
             {
-                ModMain.frmSetupUI.PanCustomPreset.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomLocal.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomNet.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.HintCustom.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.HintCustomWarn.Visibility = Visibility.Collapsed;
+                ModMain.frmSetupUI.PanCustomPreset.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomLocal.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomNet.IsVisible = false;
+                ModMain.frmSetupUI.HintCustom.IsVisible = false;
+                ModMain.frmSetupUI.HintCustomWarn.IsVisible = false;
                 break;
             }
             case 1: // 本地
             {
-                ModMain.frmSetupUI.PanCustomPreset.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomLocal.Visibility = Visibility.Visible;
-                ModMain.frmSetupUI.PanCustomNet.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.HintCustom.Visibility = Visibility.Visible;
+                ModMain.frmSetupUI.PanCustomPreset.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomLocal.IsVisible = true;
+                ModMain.frmSetupUI.PanCustomNet.IsVisible = false;
+                ModMain.frmSetupUI.HintCustom.IsVisible = true;
                 ModMain.frmSetupUI.HintCustomWarn.Visibility =
-                    States.Hint.UntrustedHomepage ? Visibility.Collapsed : Visibility.Visible;
+                    States.Hint.UntrustedHomepage ? false : true;
                 ModMain.frmSetupUI.HintCustom.Text =
                     Lang.Text("Setup.Ui.Homepage.LocalFile.Hint");
                 CustomEventService.SetEventType(ModMain.frmSetupUI.HintCustom, EventType.None);
@@ -417,12 +417,12 @@ public class ModSetup
             }
             case 2: // 联网
             {
-                ModMain.frmSetupUI.PanCustomPreset.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomLocal.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomNet.Visibility = Visibility.Visible;
-                ModMain.frmSetupUI.HintCustom.Visibility = Visibility.Visible;
+                ModMain.frmSetupUI.PanCustomPreset.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomLocal.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomNet.IsVisible = true;
+                ModMain.frmSetupUI.HintCustom.IsVisible = true;
                 ModMain.frmSetupUI.HintCustomWarn.Visibility =
-                    States.Hint.UntrustedHomepage ? Visibility.Collapsed : Visibility.Visible;
+                    States.Hint.UntrustedHomepage ? false : true;
                 ModMain.frmSetupUI.HintCustom.Text =
                     Lang.Text("Setup.Ui.Homepage.NetUpdate.Hint");
                 CustomEventService.SetEventType(ModMain.frmSetupUI.HintCustom, EventType.OpenUrl);
@@ -432,11 +432,11 @@ public class ModSetup
             }
             case 3: // 预设
             {
-                ModMain.frmSetupUI.PanCustomPreset.Visibility = Visibility.Visible;
-                ModMain.frmSetupUI.PanCustomLocal.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.PanCustomNet.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.HintCustom.Visibility = Visibility.Collapsed;
-                ModMain.frmSetupUI.HintCustomWarn.Visibility = Visibility.Collapsed;
+                ModMain.frmSetupUI.PanCustomPreset.IsVisible = true;
+                ModMain.frmSetupUI.PanCustomLocal.IsVisible = false;
+                ModMain.frmSetupUI.PanCustomNet.IsVisible = false;
+                ModMain.frmSetupUI.HintCustom.IsVisible = false;
+                ModMain.frmSetupUI.HintCustomWarn.IsVisible = false;
                 break;
             }
         }
@@ -450,7 +450,7 @@ public class ModSetup
         if (ModMain.frmSetupUI is null)
             return;
 
-        ModMain.frmSetupUI.PanBlurValue.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        ModMain.frmSetupUI.PanBlurValue.IsVisible = value ? true : false;
         UiBlurValue(value ? Config.Preference.Blur.Radius : 0);
     }
 
@@ -477,51 +477,51 @@ public class ModSetup
         {
             case 0: // 无
             {
-                ModMain.frmMain.ShapeTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.BtnTitleHelp.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ShapeHMCLTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.LabTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ImageTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.CELogo.Visibility = Visibility.Collapsed;
+                ModMain.frmMain.ShapeTitleLogo.IsVisible = false;
+                ModMain.frmMain.BtnTitleHelp.IsVisible = false;
+                ModMain.frmMain.ShapeHMCLTitleLogo.IsVisible = false;
+                ModMain.frmMain.LabTitleLogo.IsVisible = false;
+                ModMain.frmMain.ImageTitleLogo.IsVisible = false;
+                ModMain.frmMain.CELogo.IsVisible = false;
                 if (ModMain.frmSetupUI is not null)
                 {
-                    ModMain.frmSetupUI.CheckLogoLeft.Visibility = Visibility.Visible;
-                    ModMain.frmSetupUI.PanLogoText.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoChange.Visibility = Visibility.Collapsed;
+                    ModMain.frmSetupUI.CheckLogoLeft.IsVisible = true;
+                    ModMain.frmSetupUI.PanLogoText.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoChange.IsVisible = false;
                 }
 
                 break;
             }
             case 1: // 默认
             {
-                ModMain.frmMain.ShapeTitleLogo.Visibility = Visibility.Visible;
-                ModMain.frmMain.BtnTitleHelp.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ShapeHMCLTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.LabTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ImageTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.CELogo.Visibility = Visibility.Visible;
+                ModMain.frmMain.ShapeTitleLogo.IsVisible = true;
+                ModMain.frmMain.BtnTitleHelp.IsVisible = false;
+                ModMain.frmMain.ShapeHMCLTitleLogo.IsVisible = false;
+                ModMain.frmMain.LabTitleLogo.IsVisible = false;
+                ModMain.frmMain.ImageTitleLogo.IsVisible = false;
+                ModMain.frmMain.CELogo.IsVisible = true;
                 if (ModMain.frmSetupUI is not null)
                 {
-                    ModMain.frmSetupUI.CheckLogoLeft.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoText.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoChange.Visibility = Visibility.Collapsed;
+                    ModMain.frmSetupUI.CheckLogoLeft.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoText.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoChange.IsVisible = false;
                 }
 
                 break;
             }
             case 2: // 文本
             {
-                ModMain.frmMain.ShapeTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.BtnTitleHelp.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ShapeHMCLTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.LabTitleLogo.Visibility = Visibility.Visible;
-                ModMain.frmMain.ImageTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.CELogo.Visibility = Visibility.Visible;
+                ModMain.frmMain.ShapeTitleLogo.IsVisible = false;
+                ModMain.frmMain.BtnTitleHelp.IsVisible = false;
+                ModMain.frmMain.ShapeHMCLTitleLogo.IsVisible = false;
+                ModMain.frmMain.LabTitleLogo.IsVisible = true;
+                ModMain.frmMain.ImageTitleLogo.IsVisible = false;
+                ModMain.frmMain.CELogo.IsVisible = true;
                 if (ModMain.frmSetupUI is not null)
                 {
-                    ModMain.frmSetupUI.CheckLogoLeft.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoText.Visibility = Visibility.Visible;
-                    ModMain.frmSetupUI.PanLogoChange.Visibility = Visibility.Collapsed;
+                    ModMain.frmSetupUI.CheckLogoLeft.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoText.IsVisible = true;
+                    ModMain.frmSetupUI.PanLogoChange.IsVisible = false;
                 }
 
                 _ = Config.Preference.WindowTitleCustomText;
@@ -529,17 +529,17 @@ public class ModSetup
             }
             case 3: // 图片
             {
-                ModMain.frmMain.ShapeTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.BtnTitleHelp.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ShapeHMCLTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.LabTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ImageTitleLogo.Visibility = Visibility.Visible;
-                ModMain.frmMain.CELogo.Visibility = Visibility.Visible;
+                ModMain.frmMain.ShapeTitleLogo.IsVisible = false;
+                ModMain.frmMain.BtnTitleHelp.IsVisible = false;
+                ModMain.frmMain.ShapeHMCLTitleLogo.IsVisible = false;
+                ModMain.frmMain.LabTitleLogo.IsVisible = false;
+                ModMain.frmMain.ImageTitleLogo.IsVisible = true;
+                ModMain.frmMain.CELogo.IsVisible = true;
                 if (ModMain.frmSetupUI is not null)
                 {
-                    ModMain.frmSetupUI.CheckLogoLeft.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoText.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoChange.Visibility = Visibility.Visible;
+                    ModMain.frmSetupUI.CheckLogoLeft.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoText.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoChange.IsVisible = true;
                 }
 
                 try
@@ -559,16 +559,16 @@ public class ModSetup
                 break;
             }
             case 4: //HMCL (愚人节)
-                ModMain.frmMain.ShapeTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ShapeHMCLTitleLogo.Visibility = Visibility.Visible;
-                ModMain.frmMain.LabTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.ImageTitleLogo.Visibility = Visibility.Collapsed;
-                ModMain.frmMain.BtnTitleHelp.Visibility = Visibility.Visible;
+                ModMain.frmMain.ShapeTitleLogo.IsVisible = false;
+                ModMain.frmMain.ShapeHMCLTitleLogo.IsVisible = true;
+                ModMain.frmMain.LabTitleLogo.IsVisible = false;
+                ModMain.frmMain.ImageTitleLogo.IsVisible = false;
+                ModMain.frmMain.BtnTitleHelp.IsVisible = true;
                 if (ModMain.frmSetupUI is not null) 
                 {
-                    ModMain.frmSetupUI.CheckLogoLeft.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoText.Visibility = Visibility.Collapsed;
-                    ModMain.frmSetupUI.PanLogoChange.Visibility = Visibility.Collapsed;
+                    ModMain.frmSetupUI.CheckLogoLeft.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoText.IsVisible = false;
+                    ModMain.frmSetupUI.PanLogoChange.IsVisible = false;
                 }
 
                 break;

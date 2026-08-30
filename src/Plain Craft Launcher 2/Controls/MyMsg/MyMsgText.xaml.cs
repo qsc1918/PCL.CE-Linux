@@ -136,7 +136,7 @@ public partial class MyMsgText
         }, "MyMsgBox " + uuid);
     }
 
-    public void Btn1_Click(object? sender = null, MouseButtonEventArgs? e = null)
+    public void Btn1_Click(object? sender = null, PointerPressedEventArgs? e = null)
     {
         if (myConverter.IsExited)
             return;
@@ -152,7 +152,7 @@ public partial class MyMsgText
         }
     }
 
-    public void Btn2_Click(object sender, MouseButtonEventArgs e)
+    public void Btn2_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -168,7 +168,7 @@ public partial class MyMsgText
         }
     }
 
-    public void Btn3_Click(object sender, MouseButtonEventArgs e)
+    public void Btn3_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -184,7 +184,7 @@ public partial class MyMsgText
         }
     }
 
-    private void Drag(object sender, MouseButtonEventArgs e)
+    private void Drag(object sender, PointerPressedEventArgs e)
     {
         try
         {

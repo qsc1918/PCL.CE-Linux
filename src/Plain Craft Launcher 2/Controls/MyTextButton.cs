@@ -47,14 +47,14 @@ public class MyTextButton : Label
     {
         SetResourceReference(ForegroundProperty, "ColorBrush1");
         Background = ThemeManager.colorSemiTransparent;
-        PreviewMouseLeftButtonDown += MyTextButton_MouseLeftButtonDown;
-        MouseLeave += (_, _) => MyTextButton_MouseLeave();
-        PreviewMouseLeftButtonUp += MyTextButton_MouseLeftButtonUp;
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
+        PreviewPointerPressed += MyTextButton_PointerPressed;
+        PointerExited += (_, _) => MyTextButton_PointerExited();
+        PreviewPointerReleased += MyTextButton_PointerReleased;
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseLeftButtonDown += (_, _) => RefreshColor();
-        MouseLeftButtonUp += (_, _) => RefreshColor();
+        PointerPressed += (_, _) => RefreshColor();
+        PointerReleased += (_, _) => RefreshColor();
     }
 
     // 文本
@@ -76,18 +76,18 @@ public class MyTextButton : Label
         return ("ColorBrush1", animationTimeOut);
     }
 
-    private void MyTextButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void MyTextButton_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         isMouseDown = true;
         e.Handled = true;
     }
 
-    private void MyTextButton_MouseLeave()
+    private void MyTextButton_PointerExited()
     {
         isMouseDown = false;
     }
 
-    private void MyTextButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void MyTextButton_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         if (!isMouseDown) return;
         isMouseDown = false;

@@ -28,7 +28,7 @@ public class MyScrollViewer : ScrollViewer
 
     public double DeltaMult { get; set; } = 1d;
 
-    private void MyScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    private void MyScrollViewer_PreviewMouseWheel(object sender, PointerWheelEventArgs e)
     {
         if (e.Delta == 0 || ScrollableHeight <= 0d)
             return;

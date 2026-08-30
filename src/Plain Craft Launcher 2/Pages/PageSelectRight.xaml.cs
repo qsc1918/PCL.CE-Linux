@@ -118,7 +118,7 @@ public partial class PageSelectRight
             autoRun: false);
     }
 
-    private void Load_Click(object sender, MouseButtonEventArgs e)
+    private void Load_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModInstanceList.mcInstanceListLoader.State == ModBase.LoadState.Failed)
             ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,
@@ -141,7 +141,7 @@ public partial class PageSelectRight
             var originalHasInstances = ModInstanceList.mcInstanceList.ToArray().Any(c => c.Value.Count > 0);
 
             // 搜索无结果时显示 PanEmptySearch
-            PanEmptySearch.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+            PanEmptySearch.IsVisible = false; // [port] false → IsVisible=false
 
             foreach (var Card in ModInstanceList.mcInstanceList.ToArray())
             {
@@ -305,13 +305,13 @@ public partial class PageSelectRight
                 if (!originalHasInstances)
                 {
                     // 完全没有实例的情况
-                    PanEmpty.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
-                    PanBack.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                    PanEmpty.IsVisible = true; // [port] true → IsVisible=true
+                    PanBack.IsVisible = false; // [port] false → IsVisible=false
                     if (showHidden)
                     {
                         LabEmptyTitle.Text = Lang.Text("Select.Instance.Hidden.EmptyTitle");
                         LabEmptyContent.Text = Lang.Text("Select.Instance.Hidden.EmptyMessage");
-                        BtnEmptyDownload.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                        BtnEmptyDownload.IsVisible = false; // [port] false → IsVisible=false
                     }
                     else
                     {
@@ -327,7 +327,7 @@ public partial class PageSelectRight
                              c.Key == McInstanceCardType.Hidden && c.Value.Count > 0))
                 {
                     // 有隐藏实例但搜索无结果 - 显示搜索无结果提示
-                    PanVerSearchBox.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanVerSearchBox.IsVisible = true; // [port] true → IsVisible=true
                     PanEmpty.IsVisible = false;
                     PanBack.IsVisible = true;
                     PanEmptySearch.IsVisible = true;
@@ -339,17 +339,17 @@ public partial class PageSelectRight
                 else if (showHidden)
                 {
                     // 无隐藏实例 - 显示"无隐藏实例"提示
-                    PanEmpty.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
-                    PanBack.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                    PanEmpty.IsVisible = true; // [port] true → IsVisible=true
+                    PanBack.IsVisible = false; // [port] false → IsVisible=false
                     LabEmptyTitle.Text = Lang.Text("Select.Instance.Hidden.EmptyTitle");
                     LabEmptyContent.Text = Lang.Text("Select.Instance.Hidden.EmptyMessage");
-                    BtnEmptyDownload.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
-                    PanVerSearchBox.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                    BtnEmptyDownload.IsVisible = false; // [port] false → IsVisible=false
+                    PanVerSearchBox.IsVisible = false; // [port] false → IsVisible=false
                 }
                 else
                 {
                     // 普通模式下的搜索无结果
-                    PanVerSearchBox.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanVerSearchBox.IsVisible = true; // [port] true → IsVisible=true
                     PanEmpty.IsVisible = false;
                     PanBack.IsVisible = true;
                     PanEmptySearch.IsVisible = true;
@@ -525,7 +525,7 @@ public partial class PageSelectRight
         }
     }
 
-    private void BtnDownload_Click(object sender, MouseButtonEventArgs e)
+    private void BtnDownload_Click(object sender, PointerPressedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadInstall);
     }

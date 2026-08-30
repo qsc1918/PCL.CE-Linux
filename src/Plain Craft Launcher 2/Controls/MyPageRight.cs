@@ -110,9 +110,9 @@ public class MyPageRight : AdornerDecorator
         realLoader.OnStateChangedUi += (loader, newState, oldState) =>
             ModBase.RunInUi(() => PageLoaderState(loader, newState, oldState));
         // 隐藏 UI
-        panLoader.Visibility = Visibility.Collapsed;
-        panContent.Visibility = Visibility.Collapsed;
-        panAlways?.Visibility = Visibility.Collapsed;
+        panLoader.IsVisible = false;
+        panContent.IsVisible = false;
+        panAlways?.IsVisible = false;
         // 初次运行加载器
         if (pageLoaderAutoRun)
         {
@@ -301,14 +301,14 @@ public class MyPageRight : AdornerDecorator
         // 由于动画会被强制中止，所以需要手动进行隐藏
         if (pageLoader is null && Child is not null)
         {
-            Child.Visibility = Visibility.Collapsed;
+            Child.IsVisible = false;
         }
         else
         {
-            panContent.Visibility = Visibility.Collapsed;
-            panLoader.Visibility = Visibility.Collapsed;
+            panContent.IsVisible = false;
+            panLoader.IsVisible = false;
             if (panAlways is not null)
-                panAlways.Visibility = Visibility.Collapsed;
+                panAlways.IsVisible = false;
         }
     }
 
@@ -434,7 +434,7 @@ public class MyPageRight : AdornerDecorator
             case PageStates.LoaderWait:
             {
                 PageState = PageStates.LoaderEnter;
-                if (panAlways is not null && panAlways.Visibility == Visibility.Collapsed)
+                if (panAlways is not null && panAlways.Visibility == false)
                     TriggerEnterAnimation(panAlways, panLoader);
                 else
                     TriggerEnterAnimation(panLoader);
@@ -532,7 +532,7 @@ public class MyPageRight : AdornerDecorator
                     case PageStates.LoaderWait:
                     {
                         PageState = PageStates.ContentEnter;
-                        if (panAlways is not null && panAlways.Visibility == Visibility.Collapsed)
+                        if (panAlways is not null && panAlways.Visibility == false)
                             TriggerEnterAnimation(panAlways, panContent);
                         else
                             TriggerEnterAnimation(panContent);
@@ -561,7 +561,7 @@ public class MyPageRight : AdornerDecorator
     {
         var realElements = elements.Where(e => e is not null);
         foreach (var Element in realElements)
-            Element.Visibility = Visibility.Visible; // 页面均处于默认的隐藏状态
+            Element.IsVisible = true; // 页面均处于默认的隐藏状态
         var aniList = new List<ModAnimation.AniData>();
         var delay = 0;
         // 基础动画
@@ -642,7 +642,7 @@ public class MyPageRight : AdornerDecorator
         aniList.Add(ModAnimation.AaCode(() =>
         {
             foreach (var Element in realElements)
-                Element.Visibility = Visibility.Collapsed;
+                Element.IsVisible = false;
             PageOnExitAnimationFinished();
         }, after: true));
         ModAnimation.AniStart(aniList, "PageRight PageChange " + pageUuid);
@@ -666,7 +666,7 @@ public class MyPageRight : AdornerDecorator
     private void _GetAllAnimControls(Control element, ref List<Control> allControls,
         bool ignoreInvisibility)
     {
-        if (!ignoreInvisibility && element.Visibility == Visibility.Collapsed)
+        if (!ignoreInvisibility && element.Visibility == false)
             return;
         if (element is MyCard || element is MyHint || element is MyExtraTextButton || element is TextBlock ||
             element is MyTextButton)
@@ -694,7 +694,7 @@ public class MyPageRight : AdornerDecorator
         {
             if (Element is MyScrollViewer Viewer)
             {
-                if (Viewer.ComputedVerticalScrollBarVisibility != Visibility.Visible)
+                if (Viewer.ComputedVerticalScrollBarVisibility != true)
                     continue;
                 return Viewer.scrollBar;
             }
@@ -702,7 +702,7 @@ public class MyPageRight : AdornerDecorator
             foreach (var Control in LogicalTreeHelper.GetChildren(Element))
                 if (Control is MyScrollViewer ChildViewer)
                 {
-                    if (ChildViewer.ComputedVerticalScrollBarVisibility != Visibility.Visible)
+                    if (ChildViewer.ComputedVerticalScrollBarVisibility != true)
                         return null;
                     return ChildViewer.scrollBar;
                 }

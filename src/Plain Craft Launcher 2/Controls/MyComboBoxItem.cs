@@ -28,10 +28,10 @@ public class MyComboBoxItem : ComboBoxItem
         Style = (Style)FindResource("MyComboBoxItem");
         Unselected += (_, _) => RefreshColor();
         MouseMove += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
         Selected += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseLeftButtonUp += MyComboBoxItem_MouseLeftButtonUp;
+        PointerReleased += MyComboBoxItem_PointerReleased;
     }
 
     private void RefreshColor()
@@ -99,7 +99,7 @@ public class MyComboBoxItem : ComboBoxItem
         return value.Content?.ToString() ?? "";
     }
 
-    private void MyComboBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void MyComboBoxItem_PointerReleased(object sender, PointerPressedEventArgs e)
     {
         ModBase.Log("[Control] 选择下拉列表项：" + ToString());
     }

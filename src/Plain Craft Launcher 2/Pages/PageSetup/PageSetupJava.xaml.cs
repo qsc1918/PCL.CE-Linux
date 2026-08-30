@@ -1,10 +1,13 @@
-using System.IO;
+﻿using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.Minecraft;
 using PCL.Core.UI;

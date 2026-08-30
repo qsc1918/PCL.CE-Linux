@@ -38,8 +38,8 @@ public class MyMenuItem : MenuItem
     public MyMenuItem()
     {
         Loaded += MyMenuItem_Loaded;
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
         IsEnabledChanged += (_, _) => RefreshColor();
     }
 
@@ -78,17 +78,17 @@ public class MyMenuItem : MenuItem
 
         if (SvgIconControlHelper.HasSvgIcon(SvgIcon))
         {
-            iconControl.Visibility = Visibility.Collapsed;
+            iconControl.IsVisible = false;
             EnsureSvgIconControl(iconControl);
             _svgIconControl!.Icon = SvgIcon;
-            _svgIconControl.Visibility = Visibility.Visible;
+            _svgIconControl.IsVisible = true;
             return;
         }
 
-        _svgIconControl?.Visibility = Visibility.Collapsed;
+        _svgIconControl?.IsVisible = false;
         if (Icon is null) return;
 
-        iconControl.Visibility = Visibility.Visible;
+        iconControl.IsVisible = true;
         iconControl.Data = (Geometry)new GeometryConverter().ConvertFromString(Icon.ToString());
     }
 
@@ -105,7 +105,7 @@ public class MyMenuItem : MenuItem
             Height = iconControl.Height,
             Width = iconControl.Width,
             IsHitTestVisible = false,
-            Visibility = Visibility.Collapsed
+            Visibility = false
         };
         _svgIconControl.SetBinding(Core.UI.Controls.SvgIcon.SvgIcon.IconBrushProperty,
             new Binding(nameof(Foreground)) { Source = this });

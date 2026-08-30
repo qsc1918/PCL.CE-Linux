@@ -13,8 +13,8 @@ public class MyScrollBar : ScrollBar
         IsEnabledChanged += (_, _) => RefreshColor();
         GotMouseCapture += (_, _) => RefreshColor();
         LostMouseCapture += (_, _) => RefreshColor();
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
         IsVisibleChanged += (_, _) => RefreshColor();
     }
 

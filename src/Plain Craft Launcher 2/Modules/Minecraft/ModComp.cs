@@ -1681,7 +1681,7 @@ public static class ModComp
                     }
                     else
                     {
-                        newItem.LabTime.Visibility = Visibility.Collapsed;
+                        newItem.LabTime.IsVisible = false;
                         newItem.ColumnTime1.Width =
                             newItem.ColumnTime2.Width = newItem.ColumnTime3.Width = new GridLength(0);
                     }

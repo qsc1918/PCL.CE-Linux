@@ -74,8 +74,8 @@ public partial class PageLogRight
             return;
         }
 
-        PanAllBack.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
-        CardOperation.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+        PanAllBack.IsVisible = true; // [port] true → IsVisible=true
+        CardOperation.IsVisible = true; // [port] true → IsVisible=true
         BtnOperationKill.IsEnabled = !ModMain.frmLogLeft.currentLog.gameProcess.HasExited;
         BtnOperationExportStackDump.IsEnabled = !ModMain.frmLogLeft.currentLog.gameProcess.HasExited &&
                                                 !string.IsNullOrWhiteSpace(ModMain.frmLogLeft.currentLog.jStackPath);

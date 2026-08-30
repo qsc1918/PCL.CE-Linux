@@ -48,8 +48,8 @@ public partial class MyMsgSelect
         Loaded += Load;
         Btn1.Click += Btn1_Click;
         Btn2.Click += Btn2_Click;
-        LabTitle.MouseLeftButtonDown += Drag;
-        PanBorder.MouseLeftButtonDown += Drag;
+        LabTitle.PointerPressed += Drag;
+        PanBorder.PointerPressed += Drag;
     }
 
     private void AppendUniqueNameSuffix(Control element)
@@ -167,7 +167,7 @@ public partial class MyMsgSelect
         }, "MyMsgBox " + uuid);
     }
 
-    public void Btn1_Click(object sender, MouseButtonEventArgs e)
+    public void Btn1_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited || selectedIndex == -1)
             return;
@@ -176,7 +176,7 @@ public partial class MyMsgSelect
         Close();
     }
 
-    public void Btn2_Click(object sender, MouseButtonEventArgs e)
+    public void Btn2_Click(object sender, PointerPressedEventArgs e)
     {
         if (myConverter.IsExited)
             return;
@@ -191,7 +191,7 @@ public partial class MyMsgSelect
         selectedIndex = PanSelection.Children.IndexOf((Control)sender);
     }
 
-    private void Drag(object sender, MouseButtonEventArgs e)
+    private void Drag(object sender, PointerPressedEventArgs e)
     {
         try
         {

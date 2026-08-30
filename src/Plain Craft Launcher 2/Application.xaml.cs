@@ -23,7 +23,7 @@ using PCL.Core.Utils.OS;
 
 namespace PCL;
 
-public partial class Application
+public partial class Application : Avalonia.Application
 {
     public Application()
     {

@@ -40,14 +40,14 @@ public class MyComboBox : ComboBox
     public MyComboBox()
     {
         _Text = SelectedItem?.ToString() ?? "";
-        PreviewMouseLeftButtonDown += MyComboBox_PreviewMouseLeftButtonDown;
-        PreviewMouseLeftButtonUp += MyComboBox_PreviewMouseLeftButtonUp;
-        MouseLeave += MyComboBox_PreviewMouseLeftButtonUp;
+        PreviewPointerPressed += MyComboBox_PreviewPointerPressed;
+        PreviewPointerReleased += MyComboBox_PreviewPointerReleased;
+        PointerExited += MyComboBox_PreviewPointerReleased;
         IsEnabledChanged += (_, _) => RefreshColor();
-        MouseEnter += (_, _) => RefreshColor();
-        MouseLeave += (_, _) => RefreshColor();
-        PreviewMouseLeftButtonDown += (_, _) => RefreshColor();
-        PreviewMouseLeftButtonUp += (_, _) => RefreshColor();
+        PointerEntered += (_, _) => RefreshColor();
+        PointerExited += (_, _) => RefreshColor();
+        PreviewPointerPressed += (_, _) => RefreshColor();
+        PreviewPointerReleased += (_, _) => RefreshColor();
         GotKeyboardFocus += (_, _) => RefreshColor();
         DropDownOpened += MyComboBox_DropDownOpened;
         DropDownClosed += MyComboBox_DropDownClosed;
@@ -122,12 +122,12 @@ public class MyComboBox : ComboBox
         }
     }
 
-    private void MyComboBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void MyComboBox_PreviewPointerPressed(object sender, PointerPressedEventArgs e)
     {
         isMouseDown = true;
     }
 
-    private void MyComboBox_PreviewMouseLeftButtonUp(object sender, EventArgs e)
+    private void MyComboBox_PreviewPointerReleased(object sender, EventArgs e)
     {
         isMouseDown = false;
     }
@@ -232,18 +232,25 @@ public class MyComboBox : ComboBox
     }
 
     // 用于 ItemsSource 的自定义容器
-    protected override AvaloniaObject GetContainerForItemOverride()
+    // [port] WPF GetContainerForItemOverride → Avalonia 12 CreateContainerForItemOverride(item, index, recycleKey)
+    protected override Control CreateContainerForItemOverride(object item, int index, object recycleKey)
     {
         return new MyComboBoxItem();
     }
-    
+
     private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (IsLoaded && ModAnimation.AniControlEnabled == 0) ModMain.RaiseCustomEvent(this);
     }
-    
-    protected override bool IsItemItsOwnContainerOverride(object item)
+
+    // [port] WPF IsItemItsOwnContainerOverride → Avalonia 12 NeedsContainerOverride（false = item 自身即容器）
+    protected override bool NeedsContainerOverride(object item, int index, out object recycleKey)
     {
-        return item is MyComboBoxItem || base.IsItemItsOwnContainerOverride(item);
+        if (item is MyComboBoxItem)
+        {
+            recycleKey = null;
+            return false;
+        }
+        return base.NeedsContainerOverride(item, index, out recycleKey);
     }
 }

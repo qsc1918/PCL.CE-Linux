@@ -169,10 +169,10 @@ public partial class PageSelectLeft : IRefreshable
                 var moveDownItem = contMenu.Items.OfType<MyMenuItem>().FirstOrDefault(x => x.Name == "MoveDown");
 
                 // 如果是第一个项目，隐藏上移按钮
-                if (i == 0) moveUpItem.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                if (i == 0) moveUpItem.IsVisible = false; // [port] false → IsVisible=false
 
                 // 如果是最后一个项目，隐藏下移按钮
-                if (i == ModFolder.mcFolderList.Count - 1) moveDownItem.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                if (i == ModFolder.mcFolderList.Count - 1) moveDownItem.IsVisible = false; // [port] false → IsVisible=false
 
                 // 构建列表项
                 var newItem = new MyListItem

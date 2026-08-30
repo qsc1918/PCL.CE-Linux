@@ -44,7 +44,7 @@ public partial class PageToolsTest
         CmbHeadSize.SelectionChanged += CmbHeadSize_SelectionChanged;
         Loaded += (_, _) => MeLoaded();
         #if DEBUG
-        BtnCrash.Visibility = Visibility.Visible;
+        BtnCrash.IsVisible = true;
         #endif
     }
 
@@ -339,7 +339,7 @@ public partial class PageToolsTest
         if (!string.IsNullOrEmpty(text)) TextDownloadFolder.Text = text;
     }
 
-    private void BtnDownloadOpen_Click(object sender, MouseButtonEventArgs e)
+    private void BtnDownloadOpen_Click(object sender, PointerPressedEventArgs e)
     {
         try
         {
@@ -353,7 +353,7 @@ public partial class PageToolsTest
         }
     }
 
-    private void BtnDownloadStart_Click(object sender, MouseButtonEventArgs e)
+    private void BtnDownloadStart_Click(object sender, PointerPressedEventArgs e)
     {
         StartCustomDownload(TextDownloadUrl.Text, TextDownloadName.Text, TextDownloadFolder.Text);
         TextDownloadUrl.Text = "";
@@ -380,13 +380,13 @@ public partial class PageToolsTest
         StartButtonRefresh();
     }
 
-    private void BtnClear_Click(object sender, MouseButtonEventArgs e)
+    private void BtnClear_Click(object sender, PointerPressedEventArgs e)
     {
         RubbishClear();
     }
 
     // 下载正版玩家皮肤
-    private void BtnSkinSave_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSkinSave_Click(object sender, PointerPressedEventArgs e)
     {
         var id = TextSkinID.Text;
         HintService.Hint(Lang.Text("Tools.Test.Skin.Fetching"));
@@ -427,7 +427,7 @@ public partial class PageToolsTest
     }
 
     // 今日人品
-    private void BtnLuck_Click(object sender, MouseButtonEventArgs e)
+    private void BtnLuck_Click(object sender, PointerPressedEventArgs e)
     {
         Jrrp();
     }
@@ -469,7 +469,7 @@ public partial class PageToolsTest
         return Lang.Text(key);
     }
 
-    private void BtnCreateShortcut_Click(object sender, MouseButtonEventArgs e)
+    private void BtnCreateShortcut_Click(object sender, PointerPressedEventArgs e)
     {
         var shortcutName = Lang.Text("Tools.Test.Shortcut.FileName", ".lnk");
         var desktopName = Lang.Text("Tools.Test.Shortcut.Desktop");
@@ -489,12 +489,12 @@ public partial class PageToolsTest
     }
 
     // 启动计数显示
-    private void BtnLaunchCount_Click(object sender, MouseButtonEventArgs e)
+    private void BtnLaunchCount_Click(object sender, PointerPressedEventArgs e)
     {
         ModMain.MyMsgBox(Lang.Text("Tools.Test.LaunchCount.Message", States.System.LaunchCount), Lang.Text("Tools.Test.LaunchCount.Title"));
     }
 
-    private async void BtnAchievementPreview_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnAchievementPreview_Click(object sender, PointerPressedEventArgs e)
     {
         var url = GetAchievementUrl();
         ModBase.Log("[Net] 获取网络结果" + url);
@@ -520,7 +520,7 @@ public partial class PageToolsTest
                     Dispatcher.Invoke(() =>
                     {
                         AchievementImage.Source = bitmapImage;
-                        AchievementImage.Visibility = Visibility.Visible;
+                        AchievementImage.IsVisible = true;
                     });
                 }
             else if (response.StatusCode == HttpStatusCode.NotFound)
@@ -540,7 +540,7 @@ public partial class PageToolsTest
         }
     }
 
-    private async void BtnAchievementSave_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnAchievementSave_Click(object sender, PointerPressedEventArgs e)
     {
         var url = GetAchievementUrl();
         await DownloadImageToLocalAsync(url);
@@ -609,7 +609,7 @@ public partial class PageToolsTest
         return url;
     }
 
-    private void BtnCrash_Click(object sender, MouseButtonEventArgs e)
+    private void BtnCrash_Click(object sender, PointerPressedEventArgs e)
     {
         throw new Exception(Lang.Text("Tools.Test.Crash.ManualCrash"));
     }
@@ -643,7 +643,7 @@ public partial class PageToolsTest
             if (currentSkinBitmap.Width != currentSkinBitmap.Height)
             {
                 HintService.Hint(Lang.Text("Tools.Test.Avatar.InvalidSize"), HintType.Error);
-                SkinPreviewBorder.Visibility = Visibility.Collapsed;
+                SkinPreviewBorder.IsVisible = false;
                 return;
             }
 
@@ -652,7 +652,7 @@ public partial class PageToolsTest
             ImgFace.Source = BitmapToBitmapImage(generatedHeadBitmap);
             ImgHair.Source = null;
 
-            SkinPreviewBorder.Visibility = Visibility.Visible;
+            SkinPreviewBorder.IsVisible = true;
             HintService.Hint(Lang.Text("Tools.Test.Avatar.Generated"), HintType.Success);
         }
 
@@ -660,7 +660,7 @@ public partial class PageToolsTest
         {
             ModBase.Log(ex, "生成头像失败");
             HintService.Hint(Lang.Text("Tools.Test.Avatar.GenerateFailed", ex.Message), HintType.Error);
-            SkinPreviewBorder.Visibility = Visibility.Collapsed;
+            SkinPreviewBorder.IsVisible = false;
         }
     }
 
@@ -719,7 +719,7 @@ public partial class PageToolsTest
         }
     }
 
-    private void BtnSaveHead_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSaveHead_Click(object sender, PointerPressedEventArgs e)
     {
         if (generatedHeadBitmap is null)
         {
