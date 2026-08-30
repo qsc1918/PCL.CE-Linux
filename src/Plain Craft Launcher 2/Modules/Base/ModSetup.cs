@@ -1,7 +1,11 @@
-﻿using System.Net;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+using System.Net;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.IO.Net.Http;
@@ -274,7 +278,7 @@ public class ModSetup
         if (value == 0)
         {
             // 智能：当图片较小时平铺，较大时适应
-            if (width < ModMain.frmMain.PanMain.ActualWidth / 2d && height < ModMain.frmMain.PanMain.ActualHeight / 2d)
+            if (width < ModMain.frmMain.PanMain.Bounds.Width / 2d && height < ModMain.frmMain.PanMain.Bounds.Height / 2d)
                 value = 4; // 平铺
             else
                 value = 2; // 适应
@@ -452,17 +456,17 @@ public class ModSetup
 
     public static void UiBlurValue(int value)
     {
-        System.Windows.Application.Current.Resources["BlurRadius"] = value * 1.0d;
+        Avalonia.Application.Current.Resources["BlurRadius"] = value * 1.0d;
     }
 
     public static void UiBlurSamplingRate(int value)
     {
-        System.Windows.Application.Current.Resources["BlurSamplingRate"] = value * 0.01d;
+        Avalonia.Application.Current.Resources["BlurSamplingRate"] = value * 0.01d;
     }
 
     public static void UiBlurType(int value)
     {
-        System.Windows.Application.Current.Resources["BlurType"] = (KernelType)value;
+        Avalonia.Application.Current.Resources["BlurType"] = (KernelType)value;
     }
 
     // 顶部栏

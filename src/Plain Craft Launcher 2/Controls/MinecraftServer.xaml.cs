@@ -1,7 +1,13 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 using PCL.Core.App.Localization;
 using PCL.Core.Link.McPing;
 using PCL.Core.Link.McPing.Model;
@@ -15,7 +21,7 @@ public partial class MinecraftServer : Grid
     private const string fallbackImageUri =
         "pack://application:,,,/Plain Craft Launcher 2;component/Images/Icons/DefaultServer.png";
 
-    private static readonly DependencyProperty AddressProperty = DependencyProperty.Register(nameof(Address),
+    private static readonly AvaloniaProperty AddressProperty = AvaloniaProperty.Register(nameof(Address),
         typeof(string), typeof(MinecraftServer), new PropertyMetadata(string.Empty, OnAddressChanged));
 
     public MinecraftServer()
@@ -29,7 +35,7 @@ public partial class MinecraftServer : Grid
         set => SetValue(AddressProperty, value);
     }
 
-    private static void OnAddressChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnAddressChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var server = (MinecraftServer)d;
         d.Dispatcher.BeginInvoke(new Func<Task>(() => server.UpdateServerInfoAsync(e.NewValue?.ToString())));

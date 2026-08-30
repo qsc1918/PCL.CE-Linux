@@ -1,5 +1,7 @@
-﻿using System.IO;
-using System.Windows.Controls;
+using System.IO;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using NAudio;
 using NAudio.Wave;
 using PCL.Core.App;

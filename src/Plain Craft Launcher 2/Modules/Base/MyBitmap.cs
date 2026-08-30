@@ -3,8 +3,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using PCL.Core.UI.Media;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
@@ -71,7 +71,7 @@ public class MyBitmap
             }
             catch (Exception ex)
             {
-                pic = (Bitmap)System.Windows.Application.Current.TryFindResource(filePathOrResourceName);
+                pic = (Bitmap)Avalonia.Application.Current.TryFindResource(filePathOrResourceName);
                 if (pic is null)
                 {
                     pic = new Bitmap(1, 1);

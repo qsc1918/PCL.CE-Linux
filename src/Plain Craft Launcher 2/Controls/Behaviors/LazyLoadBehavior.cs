@@ -1,13 +1,19 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Microsoft.Xaml.Behaviors;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Xaml.Interactivity;
 
 namespace PCL;
 
 internal static class LazyLoader
 {
-    public static void EnableLazyLoad(this FrameworkElement element, Action action)
+    public static void EnableLazyLoad(this Control element, Action action)
     {
         var behavior = new LazyLoadBehavior();
         behavior.Action = action;
@@ -15,9 +21,9 @@ internal static class LazyLoader
     }
 }
 
-public class LazyLoadBehavior : Behavior<FrameworkElement>
+public class LazyLoadBehavior : Behavior<Control>
 {
-    public static readonly DependencyProperty ActionProperty = DependencyProperty.Register(nameof(Action),
+    public static readonly AvaloniaProperty ActionProperty = AvaloniaProperty.Register(nameof(Action),
         typeof(Action), typeof(LazyLoadBehavior), new PropertyMetadata(null));
 
     public Action Action
@@ -60,7 +66,7 @@ public class LazyLoadBehavior : Behavior<FrameworkElement>
         element.LayoutUpdated -= OnLayoutUpdated;
     }
 
-    private static ScrollViewer FindParentScrollViewer(DependencyObject d)
+    private static ScrollViewer FindParentScrollViewer(AvaloniaObject d)
     {
         for (var current = d; current is not null; current = VisualTreeHelper.GetParent(current))
         {

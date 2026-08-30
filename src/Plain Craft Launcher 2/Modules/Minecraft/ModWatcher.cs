@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Media;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.Logging;
 using PCL.Core.App.Localization;
@@ -87,7 +87,7 @@ public static class ModWatcher
     private static GameLogLevel GetLevel(string line, GameLogLevel lastLevel)
     {
         Func<string, SolidColorBrush> getColorBrush =
-            name => (SolidColorBrush)System.Windows.Application.Current.Resources[name];
+            name => (SolidColorBrush)Avalonia.Application.Current.Resources[name];
         var starting = line.Split(": ")[0];
         if (starting.ContainsF("FATAL"))
             return GameLogLevel.Fatal;
@@ -112,7 +112,7 @@ public static class ModWatcher
     private static SolidColorBrush GetColor(GameLogLevel level)
     {
         Func<string, SolidColorBrush> getColorBrush =
-            name => (SolidColorBrush)System.Windows.Application.Current.Resources[name];
+            name => (SolidColorBrush)Avalonia.Application.Current.Resources[name];
         switch (level)
         {
             case GameLogLevel.Debug:

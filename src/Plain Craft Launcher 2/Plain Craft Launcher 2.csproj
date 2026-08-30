@@ -87,10 +87,26 @@
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**" />
-        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**" />
+        <!-- 暂不移植的功能（用户指定，文件保留在仓库）：崩溃分析、音乐、视频背景、联机、换皮肤、Markdown 公告、主页新闻、工具页、剪贴板行为 -->
+        <DeferredExcludes Include="
+            Modules\Minecraft\CrashAnalysis\**;
+            Modules\ModMusic.cs;
+            Modules\ModVideoBack.cs;
+            Modules\ModLink.cs;
+            Modules\Minecraft\ModSkin.cs;
+            Pages\PageLaunch\MySkin.xaml.cs;
+            Pages\PageLaunch\MySkin.xaml;
+            Pages\PageTools\**;
+            Pages\PageHomepage\**;
+            Controls\MyMsg\MyMsgMarkdown.xaml.cs;
+            Controls\MyMsg\MyMsgMarkdown.xaml;
+            Resources\Markdown.xaml;
+            Controls\Behaviors\ClipboardInterceptor.cs;
+            Controls\Behaviors\LazyLoadBehavior.cs;" />
+        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
+        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
         <AvaloniaResource Include="Images\**" />
-        <AvaloniaResource Include="Resources\**" />
+        <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.xaml" />
         <EmbeddedResource Include="metadata.json" />
     </ItemGroup>
     <ItemGroup>

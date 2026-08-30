@@ -1,11 +1,17 @@
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Markup;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.UI.Theme;
-using System.Windows.Controls;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 
 namespace PCL;
 
@@ -20,7 +26,7 @@ public partial class MyHint
         Yellow = 2
     }
 
-    public static readonly DependencyProperty IsWarnProperty = DependencyProperty.Register("IsWarn", typeof(bool),
+    public static readonly AvaloniaProperty IsWarnProperty = AvaloniaProperty.Register("IsWarn", typeof(bool),
         typeof(MyHint),
         new PropertyMetadata(true,
             (d, e) =>
@@ -29,7 +35,7 @@ public partial class MyHint
                 f.Theme = e.NewValue is not null ? Themes.Red : Themes.Blue;
             }));
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyHint), new PropertyMetadata("", (d, e) =>
         {
             var f = (MyHint)d;
@@ -189,7 +195,7 @@ public static partial class ModAnimation
         {
             AaScaleTransform(control, -0.08d, 200, ease: new AniEaseInFluent()),
             AaOpacity(control, -1, 200, ease: new AniEaseOutFluent()),
-            AaHeight(control, -control.ActualHeight, 150, 100, new AniEaseOutFluent()),
+            AaHeight(control, -control.Bounds.Height, 150, 100, new AniEaseOutFluent()),
             AaCode(() =>
             {
                 if (removeFromChildren)

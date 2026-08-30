@@ -1,9 +1,15 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.Json;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.IO;
@@ -323,13 +329,13 @@ public partial class PageInstanceSetup
     private void RefreshRamText()
     {
         // 获取宽度信息
-        var rectUsedWidth = RectRamUsed.ActualWidth;
-        var totalWidth = PanRamDisplay.ActualWidth;
-        var labGameWidth = LabRamGame.ActualWidth;
-        var labUsedWidth = LabRamUsed.ActualWidth;
-        var labTotalWidth = LabRamTotal.ActualWidth;
-        var labGameTitleWidth = LabRamGameTitle.ActualWidth;
-        var labUsedTitleWidth = LabRamUsedTitle.ActualWidth;
+        var rectUsedWidth = RectRamUsed.Bounds.Width;
+        var totalWidth = PanRamDisplay.Bounds.Width;
+        var labGameWidth = LabRamGame.Bounds.Width;
+        var labUsedWidth = LabRamUsed.Bounds.Width;
+        var labTotalWidth = LabRamTotal.Bounds.Width;
+        var labGameTitleWidth = LabRamGameTitle.Bounds.Width;
+        var labUsedTitleWidth = LabRamUsedTitle.Bounds.Width;
         // 左侧
         int left;
         if (rectUsedWidth - 30d < labUsedWidth || rectUsedWidth - 30d < labUsedTitleWidth)

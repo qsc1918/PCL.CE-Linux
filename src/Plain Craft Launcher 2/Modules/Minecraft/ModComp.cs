@@ -8,10 +8,16 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using PCL.Core.App;
@@ -342,7 +348,7 @@ public static class ModComp
         /// </summary>
         /// <param name="project"></param>
         /// <param name="pos"></param>
-        public static void ShowMenu(CompProject project, UIElement pos, Action closedCallBack = null)
+        public static void ShowMenu(CompProject project, Control pos, Action closedCallBack = null)
         {
             var body = new ContextMenu();
             foreach (var i in FavoritesList)
@@ -395,7 +401,7 @@ public static class ModComp
         /// <summary>
         ///     显示收藏菜单。
         /// </summary>
-        public static void ShowMenu(List<CompProject> project, UIElement pos, Action closedCallBack = null)
+        public static void ShowMenu(List<CompProject> project, Control pos, Action closedCallBack = null)
         {
             var body = new ContextMenu();
             foreach (var i in FavoritesList)
@@ -650,7 +656,7 @@ public static class ModComp
                     ModBase.Log($"[Clipboard] Found ProjectId: {projectId}");
 
                     // 3. UI 交互：跳转到详情页
-                    System.Windows.Application.Current.Dispatcher.BeginInvoke(new Func<Task>(async () =>
+                    Avalonia.Application.Current.Dispatcher.BeginInvoke(new Func<Task>(async () =>
                     {
                         if (ModMain.MyMsgBox(
                                 Lang.Text("Download.Comp.Detail.Clipboard.Detected.Message"),

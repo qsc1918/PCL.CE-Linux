@@ -1,6 +1,10 @@
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Shapes;
 using PCL.Core.UI;
 using PCL.Core.UI.Controls.SvgIcon;
 

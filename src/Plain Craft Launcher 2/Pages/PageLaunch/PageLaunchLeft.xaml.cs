@@ -1,9 +1,15 @@
-﻿using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
+using System.IO;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 using PCL.Core.Utils;
@@ -513,7 +519,7 @@ public partial class PageLaunchLeft
     {
         var deltaWidth = e.NewSize.Width - e.PreviousSize.Width;
         if (e.PreviousSize.Width == 0d || isWidthAnimating || Math.Abs(deltaWidth) < 1d ||
-            PanLaunchingInfo.ActualWidth == 0d)
+            PanLaunchingInfo.Bounds.Width == 0d)
             return;
         ModAnimation.AniStart(new[]
         {
@@ -533,7 +539,7 @@ public partial class PageLaunchLeft
     {
         var deltaHeight = e.NewSize.Height - e.PreviousSize.Height;
         if (e.PreviousSize.Height == 0d || isHeightAnimating || Math.Abs(deltaHeight) < 1d ||
-            PanLaunchingInfo.ActualHeight == 0d)
+            PanLaunchingInfo.Bounds.Height == 0d)
             return;
         ModAnimation.AniStart(new[]
         {
@@ -740,7 +746,7 @@ public partial class PageLaunchLeft
 
             ModAnimation.AniStop("FrmLogin PageChange");
             // 清除页面关联性
-            if (pageNew is FrameworkElement element && element.Parent is not null)
+            if (pageNew is Control element && element.Parent is not null)
             {
                 element.SetValue(ContentPresenter.ContentProperty, null);
             }
@@ -755,7 +761,7 @@ public partial class PageLaunchLeft
                     {
                         ModAnimation.AniControlEnabled += 1;
                         PanLogin.Children.Clear();
-                        PanLogin.Children.Add((UIElement)pageNew);
+                        PanLogin.Children.Add((Control)pageNew);
                         ModAnimation.AniControlEnabled -= 1;
                     }, 100),
                     ModAnimation.AaOpacity(PanLogin, 1d, 100, 120, new ModAnimation.AniEaseInFluent())
@@ -766,7 +772,7 @@ public partial class PageLaunchLeft
                 // 无动画
                 ModAnimation.AniControlEnabled += 1;
                 PanLogin.Children.Clear();
-                PanLogin.Children.Add((UIElement)pageNew);
+                PanLogin.Children.Add((Control)pageNew);
                 ModAnimation.AniControlEnabled -= 1;
             }
 

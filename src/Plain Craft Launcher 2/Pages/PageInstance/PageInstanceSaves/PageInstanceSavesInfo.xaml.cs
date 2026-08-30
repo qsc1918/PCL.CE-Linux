@@ -1,5 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Humanizer;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
@@ -299,7 +305,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
         Grid.SetColumn(contentStack, 2);
     }
 
-    private void AddSettingRow(string head, UIElement control)
+    private void AddSettingRow(string head, Control control)
     {
         var rowIndex = PanSettingsList.RowDefinitions.Count;
         PanSettingsList.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1d, GridUnitType.Auto) });

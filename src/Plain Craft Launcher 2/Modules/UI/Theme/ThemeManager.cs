@@ -1,6 +1,12 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.UI.Theme;
 
@@ -12,7 +18,7 @@ public static class ThemeManager
 
     public static bool IsDarkMode => ThemeService.IsDarkMode;
 
-    public static ResourceDictionary AppResources => System.Windows.Application.Current.Resources;
+    public static ResourceDictionary AppResources => Avalonia.Application.Current.Resources;
 
     public static ModBase.MyColor colorGray1 = new(AppResources["ColorObjectGray1"]);
     public static ModBase.MyColor colorGray4 = new(AppResources["ColorObjectGray4"]);
@@ -64,7 +70,7 @@ public static class ThemeManager
         }
         else
         {
-            ModMain.frmMain.PanForm.Background = (Brush)System.Windows.Application.Current.Resources["ColorBrushBackground"];
+            ModMain.frmMain.PanForm.Background = (Brush)Avalonia.Application.Current.Resources["ColorBrushBackground"];
         }
 
         ModMain.frmMain.PanForm.Background.Freeze();
@@ -82,7 +88,7 @@ public static class ThemeManager
                 _contextMenuHandlerRegistered = true;
             }
 
-            foreach (Window window in System.Windows.Application.Current.Windows)
+            foreach (Window window in Avalonia.Application.Current.Windows)
                 RefreshContextMenusInElement(window);
         }
         catch (Exception ex)
@@ -97,7 +103,7 @@ public static class ThemeManager
         {
             if (sender is ContextMenu contextMenu)
             {
-                contextMenu.ClearValue(FrameworkElement.StyleProperty);
+                contextMenu.ClearValue(Control.StyleProperty);
                 contextMenu.UpdateDefaultStyle();
             }
         }
@@ -107,16 +113,16 @@ public static class ThemeManager
         }
     }
 
-    private static void RefreshContextMenusInElement(DependencyObject element)
+    private static void RefreshContextMenusInElement(AvaloniaObject element)
     {
         if (element is null)
             return;
 
         try
         {
-            if (element is FrameworkElement { ContextMenu: not null } fe)
+            if (element is Control { ContextMenu: not null } fe)
             {
-                fe.ContextMenu.ClearValue(FrameworkElement.StyleProperty);
+                fe.ContextMenu.ClearValue(Control.StyleProperty);
                 fe.ContextMenu.UpdateDefaultStyle();
             }
 

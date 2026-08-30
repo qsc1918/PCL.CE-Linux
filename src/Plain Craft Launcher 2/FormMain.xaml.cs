@@ -1,13 +1,19 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+// [port] Avalonia.Interop removed
+using Avalonia.Media;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.IoC;
 using PCL.Core.App.Localization;
@@ -630,17 +636,17 @@ public partial class FormMain
 
         if (PanBack is not null)
         {
-            RectForm.Rect = new Rect(0d, 0d, PanBack.ActualWidth, PanBack.ActualHeight);
+            RectForm.Rect = new Rect(0d, 0d, PanBack.Bounds.Width, PanBack.Bounds.Height);
 
-            var formWidth = PanBack.ActualWidth + 0.001d;
-            var formHeight = PanBack.ActualHeight + 0.001d;
+            var formWidth = PanBack.Bounds.Width + 0.001d;
+            var formHeight = PanBack.Bounds.Height + 0.001d;
 
             PanForm.Width = formWidth;
             PanForm.Height = formHeight;
             PanMain.Width = formWidth;
 
             if (PanTitle is not null)
-                PanMain.Height = Math.Max(0d, formHeight - PanTitle.ActualHeight);
+                PanMain.Height = Math.Max(0d, formHeight - PanTitle.Bounds.Height);
             else
                 PanMain.Height = formHeight;
 
@@ -655,10 +661,10 @@ public partial class FormMain
     // 标题栏改变大小
     private void PanTitle_SizeChanged(object sender, EventArgs e)
     {
-        if (PanTitleMain.ColumnDefinitions[0].ActualWidth - 30 <= 0)
+        if (PanTitleMain.ColumnDefinitions[0].Bounds.Width - 30 <= 0)
             PanTitleLeft.ColumnDefinitions[0].MaxWidth = 0;
         else
-            PanTitleLeft.ColumnDefinitions[0].MaxWidth = PanTitleMain.ColumnDefinitions[0].ActualWidth - 30;
+            PanTitleLeft.ColumnDefinitions[0].MaxWidth = PanTitleMain.ColumnDefinitions[0].Bounds.Width - 30;
     }
 
     // 最小化
@@ -1841,21 +1847,21 @@ public partial class FormMain
                         else
                             subType = ModMain.frmDownloadLeft.pageID;
                         // PageGet 方法会在未设置 SubType 时指定默认值，并建立相关页面的实例
-                        PageChangeAnim(ModMain.frmDownloadLeft, (FrameworkElement)ModMain.frmDownloadLeft.PageGet(subType));
+                        PageChangeAnim(ModMain.frmDownloadLeft, (Control)ModMain.frmDownloadLeft.PageGet(subType));
                         break;
                     }
                 case PageType.Tools: // 联机
                     {
                         ModMain.frmToolsLeft ??= new PageToolsLeft();
                         subType = ModMain.frmToolsLeft.pageID;
-                        PageChangeAnim(ModMain.frmToolsLeft, (FrameworkElement)ModMain.frmToolsLeft.PageGet(subType));
+                        PageChangeAnim(ModMain.frmToolsLeft, (Control)ModMain.frmToolsLeft.PageGet(subType));
                         break;
                     }
                 case PageType.Setup: // 设置
                     {
                         ModMain.frmSetupLeft ??= new PageSetupLeft();
                         subType = ModMain.frmSetupLeft.pageID;
-                        PageChangeAnim(ModMain.frmSetupLeft, (FrameworkElement)ModMain.frmSetupLeft.PageGet(subType));
+                        PageChangeAnim(ModMain.frmSetupLeft, (Control)ModMain.frmSetupLeft.PageGet(subType));
                         break;
                     }
                 case PageType.GameLog: // 实时日志
@@ -1889,7 +1895,7 @@ public partial class FormMain
                     {
                         ModMain.frmInstanceLeft ??= new PageInstanceLeft();
                         subType = ModMain.frmInstanceLeft.pageID;
-                        PageChangeAnim(ModMain.frmInstanceLeft, (FrameworkElement)ModMain.frmInstanceLeft.PageGet(subType));
+                        PageChangeAnim(ModMain.frmInstanceLeft, (Control)ModMain.frmInstanceLeft.PageGet(subType));
                         break;
                     }
                 case PageType.CompDetail: // Mod 信息
@@ -1906,7 +1912,7 @@ public partial class FormMain
                         PageInstanceSavesLeft.currentSave = stack.additional.Value.SavePath;
                         subType = ModMain.frmInstanceSavesLeft.pageID;
                         PageChangeAnim(ModMain.frmInstanceSavesLeft,
-                            (FrameworkElement)ModMain.frmInstanceSavesLeft.PageGet(subType));
+                            (Control)ModMain.frmInstanceSavesLeft.PageGet(subType));
                         break;
                     }
             }
@@ -1936,7 +1942,7 @@ public partial class FormMain
         }
     }
 
-    private void PageChangeAnim(FrameworkElement targetLeft, FrameworkElement targetRight)
+    private void PageChangeAnim(Control targetLeft, Control targetRight)
     {
         ModAnimation.AniStop("FrmMain LeftChange");
         ModAnimation.AniStop("PageLeft PageChange"); // 停止左边栏变更导致的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
@@ -1963,7 +1969,7 @@ public partial class FormMain
                 pageLeft.Opacity = 0d;
                 PanMainLeft.Background = null;
                 ModAnimation.AniControlEnabled -= 1;
-                ModBase.RunInUi(() => PanMainLeft_Resize(PanMainLeft.ActualWidth), true);
+                ModBase.RunInUi(() => PanMainLeft_Resize(PanMainLeft.Bounds.Width), true);
             }, 110),
             ModAnimation.AaCode(() =>
             {

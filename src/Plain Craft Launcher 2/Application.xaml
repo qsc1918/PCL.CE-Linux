@@ -1,5 +1,5 @@
 <Application x:Class="PCL.Application"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PCL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -162,7 +162,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Thumb">
-                            <Border Background="{DynamicResource ColorBrushSemiTransparent}" SnapsToDevicePixels="True">
+                            <Border Background="{DynamicResource ColorBrushSemiTransparent}">
                                 <Border Background="{TemplateBinding Foreground}" CornerRadius="3" Margin="2" />
                             </Border>
                         </ControlTemplate>
@@ -328,7 +328,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="local:MyTextBox">
-                            <Grid SnapsToDevicePixels="True" ToolTip="{TemplateBinding ToolTip}">
+                            <Grid ToolTip="{TemplateBinding ToolTip}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition MinHeight="28" />
                                     <RowDefinition Height="Auto" />
@@ -376,11 +376,11 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="PasswordBox">
                             <Border x:Name="border" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}"
-                                    Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="True"
+                                    Background="{TemplateBinding Background}" Padding="0"
                                     CornerRadius="3">
                                 <local:MyScrollViewer x:Name="PART_ContentHost" Margin="4.5,4.5,0,4.5"
                                                       HorizontalScrollBarVisibility="Hidden"
-                                                      RenderOptions.ClearTypeHint="Enabled" SnapsToDevicePixels="True" />
+                                                      RenderOptions.ClearTypeHint="Enabled" />
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
@@ -435,7 +435,7 @@
                                 <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3"
                                         BorderThickness="1" BorderBrush="{TemplateBinding Foreground}" />
                                 <ToggleButton Margin="0,0,1.5,0" Foreground="{TemplateBinding Foreground}"
-                                              IsTabStop="False" SnapsToDevicePixels="False" Focusable="False"
+                                              IsTabStop="False" Focusable="False"
                                               IsChecked="{Binding IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                               ClickMode="Press" />
                                 <ContentPresenter x:Name="PART_Content" Margin="8.5,0,21.5,0" IsHitTestVisible="False"
@@ -443,7 +443,7 @@
                                                   Content="{TemplateBinding SelectionBoxItem}"
                                                   ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
-                                <Popup x:Name="PART_Popup" SnapsToDevicePixels="True" VerticalOffset="-1.5"
+                                <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
                                        AllowsTransparency="True"
                                        IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                        Placement="Bottom" PopupAnimation="Fade">
@@ -454,7 +454,6 @@
                                                 Width="{TemplateBinding Width}"
                                                 MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                             <local:MyScrollViewer x:Name="DropDownScrollViewer"
-                                                                  SnapsToDevicePixels="False"
                                                                   Style="{DynamicResource ScrollViewerFullMargin}"
                                                                   VerticalScrollBarVisibility="Auto">
                                                 <ItemsPresenter x:Name="ItemsPresenter"
@@ -484,18 +483,18 @@
                                                 CornerRadius="3" BorderThickness="1"
                                                 BorderBrush="{TemplateBinding Foreground}" />
                                         <ToggleButton Margin="0,0,1.5,0" Foreground="{TemplateBinding Foreground}"
-                                                      IsTabStop="False" SnapsToDevicePixels="False" Focusable="False"
+                                                      IsTabStop="False" Focusable="False"
                                                       IsChecked="{Binding IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                                       ClickMode="Press" />
                                         <local:MyTextBox x:Name="PART_EditableTextBox" BorderThickness="0"
                                                          Margin="1.5,0,21.5,0" Padding="0" Background="{x:Null}" />
-                                        <Popup x:Name="PART_Popup" SnapsToDevicePixels="True" VerticalOffset="-1.5"
+                                        <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
                                                AllowsTransparency="True"
                                                IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                Placement="Bottom" PopupAnimation="Fade">
                                             <Grid x:Name="PanPopup">
                                                 <Border Background="{DynamicResource ColorBrushWhite}" CornerRadius="3" />
-                                                <Border x:Name="dropDownBorder" SnapsToDevicePixels="False"
+                                                <Border x:Name="dropDownBorder"
                                                         CornerRadius="3" BorderBrush="{TemplateBinding Foreground}"
                                                         BorderThickness="1" Width="{TemplateBinding Width}"
                                                         MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -577,7 +576,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ComboBoxItem">
-                            <Border x:Name="ItemBorder" Padding="6,4" SnapsToDevicePixels="True"
+                            <Border x:Name="ItemBorder" Padding="6,4"
                                     Background="{TemplateBinding Background}">
                                 <ContentPresenter />
                             </Border>
@@ -591,7 +590,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ComboBoxItem">
-                            <Border x:Name="ItemBorder" SnapsToDevicePixels="True"
+                            <Border x:Name="ItemBorder"
                                     Background="{TemplateBinding Background}">
                                 <ContentPresenter />
                             </Border>
@@ -611,8 +610,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="ContextMenu">
                             <Border BorderBrush="{DynamicResource ColorBrush1}" BorderThickness="1" CornerRadius="3"
-                                    Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4"
-                                    SnapsToDevicePixels="True">
+                                    Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4">
                                 <Border.Effect>
                                     <DropShadowEffect Opacity="0.4" BlurRadius="4" ShadowDepth="2" />
                                 </Border.Effect>
@@ -630,8 +628,8 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="MenuItem">
                             <Border Name="PanBack" Padding="{TemplateBinding Padding}"
-                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Height="26">
-                                <Grid SnapsToDevicePixels="False" UseLayoutRounding="False">
+                                    Background="{TemplateBinding Background}" Height="26">
+                                <Grid UseLayoutRounding="False">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
                                         <ColumnDefinition />

@@ -2,10 +2,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.App.Essentials;
 using PCL.Core.App.IoC;
@@ -24,7 +30,32 @@ public partial class Application
         // 注册生命周期事件
         Lifecycle.When(LifecycleState.Loaded, _ApplicationStartup);
         Lifecycle.When(LifecycleState.WindowCreated, _ShowEnvironmentWarning);
-        SessionEnding += _ApplicationSessionEnding;
+        // [port] WPF SessionEnding 事件在 Avalonia 中无对应物，系统会话结束由进程信号处理
+    }
+
+    /// <summary>
+    /// [port] Avalonia 应用初始化（加载 Application.xaml 资源字典，替代 WPF InitializeComponent）
+    /// </summary>
+    public override void Initialize()
+    {
+        Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
+    }
+
+    /// <summary>
+    /// [port] WPF Application.Startup → Avalonia 框架初始化完成回调：
+    /// 挂接 PCL.Core 生命周期（全局异常、OnLoading）并接好桌面主窗体。
+    /// </summary>
+    public override void OnFrameworkInitializationCompleted()
+    {
+        // [port] 原生命周期由 ApplicationService.Loading 工厂创建应用，Avalonia 下改为 Attach 已有实例
+        ApplicationService.Attach(this);
+        if (ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            MainWindowService.MainWindowSetter = window => desktop.MainWindow = window;
+            // 原版为 OnExplicitShutdown，退出统一走 PCL 生命周期流程
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        }
+        base.OnFrameworkInitializationCompleted();
     }
 
     // 开始
@@ -34,9 +65,7 @@ public partial class Application
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            // 创建自定义跟踪监听器，用于检测是否存在 Binding 失败
-            PresentationTraceSources.DataBindingSource.Listeners.Add(new BindingErrorTraceListener());
-            PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Error;
+            // [port] WPF PresentationTraceSources 绑定错误监听器为 WPF 专属，Avalonia 绑定错误走日志/诊断
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
             StartupValidation.EnsureWpfFont();
 
@@ -44,7 +73,7 @@ public partial class Application
             var args = Basics.CommandLineArguments;
             if (args.Length > 0)
                 if (args[0] == "--gpu")
-                    // 调整显卡设置
+                    // 调整显卡设置（Windows 专属逻辑，Linux 上该分支不会被触发）
                     try
                     {
                         ModMain.SetGPUPreference(args[1].Trim('"'));
@@ -63,8 +92,8 @@ public partial class Application
             Directory.CreateDirectory(ModBase.pathAppdata);
 
             // 设置 ToolTipService 默认值
-            ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(DependencyObject),
-                new FrameworkPropertyMetadata(100));
+            // [port] WPF OverrideMetadata + FrameworkPropertyMetadata → Avalonia ToolTipService.AttachedProperty.OverrideDefaultValue
+            ToolTipService.InitialShowDelayProperty.OverrideDefaultValue<AvaloniaObject>(100);
             Tooltip.Enable();
 
             // 设置初始窗口
@@ -109,11 +138,10 @@ public partial class Application
                 string.IsNullOrEmpty(filePath)
                     ? Lang.Text("Application.InitializationError.PathUnavailable")
                     : filePath);
-            MessageBox.Show(
+            // [port] WPF MessageBox → PCL.Core CrashMessageBox（Avalonia 轻量弹窗）
+            PCL.Core.UI.CrashMessageBox.Show(
                 ExceptionDetails.Compose(summary, ex),
-                Lang.Text("SystemDialog.Startup.InitializationTitle"),
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+                Lang.Text("SystemDialog.Startup.InitializationTitle"));
             FormMain.EndProgramForce(ModBase.ProcessReturnValues.Exception);
         }
     }
@@ -122,11 +150,15 @@ public partial class Application
     private static void _ShowEnvironmentWarning()
     {
         var problemList = new List<string>();
-        var currentOsVersion = NtInterop.GetCurrentOsVersion();
-        if (currentOsVersion.Build < 17763)
-            problemList.Add(Lang.Text("Application.EnvironmentWarning.WindowsVersion"));
-        if (SystemInfo.Is32BitSystem)
-            problemList.Add(Lang.Text("Application.EnvironmentWarning.System32Bit"));
+        // [port] NtInterop.GetCurrentOsVersion 为 Windows 专属；Linux 上跳过系统版本/位数检查
+        if (OperatingSystem.IsWindows())
+        {
+            var currentOsVersion = NtInterop.GetCurrentOsVersion();
+            if (currentOsVersion.Build < 17763)
+                problemList.Add(Lang.Text("Application.EnvironmentWarning.WindowsVersion"));
+            if (SystemInfo.Is32BitSystem)
+                problemList.Add(Lang.Text("Application.EnvironmentWarning.System32Bit"));
+        }
         if (ModBase.exePath.Contains(Path.GetTempPath()) || ModBase.exePath.Contains(@"AppData\Local\Temp\"))
             problemList.Add(Lang.Text("Application.EnvironmentWarning.TempFolder"));
         if (ModBase.exePath.ContainsF("wechat_files", true) || ModBase.exePath.ContainsF("WeChat Files", true) ||
@@ -141,16 +173,14 @@ public partial class Application
             isWarn: true);
     }
 
-    // 结束
-    private static void _ApplicationSessionEnding(object sender, SessionEndingCancelEventArgs e)
-    {
-        ModMain.frmMain.EndProgram(false);
-    }
+    // [port] WPF SessionEnding 处理已移除（Avalonia 无对应事件；进程退出统一走 PCL 生命周期）
 
     /**
      * Error handling for unhandled exceptions
+     * [port] 该流程已并入 PCL.Core ApplicationService.Attach 的 Dispatcher.UIThread.UnhandledException，
+     * 此方法保留备用（当前无挂接点）。
      */
-    private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void Application_DispatcherUnhandledException(object sender, Avalonia.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
         try
         {
@@ -162,7 +192,7 @@ public partial class Application
             var detail = e.Exception.ToString();
 
             // Automatic error analysis for environment issues
-            if (detail.Contains("System.Windows.Threading.Dispatcher.Invoke") ||
+            if (detail.Contains("Avalonia.Threading.Dispatcher.Invoke") ||
                 detail.Contains("MS.Internal.AppModel.ITaskbarList.HrInit") ||
                 detail.Contains("未能加载文件或程序集"))
             {
@@ -182,27 +212,15 @@ public partial class Application
         }
     }
 
-    // Win32 API declaration for DLL directory configuration
+    // [port] Win32 SetDllDirectory 仅 Windows 需要，Linux 无 DLL 搜索路径概念
+#if WINDOWS
     [DllImport("kernel32", EntryPoint = "SetDllDirectoryA", CharSet = CharSet.Ansi)]
     private static extern bool _SetDllDirectory(string lpPathName);
+#endif
     // 切换窗口
 
     // 控件模板事件
     private void _MyIconButtonClick(object sender, EventArgs e)
     {
-    }
-
-    // 自定义监听器类
-    public class BindingErrorTraceListener : TraceListener
-    {
-        public override void Write(string message)
-        {
-            ModBase.Log($"警告，检测到 Binding 失败：{message}");
-        }
-
-        public override void WriteLine(string message)
-        {
-            ModBase.Log($"警告，检测到 Binding 失败：{message}");
-        }
     }
 }

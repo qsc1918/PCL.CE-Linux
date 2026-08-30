@@ -1,6 +1,12 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
 
 namespace PCL;
 
@@ -29,8 +35,8 @@ public partial class MySearchBox : MyCard
         set => SetValue(HintTextProperty, value);
     }
 
-    public static readonly DependencyProperty HintTextProperty =
-        DependencyProperty.Register("HintText", typeof(string), typeof(MySearchBox),
+    public static readonly AvaloniaProperty HintTextProperty =
+        AvaloniaProperty.Register("HintText", typeof(string), typeof(MySearchBox),
             new PropertyMetadata(string.Empty, (d, e) => ((MySearchBox)d).TextBox.HintText = (string)e.NewValue));
 
     public string Text
@@ -39,8 +45,8 @@ public partial class MySearchBox : MyCard
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly DependencyProperty TextProperty =
-        DependencyProperty.Register("Text", typeof(string), typeof(MySearchBox),
+    public static readonly AvaloniaProperty TextProperty =
+        AvaloniaProperty.Register("Text", typeof(string), typeof(MySearchBox),
             new PropertyMetadata(string.Empty, (d, e) => ((MySearchBox)d).TextBox.Text = (string)e.NewValue));
 
     public Visibility SearchButtonVisibility

@@ -1,11 +1,17 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.App.Configuration.Storage;
@@ -531,11 +537,11 @@ public static class ModDownloadLib
 
     public static void McDownloadMenuSave(object sender, RoutedEventArgs e)
     {
-        var element = (FrameworkElement)sender;
+        var element = (Control)sender;
         MyListItem version;
         if (element is MyListItem s1) version = s1;
         else if (element.Parent is MyListItem s2) version = s2;
-        else version = (MyListItem)((FrameworkElement)element.Parent).Parent;
+        else version = (MyListItem)((Control)element.Parent).Parent;
         try
         {
             var id = version.Title;

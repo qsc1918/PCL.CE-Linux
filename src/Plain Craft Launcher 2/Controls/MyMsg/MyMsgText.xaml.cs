@@ -1,7 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+// [port] Avalonia.Interop removed
 using PCL.Core.UI.Controls;
 
 using PCL.Core.App.Localization;
@@ -41,7 +47,7 @@ public partial class MyMsgText
         Loaded += Load;
     }
 
-    private void AppendUniqueNameSuffix(FrameworkElement element)
+    private void AppendUniqueNameSuffix(Control element)
     {
         element.Name += ModBase.GetUuid();
     }

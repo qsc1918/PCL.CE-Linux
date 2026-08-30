@@ -1,9 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Media;
 using PCL.Core.UI;
 using PCL.Network;
 using PCL.Network.Loaders;
@@ -842,7 +848,7 @@ public partial class PageDownloadCompFavorites
             }
         };
         body.Items.Add(newItem);
-        body.PlacementTarget = (UIElement)sender;
+        body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
         body.IsOpen = true;
     }

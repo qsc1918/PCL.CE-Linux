@@ -1,6 +1,12 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
 using PCL.Core.UI.Controls;
 
 namespace PCL;
@@ -28,7 +34,7 @@ public class MyScrollViewer : ScrollViewer
             return;
 
         var src = e.Source;
-        if (Content is FrameworkElement element && element.TemplatedParent is null)
+        if (Content is Control element && element.TemplatedParent is null)
         {
             switch (src)
             {
@@ -63,7 +69,7 @@ public class MyScrollViewer : ScrollViewer
             ModMain.frmMain.BtnExtraBack.ShowRefresh();
     }
 
-    private void MyScrollViewer_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void MyScrollViewer_IsVisibleChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         ModMain.frmMain.BtnExtraBack.ShowRefresh();
     }

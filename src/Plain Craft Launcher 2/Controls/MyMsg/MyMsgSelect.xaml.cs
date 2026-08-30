@@ -1,8 +1,14 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
+using System.Collections;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+// [port] Avalonia.Interop removed
 using PCL.Core.UI.Controls;
 
 using PCL.Core.App.Localization;
@@ -46,7 +52,7 @@ public partial class MyMsgSelect
         PanBorder.MouseLeftButtonDown += Drag;
     }
 
-    private void AppendUniqueNameSuffix(FrameworkElement element)
+    private void AppendUniqueNameSuffix(Control element)
     {
         element.Name += ModBase.GetUuid();
     }
@@ -75,12 +81,12 @@ public partial class MyMsgSelect
         {
             // 1. Initialize and get the actual element
             // Note: We use a new variable because 'foreach' variables are read-only
-            var selectionContent = MyVirtualizingElement.TryInit((FrameworkElement)rawContent);
+            var selectionContent = MyVirtualizingElement.TryInit((Control)rawContent);
 
             // 2. Interface casting and event subscription
             if (selectionContent is IMyRadio selection)
             {
-                PanSelection.Children.Add((UIElement)selection);
+                PanSelection.Children.Add((Control)selection);
                 selection.Check += (sender, e) => OnChecked((IMyRadio)sender, e);
 
                 // 3. Property configuration based on specific type
@@ -182,7 +188,7 @@ public partial class MyMsgSelect
     private void OnChecked(IMyRadio sender, EventArgs e)
     {
         Btn1.IsEnabled = true;
-        selectedIndex = PanSelection.Children.IndexOf((UIElement)sender);
+        selectedIndex = PanSelection.Children.IndexOf((Control)sender);
     }
 
     private void Drag(object sender, MouseButtonEventArgs e)

@@ -1,7 +1,11 @@
 using System.IO;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls.Documents;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
@@ -30,27 +34,27 @@ public partial class PageLogRight
         PanLogCard.Inlines.Add(new Run(Lang.Text("LogPage.Title")));
         PanLogCard.Inlines.Add(new Run(" | "));
         labDebug = new Run($"0 {Lang.Text("LogPage.Level.Debug")}")
-            { Foreground = (Brush)System.Windows.Application.Current.Resources["ColorBrushDebug"] };
+            { Foreground = (Brush)Avalonia.Application.Current.Resources["ColorBrushDebug"] };
         PanLogCard.Inlines.Add(labDebug);
         PanLogCard.Inlines.Add(new Run(" | "));
         labInfo = new Run($"0 {Lang.Text("LogPage.Level.Info")}")
         {
             Foreground =
-                (Brush)System.Windows.Application.Current.Resources[
+                (Brush)Avalonia.Application.Current.Resources[
                     ThemeManager.IsDarkMode ? "ColorBrushInfoDark" : "ColorBrushInfo"]
         };
         PanLogCard.Inlines.Add(labInfo);
         PanLogCard.Inlines.Add(new Run(" | "));
         labWarn = new Run($"0 {Lang.Text("LogPage.Level.Warn")}")
-            { Foreground = (Brush)System.Windows.Application.Current.Resources["ColorBrushWarn"] };
+            { Foreground = (Brush)Avalonia.Application.Current.Resources["ColorBrushWarn"] };
         PanLogCard.Inlines.Add(labWarn);
         PanLogCard.Inlines.Add(new Run(" | "));
         labError = new Run($"0 {Lang.Text("LogPage.Level.Error")}")
-            { Foreground = (Brush)System.Windows.Application.Current.Resources["ColorBrushError"] };
+            { Foreground = (Brush)Avalonia.Application.Current.Resources["ColorBrushError"] };
         PanLogCard.Inlines.Add(labError);
         PanLogCard.Inlines.Add(new Run(" | "));
         labFatal = new Run($"0 {Lang.Text("LogPage.Level.Fatal")}")
-            { Foreground = (Brush)System.Windows.Application.Current.Resources["ColorBrushFatal"] };
+            { Foreground = (Brush)Avalonia.Application.Current.Resources["ColorBrushFatal"] };
         PanLogCard.Inlines.Add(labFatal);
     }
 

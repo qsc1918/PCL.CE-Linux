@@ -1,8 +1,14 @@
-﻿using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+using System.IO;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
@@ -262,7 +268,7 @@ public partial class PageSelectLeft : IRefreshable
             ModMain.frmSelectLeft.PanList.Children.Add(itemInstall);
 
             // 边距
-            ModMain.frmSelectLeft.PanList.Children.Add(new FrameworkElement { Height = 10, IsHitTestVisible = false });
+            ModMain.frmSelectLeft.PanList.Children.Add(new Control { Height = 10, IsHitTestVisible = false });
 
             // 确认勾选状态
             for (var i = 0; i < ModFolder.mcFolderList.Count; i++)

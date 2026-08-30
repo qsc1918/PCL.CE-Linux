@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,12 +10,19 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Microsoft.VisualBasic;
@@ -27,10 +34,10 @@ using PCL.Core.Utils;
 using PCL.Core.Utils.Codecs;
 using PCL.Core.Utils.Hash;
 using PCL.Core.Utils.OS;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Windows.Media.Color;
-using ColorConverter = System.Windows.Media.ColorConverter;
-using Size = System.Windows.Size;
+using Brush = Avalonia.Media.Brush;
+using Color = Avalonia.Media.Color;
+using ColorConverter = Avalonia.Media.ColorConverter;
+using Size = Avalonia.Size;
 
 namespace PCL;
 
@@ -2642,7 +2649,7 @@ public static class ModBase
     {
         if (RunInUi()) return action();
 
-        return System.Windows.Application.Current.Dispatcher.Invoke(action);
+        return Avalonia.Application.Current.Dispatcher.Invoke(action);
     }
 
     /// <summary>
@@ -2652,12 +2659,12 @@ public static class ModBase
     /// </summary>
     public static void RunInUiWait(Action action)
     {
-        if (System.Windows.Application.Current is null)
+        if (Avalonia.Application.Current is null)
             return;
         if (RunInUi())
             action();
         else
-            System.Windows.Application.Current.Dispatcher.Invoke(action);
+            Avalonia.Application.Current.Dispatcher.Invoke(action);
     }
 
     /// <summary>
@@ -2666,12 +2673,12 @@ public static class ModBase
     /// </summary>
     public static void RunInUi(Action action, bool forceWaitUntilLoaded = false)
     {
-        if (System.Windows.Application.Current is null)
+        if (Avalonia.Application.Current is null)
             return;
         if (RunInUi())
             action();
         else
-            System.Windows.Application.Current.Dispatcher.InvokeAsync(action,
+            Avalonia.Application.Current.Dispatcher.InvokeAsync(action,
                 forceWaitUntilLoaded ? DispatcherPriority.Loaded : DispatcherPriority.Normal);
     }
 
@@ -2980,7 +2987,7 @@ public static class ModBase
     public static Stream GetResourceStream(string path)
     {
         var resourceInfo =
-            System.Windows.Application.GetResourceStream(new Uri($"pack://application:,,,/{path}", UriKind.Absolute));
+            Avalonia.Application.GetResourceStream(new Uri($"pack://application:,,,/{path}", UriKind.Absolute));
         return resourceInfo?.Stream;
     }
 
@@ -3050,7 +3057,7 @@ public static class ModBase
     /// <summary>
     ///     相对增减控件的左边距。
     /// </summary>
-    public static void DeltaLeft(FrameworkElement control, double newValue)
+    public static void DeltaLeft(Control control, double newValue)
     {
         // 安全性检查
         DebugAssert(!double.IsNaN(newValue));
@@ -3072,7 +3079,7 @@ public static class ModBase
                 }
                 case HorizontalAlignment.Right:
                 {
-                    // control.Margin = New Thickness(control.Margin.Left, control.Margin.Top, CType(control.Parent, Object).ActualWidth - control.ActualWidth - newValue, control.Margin.Bottom)
+                    // control.Margin = New Thickness(control.Margin.Left, control.Margin.Top, CType(control.Parent, Object).Bounds.Width - control.Bounds.Width - newValue, control.Margin.Bottom)
                     control.Margin = new Thickness(control.Margin.Left, control.Margin.Top,
                         control.Margin.Right - newValue, control.Margin.Bottom);
                     break;
@@ -3089,7 +3096,7 @@ public static class ModBase
     /// <summary>
     ///     设置控件的左边距。（仅针对置左控件）
     /// </summary>
-    public static void SetLeft(FrameworkElement control, double newValue)
+    public static void SetLeft(Control control, double newValue)
     {
         DebugAssert(control.HorizontalAlignment == HorizontalAlignment.Left);
         control.Margin = new Thickness(newValue, control.Margin.Top, control.Margin.Right, control.Margin.Bottom);
@@ -3098,7 +3105,7 @@ public static class ModBase
     /// <summary>
     ///     相对增减控件的上边距。
     /// </summary>
-    public static void DeltaTop(FrameworkElement control, double newValue)
+    public static void DeltaTop(Control control, double newValue)
     {
         // 安全性检查
         DebugAssert(!double.IsNaN(newValue));
@@ -3119,7 +3126,7 @@ public static class ModBase
                 }
                 case VerticalAlignment.Bottom:
                 {
-                    // control.Margin = New Thickness(control.Margin.Left, control.Margin.Top, CType(control.Parent, Object).ActualWidth - control.ActualWidth - newValue, control.Margin.Bottom)
+                    // control.Margin = New Thickness(control.Margin.Left, control.Margin.Top, CType(control.Parent, Object).Bounds.Width - control.Bounds.Width - newValue, control.Margin.Bottom)
                     control.Margin = new Thickness(control.Margin.Left, control.Margin.Top, control.Margin.Right,
                         control.Margin.Bottom - newValue);
                     break;
@@ -3136,7 +3143,7 @@ public static class ModBase
     /// <summary>
     ///     设置控件的顶边距。（仅针对置上控件）
     /// </summary>
-    public static void SetTop(FrameworkElement control, double newValue)
+    public static void SetTop(Control control, double newValue)
     {
         DebugAssert(control.VerticalAlignment == VerticalAlignment.Top);
         control.Margin = new Thickness(control.Margin.Left, newValue, control.Margin.Right, control.Margin.Bottom);
@@ -3165,10 +3172,10 @@ public static class ModBase
     /// <summary>
     ///     将某个控件的呈现转换为图片。
     /// </summary>
-    public static ImageBrush ControlBrush(FrameworkElement uI)
+    public static ImageBrush ControlBrush(Control uI)
     {
-        var width = uI.ActualWidth;
-        var height = uI.ActualHeight;
+        var width = uI.Bounds.Width;
+        var height = uI.Bounds.Height;
         if (width < 1d || height < 1d)
             return new ImageBrush();
         var bmp = new RenderTargetBitmap((int)Math.Round(GetPixelSize(width)), (int)Math.Round(GetPixelSize(height)),
@@ -3180,7 +3187,7 @@ public static class ModBase
     /// <summary>
     ///     将某个控件的模拟呈现转换为图片。
     /// </summary>
-    public static ImageBrush ControlBrush(FrameworkElement uI, double width, double height, double left = 0d,
+    public static ImageBrush ControlBrush(Control uI, double width, double height, double left = 0d,
         double top = 0d)
     {
         uI.Measure(new Size(width, height));
@@ -3274,7 +3281,7 @@ public static class ModBase
                 writer.Write(str);
                 writer.Flush();
                 stream.Position = 0L;
-                return System.Windows.Markup.XamlReader.Load(stream);
+                return Avalonia.Markup.XamlReader.Load(stream);
             }
         }
     }

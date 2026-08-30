@@ -1,7 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Shapes;
 
 using PCL.Core.App.Localization;
 namespace PCL;

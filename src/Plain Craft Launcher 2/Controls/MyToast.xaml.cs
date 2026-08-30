@@ -1,8 +1,14 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Animation;
 using PCL.Core.App;
 using PCL.Core.UI.Theme;
 
@@ -35,7 +41,7 @@ public partial class MyToast
     private bool _isDragging;
     private Point _dragStartPoint;
     private double _dragStartTranslateX;
-    private FrameworkElement? _dragReference;
+    private Control? _dragReference;
 
     // 进度条状态
     private double _progressStartWidth;
@@ -91,8 +97,8 @@ public partial class MyToast
     {
         if (Parent is not Panel)
             return;
-        if (System.Windows.Application.Current.MainWindow is not null)
-            MaxWidth = System.Windows.Application.Current.MainWindow.ActualWidth * 0.9;
+        if (Avalonia.Application.Current.MainWindow is not null)
+            MaxWidth = Avalonia.Application.Current.MainWindow.Bounds.Width * 0.9;
         Margin = new Thickness(0, 0, 16, 4);
         Opacity = 0;
 
@@ -185,7 +191,7 @@ public partial class MyToast
         var totalMs = (int)Math.Round(duration);
         if (totalMs <= 0)
             return;
-        var w = ProgressBar.ActualWidth;
+        var w = ProgressBar.Bounds.Width;
         if (w <= 0) w = 300;
         ProgressBar.HorizontalAlignment = HorizontalAlignment.Left;
         ProgressBar.Width = w;
@@ -197,7 +203,7 @@ public partial class MyToast
 
     private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        RootGrid.Clip = new RectangleGeometry(new Rect(0, 0, RootGrid.ActualWidth, RootGrid.ActualHeight), 8, 8);
+        RootGrid.Clip = new RectangleGeometry(new Rect(0, 0, RootGrid.Bounds.Width, RootGrid.Bounds.Height), 8, 8);
     }
 
     private void UpdateColors()
@@ -209,7 +215,7 @@ public partial class MyToast
             HintType.Warning => 40d,
             _ => 210d
         };
-        var res = System.Windows.Application.Current.Resources;
+        var res = Avalonia.Application.Current.Resources;
         var accent = new ModBase.MyColor().FromHSL2(baseHue, 75, 60);
         var bg = ThemeService.IsDarkMode
             ? new SolidColorBrush(LabColor.FromLch(0.35))
@@ -234,9 +240,9 @@ public partial class MyToast
         _dragPending = false;
         if (IsDismissing)
             return;
-        if (IsDescendantOf(e.OriginalSource as DependencyObject, BtnClose))
+        if (IsDescendantOf(e.OriginalSource as AvaloniaObject, BtnClose))
             return;
-        _dragReference = Parent as FrameworkElement;
+        _dragReference = Parent as Control;
         if (_dragReference is null)
             return;
         _dragPending = true;
@@ -386,7 +392,7 @@ public partial class MyToast
         return Math.Max(DismissThresholdMin, ActualWidth * DismissThresholdRatio);
     }
 
-    private static bool IsDescendantOf(DependencyObject? descendant, DependencyObject ancestor)
+    private static bool IsDescendantOf(AvaloniaObject? descendant, AvaloniaObject ancestor)
     {
         while (descendant is not null)
         {

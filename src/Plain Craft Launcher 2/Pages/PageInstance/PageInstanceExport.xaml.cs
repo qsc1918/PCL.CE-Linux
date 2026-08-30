@@ -1,9 +1,15 @@
-﻿using System.IO;
+using System.IO;
 using System.IO.Compression;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
 using DotNet.Globbing;
 using PCL.Core.App;
 using PCL.Core.UI;
@@ -12,13 +18,13 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public class ExportOption : DependencyObject
+public class ExportOption : AvaloniaObject
 {
-    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty TitleProperty = AvaloniaProperty.Register(
         nameof(Title), typeof(string), typeof(ExportOption)
     );
 
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty DescriptionProperty = AvaloniaProperty.Register(
         nameof(Description), typeof(string), typeof(ExportOption)
     );
 
@@ -437,14 +443,14 @@ public partial class PageInstanceExport : IRefreshable
         foreach (var Element in PanOptions.Children)
         {
             if (!includeHidden &&
-                ((UIElement)Element).Visibility != Visibility.Visible)
+                ((Control)Element).Visibility != Visibility.Visible)
                 continue;
             if (Element is MyCheckBox)
                 yield return (MyCheckBox)Element;
             else if (Element is StackPanel)
                 foreach (var SubElement in ((StackPanel)Element).Children)
                 {
-                    if (!includeHidden && ((UIElement)SubElement).Visibility != Visibility.Visible)
+                    if (!includeHidden && ((Control)SubElement).Visibility != Visibility.Visible)
                         continue;
                     if (SubElement is MyCheckBox)
                         yield return (MyCheckBox)SubElement;

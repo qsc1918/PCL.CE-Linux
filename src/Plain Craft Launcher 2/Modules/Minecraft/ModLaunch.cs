@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
@@ -7,7 +7,11 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 using PCL.Core.Minecraft;
@@ -2899,8 +2903,8 @@ public static class ModLaunch
             case GameWindowSizeMode.Launcher: // 与启动器尺寸一致
             {
                 Size result;
-                ModBase.RunInUiWait(() => result = new Size(ModBase.GetPixelSize(ModMain.frmMain.PanForm.ActualWidth),
-                    ModBase.GetPixelSize(ModMain.frmMain.PanForm.ActualHeight)));
+                ModBase.RunInUiWait(() => result = new Size(ModBase.GetPixelSize(ModMain.frmMain.PanForm.Bounds.Width),
+                    ModBase.GetPixelSize(ModMain.frmMain.PanForm.Bounds.Height)));
                 gameSize = result;
                 gameSize.Height -= 29.5d * ModBase.dpi / 96d; // 标题栏高度
                 break;

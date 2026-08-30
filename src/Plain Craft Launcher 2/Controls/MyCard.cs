@@ -1,10 +1,17 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Shapes;
 using PCL.Core.UI.Controls;
 
 namespace PCL;
@@ -15,8 +22,8 @@ public class MyCard : AnimatedBackgroundGrid
     private const double dropShadowIdleOpacity = 0.07d;
     private const double dropShadowHoverOpacity = 0.4d;
 
-    public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register("Title", typeof(string), typeof(MyCard), new PropertyMetadata(""));
+    public static readonly AvaloniaProperty TitleProperty =
+        AvaloniaProperty.Register("Title", typeof(string), typeof(MyCard), new PropertyMetadata(""));
 
     private readonly BlurBorder mainBorder;
 
@@ -52,7 +59,7 @@ public class MyCard : AnimatedBackgroundGrid
 
     public MyDropShadow MainChrome { get; }
 
-    public UIElement BorderChild
+    public Control BorderChild
     {
         get => mainBorder.Child;
         set => mainBorder.Child = value;
@@ -108,7 +115,7 @@ public class MyCard : AnimatedBackgroundGrid
         set => mainBorder.Background = value;
     }
 
-    protected override FrameworkElement AnimatableElement => mainBorder;
+    protected override Control AnimatableElement => mainBorder;
     public bool HasMouseAnimation { get; set; } = true;
 
     private void Init()
@@ -184,7 +191,7 @@ public class MyCard : AnimatedBackgroundGrid
             ModBase.Log(ex, "[MyCard] InstallMethod 调用失败");
         }
 
-        stack.Children.Add(new FrameworkElement { Height = 18d }); // 下边距，同时适应折叠
+        stack.Children.Add(new Control { Height = 18d }); // 下边距，同时适应折叠
         stack.Tag = null;
     }
 
@@ -331,7 +338,7 @@ public class MyCard : AnimatedBackgroundGrid
 
     // 若设置了 CanSwap，或 SwapControl 不为空，则判定为会进行折叠
     // 这是因为不能直接在 XAML 中设置 SwapControl
-    public UIElement SwapControl;
+    public Control SwapControl;
     public bool CanSwap { get; set; } = false;
 
     /// <summary>
@@ -460,7 +467,7 @@ public static partial class ModAnimation
             {
                 AaScaleTransform(control, -0.08d, 200, ease: new AniEaseInFluent()),
                 AaOpacity(control, -1, 200, ease: new AniEaseOutFluent()),
-                AaHeight(control, -control.ActualHeight, 150, 100, new AniEaseOutFluent()),
+                AaHeight(control, -control.Bounds.Height, 150, 100, new AniEaseOutFluent()),
                 AaCode(() =>
                 {
                     if (removeFromChildren)

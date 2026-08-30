@@ -1,9 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.Utils;
 using PCL.Network;
@@ -216,12 +222,12 @@ public static partial class ModAnimation
                         {
                             case AniTypeSub.X:
                             {
-                                ModBase.DeltaLeft((FrameworkElement)ani.obj, delta);
+                                ModBase.DeltaLeft((Control)ani.obj, delta);
                                 break;
                             }
                             case AniTypeSub.Y:
                             {
-                                ModBase.DeltaTop((FrameworkElement)ani.obj, delta);
+                                ModBase.DeltaTop((Control)ani.obj, delta);
                                 break;
                             }
                             case AniTypeSub.Opacity:
@@ -232,16 +238,16 @@ public static partial class ModAnimation
                             }
                             case AniTypeSub.Width:
                             {
-                                var obj = (FrameworkElement)ani.obj;
-                                obj.Width = Math.Max((double.IsNaN(obj.Width) ? obj.ActualWidth : obj.Width) + delta,
+                                var obj = (Control)ani.obj;
+                                obj.Width = Math.Max((double.IsNaN(obj.Width) ? obj.Bounds.Width : obj.Width) + delta,
                                     0d);
                                 break;
                             }
                             case AniTypeSub.Height:
                             {
-                                var obj = (FrameworkElement)ani.obj;
+                                var obj = (Control)ani.obj;
                                 obj.Height =
-                                    Math.Max((double.IsNaN(obj.Height) ? obj.ActualHeight : obj.Height) + delta, 0d);
+                                    Math.Max((double.IsNaN(obj.Height) ? obj.Bounds.Height : obj.Height) + delta, 0d);
                                 break;
                             }
                             case AniTypeSub.Value:
@@ -313,8 +319,8 @@ public static partial class ModAnimation
                     var delta = ModBase.MathPercent(new ModBase.MyColor(0d, 0d, 0d, 0d), (ModBase.MyColor)ani.value,
                                     ani.ease.GetDelta(ani.timeFinished / (double)ani.timeTotal, ani.timePercent)) +
                                 (ModBase.MyColor)ani.valueLast;
-                    var obj = (FrameworkElement)((dynamic)ani.obj)[0];
-                    var prop = (DependencyProperty)((dynamic)ani.obj)[1];
+                    var obj = (Control)((dynamic)ani.obj)[0];
+                    var prop = (AvaloniaProperty)((dynamic)ani.obj)[1];
                     var newColor = new ModBase.MyColor(obj.GetValue(prop)) + delta;
                     obj.SetValue(prop, prop.PropertyType.Name == "Color" ? (Color)newColor : (SolidColorBrush)newColor);
                     ani.valueLast = newColor - new ModBase.MyColor(obj.GetValue(prop));
@@ -323,7 +329,7 @@ public static partial class ModAnimation
 
                 case AniType.Scale:
                 {
-                    var obj = (FrameworkElement)ani.obj;
+                    var obj = (Control)ani.obj;
                     var delta = ani.ease.GetDelta(ani.timeFinished / (double)ani.timeTotal, ani.timePercent);
                     obj.Margin = new Thickness(
                         obj.Margin.Left +
@@ -385,7 +391,7 @@ public static partial class ModAnimation
 
                 case AniType.ScaleTransform:
                 {
-                    var obj = (FrameworkElement)ani.obj;
+                    var obj = (Control)ani.obj;
                     if (!(obj.RenderTransform is ScaleTransform))
                     {
                         obj.RenderTransformOrigin = new Point(0.5d, 0.5d);
@@ -403,7 +409,7 @@ public static partial class ModAnimation
 
                 case AniType.RotateTransform:
                 {
-                    var obj = (FrameworkElement)ani.obj;
+                    var obj = (Control)ani.obj;
                     if (!(obj.RenderTransform is RotateTransform))
                     {
                         obj.RenderTransformOrigin = new Point(0.5d, 0.5d);
@@ -908,7 +914,7 @@ public static partial class ModAnimation
     /// <param name="after">是否等到以前的动画完成后才继续本动画。</param>
     /// <returns></returns>
     /// <remarks></remarks>
-    public static AniData AaDouble(object obj, DependencyProperty prop, double value, int time = 400, int delay = 0,
+    public static AniData AaDouble(object obj, AvaloniaProperty prop, double value, int time = 400, int delay = 0,
         AniEase ease = null, bool after = false)
     {
         return new AniData
@@ -953,7 +959,7 @@ public static partial class ModAnimation
     /// <param name="after">是否等到以前的动画完成后才继续本动画。</param>
     /// <returns></returns>
     /// <remarks></remarks>
-    public static AniData AaColor(FrameworkElement obj, DependencyProperty prop, ModBase.MyColor value, int time = 400,
+    public static AniData AaColor(Control obj, AvaloniaProperty prop, ModBase.MyColor value, int time = 400,
         int delay = 0, AniEase ease = null, bool after = false)
     {
         return new AniData
@@ -976,14 +982,14 @@ public static partial class ModAnimation
     /// <param name="after">是否等到以前的动画完成后才继续本动画。</param>
     /// <returns></returns>
     /// <remarks></remarks>
-    public static AniData AaColor(FrameworkElement obj, DependencyProperty prop, string res, int time = 400,
+    public static AniData AaColor(Control obj, AvaloniaProperty prop, string res, int time = 400,
         int delay = 0, AniEase ease = null, bool after = false)
     {
         return new AniData
         {
             typeMain = AniType.Color, timeTotal = time, ease = ease ?? new AniEaseLinear(),
             obj = new object[] { obj, prop, res },
-            value = new ModBase.MyColor(System.Windows.Application.Current.FindResource(res)) -
+            value = new ModBase.MyColor(Avalonia.Application.Current.FindResource(res)) -
                     new ModBase.MyColor(obj.GetValue(prop)),
             isAfter = after, timeFinished = -delay, valueLast = new ModBase.MyColor(0d, 0d, 0d, 0d)
         };
@@ -1011,10 +1017,10 @@ public static partial class ModAnimation
             changeRect = new ModBase.MyRect(-0.5d * value, -0.5d * value, value, value);
         else
             changeRect = new ModBase.MyRect(
-                Convert.ToDouble(-0.5d * ((dynamic)obj).ActualWidth * value),
-                Convert.ToDouble(-0.5d * ((dynamic)obj).ActualHeight * value),
-                Convert.ToDouble(((dynamic)obj).ActualWidth * value),
-                Convert.ToDouble(((dynamic)obj).ActualHeight * value));
+                Convert.ToDouble(-0.5d * ((dynamic)obj).Bounds.Width * value),
+                Convert.ToDouble(-0.5d * ((dynamic)obj).Bounds.Height * value),
+                Convert.ToDouble(((dynamic)obj).Bounds.Width * value),
+                Convert.ToDouble(((dynamic)obj).Bounds.Height * value));
         return new AniData
         {
             typeMain = AniType.Scale, timeTotal = time, ease = ease ?? new AniEaseLinear(), obj = obj,
