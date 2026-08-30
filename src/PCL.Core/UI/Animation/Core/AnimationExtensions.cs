@@ -1,6 +1,10 @@
 using System;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using PCL.Core.UI.Animation.Easings;
 
 namespace PCL.Core.UI.Animation.Core;
@@ -9,41 +13,43 @@ public static class AnimationExtensions
 {
     #region 附加属性
 
-    public static readonly DependencyProperty TargetProperty = DependencyProperty.RegisterAttached(
-        "Target", typeof(DependencyObject), typeof(AnimationExtensions), new PropertyMetadata(default(DependencyObject)));
+    // [port] WPF RegisterAttached + PropertyMetadata → Avalonia AttachedProperty<T>.RegisterAttached；
+    // 所有者为静态类，使用 (TValue, THost) 双泛型重载并以 Type 传入所有者。
+    public static readonly AttachedProperty<AvaloniaObject?> TargetProperty =
+        AvaloniaProperty.RegisterAttached<AvaloniaObject, AvaloniaObject?>("Target", typeof(AnimationExtensions));
 
-    public static void SetTarget(DependencyObject element, DependencyObject value)
+    public static void SetTarget(AvaloniaObject element, AvaloniaObject? value)
     {
         if (element is not IAnimation)
             throw new InvalidOperationException("AnimationExtensions.Target 只能附加到 IAnimation 实例上。");
-        
+
         element.SetValue(TargetProperty, value);
     }
 
-    public static DependencyObject GetTarget(DependencyObject element)
+    public static AvaloniaObject? GetTarget(AvaloniaObject element)
     {
-        return (DependencyObject)element.GetValue(TargetProperty);
+        return element.GetValue(TargetProperty);
     }
 
-    public static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached(
-        "TargetProperty", typeof(DependencyProperty), typeof(AnimationExtensions), new PropertyMetadata(default(DependencyProperty)));
-    
-    public static void SetTargetProperty(DependencyObject element, DependencyProperty value)
+    public static readonly AttachedProperty<AvaloniaProperty?> TargetPropertyProperty =
+        AvaloniaProperty.RegisterAttached<AvaloniaObject, AvaloniaProperty?>("TargetProperty", typeof(AnimationExtensions));
+
+    public static void SetTargetProperty(AvaloniaObject element, AvaloniaProperty? value)
     {
         if (element is not IAnimation)
             throw new InvalidOperationException("AnimationExtensions.TargetProperty 只能附加到 IAnimation 实例上。");
-        
+
         element.SetValue(TargetPropertyProperty, value);
     }
 
-    public static DependencyProperty GetTargetProperty(DependencyObject element)
+    public static AvaloniaProperty? GetTargetProperty(AvaloniaObject element)
     {
-        return (DependencyProperty)element.GetValue(TargetPropertyProperty);
+        return element.GetValue(TargetPropertyProperty);
     }
 
     #endregion
 
-    public static void Animate(this DependencyObject target, TimeSpan? duration = null, TimeSpan? delay = null,
+    public static void Animate(this AvaloniaObject target, TimeSpan? duration = null, TimeSpan? delay = null,
         IEasing? easing = null, AnimationValueType valueType = AnimationValueType.Relative, int iterationCount = 1,
         double? width = null,
         double? height = null,

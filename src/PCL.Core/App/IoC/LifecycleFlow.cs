@@ -1,7 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 
 namespace PCL.Core.App.IoC;
 
@@ -56,7 +60,9 @@ partial class Lifecycle
         _StartStateFlow(LifecycleState.BeforeLoading);
         if (_hasRequestedStopLoading) return;
         // 运行应用程序容器
-        var statusCode = CurrentApplication.Run();
+        // [port] WPF Application.Run() → Avalonia 主循环由应用注入的 LifetimeRunner 驱动（AppBuilder 经典桌面生命周期）
+        var statusCode = LifetimeRunner?.Invoke()
+            ?? throw new InvalidOperationException("未注入 Avalonia 生命周期运行器（Lifecycle.LifetimeRunner）");
         if (!HasShutdownStarted) _Exit(statusCode);
     }
 
@@ -71,7 +77,7 @@ partial class Lifecycle
         // 运行加载阶段服务
         _StartStateFlow(LifecycleState.Loading, LifecycleState.WindowCreating);
         // 运行窗体
-        CurrentApplication.MainWindow!.Show();
+        CurrentApplication.MainWindow()!.Show();
     }
 
     /// <summary>
@@ -96,8 +102,15 @@ partial class Lifecycle
 
     /// <summary>
     /// WPF 应用程序容器，在 <see cref="LifecycleState.BeforeLoading"/> 阶段为空值
+    /// [port] Avalonia 模式下由应用侧在 FrameworkInitializationCompleted 时赋值
     /// </summary>
     public static Application CurrentApplication { get; set; } = null!;
+
+    /// <summary>
+    /// [port] Avalonia 主循环运行器：由应用侧注入（内部调用 AppBuilder...StartWithClassicDesktopLifetime 并返回退出码）。
+    /// WPF 模式下为空（使用 CurrentApplication.Run()）。
+    /// </summary>
+    public static Func<int>? LifetimeRunner { get; set; }
 
     /// <summary>
     /// 是否正在关闭程序

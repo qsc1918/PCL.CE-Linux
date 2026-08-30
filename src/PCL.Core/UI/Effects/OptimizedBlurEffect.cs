@@ -1,9 +1,13 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 
 namespace PCL.Core.UI.Effects;
 
@@ -68,20 +72,20 @@ public sealed class OptimizedBlurEffect : Freezable
         set => SetValue(KernelTypeProperty, value);
     }
 
-    public static readonly DependencyProperty RadiusProperty =
-        DependencyProperty.Register(nameof(Radius), typeof(double), typeof(OptimizedBlurEffect),
+    public static readonly AvaloniaProperty RadiusProperty =
+        AvaloniaProperty.Register(nameof(Radius), typeof(double), typeof(OptimizedBlurEffect),
             new UIPropertyMetadata(16.0, OnEffectPropertyChanged), _ValidateRadius);
 
-    public static readonly DependencyProperty SamplingRateProperty =
-        DependencyProperty.Register(nameof(SamplingRate), typeof(double), typeof(OptimizedBlurEffect),
+    public static readonly AvaloniaProperty SamplingRateProperty =
+        AvaloniaProperty.Register(nameof(SamplingRate), typeof(double), typeof(OptimizedBlurEffect),
             new UIPropertyMetadata(0.7, OnEffectPropertyChanged), _ValidateSamplingRate);
 
-    public static readonly DependencyProperty RenderingBiasProperty =
-        DependencyProperty.Register(nameof(RenderingBias), typeof(RenderingBias), typeof(OptimizedBlurEffect),
+    public static readonly AvaloniaProperty RenderingBiasProperty =
+        AvaloniaProperty.Register(nameof(RenderingBias), typeof(RenderingBias), typeof(OptimizedBlurEffect),
             new UIPropertyMetadata(RenderingBias.Performance, OnEffectPropertyChanged));
 
-    public static readonly DependencyProperty KernelTypeProperty =
-        DependencyProperty.Register(nameof(KernelType), typeof(KernelType), typeof(OptimizedBlurEffect),
+    public static readonly AvaloniaProperty KernelTypeProperty =
+        AvaloniaProperty.Register(nameof(KernelType), typeof(KernelType), typeof(OptimizedBlurEffect),
             new UIPropertyMetadata(KernelType.Gaussian, OnEffectPropertyChanged));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,7 +96,7 @@ public sealed class OptimizedBlurEffect : Freezable
     private static bool _ValidateSamplingRate(object value) =>
         value is >= 0.1 and <= 1.0;
 
-    private static void OnEffectPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnEffectPropertyChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         if (d is OptimizedBlurEffect effect)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
-using System.Windows.Media;
+using Avalonia.Media;
+using PCL.Core.App;
 using PCL.Core.App.IoC;
 
 namespace PCL.Core.UI;

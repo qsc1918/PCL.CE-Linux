@@ -5,7 +5,11 @@ using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.Logging;
 using PCL.Core.Utils;
 
@@ -184,11 +188,15 @@ public static class Basics
     /// <returns>资源输入流，若资源不存在则为 <c>null</c></returns>
     public static Stream? GetResourceStream(string path)
     {
-        var resourceInfo = Application.GetResourceStream(new Uri($"pack://application:,,,/{path}", UriKind.Absolute));
-        return resourceInfo?.Stream;
+        // [port] WPF pack:// URI → Avalonia avares:// 资源（默认解析到入口程序集，即主应用 PCL）
+        var assembly = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "PCL";
+        var uri = new Uri($"avares://{assembly}/{path.TrimStart('/')}", UriKind.Absolute);
+        if (!Avalonia.Platform.AssetLoader.Exists(uri)) return null;
+        return Avalonia.Platform.AssetLoader.Open(uri);
     }
 
-    private const string AssemblyImagePath = "pack://application:,,,/Plain Craft Launcher 2;component/Images/";
+    // [port] 主应用程序集名为 PCL（见 app csproj AssemblyName）
+    private const string AssemblyImagePath = "avares://PCL/Images/";
     public static string GetAppImagePath(string imageName) => AssemblyImagePath + imageName;
 
     #endregion

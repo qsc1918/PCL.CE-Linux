@@ -1,8 +1,12 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+// [port] Avalonia.Interop removed
 
 namespace PCL.Core.Utils.OS;
 

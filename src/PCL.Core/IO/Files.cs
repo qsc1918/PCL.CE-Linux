@@ -2,6 +2,8 @@ using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
+using Avalonia.Input;
+using Avalonia.Platform.Storage;
 using PCL.Core.Logging;
 using PCL.Core.UI;
 using PCL.Core.Utils;
@@ -18,7 +20,11 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App;
 
 namespace PCL.Core.IO;
@@ -87,7 +93,8 @@ public static class Files {
         string tempDirPrefix,
         CancellationToken cancellationToken = default) {
         var tempDirName = $"{tempDirPrefix}.tmp";
-        var selectedPath = SystemDialogs.SelectSaveFile(dialogTitle, defaultFileName, fileFilter, defaultDirectory);
+        // [port] SystemDialogs 同步 → 异步 StorageProvider
+        var selectedPath = await SystemDialogs.SelectSaveFileAsync(dialogTitle, defaultFileName, fileFilter, defaultDirectory);
 
         if (string.IsNullOrEmpty(selectedPath)) {
             return false;
@@ -752,14 +759,32 @@ public static class Files {
             Directory.CreateDirectory(dest);
         }
 
-        var dataObject = Clipboard.GetDataObject();
-        if (dataObject is null || !dataObject.GetDataPresent(DataFormats.FileDrop)) {
-            return 0;
+        // [port] WPF Clipboard/FileDrop → Avalonia IClipboard + DataFormat.File（Linux 下若桌面环境不支持文件剪贴板则返回 0）
+        string[] paths = [];
+        try
+        {
+            var topLevel = (Avalonia.Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+            var clipboard = topLevel?.Clipboard;
+            if (clipboard is not null)
+            {
+                var data = await clipboard.TryGetDataAsync();
+                if (data is not null && data.Contains(Avalonia.Input.DataFormat.File))
+                {
+                    var items = await data.TryGetFilesAsync();
+                    if (items is not null)
+                    {
+                        foreach (var item in items)
+                        {
+                            var p = item.TryGetLocalPath();
+                            if (!string.IsNullOrEmpty(p)) paths = [.. paths, p];
+                        }
+                    }
+                }
+            }
         }
-
-        var data = dataObject.GetData(DataFormats.FileDrop);
-        if (data is not string[] paths) {
-            return 0;
+        catch
+        {
+            // 剪贴板不可用或格式不支持
         }
         if (paths.Length == 0) {
             return 0;

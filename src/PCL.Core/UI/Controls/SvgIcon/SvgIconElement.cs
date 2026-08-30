@@ -1,7 +1,11 @@
 using System;
-using System.Windows.Media;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace PCL.Core.UI.Controls.SvgIcon;
+
+// [port] Brush → IBrush（Avalonia 不可变画刷实现 IBrush 而非 Brush 基类）；
+// Pen.StartLineCap/EndLineCap → 单一 LineCap；CloneCurrentValue/Freeze → ImmutableSolidColorBrush。
 
 internal sealed class SvgIconElement
 {
@@ -25,12 +29,12 @@ internal sealed class SvgIconElement
         context.DrawGeometry(fill, pen, Geometry);
     }
 
-    private Brush? _ResolveFill(SvgIconPaintOptions options)
+    private IBrush? _ResolveFill(SvgIconPaintOptions options)
     {
         var hasFill = _HasPaint(Style.Fill);
         var hasStroke = _HasPaint(Style.Stroke);
         var explicitlyNoFill = _IsNone(Style.Fill);
-        Brush? brush;
+        IBrush? brush;
 
         if (!options.UseOriginalColor)
         {
@@ -62,7 +66,7 @@ internal sealed class SvgIconElement
     {
         var hasStroke = _HasPaint(Style.Stroke);
         var explicitlyNoStroke = _IsNone(Style.Stroke);
-        Brush? brush;
+        IBrush? brush;
 
         if (!options.UseOriginalColor)
         {
@@ -91,20 +95,17 @@ internal sealed class SvgIconElement
             Style.StrokeWidth ?? options.StrokeThickness);
     }
 
-    private Pen? _CreatePen(Brush? brush, double thickness)
+    private Pen? _CreatePen(IBrush? brush, double thickness)
     {
         if (brush is null || thickness <= 0D)
             return null;
 
-        return new Pen(brush, thickness)
-        {
-            StartLineCap = _ParseLineCap(Style.StrokeLineCap),
-            EndLineCap = _ParseLineCap(Style.StrokeLineCap),
-            LineJoin = _ParseLineJoin(Style.StrokeLineJoin)
-        };
+        return new Pen(brush, thickness, null,
+            _ParseLineCap(Style.StrokeLineCap),
+            _ParseLineJoin(Style.StrokeLineJoin));
     }
 
-    private static Brush? _ApplyOpacity(Brush? brush, double opacity)
+    private static IBrush? _ApplyOpacity(IBrush? brush, double opacity)
     {
         if (brush is null)
             return null;
@@ -116,11 +117,14 @@ internal sealed class SvgIconElement
         if (Math.Abs(opacity - 1D) < 0.0001D)
             return brush;
 
-        var clone = brush.CloneCurrentValue();
-        clone.Opacity *= opacity;
-        if (clone.CanFreeze)
-            clone.Freeze();
-        return clone;
+        if (brush is ISolidColorBrush solid)
+            return new ImmutableSolidColorBrush(solid.Color, solid.Opacity * opacity);
+
+        if (brush is IImmutableSolidColorBrush immutable)
+            return new ImmutableSolidColorBrush(immutable.Color, immutable.Opacity * opacity);
+
+        // 非纯色画刷无法无损叠加不透明度，按原样返回（图标场景基本只用纯色描边）。
+        return brush;
     }
 
     private static bool _HasPaint(string? value)

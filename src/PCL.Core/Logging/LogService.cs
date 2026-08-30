@@ -2,7 +2,11 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App;
 using PCL.Core.App.Essentials;
 using PCL.Core.App.IoC;
@@ -110,11 +114,10 @@ public class LogService : ILifecycleLogService
                     "SystemDialog.Fatal.Message.WithFeedbackGuidance",
                     _ComposeUserError(plain, ex));
 
-                MessageBox.Show(
+                // [port] WPF MessageBox → Avalonia CrashMessageBox（崩溃兜底弹窗）
+                CrashMessageBox.Show(
                     message,
-                    Lang.Text("SystemDialog.Fatal.Title"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    Lang.Text("SystemDialog.Fatal.Title"));
 
                 break;
             }

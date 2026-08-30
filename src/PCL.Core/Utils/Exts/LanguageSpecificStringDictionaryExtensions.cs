@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Linq;
-using System.Windows.Markup;
-using System.Windows.Media;
+using Avalonia.Markup;
+using Avalonia.Media;
 
 namespace PCL.Core.Utils.Exts;
 

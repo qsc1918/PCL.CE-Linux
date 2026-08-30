@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Media;
 using PCL.Core.UI.Effects;
 
 // 该部分源码来自或修改于 https://github.com/OrgEleCho/EleCho.WpfSuite
@@ -22,7 +28,7 @@ public class BlurBorder : Border
 
     private static bool _IsZero(double value) => Math.Abs(value) < 10.0 * DoubleEpsilon;
 
-    private readonly Stack<UIElement> _panelStack = new();
+    private readonly Stack<Control> _panelStack = new();
 
     /// <summary>
     /// A geometry to clip the content of this border correctly
@@ -100,14 +106,14 @@ public class BlurBorder : Border
     }
 
     /// <inheritdoc/>
-    protected override void OnVisualParentChanged(DependencyObject oldParentObject)
+    protected override void OnVisualParentChanged(AvaloniaObject oldParentObject)
     {
-        if (oldParentObject is UIElement oldParent)
+        if (oldParentObject is Control oldParent)
         {
             oldParent.LayoutUpdated -= ParentLayoutUpdated;
         }
 
-        if (Parent is UIElement newParent)
+        if (Parent is Control newParent)
         {
             newParent.LayoutUpdated += ParentLayoutUpdated;
         }
@@ -230,49 +236,49 @@ public class BlurBorder : Border
     /// The key needed set a read-only property
     /// </summary>
     private static readonly DependencyPropertyKey ContentClipPropertyKey =
-        DependencyProperty.RegisterReadOnly(nameof(ContentClip), typeof(Geometry), typeof(BlurBorder), new FrameworkPropertyMetadata(default(Geometry)));
+        AvaloniaProperty.RegisterReadOnly(nameof(ContentClip), typeof(Geometry), typeof(BlurBorder), new FrameworkPropertyMetadata(default(Geometry)));
 
     /// <summary>
-    /// The DependencyProperty for the ContentClip property. <br/>
+    /// The AvaloniaProperty for the ContentClip property. <br/>
     /// Flags: None <br/>
     /// Default value: null
     /// </summary>
-    public static readonly DependencyProperty ContentClipProperty =
-        ContentClipPropertyKey.DependencyProperty;
+    public static readonly AvaloniaProperty ContentClipProperty =
+        ContentClipPropertyKey.AvaloniaProperty;
 
     /// <summary>
     /// The maximum depth of the visual tree to render.
     /// </summary>
-    public static readonly DependencyProperty MaxDepthProperty =
+    public static readonly AvaloniaProperty MaxDepthProperty =
         BackgroundPresenter.MaxDepthProperty.AddOwner(typeof(BlurBorder));
 
     /// <summary>
     /// The radius of the blur effect applied to the background.
     /// </summary>
-    public static readonly DependencyProperty BlurRadiusProperty =
-        DependencyProperty.Register(nameof(BlurRadius), typeof(double), typeof(BlurBorder), new FrameworkPropertyMetadata(16.0, propertyChangedCallback: OnRenderPropertyChanged));
+    public static readonly AvaloniaProperty BlurRadiusProperty =
+        AvaloniaProperty.Register(nameof(BlurRadius), typeof(double), typeof(BlurBorder), new FrameworkPropertyMetadata(16.0, propertyChangedCallback: OnRenderPropertyChanged));
 
     /// <summary>
     /// The type of kernel used for the blur effect.
     /// </summary>
-    public static readonly DependencyProperty BlurKernelTypeProperty =
-        DependencyProperty.Register(nameof(BlurKernelType), typeof(KernelType), typeof(BlurBorder), new FrameworkPropertyMetadata(KernelType.Gaussian, propertyChangedCallback: OnRenderPropertyChanged));
+    public static readonly AvaloniaProperty BlurKernelTypeProperty =
+        AvaloniaProperty.Register(nameof(BlurKernelType), typeof(KernelType), typeof(BlurBorder), new FrameworkPropertyMetadata(KernelType.Gaussian, propertyChangedCallback: OnRenderPropertyChanged));
 
     /// <summary>
     /// The rendering bias for the blur effect, which can affect performance and quality.
     /// </summary>
-    public static readonly DependencyProperty BlurRenderingBiasProperty =
-        DependencyProperty.Register(nameof(BlurRenderingBias), typeof(RenderingBias), typeof(BlurBorder), new FrameworkPropertyMetadata(RenderingBias.Performance, propertyChangedCallback: OnRenderPropertyChanged));
+    public static readonly AvaloniaProperty BlurRenderingBiasProperty =
+        AvaloniaProperty.Register(nameof(BlurRenderingBias), typeof(RenderingBias), typeof(BlurBorder), new FrameworkPropertyMetadata(RenderingBias.Performance, propertyChangedCallback: OnRenderPropertyChanged));
 
     /// <summary>
     /// The sampling rate for blur effect, controlling performance vs quality trade-off.
     /// </summary>
-    public static readonly DependencyProperty BlurSamplingRateProperty =
-        DependencyProperty.Register(nameof(BlurSamplingRate), typeof(double), typeof(BlurBorder), new FrameworkPropertyMetadata(0.9, propertyChangedCallback: OnRenderPropertyChanged));
+    public static readonly AvaloniaProperty BlurSamplingRateProperty =
+        AvaloniaProperty.Register(nameof(BlurSamplingRate), typeof(double), typeof(BlurBorder), new FrameworkPropertyMetadata(0.9, propertyChangedCallback: OnRenderPropertyChanged));
 
-    private static void OnRenderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnRenderPropertyChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
-        if (d is UIElement element)
+        if (d is Control element)
         {
             BackgroundPresenter.ForceRender(element);
         }

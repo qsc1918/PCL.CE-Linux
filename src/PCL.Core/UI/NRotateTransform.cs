@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Media;
 using PCL.Core.UI.Animation.Core;
 
 namespace PCL.Core.UI;
@@ -44,25 +45,26 @@ public struct NRotateTransform :
         _rotate = new Vector3(angle, centerX, centerY);
     }
 
-    public NRotateTransform(RotateTransform scaleTransform)
+    public NRotateTransform(RotateTransform rotateTransform)
     {
         var uiAccessProvider = AnimationService.UIAccessProvider;
         if (uiAccessProvider.CheckAccess())
         {
-            _rotate = GetVector(scaleTransform);
+            _rotate = GetVector(rotateTransform);
         }
         else
         {
             Vector3 localScale = default;
-            uiAccessProvider.Invoke(() => localScale = GetVector(scaleTransform));
+            uiAccessProvider.Invoke(() => localScale = GetVector(rotateTransform));
             _rotate = localScale;
         }
 
         return;
 
+        // [port] Avalonia RotateTransform 无 CenterX/CenterY，中心点记为 (0,0)
         Vector3 GetVector(RotateTransform rt)
         {
-            return new Vector3((float)rt.Angle, (float)rt.CenterX, (float)rt.CenterY);
+            return new Vector3((float)rt.Angle, 0f, 0f);
         }
     }
     
@@ -105,8 +107,20 @@ public struct NRotateTransform :
 
     #region 隐式转换
 
-    public static implicit operator RotateTransform(NRotateTransform rt) =>
-        new(rt.Angle, rt.CenterX, rt.CenterY);
+    // [port] Avalonia RotateTransform 无中心点概念 → 以 MatrixTransform 显式构造“绕中心旋转”矩阵：
+    // p' = (p − c)·R + c，R = [cos sin; −sin cos]（行向量约定），平移项 tx = cx − cx·cos + cy·sin，ty = cy − cx·sin − cy·cos
+    public static implicit operator MatrixTransform(NRotateTransform rt)
+    {
+        var angle = rt.Angle * Math.PI / 180f;
+        var cos = (float)Math.Cos(angle);
+        var sin = (float)Math.Sin(angle);
+        var cx = rt.CenterX;
+        var cy = rt.CenterY;
+        var tx = cx - cx * cos + cy * sin;
+        var ty = cy - cx * sin - cy * cos;
+        var m = new Matrix(cos, sin, -sin, cos, tx, ty);
+        return new MatrixTransform { Matrix = m };
+    }
 
     public static implicit operator NRotateTransform(RotateTransform rt) => new(rt);
 

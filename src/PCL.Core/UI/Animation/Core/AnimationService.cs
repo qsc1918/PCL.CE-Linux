@@ -84,7 +84,7 @@ public sealed class AnimationService : GeneralService
         _RegisterValueProcessors();
         
         // 初始化 UI 线程访问提供器并启动赋值 Task
-        UIAccessProvider = new WpfUIAccessProvider(Lifecycle.CurrentApplication.Dispatcher);
+        UIAccessProvider = new AvaloniaUIAccessProvider(Avalonia.Threading.Dispatcher.UIThread);
         _ = UIAccessProvider.InvokeAsync(async () =>
         {
             if (_cts.IsCancellationRequested) return;
@@ -106,7 +106,7 @@ public sealed class AnimationService : GeneralService
         });
 
         // 初始化 Clock 并注册 Tick 事件
-        _clock = new WinMMClock(Fps);
+        _clock = new ManagedClock(Fps);
         _clock.Tick += ClockOnTick;
         _clock.Start();
         

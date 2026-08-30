@@ -5,10 +5,14 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 
 namespace PCL.Core.UI.Effects;
 // ReSharper disable UnusedMember.Local, NotAccessedField.Local, UnusedParameter.Local, UnusedVariable

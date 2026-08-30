@@ -1,16 +1,20 @@
 using System;
-using System.Windows;
-using System.Windows.Markup;
-using Microsoft.Xaml.Behaviors;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Markup;
+using Avalonia.Xaml.Interactivity;
 using PCL.Core.UI.Animation.Animatable;
 using PCL.Core.Utils;
 
 namespace PCL.Core.UI.Animation.Core;
 
 [ContentProperty(nameof(Animation))]
-public class RunAnimationAction : TriggerAction<DependencyObject>
+public class RunAnimationAction : TriggerAction<AvaloniaObject>
 {
-    public static readonly DependencyProperty AnimationProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty AnimationProperty = AvaloniaProperty.Register(
         nameof(Animation),
         typeof(IAnimation),
         typeof(RunAnimationAction),
@@ -22,29 +26,29 @@ public class RunAnimationAction : TriggerAction<DependencyObject>
         set => SetValue(AnimationProperty, value);
     }
 
-    public static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty TargetPropertyProperty = AvaloniaProperty.Register(
         nameof(TargetProperty),
-        typeof(DependencyProperty),
+        typeof(AvaloniaProperty),
         typeof(RunAnimationAction),
-        new PropertyMetadata(default(DependencyProperty)));
+        new PropertyMetadata(default(AvaloniaProperty)));
 
-    public DependencyProperty TargetProperty
+    public AvaloniaProperty TargetProperty
     {
-        get => (DependencyProperty)GetValue(TargetPropertyProperty);
+        get => (AvaloniaProperty)GetValue(TargetPropertyProperty);
         set => SetValue(TargetPropertyProperty, value);
     }
 
     protected override void Invoke(object parameter)
     {
-        DependencyObject? targetObject;
-        DependencyProperty? targetProperty;
+        AvaloniaObject? targetObject;
+        AvaloniaProperty? targetProperty;
 
-        var aniDependencyObject = (DependencyObject)Animation;
+        var aniDependencyObject = (AvaloniaObject)Animation;
 
         // 判断对象
         if (WpfUtils.IsDependencyPropertySet(aniDependencyObject, AnimationExtensions.TargetProperty))
         {
-            targetObject = (DependencyObject)aniDependencyObject.GetValue(AnimationExtensions.TargetProperty);
+            targetObject = (AvaloniaObject)aniDependencyObject.GetValue(AnimationExtensions.TargetProperty);
         }
         else
         {
@@ -63,7 +67,7 @@ public class RunAnimationAction : TriggerAction<DependencyObject>
         if (WpfUtils.IsDependencyPropertySet(aniDependencyObject, AnimationExtensions.TargetPropertyProperty))
         {
             targetProperty =
-                (DependencyProperty)aniDependencyObject.GetValue(AnimationExtensions.TargetPropertyProperty);
+                (AvaloniaProperty)aniDependencyObject.GetValue(AnimationExtensions.TargetPropertyProperty);
         }
         else
         {
@@ -84,6 +88,6 @@ public class RunAnimationAction : TriggerAction<DependencyObject>
             }
         }
         
-        Animation.RunFireAndForget(new WpfAnimatable(targetObject, targetProperty));
+        Animation.RunFireAndForget(new AvaloniaAnimatable(targetObject, targetProperty));
     }
 }

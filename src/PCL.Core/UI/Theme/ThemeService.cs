@@ -45,7 +45,8 @@ public sealed partial class ThemeService
             // trigger color refresh
             if (Lifecycle.CurrentState > LifecycleState.Loading)
             {
-                Lifecycle.CurrentApplication.Dispatcher.BeginInvoke(() =>
+                // [port] WPF Dispatcher.BeginInvoke → Avalonia Dispatcher.UIThread.Post
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                 {
                     ApplyColorResources();
                     ColorThemeChanged?.Invoke(CurrentTheme);
@@ -118,7 +119,8 @@ public sealed partial class ThemeService
         _LogStatus();
         if (Lifecycle.CurrentState > LifecycleState.Loading)
         {
-            Lifecycle.CurrentApplication.Dispatcher.BeginInvoke(_RefreshAll);
+            // [port] WPF Dispatcher.BeginInvoke → Avalonia Dispatcher.UIThread.Post
+            Avalonia.Threading.Dispatcher.UIThread.Post(_RefreshAll);
         }
     }
 

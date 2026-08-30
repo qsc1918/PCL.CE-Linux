@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Markup;
+using Avalonia;
+using Avalonia.Metadata;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Markup;
 using PCL.Core.UI.Animation.Animatable;
 using PCL.Core.Utils;
 
@@ -12,16 +17,14 @@ namespace PCL.Core.UI.Animation.Core;
 /// <summary>
 /// 动画组的基类。
 /// </summary>
-[ContentProperty(nameof(Children))]
+// [port] WPF 类级 [ContentProperty(nameof(Children))] → Avalonia 12 属性级 [Content]
 public abstract class AnimationGroup : AnimationBase
 {
-    public static readonly DependencyProperty ChildrenProperty =
-        DependencyProperty.Register(
-            nameof(Children),
-            typeof(ObservableCollection<IAnimation>),
-            typeof(AnimationGroup),
-            new PropertyMetadata(null)); // 移除 OnChildrenChanged 回调，避免运行时冲突
+    public static readonly StyledProperty<ObservableCollection<IAnimation>> ChildrenProperty =
+        AvaloniaProperty.Register<AnimationGroup, ObservableCollection<IAnimation>>(
+            nameof(Children)); // 移除 OnChildrenChanged 回调，避免运行时冲突
 
+    [Content]
     public ObservableCollection<IAnimation> Children
     {
         get => (ObservableCollection<IAnimation>)GetValue(ChildrenProperty);
@@ -72,18 +75,18 @@ public abstract class AnimationGroup : AnimationBase
     
     protected static IAnimatable ResolveTarget(IAnimation animation, IAnimatable defaultTarget)
     {
-        if (animation is not DependencyObject aniDependencyObject)
+        if (animation is not AvaloniaObject aniDependencyObject)
             return defaultTarget;
 
-        DependencyObject? targetObject = null;
-        DependencyProperty? targetProperty = null;
+        AvaloniaObject? targetObject = null;
+        AvaloniaProperty? targetProperty = null;
 
         // Target check
         if (WpfUtils.IsDependencyPropertySet(aniDependencyObject, AnimationExtensions.TargetProperty))
         {
-            targetObject = (DependencyObject)aniDependencyObject.GetValue(AnimationExtensions.TargetProperty);
+            targetObject = (AvaloniaObject)aniDependencyObject.GetValue(AnimationExtensions.TargetProperty);
         }
-        else if (defaultTarget is WpfAnimatable animatable)
+        else if (defaultTarget is AvaloniaAnimatable animatable)
         {
             targetObject = animatable.Owner;
         }
@@ -91,9 +94,9 @@ public abstract class AnimationGroup : AnimationBase
         // TargetProperty check
         if (WpfUtils.IsDependencyPropertySet(aniDependencyObject, AnimationExtensions.TargetPropertyProperty))
         {
-            targetProperty = (DependencyProperty)aniDependencyObject.GetValue(AnimationExtensions.TargetPropertyProperty);
+            targetProperty = (AvaloniaProperty)aniDependencyObject.GetValue(AnimationExtensions.TargetPropertyProperty);
         }
-        else if (defaultTarget is WpfAnimatable animatable)
+        else if (defaultTarget is AvaloniaAnimatable animatable)
         {
             targetProperty = animatable.Property;
         }
@@ -102,7 +105,7 @@ public abstract class AnimationGroup : AnimationBase
         if (targetObject is null || targetProperty is null)
             return defaultTarget;
 
-        return new WpfAnimatable(targetObject, targetProperty);
+        return new AvaloniaAnimatable(targetObject, targetProperty);
     }
     
     protected static Task CreateChildAwaiter(IAnimation animation)

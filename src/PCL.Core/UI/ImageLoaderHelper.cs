@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 
 namespace PCL.Core.UI;
 
@@ -18,8 +20,8 @@ public static class ImageLoaderHelper {
     /// <param name="defaultImageUri">默认图像 URI，如果为 null 则使用内置默认图标</param>
     /// <returns></returns>
     public static async Task SetServerLogoAsync(string base64String, Image imageElement, string? defaultImageUri = null) {
-        await SetImageFromBase64Async(base64String, imageElement, 
-            defaultImageUri ?? "pack://application:,,,/Plain Craft Launcher 2;component/Images/Icons/DefaultServer.png");
+        await SetImageFromBase64Async(base64String, imageElement,
+            defaultImageUri ?? "avares://PCL/Images/Icons/DefaultServer.png");
     }
 
     /// <summary>
@@ -67,22 +69,30 @@ public static class ImageLoaderHelper {
     }
 
     /// <summary>
-    /// 从 Base64 字符串创建 BitmapImage
+    /// 从 Base64 字符串创建 Bitmap（[port] WPF BitmapImage → Avalonia Bitmap）
     /// </summary>
     /// <param name="base64Data">Base64 数据</param>
-    /// <returns>BitmapImage 对象</returns>
-    private static BitmapImage _CreateBitmapFromBase64(string base64Data) {
+    /// <returns>Bitmap 对象</returns>
+    private static Bitmap _CreateBitmapFromBase64(string base64Data) {
         var imageBytes = Convert.FromBase64String(base64Data);
-        
+
         using var ms = new MemoryStream(imageBytes);
-        var bitmap = new BitmapImage();
-        bitmap.BeginInit();
-        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-        bitmap.StreamSource = ms;
-        bitmap.EndInit();
-        bitmap.Freeze(); // 确保跨线程安全
-        
-        return bitmap;
+        return new Bitmap(ms); // Avalonia Bitmap 直接解码流，跨线程安全
+    }
+
+    /// <summary>
+    /// 从 URI 加载位图：支持 avares:// 资源与本地文件路径（[port] 替代 WPF BitmapImage(UriSource)）
+    /// </summary>
+    private static Bitmap? _LoadBitmapFromUri(string uri) {
+        try {
+            if (uri.StartsWith("avares://", StringComparison.OrdinalIgnoreCase)) {
+                using var stream = Avalonia.Platform.AssetLoader.Open(new Uri(uri));
+                return new Bitmap(stream);
+            }
+            return new Bitmap(uri); // 本地文件路径
+        } catch {
+            return null;
+        }
     }
 
     /// <summary>
@@ -93,7 +103,8 @@ public static class ImageLoaderHelper {
     public static void SetFallbackImage(Image imageElement, string? fallbackImageUri) {
         try {
             if (!string.IsNullOrWhiteSpace(fallbackImageUri)) {
-                var defaultBitmap = new BitmapImage(new Uri(fallbackImageUri));
+                var defaultBitmap = _LoadBitmapFromUri(fallbackImageUri);
+                if (defaultBitmap is null) throw new InvalidOperationException("后备图像加载失败");
                 if (imageElement.Dispatcher.CheckAccess()) {
                     imageElement.Source = defaultBitmap;
                 } else {
@@ -137,16 +148,7 @@ public static class ImageLoaderHelper {
         }
 
         try {
-            var bitmapImage = await Task.Run(() =>
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.UriSource = new Uri(imagePath);
-                bitmap.EndInit();
-                bitmap.Freeze();
-                return bitmap;
-            });
+            var bitmapImage = await Task.Run(() => new Bitmap(imagePath));
 
             if (imageElement.Dispatcher.CheckAccess()) {
                 imageElement.Source = bitmapImage;

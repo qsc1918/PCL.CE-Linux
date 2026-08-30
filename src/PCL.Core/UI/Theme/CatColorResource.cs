@@ -1,4 +1,4 @@
-using System.Windows.Media;
+using Avalonia.Media;
 using PCL.Core.App.IoC;
 
 namespace PCL.Core.UI.Theme;
@@ -49,7 +49,7 @@ public class CatColorResource
     public void Apply()
     {
         var res = Lifecycle.CurrentApplication.Resources;
-        var color = Color.FromScRgb(Alpha, Red, Green, Blue);
+        var color = ScRgbCompat.FromScRgb(Alpha, Red, Green, Blue);
         if (ApplyToColor) res[$"{ColorPrefix}{Suffix}"] = color;
         if (ApplyToBrush) res[$"{BrushPrefix}{Suffix}"] = new SolidColorBrush(color);
     }

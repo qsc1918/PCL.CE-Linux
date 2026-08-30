@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using System.Xml;
 using System.Xml.Linq;
 using PCL.Core.Logging;
@@ -129,10 +133,11 @@ internal static class SvgIconParser
 
     private static SvgIconElement _CreateCircle(XElement element, SvgIconStyle style)
     {
-        var geometry = new EllipseGeometry(
-            new Point(_Number(element, "cx"), _Number(element, "cy")),
-            _Number(element, "r"),
-            _Number(element, "r"));
+        // [port] WPF EllipseGeometry(center, rx, ry) → Avalonia EllipseGeometry(Rect)
+        var cx = _Number(element, "cx");
+        var cy = _Number(element, "cy");
+        var r = _Number(element, "r");
+        var geometry = new EllipseGeometry(new Rect(cx - r, cy - r, r * 2D, r * 2D));
 
         _TryFreeze(geometry);
 
@@ -146,10 +151,12 @@ internal static class SvgIconParser
 
     private static SvgIconElement _CreateEllipse(XElement element, SvgIconStyle style)
     {
-        var geometry = new EllipseGeometry(
-            new Point(_Number(element, "cx"), _Number(element, "cy")),
-            _Number(element, "rx"),
-            _Number(element, "ry"));
+        // [port] WPF EllipseGeometry(center, rx, ry) → Avalonia EllipseGeometry(Rect)
+        var cx = _Number(element, "cx");
+        var cy = _Number(element, "cy");
+        var rx = _Number(element, "rx");
+        var ry = _Number(element, "ry");
+        var geometry = new EllipseGeometry(new Rect(cx - rx, cy - ry, rx * 2D, ry * 2D));
 
         _TryFreeze(geometry);
 
@@ -215,15 +222,16 @@ internal static class SvgIconParser
         if (numbers.Length < 4)
             return null;
 
-        var geometry = new StreamGeometry
-        {
-            FillRule = close ? FillRule.Nonzero : FillRule.EvenOdd
-        };
+        // [port] StreamGeometry.FillRule 在 Avalonia 中经 context.SetFillRule 在 Open 期间设置；
+        // FillRule.Nonzero → FillRule.NonZero；BeginFigure/LineTo 的 WPF 额外参数与 EndFigure(closed) 语义重排。
+        var geometry = new StreamGeometry();
         using (var context = geometry.Open())
         {
-            context.BeginFigure(new Point(numbers[0], numbers[1]), close, close);
+            context.SetFillRule(close ? FillRule.NonZero : FillRule.EvenOdd);
+            context.BeginFigure(new Point(numbers[0], numbers[1]), close);
             for (var i = 2; i + 1 < numbers.Length; i += 2)
-                context.LineTo(new Point(numbers[i], numbers[i + 1]), true, false);
+                context.LineTo(new Point(numbers[i], numbers[i + 1]));
+            context.EndFigure(close);
         }
 
         _TryFreeze(geometry);
@@ -258,23 +266,23 @@ internal static class SvgIconParser
         var fillRule = style.FillRule?.Trim().ToLowerInvariant() switch
         {
             "evenodd" => FillRule.EvenOdd,
-            _ => FillRule.Nonzero
+            _ => FillRule.NonZero
         };
 
         switch (geometry)
         {
-            case StreamGeometry streamGeometry:
-                streamGeometry.FillRule = fillRule;
-                break;
+            // [port] Avalonia 中 PathGeometry 继承 StreamGeometry，子类型 case 必须在前；
+            // StreamGeometry 无 FillRule 属性（默认 NonZero，与 SVG 默认一致），EvenOdd 由解析阶段处理。
             case PathGeometry pathGeometry:
                 pathGeometry.FillRule = fillRule;
+                break;
+            case StreamGeometry:
                 break;
         }
     }
 
-    private static void _TryFreeze(Freezable freezable)
+    // [port] Avalonia 无 Freezable/Freeze 机制（WPF 用于跨线程共享的冻结步骤），保留空实现以维持调用点不变。
+    private static void _TryFreeze(object freezable)
     {
-        if (freezable.CanFreeze)
-            freezable.Freeze();
     }
 }
