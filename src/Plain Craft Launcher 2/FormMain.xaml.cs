@@ -69,6 +69,8 @@ public partial class FormMain
     public FormMain()
     {
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
+        // [port] Avalonia Window 无 OnActivated 覆写 → 订阅 Activated 事件
+        Activated += FormMain_Activated;
         // 刷新主题
         // ThemeCheckAll(False)
         // ThemeRefreshColor()
@@ -865,7 +867,7 @@ public partial class FormMain
         }
     }
 
-    private IDataObject _HandleDrag_PrevData;
+    private object? _HandleDrag_PrevData; // [port] WPF IDataObject → Avalonia 12 以 object 缓存拖拽数据引用
     private DragDropEffects _HandleDrag_PrevEffects;
 
     // 文件拖放
@@ -1299,9 +1301,9 @@ public partial class FormMain
     }
 
     // 解决龙猫的非通用实现史山
-    protected override void OnActivated(EventArgs e)
+    // [port] Avalonia Window 无 OnActivated 覆写 → 构造函数订阅 Activated 事件
+    private void FormMain_Activated(object? sender, EventArgs e)
     {
-        base.OnActivated(e);
         if (Hidden)
             Hidden = false;
     }
@@ -1849,9 +1851,7 @@ public partial class FormMain
                     }
                 case PageType.Tools: // 联机
                     {
-                        ModMain.frmToolsLeft ??= new PageToolsLeft();
-                        subType = ModMain.frmToolsLeft.pageID;
-                        PageChangeAnim(ModMain.frmToolsLeft, (Control)ModMain.frmToolsLeft.PageGet(subType));
+                        // [port] 工具页（联机/测试）暂缓移植：该标签暂不展示内容页
                         break;
                     }
                 case PageType.Setup: // 设置

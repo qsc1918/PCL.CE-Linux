@@ -3,15 +3,13 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.UI.Controls;
 
 namespace PCL;

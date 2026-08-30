@@ -23,7 +23,7 @@ public class MyScrollViewer : ScrollViewer
         ScrollChanged += MyScrollViewer_ScrollChanged;
         IsVisibleChanged += MyScrollViewer_IsVisibleChanged;
         Loaded += (_, _) => Load();
-        PreviewGotKeyboardFocus += MyScrollViewer_PreviewGotKeyboardFocus;
+        // [port] WPF PreviewGotKeyboardFocus 事件在 Avalonia 无直接对应，滚轮跟随焦点逻辑暂缓
     }
 
     public double DeltaMult { get; set; } = 1d;
@@ -79,9 +79,9 @@ public class MyScrollViewer : ScrollViewer
         scrollBar = (MyScrollBar)GetTemplateChild("PART_VerticalScrollBar");
     }
 
-    private void MyScrollViewer_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    // [port] WPF PreviewGotKeyboardFocus（阻止获得焦点时自动滚动 #3854）在 Avalonia 无直接对应，暂缓
+    private void MyScrollViewer_PreviewGotKeyboardFocus(object sender, Avalonia.Input.KeyEventArgs e)
     {
-        if (e.NewFocus is MySlider)
-            e.Handled = true; // #3854，阻止获得焦点时自动滚动
+        // 暂缓
     }
 }

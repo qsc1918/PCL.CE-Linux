@@ -1,9 +1,13 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
@@ -93,9 +97,9 @@ public class MyComboBox : ComboBox
     public ContentPresenter ContentPresenter => (ContentPresenter)Template.FindName("PART_Content", this);
     public event TextChangedEventHandler? TextChanged;
 
-    public override void OnApplyTemplate()
+    public override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        base.OnApplyTemplate();
+        base.OnApplyTemplate(e);
         if (!IsEditable)
             return;
         try

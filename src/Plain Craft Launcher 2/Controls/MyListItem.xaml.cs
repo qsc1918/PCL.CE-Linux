@@ -19,7 +19,7 @@ using PCL.Core.UI.Controls.SvgIcon;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyListItem : IMyRadio
+public partial class MyListItem : Grid, IMyRadio
 {
     public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
 

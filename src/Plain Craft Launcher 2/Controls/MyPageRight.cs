@@ -12,7 +12,7 @@ using static PCL.ModLoader;
 
 namespace PCL;
 
-public class MyPageRight : AdornerDecorator
+public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Grid
 {
     // 当前状态
     public enum PageStates
