@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net10.0</TargetFramework>
+        <OutputType>WinExe</OutputType>
+        <RootNamespace>PCL</RootNamespace>
+        <AssemblyName>PCL</AssemblyName>
+        <IsWebBootstrapper>false</IsWebBootstrapper>
+        <StartupObject>PCL.Program</StartupObject>
+        <PublishUrl>publish\</PublishUrl>
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <MapFileExtensions>true</MapFileExtensions>
+        <TargetCulture>zh-CN</TargetCulture>
+        <UseApplicationTrust>false</UseApplicationTrust>
+        <BootstrapperEnabled>true</BootstrapperEnabled>
+        <LangVersion>14</LangVersion>
+        <Configurations>Beta;Debug;Release;CI</Configurations>
+        <Platforms>AnyCPU;x64;ARM64</Platforms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <!-- app.manifest 为 Windows 专属（DPI/兼容性声明），Linux 无需 -->
+        <NoWarn>
+            41999;42016;42017;42018;42019;42020;42021;42022;42032;42036;42314;
+            VSTHRD002;VSTHRD003;VSTHRD110;VSTHRD200
+        </NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <OutputPath>bin\Debug\</OutputPath>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'CI' Or '$(Configuration)' == 'DebugCI'">
+        <OutputPath>bin\CI\</OutputPath>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE;DEBUGCI</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <OutputPath>bin\Release\</OutputPath>
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>RELEASE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Beta'">
+        <OutputPath>bin\Beta\</OutputPath>
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>BETA</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="12.0.4" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.4" />
+        <PackageReference Include="Dapper" Version="2.1.79" />
+        <PackageReference Include="DotNet.Glob" Version="3.1.3" />
+        <PackageReference Include="Downloader" Version="5.9.4" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.9" />
+        <PackageReference Include="protobuf-net" Version="3.2.56" />
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.3" />
+        <PackageReference Include="SkiaSharp" Version="3.119.0" />
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\PCL.Core\PCL.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Using Include="System.Text.Json" />
+        <Using Include="System.Text.Json.Nodes" />
+    </ItemGroup>
+    <ItemGroup>
+        <Import Include="System.IO" />
+        <Import Include="System.Net" />
+        <Import Include="System.Text" />
+        <Import Include="System.Threading" />
+    </ItemGroup>
+    <!-- 信不过巨硬的智障代码，手动包含需要的文件（沿用上游策略） -->
+    <PropertyGroup>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**" />
+        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**" />
+        <AvaloniaResource Include="Images\**" />
+        <AvaloniaResource Include="Resources\**" />
+        <EmbeddedResource Include="metadata.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="LICENCE" />
+    </ItemGroup>
+</Project>
