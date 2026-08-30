@@ -12,7 +12,7 @@ using Avalonia.Controls.Shapes;
 
 namespace PCL;
 
-public partial class MyIconButton
+public partial class MyIconButton : Border
 {
     public delegate void ClickEventHandler(object sender, EventArgs e);
 

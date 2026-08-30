@@ -39,9 +39,10 @@ public static class ModMain
     public static PageSelectRight? frmSelectRight;
     public static PageSpeedLeft? frmSpeedLeft;
     public static PageSpeedRight? frmSpeedRight;
-    public static PageToolsLeft? frmToolsLeft;
-    public static PageToolsGameLink? frmToolsGameLink;
-    public static PageToolsTest? frmToolsTest;
+    // [port] 工具页（联机/测试）暂缓移植：字段以 dynamic 类型擦除保持引用点编译（运行期恒为 null）
+    public static dynamic? frmToolsLeft;
+    public static dynamic? frmToolsGameLink;
+    public static dynamic? frmToolsTest;
     public static PageDownloadLeft? frmDownloadLeft;
     public static PageDownloadInstall? frmDownloadInstall;
     public static PageDownloadClient? frmDownloadClient;
@@ -987,8 +988,9 @@ public static class ModMain
     }
     
     // 高级
-    text = ModBase.RegexReplaceEach(text, @"\{hint\}", m => replacer(PageToolsTest.GetRandomHint()));
-    text = ModBase.RegexReplaceEach(text, @"\{cave\}", m => replacer(PageToolsTest.GetRandomCave()));
+    // [port] 工具页（测试彩蛋）暂缓移植，{hint}/{cave} 占位替换为空文本
+    text = ModBase.RegexReplaceEach(text, @"\{hint\}", m => replacer(""));
+    text = ModBase.RegexReplaceEach(text, @"\{cave\}", m => replacer(""));
     text = ModBase.RegexReplaceEach(text, @"\{setup:([a-zA-Z0-9]+)\}", m =>
     {
         if (ConfigService.TryGetConfigItemNoType(m.Groups[1].Value, out var item) && item.Source != ConfigSource.SharedEncrypt)

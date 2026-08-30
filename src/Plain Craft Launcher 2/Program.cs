@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Avalonia;
 using PCL.Core.App;
 using PCL.Core.App.Essentials;
 using PCL.Core.App.IoC;

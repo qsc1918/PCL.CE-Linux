@@ -11,7 +11,7 @@ using Avalonia.Media;
 
 namespace PCL;
 
-public partial class MyCompItem
+public partial class MyCompItem : Grid
 {
     private string stateLast;
 

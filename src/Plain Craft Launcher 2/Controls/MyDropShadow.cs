@@ -73,7 +73,7 @@ public class MyDropShadow : Decorator
     // =======================================
 
 
-    protected override void OnRender(DrawingContext drawingContext)
+    public override void Render(DrawingContext drawingContext)
     {
         var cornerRadius = CornerRadius;
         var shadowBounds = new Rect(0d, 0d, RenderSize.Width, RenderSize.Height);
@@ -222,10 +222,10 @@ public class MyDropShadow : Decorator
         ((MyDropShadow)o)._brushes = null;
     }
 
-    private GradientStopCollection CreateStops(Color c, double cornerRadius)
+    private System.Collections.Generic.List<GradientStop> CreateStops(Color c, double cornerRadius)
     {
         var gradientScale = 1d / (ShadowRadius + cornerRadius);
-        var gsc = new GradientStopCollection();
+        var gsc = new System.Collections.Generic.List<GradientStop>();
         var stopColor = c;
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.1d + cornerRadius) * gradientScale));
         stopColor.A = (byte)Math.Round(0.74336d * c.A);
@@ -260,7 +260,7 @@ public class MyDropShadow : Decorator
         var bottom = new LinearGradientBrush(sideStops, new Point(0d, 0d), new Point(0d, 1d));
         bottom.Freeze();
         brushes[(int)Placement.Bottom] = bottom;
-        GradientStopCollection topLeftStops;
+        System.Collections.Generic.List<GradientStop> topLeftStops;
 
         if (cornerRadius.TopLeft == 0d)
             topLeftStops = sideStops;
@@ -276,7 +276,7 @@ public class MyDropShadow : Decorator
         };
         topLeft.Freeze();
         brushes[(int)Placement.TopLeft] = topLeft;
-        GradientStopCollection topRightStops;
+        System.Collections.Generic.List<GradientStop> topRightStops;
 
         if (cornerRadius.TopRight == 0d)
             topRightStops = sideStops;
@@ -294,7 +294,7 @@ public class MyDropShadow : Decorator
         };
         topRight.Freeze();
         brushes[(int)Placement.TopRight] = topRight;
-        GradientStopCollection bottomLeftStops;
+        System.Collections.Generic.List<GradientStop> bottomLeftStops;
 
         if (cornerRadius.BottomLeft == 0d)
             bottomLeftStops = sideStops;
@@ -314,7 +314,7 @@ public class MyDropShadow : Decorator
         };
         bottomLeft.Freeze();
         brushes[(int)Placement.BottomLeft] = bottomLeft;
-        GradientStopCollection bottomRightStops;
+        System.Collections.Generic.List<GradientStop> bottomRightStops;
 
         if (cornerRadius.BottomRight == 0d)
             bottomRightStops = sideStops;

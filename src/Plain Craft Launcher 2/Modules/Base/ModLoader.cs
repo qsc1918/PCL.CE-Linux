@@ -69,13 +69,11 @@ public static class ModLoader
             else
             {
                 newState = TaskbarItemProgressState.Normal;
-                ModMain.frmMain.TaskbarItemInfo.ProgressValue = loaderTaskbarProgress;
             }
 
             if (loaderTaskbarProgressLast != newState)
             {
                 loaderTaskbarProgressLast = newState;
-                ModMain.frmMain.TaskbarItemInfo.ProgressState = newState;
                 ModMain.frmMain.BtnExtraDownload.ShowRefresh();
             }
         }

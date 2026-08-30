@@ -49,9 +49,9 @@ public partial class MySearchBox : MyCard
         AvaloniaProperty.Register("Text", typeof(string), typeof(MySearchBox),
             new PropertyMetadata(string.Empty, (d, e) => ((MySearchBox)d).TextBox.Text = (string)e.NewValue));
 
-    public Visibility SearchButtonVisibility
+    public bool SearchButtonVisibility
     {
-        get => BtnSearch.Visibility;
+        get => BtnSearch.IsVisible;
         set
         {
             BtnClear.Margin = new Thickness(0d, 0d, value == true ? 70 : 10, 0d);
