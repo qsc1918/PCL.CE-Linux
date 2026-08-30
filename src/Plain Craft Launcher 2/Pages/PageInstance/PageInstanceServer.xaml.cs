@@ -62,7 +62,7 @@ public partial class PageInstanceServer : MyPageRight
             if (_cts is not null)
             {
                 _cts.Cancel();
-                _cts.Dispose(); // 娓呯悊鏃х殑 CancellationTokenSource
+                _cts.Dispose(); // 濞撳懐鎮婇弮褏娈?CancellationTokenSource
                 _cts = null;
             }
     }
@@ -159,20 +159,20 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     鍒锋柊鏈嶅姟鍣ㄥ垪琛?
+    ///     閸掗攱鏌婇張宥呭閸ｃ劌鍨悰?
     /// </summary>
     public async void RefreshServers()
     {
-        ModBase.Log("鍒锋柊鏈嶅姟鍣ㄥ垪琛?);
+        ModBase.Log("閸掗攱鏌婇張宥呭閸ｃ劌鍨悰?);
         try
         {
-            // 璇诲彇鏈嶅姟鍣ㄤ俊鎭?
+            // 鐠囪褰囬張宥呭閸ｃ劋淇婇幁?
             await LoadServersFromFileAsync();
 
-            // 鍦║I绾跨▼涓洿鏂扮晫闈?
+            // 閸︹晳I缁捐法鈻兼稉顓熸纯閺傛壆鏅棃?
             ModBase.RunInUi(() => UpdateServerUi());
 
-            // 寮傛ping鎵€鏈夋湇鍔″櫒
+            // 瀵倹顒瀙ing閹碘偓閺堝婀囬崝鈥虫珤
             PingAllServers();
         }
         catch (Exception ex)
@@ -188,7 +188,7 @@ public partial class PageInstanceServer : MyPageRight
         }
     }
 
-    private void BtnRefresh_Click(object sender, MouseButtonEventArgs e)
+    private void BtnRefresh_Click(object sender, PointerReleasedEventArgs e)
     {
         if ((DateTime.Now - _lastRefresh).TotalMilliseconds < debounceInterval)
         {
@@ -215,7 +215,7 @@ public partial class PageInstanceServer : MyPageRight
         }
     }
 
-    private async void BtnAddServer_Click(object sender, MouseButtonEventArgs e)
+    private async void BtnAddServer_Click(object sender, PointerReleasedEventArgs e)
     {
         var result = GetServerInfo(new MinecraftServerInfo { Name = Lang.Text("Instance.Server.DefaultName"), Address = "" });
         if (result.Success)
@@ -279,7 +279,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     浠巗ervers.dat鏂囦欢璇诲彇鏈嶅姟鍣ㄤ俊鎭?
+    ///     娴犲窏ervers.dat閺傚洣娆㈢拠璇插絿閺堝秴濮熼崳銊や繆閹?
     /// </summary>
     private async Task LoadServersFromFileAsync()
     {
@@ -291,7 +291,7 @@ public partial class PageInstanceServer : MyPageRight
 
         try
         {
-            // 璇诲彇NBT鏍煎紡鐨剆ervers.dat鏂囦欢
+            // 鐠囪褰嘚BT閺嶇厧绱￠惃鍓唀rvers.dat閺傚洣娆?
             var nbtData = await NbtFileHandler.ReadTagInNbtFileAsync<NbtList>(serversFile, "servers");
             ParseServersFromNBT(nbtData);
         }
@@ -302,7 +302,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     瑙ｆ瀽NBT鏍煎紡鐨勬湇鍔″櫒鏁版嵁
+    ///     鐟欙絾鐎絅BT閺嶇厧绱￠惃鍕箛閸斺€虫珤閺佺増宓?
     /// </summary>
     private void ParseServersFromNBT(NbtList serversList)
     {
@@ -310,20 +310,20 @@ public partial class PageInstanceServer : MyPageRight
         {
             ModBase.Log($"Found {serversList.Count} servers:");
 
-            // 閬嶅巻 servers 鍒楄〃涓殑姣忎釜鏈嶅姟鍣?
+            // 闁秴宸?servers 閸掓銆冩稉顓犳畱濮ｅ繋閲滈張宥呭閸?
             for (int i = 0, loopTo = serversList.Count - 1; i <= loopTo; i++)
             {
                 var server = serversList[i] as NbtCompound;
                 if (server is not null)
                 {
-                    // 鎻愬彇鏈嶅姟鍣ㄤ俊鎭?
+                    // 閹绘劕褰囬張宥呭閸ｃ劋淇婇幁?
                     // Dim hidden As Byte = If(server.Get(Of NbtByte)("hidden")?.Value, 0)
                     var ip = server.Get<NbtString>("ip")?.Value ?? "Unknown";
                     var name = server.Get<NbtString>("name")?.Value ?? "Unknown";
                     var iconBase64 = server.Get<NbtString>("icon")?.Value;
 
-                    ModBase.Log($"鏈嶅姟鍣?{i + 1}:");
-                    ModBase.Log($"  鍚嶅瓧: {name}");
+                    ModBase.Log($"閺堝秴濮熼崳?{i + 1}:");
+                    ModBase.Log($"  閸氬秴鐡? {name}");
                     ModBase.Log($"  IP: {ip}");
                     // Log($"  Hidden: {If(hidden = 1, "Yes", "No")}")
                     serverList.Add(new MinecraftServerInfo
@@ -343,7 +343,7 @@ public partial class PageInstanceServer : MyPageRight
     }
 
     /// <summary>
-    ///     鏇存柊鏈嶅姟鍣║I鏄剧ず
+    ///     閺囧瓨鏌婇張宥呭閸ｂ晳I閺勫墽銇?
     /// </summary>
     private void UpdateServerUi()
     {
@@ -367,16 +367,16 @@ public partial class PageInstanceServer : MyPageRight
         if (serverList.Count == 0)
         {
             ModBase.Log(Lang.Text("Instance.Server.NoServersFound"));
-            PanNoServer.Visibility = Visibility.Visible;
-            PanContent.Visibility = Visibility.Collapsed;
-            PanServers.Visibility = Visibility.Collapsed;
+            PanNoServer.Visibility = true;
+            PanContent.Visibility = false;
+            PanServers.Visibility = false;
             return;
         }
 
         ModBase.Log(Lang.Text("Instance.Server.FoundServers"));
-        PanNoServer.Visibility = Visibility.Collapsed;
-        PanContent.Visibility = Visibility.Visible;
-        PanServers.Visibility = Visibility.Visible;
+        PanNoServer.Visibility = false;
+        PanContent.Visibility = true;
+        PanServers.Visibility = true;
     }
 
     private async void PingAllServers()
@@ -389,7 +389,7 @@ public partial class PageInstanceServer : MyPageRight
 
         _cts = new CancellationTokenSource();
         var token = _cts.Token;
-        var semaphore = new SemaphoreSlim(5); // 闄愬埗鏈€澶?5 涓苟鍙戜换鍔?
+        var semaphore = new SemaphoreSlim(5); // 闂勬劕鍩楅張鈧径?5 娑擃亜鑻熼崣鎴滄崲閸?
 
         var tasks = new List<Task>();
         try
@@ -407,7 +407,7 @@ public partial class PageInstanceServer : MyPageRight
                     }
                     catch (Exception ex)
                     {
-                        ModBase.Log(ex, $"Ping 鏈嶅姟鍣ㄥけ璐? {currentServer}");
+                        ModBase.Log(ex, $"Ping 閺堝秴濮熼崳銊ャ亼鐠? {currentServer}");
                     }
                     finally
                     {
@@ -416,20 +416,20 @@ public partial class PageInstanceServer : MyPageRight
                 }, token));
             }
 
-            await Task.WhenAll(tasks); // 绛夊緟鎵€鏈変换鍔″畬鎴?
+            await Task.WhenAll(tasks); // 缁涘绶熼幍鈧張澶夋崲閸斺€崇暚閹?
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log("PingAllServers 琚彇娑?, ModBase.LogLevel.Debug);
+            ModBase.Log("PingAllServers 鐞氼偄褰囧☉?, ModBase.LogLevel.Debug);
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "PingAllServers 澶辫触");
+            ModBase.Log(ex, "PingAllServers 婢惰精瑙?);
         }
     }
 
     /// <summary>
-    ///     ping鍗曚釜鏈嶅姟鍣?
+    ///     ping閸楁洑閲滈張宥呭閸?
     /// </summary>
     public static async Task<MinecraftServerInfo> PingServerAsync(MinecraftServerInfo server, CancellationToken token)
     {
@@ -440,7 +440,7 @@ public partial class PageInstanceServer : MyPageRight
             {
                 McPingResult? result;
                 ModBase.Log("Pinging server: " + server.Address + ":" + addr.Port);
-                result = await query.PingAsync(token); // 浼犻€?token
+                result = await query.PingAsync(token); // 娴肩娀鈧?token
                 ModBase.Log("Ping result: " + (result is not null ? "Success" : "Failed"));
                 if (result is not null)
                 {
@@ -461,12 +461,12 @@ public partial class PageInstanceServer : MyPageRight
         catch (OperationCanceledException ex)
         {
             server.Status = ServerStatus.Offline;
-            ModBase.Log("Ping 鏈嶅姟鍣ㄨ鍙栨秷: " + server.Address, ModBase.LogLevel.Debug);
+            ModBase.Log("Ping 閺堝秴濮熼崳銊潶閸欐牗绉? " + server.Address, ModBase.LogLevel.Debug);
         }
         catch (Exception ex)
         {
             server.Status = ServerStatus.Offline;
-            ModBase.Log(ex, $"Ping 鏈嶅姟鍣ㄥけ璐? {server.Address}:{server.Port}");
+            ModBase.Log(ex, $"Ping 閺堝秴濮熼崳銊ャ亼鐠? {server.Address}:{server.Port}");
         }
 
         return server;
@@ -474,7 +474,7 @@ public partial class PageInstanceServer : MyPageRight
 }
 
 /// <summary>
-///     Minecraft鏈嶅姟鍣ㄤ俊鎭被
+///     Minecraft閺堝秴濮熼崳銊や繆閹垳琚?
 /// </summary>
 public class MinecraftServerInfo
 {
@@ -491,7 +491,7 @@ public class MinecraftServerInfo
 }
 
 /// <summary>
-///     鏈嶅姟鍣ㄧ姸鎬佹灇涓?
+///     閺堝秴濮熼崳銊уЦ閹焦鐏囨稉?
 /// </summary>
 public enum ServerStatus
 {

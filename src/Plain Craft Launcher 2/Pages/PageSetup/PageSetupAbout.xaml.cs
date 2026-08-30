@@ -14,7 +14,7 @@ namespace PCL;
 
 public partial class PageSetupAbout
 {
-    // 褰╄泲
+    // 瑜扳晞娉?
     private int clickCount;
 
     private new bool isLoaded;
@@ -29,10 +29,10 @@ public partial class PageSetupAbout
 
     private void PageOtherAbout_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -43,9 +43,9 @@ public partial class PageSetupAbout
 
         if (!Lang.IsChineseMainland)
         {
-            ItemMcmod.Visibility = Visibility.Collapsed;
-            BtnMcmod.Visibility = Visibility.Collapsed;
-            ImgMcmod.Visibility = Visibility.Collapsed;
+            ItemMcmod.IsVisible = false;
+            BtnMcmod.IsVisible = false;
+            ImgMcmod.IsVisible = false;
             RowMcmod.Height = new GridLength(0);
         }
 
@@ -72,12 +72,12 @@ public partial class PageSetupAbout
         }
     }
 
-    private void ImgPCLCommunity_Click(object sender, MouseButtonEventArgs e)
+    private void ImgPCLCommunity_Click(object sender, PointerReleasedEventArgs e)
     {
         ModAnimation.AniStart(new[] { ModAnimation.AaRotateTransform(sender, 360d) });
     }
 
-    private void ImgPCLLogo_Click(object sender, MouseButtonEventArgs e)
+    private void ImgPCLLogo_Click(object sender, PointerReleasedEventArgs e)
     {
         if (clickCount < 200)
         {

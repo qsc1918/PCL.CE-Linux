@@ -197,4 +197,107 @@
 | GPU 高性能偏好 | `Config.Launch.SetGpuPreference`（默认开）→ 注册表 UserGpuPreferences（ModMain.SetGPUPreference L857-891）——**Windows 专属** |
 | 启动后事件 | 自定义事件系统（`Modules\Event\CustomEvent*.cs`：启动游戏/打开网址/下载/写变量/写设置/刷新，含安全确认 `Event.Safety.*`）、社区提示卡与启动日志卡（PageLaunchRight PanHint/PanLog） |
 
-<!-- 待续 -->
+## 优先级 P1（核心体验相关、用户未点名但常用）
+
+| 功能名 | 入口（页面/菜单） | 涉及文件 | 依赖的平台 API / 备注 |
+| --- | --- | --- | --- |
+| Java 管理 | 设置→Java；实例设置→Java 选项 | `Pages\PageSetup\PageSetupJava.xaml(.cs)`、`Modules\Minecraft\ModJava.cs`、`PCL.Core\Minecraft\Java\JavaManager.cs`、`JavaService.cs`、`JavaEntry.cs`、`Java\Scanner\RegistryJavaScanner.cs`、`MicrosoftStoreJavaScanner.cs`、`PathEnvironmentScanner.cs`、`WhereCommandScanner.cs`、`DefaultPathsScanner.cs`、`Java\UserPreference\*.cs` | **Windows 专属**：注册表 HKLM 扫描、Microsoft Store 检测、`where` 命令、PE 头解析（PeHeaderParser）；Linux 需替换扫描器（PATH/常用目录/sdkman 等）；支持手动添加/启用禁用/详情查看/自动选择（版本上下限匹配）/版本级选择与相对路径 Java/64 位检测 |
+| Java 运行时下载确认 | Java 缺失时弹窗引导 | `ModJava.JavaDownloadConfirm`/`GetJavaDownloadLoader`（L343/L362）、`Modules\Network\Loaders\LoaderDownload.cs` | 无；下载对应版本运行时并安装 |
+| 游戏实时日志页 | 右下角"游戏日志"悬浮按钮（PageType.GameLog） | `Pages\PageLogLeft.xaml(.cs)`、`PageLogRight.xaml(.cs)`、`Modules\Minecraft\McLogFilter.cs` | 无；自动滚动/清空/导出日志/导出堆栈/结束进程/最大行数滑条（PageLogRight.xaml L39-78）；AccessToken 与用户名脱敏（McLogFilter）；多实例日志切换（LogPage.Left.InstancesTitle） |
+| 下载任务管理页 | 右下角"任务管理"悬浮按钮（PageType.TaskManager） | `Pages\PageSpeedLeft.xaml(.cs)`、`PageSpeedRight.xaml(.cs)`、`Modules\Network\Facade\ModNet.cs` | 无；任务列表/进度/实时速度图/线程数（仅调试模式显示，子代理验证）/取消；下载中锁定文件夹切换/添加/删除（PageSelectLeft L346/L486/L727） |
+| 存档管理 | 实例设置→存档（PageType.VersionSaves） | `Pages\PageInstance\PageInstanceSaves.xaml(.cs)`、`PageInstanceSaves\PageInstanceSavesLeft|SavesInfo.xaml(.cs)`、`PCL.Core\Minecraft\Saves\SaveManager.cs`、`SaveInfo.cs`、`NbtFileHandler.cs` | 无；列表搜索/排序（创建时间/文件名/修改时间）/复制备份/删除（回收站）/打开位置/快捷运行 QuickPlay（直接带参进存档）/拖拽导入 zip 存档（SaveImportHelper.GetSaveRootDirectory 校验） |
+| 存档详情与编辑 | 存档详情子页 | `PCL.Core\Minecraft\Saves\Parsing\*`（6 个分版本解析器）、`Saves\Editing\*`（Pre261SaveEditor/Version261PlusSaveEditor）、`Saves\DataVersionBoundaries.cs` | 无；查看/修改游戏模式、难度、作弊开关、锁难度、种子、游玩时长、出生点、版本提示；Chunkbase 种子查询跳转（`Instance.Saves.Info.Chunkbase.*`） |
+| 存档数据包管理 | 存档详情→数据包子页 | `Pages\PageInstance\PageInstanceSaves\PageInstanceSavesDatapack.xaml(.cs)`、`Instance.Saves.Datapack.*` 键 | 无；列表/启用禁用/删除（回收站）/从文件安装/更新（下载替换，不安全文件跳过提示） |
+| 本地资源管理（模组/材质/光影/数据包） | 实例设置→对应子页 | `Pages\PageInstance\PageInstanceCompResource.xaml(.cs)`（一个类复用 5 个子页）、`MyLocalModItem.xaml(.cs)`、`Modules\Minecraft\ModLocalComp.cs`、`ModJarInJar.cs` | 无；启用禁用（改后缀）/删除（回收站+永久）/从文件安装（对话框）/过滤（全部/启用/禁用/重复/错误/可更新）/更新检查与一键更新（对比变更/下载替换）/详情（作者/版本/ModID/前置/链接/内嵌 Jar-in-Jar）/导出资源清单（Txt/Csv）/多选+全选+分享/检查模组（版本要求/重复/前置缺失，结果仅供参考提示） |
+| 投影文件管理 | 实例设置→投影（VersionSchematic） | `PageInstanceCompResource`（Schematic 模式）、`Instance.Resource.Schematic.*`、`Instance.Resource.Item.Schematic.*` | 无；支持 Sponge/NBT/MCEdit 三格式（.litematic/.nbt/.schematic/.schem）；详情显示尺寸/包围盒/总方块数/区域数/游戏版本/创建修改时间；"下载模组"入口（litematica） |
+| 已禁用模组专页 | 模组异常时引导 | `Pages\PageInstance\PageInstanceModDisabled.xaml(.cs)`、`Instance.Resource.Mod.Disabled.*` | 无；列出禁用模组并引导下载或切换实例 |
+| 截图管理 | 实例设置→截图 | `Pages\PageInstance\PageInstanceScreenshot.xaml(.cs)`、`Instance.Screenshot.*` | 无；查看/复制到剪贴板/删除/打开文件夹/快捷操作 |
+| 服务器管理 | 实例设置→服务器 | `Pages\PageInstance\PageInstanceServer.xaml(.cs)`、`ServerCard.xaml(.cs)`、`Controls\MinecraftServer.xaml(.cs)`、`MinecraftServerQuery.xaml(.cs)`、`PCL.Core\Link\McPing\*`、`PCL.Core\UI\Controls\MotdRenderer.xaml.cs`、`PCL.Core\Minecraft\ServerAddressResolver.cs` | 无（MOTD 渲染为 WPF 文字绘制；SRV 解析用自实现 DNS：`IO\Net\Dns\DnsQuery.cs`、`WeightedDnsRacerClient.cs`，可配 DoH）；servers.dat 读写/添加删除重命名/刷新在线状态（MOTD/人数/延迟/图标）/复制地址/自动进入服务器（`Config.InstanceAuth`+`VersionServerEnter`）/服务器卡片快捷启动 |
+
+| 实例导出（整合包） | 实例设置→导出 | `Pages\PageInstance\PageInstanceExport.xaml(.cs)`、`Modules\Minecraft\ModModpack.cs`、`Instance.Export.*` 键 | 无；导出 CurseForge 兼容 zip 或 Modrinth mrpack（`Advanced.Modrinth`）；细粒度内容选项（模组/存档/截图/配置/游戏设置/重要数据/地图/结构/服务器/EMI/JEI/Patchouli/Replay 等 20+，`Instance.Export.Option.*`）；导出配置文件（排除/额外/附带文件规则，`Instance.Export.Config.*`）；导出前网络可达性校验（`NetCheck.*`）；附带你启动器选项（`Option.Launcher(.Custom)`） |
+| 启动器更新 | 设置→更新；右下角"重启安装"按钮 | `Pages\PageSetup\PageSetupUpdate.xaml(.cs)`、`Modules\Updates\UpdateManager.cs`、`UpdateService.cs`（PCL.Core\App\Essentials）、`UpdatesWrapperModel.cs`、`UpdatesMirrorChyanModel.cs`、`EnumUpdateChannel.cs`、`PCL.Core\Utils\Diff\BsDiff.cs` | 自替换可执行文件（`Update.Task.RestartInstall`、命令行 update 参数自替换）为 Windows 部署方式，Linux 需改造；检查更新/通道（正式/Beta/Dev——Dev 隐藏需输入确认句）/自动更新行为 4 种（仅通知/下载并通知/下载并安装/禁用）/更新日志查看/Mirror 酱 CDK（加密存储）/BsDiff 增量 + SHA256 校验（`Update.Error.Sha256Mismatch`）/.NET 运行时缺失检测 |
+| 公告系统 | 启动时弹窗 | `Modules\Updates\AnnouncementService.cs`、`VersionAnnouncementDataModel.cs`、`Update.CommunityNotice.*` | 无；公告分级（仅重要/全部/禁用，`Setup.Misc.System.Announcement.*`，禁用需确认） |
+| 反馈中心 | 设置→问题反馈 | `Pages\PageSetup\PageSetupFeedback.xaml(.cs)`、`Setup.Feedback.*` 键 | 无；反馈列表（状态：待处理/处理中/已完成/已拒绝/重复/忽略等 8 种）/查看详情/提交新反馈（跳转浏览器）/提交前版本检查（`Unavailable.NotLatest`） |
+| 多语言 | 设置→启动器语言 | `Pages\PageSetup\PageSetupLauncherLanguage.xaml(.cs)`、`PCL.Core\App\Localization\LocalizationService.cs`、`LocalizationLanguage.cs`、`LocalizationFormatConverter.cs`、`LocalizationFontService.cs`、语言文件 `Languages\zh-CN.xaml` 等 7 种 | 无；UI 语言（auto 跟随系统/手动）、区域格式（auto/跟随语言/手动）、翻译贡献横幅（跳转网站/提交 PR）、重置确认 |
+| 主题与外观 | 设置→个性化→基础 | `Pages\PageSetup\PageSetupUI.xaml(.cs)`（CardLauncher）、`Modules\UI\Theme\ThemeManager.cs`、`PCL.Core\UI\Theme\ThemeService.cs`、`SystemThemeHelper.cs`、`ToneProfile*.cs`、`LabColor.cs` | 系统深浅色跟随读注册表（`SystemThemeHelper.cs` L19，**Windows 专属**，Linux 需读桌面环境设置）；深浅色模式（跟随系统/亮/暗）×4 主题色板（猫蓝/天蓝/崩溃蓝/HMCL 蓝暗彩蛋）/自定义主题 HSL+色相渐变/窗口透明度/锁定窗口大小/彩色底部填充/动画帧率上限 |
+| 自定义主页 | 设置→个性化→主页；启动页右侧 | `Pages\PageSetup\PageSetupUI.xaml(.cs)`（CardCustom）、`Pages\PageLaunch\PageLaunchRight.xaml(.cs)`（PanCustom）、`ModSetup.UiCustomType`（L386-441）、`Main.FileDrag.Homepage*` | 无；主页类型（无/预设/本地 XAML/联网 URL）+ 13 种预设（每日整合包/回声洞/杂志/MC 新闻/MC 官方动态/皮肤/更新摘要/今日要闻/知识/番剧/公告/手册/市场/简洁主页，`Setup.Ui.Homepage.Preset.*`）/刷新/不可信主页警告（`States.Hint.UntrustedHomepage`）/联网主页教程与下载 |
+| 新闻详情页 | 主页新闻卡片→查看详情 | `Pages\PageHomepage\PageHomepageNewsView.xaml(.cs)`、`PCL.Core\ViewModel\Homepage\NewsViewModel.cs`、`Model\Homepage\News\*` | 无；新闻列表与正文渲染（含图片加载 ImageLoaderHelper） |
+| 设置导入导出 | 设置→杂项→系统 | `Pages\PageSetup\PageSetupLauncherMisc.xaml(.cs)`（`Setup.Misc.System.ExportSettings/ImportSettings.*`） | 无；导出设置到 ini 文件/导入并重启生效；敏感项（代理凭据/Mirror 酱 CDK）加密存储（`ConfigSource.SharedEncrypt`，`PCL.Core\App\Configuration\Storage\EncryptedFileConfigStorage.cs`） |
+| 网络设置 | 设置→杂项→网络 | `PageSetupLauncherMisc.xaml(.cs)`（Network 卡）、`ModSetup.SystemHttpProxy*`（L607-647）、`PCL.Core\IO\Net\Http\HttpProxyManager.cs` | 系统代理读取注册表 ProxyEnable/ProxyServer（HttpProxyManager.cs L114-115，**Windows 专属**，Linux 需读环境变量）；不使用/系统代理/自定义代理（地址+用户名+密码）/DoH 开关（`Config.Network.EnableDoH`）/代理无效与不受信警告 |
+| 文件拖拽导入 | 主窗口任意位置拖入文件 | `FormMain.xaml.cs`（FrmMain_Drop L913 / FileDrag L990-1181）、`PageInstanceCompResource.InstallMods/InstallCompFiles` | OLE 拖放（WPF 内建 + `PCL.Core\Utils\OS\DragHelper.cs` shell32/ole32 增强，**Windows 专属部分可裁剪**）；支持：XAML→安装主页、`authlib-injector:yggdrasil-server:` URI→新建第三方档案、jar/litemod/disabled/old 批量→安装模组、litematic/nbt/schematic/schem→安装投影、在对应实例子页拖 zip→安装世界/材质/光影、zip/rar/mrpack→安装整合包 |
+| 首次启动与合规流程 | 首次运行弹窗 | `FormMain.xaml.cs`（EULA L252-258）、`Main.Eula.*`、`Main.Telemetry.*`、`Application.EnvironmentWarning.*`、`Application.xaml.cs`（启动 Logo SplashScreen L73） | 环境警告含 Windows 版本/32 位/System32 运行/Temp 文件夹检测（**Windows 专属**，`PCL.Core\Utils\OS\SystemInfo.cs`）；EULA 与遥测同意记忆（`States.System.LauncherEula`、注册表 `HKCU\Software\PCL`，TelemetryService.cs L192）；CI/调试特殊版本提示（`Main.SpecialVersion.*`） |
+| 弹窗与提示基础设施 | 全局 | `Modules\ModMain.cs`（MyMsgBox 5 类：文本/选择/输入/登录/Markdown，L228-663）、`Controls\MyMsg\*`、`Modules\UI\HintService.cs`、`PCL.Core\UI\MsgBoxWrapper.cs`、`SystemDialogs.cs`（文件/文件夹系统对话框）、`ToastNotification.cs` | 系统对话框为 Win32 通用对话框（Linux 需替换）；WinRT Toast 通知仅基础设施（见 P3）；此组是所有页面共用的强耦合基础设施 |
+
+## 优先级 P2（次要）
+
+| 功能名 | 入口（页面/菜单） | 涉及文件 | 依赖的平台 API / 备注 |
+| --- | --- | --- | --- |
+| 功能隐藏 | 设置→个性化→功能隐藏 | `Pages\PageSetup\PageSetupUI.xaml(.cs)`（CardSwitch）、`Config.Preference.Hide.*`（Config.cs L425-465）、`PageSetupUI.HiddenRefresh` | 无；隐藏主页面（下载/设置/工具）、12 个设置子页、工具子页、9 类实例子页、特定功能（版本选择/模组更新检查/功能隐藏本身/实例管理入口/联机入口等）；临时禁用提示（`UiHiddenFeature.TemporaryHint`、`Main.HiddenFeature.*`） |
+| 标题栏自定义 | 设置→个性化→标题栏 | `PageSetupUI.xaml(.cs)`（CardLogo）、`ModSetup.UiLogoType/UiLogoText/UiLogoLeft`（L469-588）、`FormMain.xaml`（ShapeTitleLogo/LabTitleLogo/ImageTitleLogo/CELogo） | 无；Logo 类型（无/默认/文本/图片/HMCL 彩蛋）、自定义文本、自定义图片（PCL\Logo.png）、Logo 居左 |
+| 字体设置 | 设置→个性化→字体 | `PageSetupUI.xaml(.cs)`（CardFont）、`Controls\FontSelector.xaml(.cs)`、`ModSetup.UiFont`（L369）、`PCL.Core\App\Localization\LocalizationFontService.cs`、`Config.Preference.Font/MotdFont` | 系统字体枚举（Linux 可用 fontconfig）；全局字体 + MOTD 字体两项 |
+| 高级材质（界面模糊） | 设置→个性化→基础→高级材质 | `PageSetupUI.xaml(.cs)`（PanBlurValue）、`ModSetup.UiBlur*`（L444-466）、`PCL.Core\UI\Effects\OptimizedBlurEffect.cs`、`AdaptiveBlurEffect.cs`、`EnhancedBlurEffect.cs`、`SamplingBlurProcessor.cs` | WPF ShaderEffect（自实现采样模糊）；启用/半径/采样率/方法（盒式/高斯） |
+| 日志设置与历史 | 设置→日志 | `Pages\PageSetup\PageSetupLog.xaml(.cs)`、`Setup.Log.*` 键 | 无；实时日志最大行数/当前日志导出/全部日志导出/按筛选导出/清理历史日志（确认）/打开日志目录/日志临时存储说明 |
+| 杂项系统设置 | 设置→杂项→系统 | `PageSetupLauncherMisc.xaml(.cs)`、`Config.System.*`（DisableHardwareAcceleration/Telemetry/MaxGameLog/AnimationFpsLimit） | 禁用硬件加速（重启生效）/动画帧率上限/遥测开关/公告级别/最大实时日志行/"停止使用 PCL CE"引导（导出数据+cmd 延迟自删，**Windows 专属**，子代理验证） |
+| 调试选项 | 设置→杂项→调试（Config.Debug） | `PageSetupLauncherMisc.xaml(.cs)`、`ModSetup.SystemDebugMode/SystemDebugAnim`（L595-605） | 无；调试模式（`Main.DebugMode.Hint`）/动画速度/随机延迟（Debug.AddRandomDelay）/跳过复制（DontCopy）/允许受限功能（AllowRestrictedFeature） |
+| 环境检测警告 | 启动时弹窗 | `Application.EnvironmentWarning.*` 键、`PCL.Core\Utils\OS\SystemInfo.cs`、`HardwareInfo.cs` | **Windows 专属**：系统位数/System32 目录运行/Temp 路径/Windows 版本过旧/社交软件文件夹（QQ/微信同步盘）检测 |
+| 下载与社区资源设置 | 设置→游戏管理 | `Pages\PageSetup\PageSetupGameManage.xaml(.cs)`、`Config.Download.*` | 无；下载线程数（默认 63，超限警告）/速度限制档位（ModSetup.ToolDownloadSpeed L201）/下载源（文件/版本列表）/自动选择实例/修复 authlib（ToolFixAuthLib）/下载目标文件夹/社区资源源/忽略 Quilt/自动安装前置/文件名格式/本地模组名样式/快速下载行为/剪贴板读取/正式版与快照更新通知/游戏语言/启动器语言跟随 |
+| 实例服务器认证设置 | 实例设置→服务器选项 | `PageInstanceSetup`（Server 卡）、`Config.InstanceAuth.*`（Config.cs L634-641）、`Instance.Setup.Server.*` 键 | 无；认证服务器地址（自动格式化/HTTP 警告/SSL 警告）/认证服务器名/注册地址/自动进入服务器/锁定登录方式（三种）/LittleSkin 覆盖确认 |
+| 服务器查询工具 | 实例服务器页/工具箱 | `Controls\MinecraftServerQuery.xaml(.cs)`、`Tools.ServerQuery.*` 键、`PCL.Core\Link\McPing\LegacyMcPingService.cs` | 无；GameMaster Query 协议查询（UDP），超时/无效响应等错误处理 |
+| 快捷方式创建 | 工具→实用工具 | `Pages\PageTools\PageToolsTest.xaml(.cs)`（Shortcut 卡）、`Tools.Test.Shortcut.*` | **Windows 专属**：.lnk 快捷方式（WScript.Shell COM，子代理验证）；桌面/开始菜单/自选位置 |
+| 自定义文件下载 | 工具→实用工具 | `PageToolsTest`（CustomDownload 卡，L30-96） | 无；输入 URL/UserAgent/文件名/保存位置直接下载并打开 |
+| 缓存清理工具 | 工具→实用工具 | `PageToolsTest`（BtnClear，L12）、`Tools.Test.Clean.*` | 无；清理启动器缓存（需先关闭游戏/等待下载完成），含下载缓存与临时文件 |
+| 启动次数查看 | 工具→实用工具 | `PageToolsTest`（LaunchCount，L24）、`Tools.Test.LaunchCount.*`、`States.System.LaunchCount` | 无；显示累计启动次数弹窗 |
+| 皮肤获取/头像生成/成就图生成 | 工具→实用工具 | `PageToolsTest`（Skin/Avatar/Achievement 卡，L98-232）、`Tools.Test.Skin/Avatar/Achievement.*` | 无；按玩家名抓取皮肤保存/按尺寸生成头像（含头发层）/自定义物品 ID 与两行文本生成成就图（预览+保存） |
+| 关于页 | 设置→关于 | `Pages\PageSetup\PageSetupAbout.xaml(.cs)`、`Setup.About.*` | 无；版本信息/社区与原版作者致谢/贡献者列表（在线拉取）/开源许可/法律条款/特别感谢/连点彩蛋（ bored 对话与 200 次成就，`EasterEgg.*`） |
+| 崩溃分析与导出崩溃报告【**用户明确暂不移植**】 | 游戏崩溃时自动弹窗；实例管理 | `Modules\Minecraft\CrashAnalysis\`（34 文件：CrashAnalyzer/CrashDetector/CrashRuleCatalog/CrashRegex/CrashLogCollector/CrashReportExporter/CrashDialogPresenter 等）、`Modules\Minecraft\ModWatcher.cs`（Crashed L699）、`Crash.*` 文案 141 条 | 无平台硬依赖（读日志文件+正则+导出报告）；含 35+ 崩溃原因规则库、Jar-in-Jar 重复解析、环境信息报告导出、自动/手动两种入口（`Crash.Dialog.Title.Auto/Manual`）、关闭开关（`LaunchAdvanceDisableCrashAnalysis`） |
+
+## 优先级 P3（边缘/娱乐/Windows 专属）
+
+| 功能名 | 入口（页面/菜单） | 涉及文件 | 依赖的平台 API / 备注 |
+| --- | --- | --- | --- |
+| 联机大厅【**用户明确暂不移植**】 | 工具→联机；设置→联机设置 | `Pages\PageTools\PageToolsGameLink.xaml(.cs)`、`PageToolsLeft.xaml(.cs)`、`Pages\PageSetup\PageSetupGameLink.xaml(.cs)`、`Modules\ModLink.cs`、`Modules\ModWebServer.cs`、`PCL.Core\Link\`（EasyTier\Lobby\McPing\Natayark\Scaffolding 共 60 文件） | **Windows/外部件依赖**：下载并运行 EasyTier CLI（`Link.Mod.DownloadEasyTier`）、iphlpapi（ModLink.cs L125）、Natayark ID OAuth（本地 127.0.0.1 回调服务器 NaidCallbackServer，ModWebServer.cs L112-307）；创建/加入大厅、房间码、成员列表、MOTD、NAT 类型测试（TCP/UDP）、IPv6、中继服务器选择、协议偏好（TCP/UDP）、端口猜测打洞、大厅公告、EULA 同意与撤销 |
+| 换皮肤/披风【**用户明确暂不移植**】 | 启动页皮肤预览；档案页→皮肤/披风 | `Pages\PageLaunch\MySkin.xaml(.cs)`、`PageLoginProfileSkin.xaml(.cs)`、`Modules\Minecraft\ModSkin.cs`、`Launch.Skin.*` 文案（60+ 条） | 无平台硬依赖（Mojang/Authlib API 网络请求）；皮肤上传（Steve/Alex 模型选择）、披风列表选择（30 种命名披风）、刷新皮肤、另存皮肤/头像、档案皮肤预览 3D 渲染 |
+| 启动器背景图/视频背景【**用户明确暂不移植**】 | 设置→个性化→背景 | `Pages\PageSetup\PageSetupUI.xaml(.cs)`（CardBackground）、`Modules\ModVideoBack.cs`、`ModSetup.UiBackground*`（L240-366）、`FormMain.xaml`（ImgBack/VideoBack L112-117）、`Setup.Ui.Background.*` 键 | MediaElement 视频播放（WPF，Linux 需替换方案）；背景图文件夹管理（刷新/清理/打开目录）、8 种适配模式（智能/居中/适应/拉伸/平铺/四角）、模糊、不透明度、彩色遮罩、轮换、视频自动暂停（联动游戏状态 IsGaming） |
+| 音乐播放器【**用户明确暂不移植**】 | 右下角音乐悬浮按钮；设置→个性化→音乐 | `Modules\ModMusic.cs`、`PageSetupUI.xaml(.cs)`（CardMusic）、`FormMain.xaml`（BtnExtraMusic L252-254）、`Music.*` 文案 | **Windows 专属**：NAudio `WaveOutEvent` 输出（ModMusic.cs L16）；扫描文件夹/播放暂停切歌/随机/音量/启动游戏自动暂停或播放/SMTC 设置项（**注意：SMTC 实现缺失**，仅 `Config.Preference.Music.EnableSMTC` 且 PageSetupUI.xaml.cs L604 `// DisableSMTCSupport()` 被注释，全仓库无 Windows.Media 代码） |
+| 愚人节彩蛋 | 启动页（4 月 1 日自动启用） | `Modules\ModMain.cs`（isAprilEnabled/TimerFool L665-820）、`FormMain`（BtnExtraApril 白旗）、`ModSetup.UiLogoType` case 4（HMCL 标题）、`Minecraft.Fool.*` 文案、`McInstanceCardType.Fool` | 无；启动按钮躲避鼠标物理动画、投降白旗提示、HMCL 标题与帮助按钮彩蛋、愚人节版本自动分类 |
+| 幸运测试 | 工具→实用工具 | `PageToolsTest`（Luck 按钮）、`Tools.Test.Luck.*` | 无；随机运势打趣 |
+| 手动崩溃测试 | 工具→实用工具（隐藏按钮） | `PageToolsTest`（BtnCrash，XAML L17-20）、`Tools.Test.Crash.*`、`Crash.Reason.ManualDebugCrash` | 无；触发一次真实崩溃以验证崩溃分析链路（开发/验证用） |
+| WinRT Toast 通知基础设施 | 系统通知 | `PCL.Core\Utils\WinRT\WinRTInterop.cs`（combase.dll）、`IToastNotification*`、`UI\ToastNotification.cs`、`Utils\OS\AumidHelper.cs`（注册表 AppUserModelId） | **Windows 专属**（WinRT/COM + 注册表 AUMID）；当前主要服务于通知能力预留 |
+| 任务栏集成 | 主窗口任务栏图标 | `FormMain.xaml`（TaskbarItemInfo L17-19）、`ModLoader.LoaderTaskbarProgressRefresh`（ModMain.cs L111） | **Windows 专属**：任务栏缩略图裁剪与进度态；Linux 无对应（可静默降级） |
+| 单实例互斥与 RPC | 进程间通信 | `PCL.Core\App\Essentials\SingleInstanceService.cs`、`RpcService.cs`、`RpcFunction.cs`、`RpcProperty.cs`、`IO\PipeComm.cs`、`KernelInterop.cs`（GetNamedPipeClientProcessId） | **Windows 专属**：命名管道通信（Linux 可换 Unix Domain Socket）；防止多开、跨进程调用（更新重启后参数接力） |
+| 遥测上报 | 遥测开关（默认关） | `PCL.Core\App\Essentials\TelemetryService.cs`、`Config.System.Telemetry` | 无硬依赖；EULA 同意记录读注册表 `HKCU\Software\PCL`（L192，Windows 专属路径） |
+| 窗口特效与 DPI | 主窗口渲染层 | `PCL.Core\Utils\OS\WindowInterop.cs`（dwmapi/user32/shcore）、`UI\Controls\BlurBorder.cs`、`FormMain.xaml`（WindowChrome 圆角）、`UI\Animation\Clock\WinMMClock.cs`（winmm 高精度计时） | **Windows 专属**：DWM 圆角/DPI 感知/winmm 时钟；WPF 本体的窗口非客户区定制在 Linux（Avalonia/gtk）需整体替代方案 |
+| 短路径与兼容 API | 文件处理底层 | `Modules\Base\ModBase.cs`（GetShortPathNameA，kernel32，L1557）、`Application.xaml.cs`（SetDllDirectoryA，L186） | **Windows 专属**：8.3 短路径与 DLL 目录重定向；Linux 无需 |
+
+## 发现备注（影响移植顺序的发现）
+
+1. **页面注册中心模式是导航骨架的根**：四大标签页的子页均由左栏页的 `PageGet(pageID)` 惰性创建（`PageDownloadLeft`/`PageSetupLeft`/`PageInstanceLeft`/`PageToolsLeft`/`PageInstanceSavesLeft`），页面种类集中在 `FormMain.PageType/PageSubType` 两个枚举（FormMain.xaml.cs L1363-1470），页面实例缓存在 `ModMain.frm*` 静态字段（ModMain.cs L26-91）。移植时应先复刻"枚举 + PageGet + 静态引用"骨架，再逐页填充。
+2. **全局强耦合基础设施**（几乎所有页面依赖，需最先可用）：`ModLoader` 任务系统（下载/安装/启动全部异步流程的载体）、`ModNet` 下载管理（`HasDownloadingTask` 锁定文件夹切换/添加/删除等多处 UI）、`MyMsgBox` 弹窗体系（5 种类型 + 主窗体队列 tick）、`HintService` 顶部提示、`ConfigService` 配置系统（含 SharedEncrypt 加密项：代理地址/密码/Mirror 酱 CDK）、`ThemeManager` 主题刷新、`IRefreshable` 页面刷新接口。
+3. **一个类复用五个资源页**：`PageInstanceCompResource` 同时充当模组/材质包/光影/投影/数据包五个实例子页（ModMain.cs L76-82 同类多实例），移植时抽成参数化组件可省大量工作。
+4. **`ModComp` 是社区资源域核心**：搜索/详情/收藏夹/翻译数据库/剪贴板识别/快速下载全部在此，被下载页与实例资源页共用；依赖解析在 `ModCompDependency`。注意 ModComp.cs L2908 有 TODO：`移除龙猫写的直接下载，换用提醒用户手动下载相关模组`（指缺失前置的直接下载逻辑，未来行为可能变化）。
+5. **档案（ModProfile）三处共用**：启动预检测的登录要求锁定、实例服务器认证、联机大厅预检（ModLink.LobbyPrecheck）都读写同一档案列表；换肤入口在档案皮肤页与工具箱两处。
+6. **崩溃分析没有删除迹象**：全仓库无"移除/删除崩溃分析"的 TODO、注释或 issue 引用；git 近期提交仍在增强它（`978d2db4 feat(mod): 内嵌模组(Jar-in-Jar)自动解析与崩溃导出 #3378`、`12bb0ea2 #3409`、`99a9c0ed #3405`、`13f5ed46 #3406`、`4304061c #3404`、`435fee1c refactor(crash) #3163`）。仅存在用户级关闭开关（`LaunchAdvanceDisableCrashAnalysis`）与对应提示（`Watcher.Crash.DetectedDisabled`）。"疑似打算删掉"的说法在本仓库不成立；不移植即直接裁剪 ModWatcher.Crashed 的分析分支即可，崩溃检测与强杀本身仍属 P0。
+7. **SMTC 是空壳**：音乐播放器的"系统媒体传输控制"只有设置项（`UiMusicSMTC` 默认 true）和被注释的 `// DisableSMTCSupport()`（PageSetupUI.xaml.cs L604），全仓库无实现代码；音乐播放器移植评估时可直接忽略该项。
+8. **Windows 专属依赖热点清单**（移植阻断点，按风险排序）：① `ModWatcher` 窗口检测/标题改写（user32，核心体验）② 系统文件/文件夹对话框（SystemDialogs，到处使用）③ Java 扫描器（注册表/MS Store/where）④ 导出启动脚本与服务端批量脚本（.bat 格式）⑤ 系统代理与深浅色注册表读取 ⑥ 单实例命名管道 ⑦ 更新自替换 exe ⑧ NAudio 音频 ⑨ 快捷方式 COM ⑩ WinRT Toast/AUMID ⑪ GPU 偏好注册表 ⑫ dwmapi/winmm 窗口特效。①②③④⑤⑥ 需要替代实现，⑦-⑫ 可先降级或裁剪。
+9. **配置层可整体平移**：全部设置项集中在 `PCL.Core\App\Config.cs`（含实例级 ArgConfig 覆盖与 Local/SharedEncrypt/GameInstance 三种存储源标记），`ModSetup` 只挂观察器；语言文件 3011 键与配置键（如 `UiLogoType`）一一对应，是移植验收的现成对照表。
+10. **下载安装与启动共享同一任务管线**：`ModDownloadLib.McInstall` 产出的加载器任务与启动时的库/资产补全（`ModLaunch`）走同一套 `LoaderBase`/`LoaderCombo`，下载限速/线程（ModSetup.ToolDownloadThread/Speed）作用于全局 ModNet；移植时不要把"下载"与"安装"拆成两套体系。
+11. **整包导入来源广**：ModModpack 支持七种来源（CurseForge/Modrinth/HMCL/MCBBS/带启动器压缩包/普通压缩包/MultiMC），其中"普通压缩包"与"带启动器压缩包"为启发式解析，Linux 移植时优先保证前四种标准格式。
+12. **存档编辑有版本边界**：PCL.Core 的存档解析器按版本分 6 档（1.3-1.8.9 / 1.9-1.12.2 / 1.13-1.15.2 / 1.16-1.21.1 / 261+ / Pre-1.3），编辑器分两档（Pre261/261+）；这是纯 NBT 逻辑，可整体移植且无 Windows 依赖。
+
+## 附录：主窗口页面枚举（移植导航对照）
+
+| PageType | 值 | 页面 | 子页（PageSubType） |
+| --- | --- | --- | --- |
+| Launch | 0 | 启动（PageLaunchLeft/Right） | — |
+| Download | 1 | 下载（PageDownloadLeft） | Install(1)/Mod(2)/Pack(3)/DataPack(4)/ResourcePack(5)/Shader(6)/World(7)/CompFavorites(8)/Client(9)/OptiFine(10)/Forge(11)/NeoForge(12)/Cleanroom(13)/Fabric(14)/LiteLoader(16)/LabyMod(17)/LegacyFabric(18) |
+| Setup | 2 | 设置（PageSetupLeft） | Launch(0)/UI(1)/GameManage(2)/About(4)/Log(5)/Feedback(6)/GameLink(7)/Update(8)/Java(9)/LauncherMisc(10)/LauncherLanguage(11) |
+| Tools | 3 | 工具（PageToolsLeft） | GameLink(1)/Test(3) |
+| InstanceSelect | 5 | 实例选择（PageSelectLeft/Right，副页面） | — |
+| TaskManager | 6 | 任务管理（PageSpeedLeft/Right，副页面） | — |
+| InstanceSetup | 7 | 实例设置（PageInstanceLeft） | Overall(0)/Setup(1)/Export(2)/World(3)/Screenshot(4)/Mod(5)/ModDisabled(6)/ResourcePack(7)/Shader(8)/Schematic(9)/Install(10)/Server(11) |
+| CompDetail | 8 | 资源工程详情（PageDownloadCompDetail，副页面） | — |
+| GameLog | 10 | 实时日志（PageLogLeft/Right，副页面） | — |
+| VersionSaves | 12 | 存档管理（PageInstanceSavesLeft） | SavesInfo(0)/SavesDatapack(1) |
+
+---
+*统计：P0 章节 10 项（细分功能 108 条）；P1 25 条；P2 18 条；P3 13 条；全文档功能条目共 164 条。调查基线：zh-CN.xaml 3011 键 + Config.cs 全部配置项 + 24 个 Page 目录 + 88 个 Mod/模块文件。*

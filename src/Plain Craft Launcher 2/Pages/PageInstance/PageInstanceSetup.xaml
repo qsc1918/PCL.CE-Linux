@@ -92,7 +92,7 @@
                 <StackPanel Margin="25,40,25,15">
                     <local:MyHint x:Name="LabRamWarn" Text="{DynamicResource Setup.Launch.Memory.Warning.Java32Bit}"
                                   Theme="Yellow" Margin="0,0,0,12" />
-                    <local:MyHint x:Name="HintRamTooHigh" Visibility="Collapsed" Height="30" Theme="Yellow"
+                    <local:MyHint x:Name="HintRamTooHigh" IsVisible="False" Height="30" Theme="Yellow"
                                   Text="{DynamicResource Setup.Launch.Memory.Warning.TooMuch}" Margin="0,0,0,12"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                     <Grid Margin="0,0,0,3">
@@ -190,14 +190,14 @@
                 <StackPanel Margin="25,42,25,18">
                     <local:MyHint x:Name="HintServerLoginLock"
                                   Text="{DynamicResource Instance.Setup.Server.LoginLockHint}" IsWarn="True"
-                                  Margin="0,0,0,13" Visibility="Collapsed" />
+                                  Margin="0,0,0,13" IsVisible="False" />
                     <local:MyHint x:Name="LabServerAuthServerSecurityVerify"
                                   Text="{DynamicResource Instance.Setup.Server.SslWarning}"
-                                  IsWarn="False" Visibility="Collapsed" />
+                                  IsWarn="False" IsVisible="False" />
                     <local:MyHint x:Name="LabServerAuthServerSecurity"
                                   Text="{DynamicResource Instance.Setup.Server.HttpWarning}"
-                                  Visibility="Collapsed" />
-                    <TextBlock x:Name="LabServerAuthServerSecurityCL" Text="&#xA;" Visibility="Collapsed" />
+                                  IsVisible="False" />
+                    <TextBlock x:Name="LabServerAuthServerSecurityCL" Text="&#xA;" IsVisible="False" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
@@ -229,10 +229,10 @@
                         </local:MyComboBox>
                         <TextBlock x:Name="LabServerAuthServer" Grid.Row="1" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.AuthServer}"
-                                   Margin="0,8,25,0" Visibility="Collapsed" />
+                                   Margin="0,8,25,0" IsVisible="False" />
                         <local:MyTextBox x:Name="TextServerAuthServer" Grid.Row="1" Grid.ColumnSpan="2"
                                          ShowValidateResult="False" Tag="VersionServerAuthServer" Grid.Column="1"
-                                         Margin="0,8,0,0" Visibility="Collapsed"
+                                         Margin="0,8,0,0" IsVisible="False"
                                          HintText="{DynamicResource Instance.Setup.Server.AuthServer.Hint}">
                             <local:MyTextBox.ValidateRules>
                                 <val:HttpValidator />
@@ -240,10 +240,10 @@
                         </local:MyTextBox>
                         <TextBlock x:Name="LabServerAuthRegister" Grid.Row="2" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.Register}"
-                                   Margin="0,8,25,0" Visibility="Collapsed" />
+                                   Margin="0,8,25,0" IsVisible="False" />
                         <local:MyTextBox x:Name="TextServerAuthRegister" Grid.Row="2" Grid.ColumnSpan="2"
                                          ShowValidateResult="False" Tag="VersionServerAuthRegister" Grid.Column="1"
-                                         Margin="0,8,0,0" Visibility="Collapsed"
+                                         Margin="0,8,0,0" IsVisible="False"
                                          HintText="{DynamicResource Instance.Setup.Server.Register.Hint}">
                             <local:MyTextBox.ValidateRules>
                                 <val:HttpValidator AllowsNullOrEmpty="True" />
@@ -251,10 +251,10 @@
                         </local:MyTextBox>
                         <TextBlock x:Name="LabServerAuthName" Grid.Row="3" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Text="{DynamicResource Instance.Setup.Server.Name}"
-                                   Margin="0,8,25,0" Visibility="Collapsed" />
+                                   Margin="0,8,25,0" IsVisible="False" />
                         <local:MyTextBox x:Name="TextServerAuthName" Grid.Row="3" Grid.ColumnSpan="2"
                                          ShowValidateResult="False" Tag="VersionServerAuthName" Grid.Column="1"
-                                         Margin="0,8,0,0" Visibility="Collapsed"
+                                         Margin="0,8,0,0" IsVisible="False"
                                          HintText="{DynamicResource Instance.Setup.Server.Name.Hint}" />
                         <TextBlock VerticalAlignment="Center" Grid.Row="5" HorizontalAlignment="Left"
                                    Text="{DynamicResource Instance.Setup.Server.AutoJoin}"
@@ -354,7 +354,7 @@
 
                     <StackPanel Margin="0,8,0,4" Grid.Row="9" Grid.ColumnSpan="2" HorizontalAlignment="Left">
                         <local:MyCheckBox Height="28" x:Name="CheckAdvanceRunWait" Tag="VersionAdvanceRunWait"
-                                          Visibility="Collapsed"
+                                          IsVisible="False"
                                           Text="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.Wait}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Instance.Setup.Advanced.IgnoreJavaCompatibility}"

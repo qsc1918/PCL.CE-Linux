@@ -54,37 +54,37 @@ public partial class PageDownloadInstall
         TextSelectName.ValidateChanged += TextSelectName_ValidateChanged;
         CardOptiFine.PreviewSwap += CardOptiFine_PreviewSwap;
         LoadOptiFine.StateChanged += (_, _, _) => OptiFine_Loaded();
-        BtnOptiFineClear.MouseLeftButtonUp += OptiFine_Clear;
+        BtnOptiFineClear.PointerReleased += OptiFine_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardLiteLoader.PreviewSwap += CardLiteLoader_PreviewSwap;
         LoadLiteLoader.StateChanged += (_, _, _) => LiteLoader_Loaded();
-        BtnLiteLoaderClear.MouseLeftButtonUp += LiteLoader_Clear;
+        BtnLiteLoaderClear.PointerReleased += LiteLoader_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardForge.PreviewSwap += CardForge_PreviewSwap;
         LoadForge.StateChanged += (_, _, _) => Forge_Loaded();
-        BtnForgeClear.MouseLeftButtonUp += Forge_Clear;
+        BtnForgeClear.PointerReleased += Forge_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardNeoForge.PreviewSwap += CardNeoForge_PreviewSwap;
         LoadNeoForge.StateChanged += (_, _, _) => NeoForge_Loaded();
-        BtnNeoForgeClear.MouseLeftButtonUp += NeoForge_Clear;
+        BtnNeoForgeClear.PointerReleased += NeoForge_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardCleanroom.PreviewSwap += CardCleanroom_PreviewSwap;
         LoadCleanroom.StateChanged += (_, _, _) => Cleanroom_Loaded();
-        BtnCleanroomClear.MouseLeftButtonUp += Cleanroom_Clear;
+        BtnCleanroomClear.PointerReleased += Cleanroom_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardFabric.PreviewSwap += CardFabric_PreviewSwap;
         LoadFabric.StateChanged += (_, _, _) => Fabric_Loaded();
-        BtnFabricClear.MouseLeftButtonUp += Fabric_Clear;
+        BtnFabricClear.PointerReleased += Fabric_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardFabricApi.PreviewSwap += CardFabricApi_PreviewSwap;
         LoadFabricApi.StateChanged += (_, _, _) => FabricApi_Loaded();
-        BtnFabricApiClear.MouseLeftButtonUp += FabricApi_Clear;
+        BtnFabricApiClear.PointerReleased += FabricApi_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardLegacyFabric.PreviewSwap += CardLegacyFabric_PreviewSwap;
         LoadLegacyFabric.StateChanged += (_, _, _) => LegacyFabric_Loaded();
-        BtnLegacyFabricClear.MouseLeftButtonUp += LegacyFabric_Clear;
+        BtnLegacyFabricClear.PointerReleased += LegacyFabric_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardLegacyFabricApi.PreviewSwap += CardLegacyFabricApi_PreviewSwap;
         LoadLegacyFabricApi.StateChanged += (_, _, _) => LegacyFabricApi_Loaded();
-        BtnLegacyFabricApiClear.MouseLeftButtonUp += LegacyFabricApi_Clear;
+        BtnLegacyFabricApiClear.PointerReleased += LegacyFabricApi_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardOptiFabric.PreviewSwap += CardOptiFabric_PreviewSwap;
         LoadOptiFabric.StateChanged += (_, _, _) => OptiFabric_Loaded();
-        BtnOptiFabricClear.MouseLeftButtonUp += OptiFabric_Clear;
+        BtnOptiFabricClear.PointerReleased += OptiFabric_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         CardLabyMod.PreviewSwap += CardLabyMod_PreviewSwap;
         LoadLabyMod.StateChanged += (_, _, _) => LabyMod_Loaded();
-        BtnLabyModClear.MouseLeftButtonUp += LabyMod_Clear;
+        BtnLabyModClear.PointerReleased += LabyMod_Clear; // [port] WPF 左键释放事件 → Avalonia PointerReleased
         TextSelectName.KeyDown += TextSelectName_KeyDown;
         BtnStart.Click += (_, _) => BtnStart_Click();
     }
@@ -323,7 +323,7 @@ public partial class PageDownloadInstall
         }, "FrmDownloadInstall SelectPageSwitch");
     }
 
-    public void MinecraftSelected(MyListItem sender, MouseButtonEventArgs e)
+    public void MinecraftSelected(MyListItem sender, PointerEventArgs e) // [port] 自定义 ClickEventHandler 的回调参数 → Avalonia PointerEventArgs
     {
         _vanillaName = sender.Title;
         _vanillaData = (JsonObject)(dynamic)sender.Tag;
@@ -836,21 +836,21 @@ public partial class PageDownloadInstall
     /// </summary>
     private string GetSelectLogo()
     {
-        if (selectedFabric is not null) return "pack://application:,,,/images/Blocks/Fabric.png";
+        if (selectedFabric is not null) return "avares://PCL/images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLegacyFabric is not null) return "pack://application:,,,/images/Blocks/Fabric.png";
+        if (selectedLegacyFabric is not null) return "avares://PCL/images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedForge is not null) return "pack://application:,,,/images/Blocks/Anvil.png";
+        if (selectedForge is not null) return "avares://PCL/images/Blocks/Anvil.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedNeoForge is not null) return "pack://application:,,,/images/Blocks/NeoForge.png";
+        if (selectedNeoForge is not null) return "avares://PCL/images/Blocks/NeoForge.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLiteLoader is not null) return "pack://application:,,,/images/Blocks/Egg.png";
+        if (selectedLiteLoader is not null) return "avares://PCL/images/Blocks/Egg.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedOptiFine is not null) return "pack://application:,,,/images/Blocks/GrassPath.png";
+        if (selectedOptiFine is not null) return "avares://PCL/images/Blocks/GrassPath.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedCleanroom is not null) return "pack://application:,,,/images/Blocks/Cleanroom.png";
+        if (selectedCleanroom is not null) return "avares://PCL/images/Blocks/Cleanroom.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLabyModVersion is not null) return "pack://application:,,,/images/Blocks/LabyMod.png";
+        if (selectedLabyModVersion is not null) return "avares://PCL/images/Blocks/LabyMod.png"; // [port] WPF 资源路径 → avares://PCL
 
         return _vanillaIcon;
     }
@@ -1215,7 +1215,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void OptiFine_Clear(object sender, MouseButtonEventArgs e)
+    private void OptiFine_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedOptiFine = null;
         selectedOptiFabric = null;
@@ -1294,7 +1294,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void LiteLoader_Clear(object sender, MouseButtonEventArgs e)
+    private void LiteLoader_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedLiteLoader = null;
         CardLiteLoader.IsSwapped = true;
@@ -1405,7 +1405,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void Forge_Clear(object sender, MouseButtonEventArgs e)
+    private void Forge_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedForge = null;
         selectedLoaderName = null;
@@ -1488,7 +1488,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void NeoForge_Clear(object sender, MouseButtonEventArgs e)
+    private void NeoForge_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedNeoForge = null;
         selectedLoaderName = null;
@@ -1574,7 +1574,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void Cleanroom_Clear(object sender, MouseButtonEventArgs e)
+    private void Cleanroom_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedCleanroom = null;
         selectedLoaderName = null;
@@ -1666,7 +1666,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void Fabric_Clear(object sender, MouseButtonEventArgs e)
+    private void Fabric_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedFabric = null;
         selectedFabricApi = null;
@@ -1795,7 +1795,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void FabricApi_Clear(object sender, MouseButtonEventArgs e)
+    private void FabricApi_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedFabricApi = null;
         selectedAPIName = null;
@@ -1881,7 +1881,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void LegacyFabric_Clear(object sender, MouseButtonEventArgs e)
+    private void LegacyFabric_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedLegacyFabric = null;
         selectedLegacyFabricApi = null;
@@ -2012,7 +2012,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void LegacyFabricApi_Clear(object sender, MouseButtonEventArgs e)
+    private void LegacyFabricApi_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedLegacyFabricApi = null;
         selectedAPIName = null;
@@ -2146,7 +2146,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void OptiFabric_Clear(object sender, MouseButtonEventArgs e)
+    private void OptiFabric_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedOptiFabric = null;
         CardOptiFabric.IsSwapped = true;
@@ -2261,7 +2261,7 @@ public partial class PageDownloadInstall
         ReloadSelected();
     }
 
-    private void LabyMod_Clear(object sender, MouseButtonEventArgs e)
+    private void LabyMod_Clear(object sender, PointerReleasedEventArgs e) // [port] WPF 鼠标事件参数 → Avalonia PointerReleasedEventArgs
     {
         selectedLabyModCommitRef = null;
         selectedLabyModVersion = null;

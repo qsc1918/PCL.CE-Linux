@@ -12,11 +12,11 @@ namespace PCL;
 public partial class PageSetupLeft
 {
     private bool isLoad;
-    private bool isPageSwitched; // 濡傛灉鍦?Loaded 鍓嶅垏鎹㈠埌鍏朵粬椤甸潰锛屼細瀵艰嚧瑙﹀彂 Loaded 鏃跺啀娆″垏鎹竴娆?
+    private bool isPageSwitched; // 婵″倹鐏夐崷?Loaded 閸撳秴鍨忛幑銏犲煂閸忔湹绮い鐢告桨閿涘奔绱扮€佃壈鍤х憴锕€褰?Loaded 閺冭泛鍟€濞嗏€冲瀼閹诡澀绔村▎?
 
     private void PageSetupLeft_Loaded(object sender, RoutedEventArgs e)
     {
-        // 鏄惁澶勪簬闅愯棌鐨勫瓙椤甸潰
+        // 閺勵垰鎯佹径鍕艾闂呮劘妫岄惃鍕摍妞ょ敻娼?
         var isHiddenPage = false;
         var hide = Config.Preference.Hide;
 
@@ -33,13 +33,13 @@ public partial class PageSetupLeft
         if (ItemLog.Checked && hide.SetupLog) isHiddenPage = true;
         if (PageSetupUI.HiddenForceShow)
             isHiddenPage = false;
-        // 鑻ラ〉闈㈤敊璇紝鎴栧皻鏈姞杞斤紝鍒欑户缁?
+        // 閼汇儵銆夐棃銏ゆ晩鐠囶垽绱濋幋鏍х毣閺堫亜濮炴潪鏂ょ礉閸掓瑧鎴风紒?
         if (isLoad && !isHiddenPage)
             return;
         isLoad = true;
-        // 鍒锋柊瀛愰〉闈㈤殣钘忔儏鍐?
+        // 閸掗攱鏌婄€涙劙銆夐棃銏ゆ閽樺繑鍎忛崘?
         PageSetupUI.HiddenRefresh();
-        // 閫夋嫨绗竴涓湭琚鐢ㄧ殑瀛愰〉闈?
+        // 闁瀚ㄧ粭顑跨娑擃亝婀悮顐ゎ洣閻劎娈戠€涙劙銆夐棃?
         if (isPageSwitched)
             return;
         var hideCfg = Config.Preference.Hide;
@@ -177,7 +177,7 @@ public partial class PageSetupLeft
         });
     }
 
-    public void Refresh(object sender, EventArgs e) // 鐢辫竟鏍忔寜閽尶鍚嶈皟鐢?
+    public void Refresh(object sender, EventArgs e) // 閻㈣精绔熼弽蹇斿瘻闁筋喖灏堕崥宥堢殶閻?
     {
         switch (ModBase.Val(((MyIconButton)sender).Tag))
         {
@@ -198,17 +198,17 @@ public partial class PageSetupLeft
         HintService.Hint(Lang.Text("Setup.Left.Refreshing"), log: false);
     }
 
-    #region 椤甸潰鍒囨崲
+    #region 妞ょ敻娼伴崚鍥ㄥ床
 
     /// <summary>
-    ///     褰撳墠椤甸潰鐨勭紪鍙枫€備粠宸﹀線鍙充粠 0 寮€濮嬭绠椼€?
+    ///     瑜版挸澧犳い鐢告桨閻ㄥ嫮绱崣鏋偓鍌欑矤瀹革箑绶氶崣鍏呯矤 0 瀵偓婵顓哥粻妞尖偓?
     /// </summary>
     public FormMain.PageSubType pageID;
 
     public PageSetupLeft()
     {
         InitializeComponent();
-        // 閫夋嫨绗竴涓湭琚鐢ㄧ殑瀛愰〉闈?
+        // 闁瀚ㄧ粭顑跨娑擃亝婀悮顐ゎ洣閻劎娈戠€涙劙銆夐棃?
         var hideCfg = Config.Preference.Hide;
         if (!hideCfg.SetupLaunch)
             pageID = FormMain.PageSubType.SetupLaunch;
@@ -240,19 +240,19 @@ public partial class PageSetupLeft
     }
 
     /// <summary>
-    ///     鍕鹃€変簨浠舵敼鍙橀〉闈€?
+    ///     閸曢箖鈧绨ㄦ禒鑸垫暭閸欐﹢銆夐棃顫偓?
     /// </summary>
     private void PageCheck(object senderRaw, ModBase.RouteEventArgs e)
     {
         var sender = (MyListItem)senderRaw;
-        // 灏氭湭鍒濆鍖栨帶浠跺睘鎬ф椂锛宻ender.Tag 涓?Nothing锛屼細璺宠繃鍒囨崲锛屼笖鐢变簬 PageID 榛樿涓?0 鑰屽垏鎹㈠埌绗竴涓〉闈?
-        // 鑻ヤ娇鐢?IsLoaded锛屽垯浼氬鑷存ā鎷熺偣鍑讳笉琚墽琛岋紙妯℃嫙鐐瑰嚮鍒囨崲椤甸潰鏃讹紝鎺т欢鐨?IsLoaded 涓?False锛?
+        // 鐏忔碍婀崚婵嗩潗閸栨牗甯舵禒璺虹潣閹勬閿涘ender.Tag 娑?Nothing閿涘奔绱扮捄瀹犵箖閸掑洦宕查敍灞肩瑬閻㈠彉绨?PageID 姒涙顓绘稉?0 閼板苯鍨忛幑銏犲煂缁楊兛绔存稉顏堛€夐棃?
+        // 閼汇儰濞囬悽?IsLoaded閿涘苯鍨导姘嚤閼峰瓨膩閹风喓鍋ｉ崙璁崇瑝鐞氼偅澧界悰宀嬬礄濡剝瀚欓悙鐟板毊閸掑洦宕叉い鐢告桨閺冭绱濋幒褌娆㈤惃?IsLoaded 娑?False閿?
         if (sender.Tag is not null)
             PageChange((FormMain.PageSubType)ModBase.Val(sender.Tag));
     }
 
     /// <summary>
-    ///     鑾峰彇褰撳墠瀵艰埅鎸囧畾鐨勫彸椤甸潰銆?
+    ///     閼惧嘲褰囪ぐ鎾冲鐎佃壈鍩呴幐鍥х暰閻ㄥ嫬褰告い鐢告桨閵?
     /// </summary>
     public object PageGet(FormMain.PageSubType? id = null)
     {
@@ -328,13 +328,13 @@ public partial class PageSetupLeft
 
             default:
             {
-                throw new Exception("鏈煡鐨勮缃瓙椤甸潰绉嶇被锛? + (int)id);
+                throw new Exception("閺堫亞鐓￠惃鍕啎缂冾喖鐡欐い鐢告桨缁夊秶琚敍? + (int)id);
             }
         }
     }
 
     /// <summary>
-    ///     鍒囨崲鐜版湁椤甸潰銆?
+    ///     閸掑洦宕查悳鐗堟箒妞ょ敻娼伴妴?
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -351,7 +351,7 @@ public partial class PageSetupLeft
         {
             ModBase.Log(
                 ex,
-                $"鍒囨崲鍒嗛〉闈㈠け璐ワ紙ID {(int)id}锛?,
+                $"閸掑洦宕查崚鍡涖€夐棃銏犮亼鐠愩儻绱橧D {(int)id}閿?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Setup.Error.OperationFailed"));
         }
@@ -363,7 +363,7 @@ public partial class PageSetupLeft
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 鍋滄涓婚〉闈㈢殑鍙抽〉闈㈠垏鎹㈠姩鐢伙紝闃叉瀹冧笌鏈姩鐢讳竴璧疯Е鍙戝娆?PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 閸嬫粍顒涙稉濠氥€夐棃銏㈡畱閸欐娊銆夐棃銏犲瀼閹广垹濮╅悽浼欑礉闂冨弶顒涚€瑰啩绗岄張顒€濮╅悽璁崇鐠х柉袝閸欐垵顦垮▎?PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -378,7 +378,7 @@ public partial class PageSetupLeft
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 寤惰繜瑙﹀彂椤甸潰閫氱敤鍔ㄧ敾锛屼互浣垮緱鍦?Loaded 浜嬩欢涓姞杞界殑鎺т欢寰椾互澶勭悊
+                // 瀵ゆ儼绻滅憴锕€褰傛い鐢告桨闁氨鏁ら崝銊ф暰閿涘奔浜掓担鍨繁閸?Loaded 娴滃娆㈡稉顓炲鏉炵晫娈戦幒褌娆㈠妞句簰婢跺嫮鎮?
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)

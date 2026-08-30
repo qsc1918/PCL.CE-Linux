@@ -25,7 +25,7 @@ public partial class PageInstanceModDisabled
     private void BtnVersion_Click(object sender, EventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType
-            .Launch); // 鍦ㄥ疄渚嬮€夋嫨椤甸潰閫夊畾瀹炰緥鐨勬椂鍊欏彧浼氳繑鍥炰竴灞傦紝鍥犳濡傛灉涓嶅厛閿氬畾 Launch锛屽湪閫夋嫨瀹炰緥鍚庝細鍥為€€鍒板疄渚嬭缃殑杩欎釜椤甸潰
+            .Launch); // 閸︺劌鐤勬笟瀣偓澶嬪妞ょ敻娼伴柅澶婄暰鐎圭偘绶ラ惃鍕閸婃瑥褰ф导姘崇箲閸ョ偘绔寸仦鍌︾礉閸ョ姵顒濇俊鍌涚亯娑撳秴鍘涢柨姘暰 Launch閿涘苯婀柅澶嬪鐎圭偘绶ラ崥搴濈窗閸ョ偤鈧偓閸掓澘鐤勬笟瀣啎缂冾喚娈戞潻娆庨嚋妞ょ敻娼?
         ModMain.frmMain.PageChange(FormMain.PageType.InstanceSelect);
     }
 
@@ -34,11 +34,11 @@ public partial class PageInstanceModDisabled
         var newVisibility =
             (Config.Preference.Hide.PageDownload && !PageSetupUI.HiddenForceShow) ||
             (ModMain.frmSelectRight is not null && ModMain.frmSelectRight.showHidden)
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-        if (BtnDownload.Visibility != newVisibility)
+                ? false
+                : true;
+        if (BtnDownload.IsVisible != newVisibility)
         {
-            BtnDownload.Visibility = newVisibility;
+            BtnDownload.IsVisible = newVisibility;
             PanMain.TriggerForceResize();
         }
     }

@@ -27,8 +27,9 @@ public partial class MyMsgLogin
         Loaded += Load;
         Btn1.Click += Btn1_Click;
         Btn3.Click += Btn3_Click;
-        PanBorder.MouseLeftButtonDown += Drag;
-        LabTitle.MouseLeftButtonDown += Drag;
+        // [port] MouseLeftButtonDown → PointerPressed
+        PanBorder.PointerPressed += Drag;
+        LabTitle.PointerPressed += Drag;
     }
 
     private void Finished(object result)
@@ -224,16 +225,19 @@ public partial class MyMsgLogin
     }
 
     // 实现回车和 Esc 的接口（#4857）
-    public void Btn1_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    public void Btn1_Click(object sender, PointerPressedEventArgs e)
     {
     }
 
-    public void Btn3_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    public void Btn3_Click(object sender, PointerPressedEventArgs e)
     {
         Finished(new ThreadInterruptedException());
     }
 
-    private void Drag(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs（GetPosition 需传视觉对象，这里传 ShapeLine）
+    private void Drag(object sender, PointerPressedEventArgs e)
     {
         // On Error Resume Next
         if (e.GetPosition(ShapeLine).Y <= 2d)

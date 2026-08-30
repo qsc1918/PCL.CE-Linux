@@ -4,9 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using PCL.Core.App;
@@ -20,6 +18,11 @@ namespace PCL;
 
 public partial class PageSelectLeft : IRefreshable
 {
+    // [port] WPF DragDrop.DoDragDrop(object)/GetDataPresent(typeof) 依赖 WPF 类型化数据。
+    // Avalonia 12 改用 IDataTransfer + DataFormat<T>；此处定义进程内拖拽格式，保证 Drop 端与源端格式相等。
+    private static readonly DataFormat<ModFolder.McFolder> McFolderFormat =
+        DataFormat.CreateInProcessFormat<ModFolder.McFolder>("PCL.McFolder");
+
     private bool isFirstLoad = true;
     private List<ModFolder.McFolder> mcFolderListLast;
 
@@ -166,10 +169,10 @@ public partial class PageSelectLeft : IRefreshable
                 var moveDownItem = contMenu.Items.OfType<MyMenuItem>().FirstOrDefault(x => x.Name == "MoveDown");
 
                 // 如果是第一个项目，隐藏上移按钮
-                if (i == 0) moveUpItem.Visibility = Visibility.Collapsed;
+                if (i == 0) moveUpItem.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
 
                 // 如果是最后一个项目，隐藏下移按钮
-                if (i == ModFolder.mcFolderList.Count - 1) moveDownItem.Visibility = Visibility.Collapsed;
+                if (i == ModFolder.mcFolderList.Count - 1) moveDownItem.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
 
                 // 构建列表项
                 var newItem = new MyListItem
@@ -187,12 +190,13 @@ public partial class PageSelectLeft : IRefreshable
                 newItem.Changed += (a, b) => ModMain.frmSelectLeft.Folder_Change((MyListItem)a, b);
 
                 // 拖拽
-                newItem.AllowDrop = true;
-                newItem.MouseMove += ModMain.frmSelectLeft.Item_MouseMove;
-                newItem.DragEnter += ModMain.frmSelectLeft.Item_DragEnter;
-                newItem.DragOver += ModMain.frmSelectLeft.Item_DragOver;
-                newItem.DragLeave += ModMain.frmSelectLeft.Item_DragLeave;
-                newItem.Drop += ModMain.frmSelectLeft.Item_Drop;
+                // [port] WPF AllowDrop/事件直连 → Avalonia DragDrop 附加属性与附加事件（无 CLR 事件包装）
+                DragDrop.SetAllowDrop(newItem, true);
+                newItem.PointerPressed += ModMain.frmSelectLeft.Item_PointerPressed;
+                DragDrop.AddDragEnterHandler(newItem, ModMain.frmSelectLeft.Item_DragEnter);
+                DragDrop.AddDragOverHandler(newItem, ModMain.frmSelectLeft.Item_DragOver);
+                DragDrop.AddDragLeaveHandler(newItem, ModMain.frmSelectLeft.Item_DragLeave);
+                DragDrop.AddDropHandler(newItem, ModMain.frmSelectLeft.Item_Drop);
 
                 // 图标按钮
                 var newIconButton = new MyIconButton
@@ -746,15 +750,18 @@ public partial class PageSelectLeft : IRefreshable
 
     #region 拖拽排序功能
 
-    // 拖拽开始时的鼠标移动处理
-    private void Item_MouseMove(object sender, MouseEventArgs e)
+    // [port] 拖拽开始：WPF 用 MouseMove + 左键按住启动拖拽；Avalonia 12 的 DragDrop.DoDragDropAsync 需要
+    // PointerPressedEventArgs（只能在 PointerPressed 里发起），故事件改绑到 PointerPressed。
+    private void Item_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        var item = (MyListItem)sender;
-        // 当按住鼠标左键时开始拖拽操作
-        if (e.LeftButton != MouseButtonState.Pressed) return;
+        var item = (MyListItem)sender!;
+        if (!e.GetCurrentPoint(item).Properties.IsLeftButtonPressed) return;
         try
         {
-            DragDrop.DoDragDrop(item, item.Tag, DragDropEffects.Move);
+            // [port] WPF DragDrop.DoDragDrop(item, object, effects) → Avalonia IDataTransfer + DoDragDropAsync（异步）
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(McFolderFormat, (ModFolder.McFolder)item.Tag));
+            _ = DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
         }
         catch (Exception ex)
         {
@@ -763,54 +770,55 @@ public partial class PageSelectLeft : IRefreshable
     }
 
     // 拖拽进入时的处理
-    private void Item_DragEnter(object sender, DragEventArgs e)
+    private void Item_DragEnter(object? sender, DragEventArgs e)
     {
         try
         {
-            if (e.Data.GetDataPresent(typeof(ModFolder.McFolder)))
+            if (e.Data.Contains(McFolderFormat))
             {
-                e.Effects = DragDropEffects.Move;
+                // [port] WPF e.Effects → Avalonia e.DragEffects
+                e.DragEffects = DragDropEffects.Move;
                 // 添加视觉反馈
-                var item = (MyListItem)sender;
+                var item = (MyListItem)sender!;
                 item.Opacity = 0.7d;
             }
             else
             {
-                e.Effects = DragDropEffects.None;
+                e.DragEffects = DragDropEffects.None;
             }
         }
         catch (Exception)
         {
-            e.Effects = DragDropEffects.None;
+            e.DragEffects = DragDropEffects.None;
         }
 
         e.Handled = true;
     }
 
     // 拖拽悬停时的处理
-    private void Item_DragOver(object sender, DragEventArgs e)
+    private void Item_DragOver(object? sender, DragEventArgs e)
     {
         try
         {
-            e.Effects = e.Data.GetDataPresent(typeof(ModFolder.McFolder))
+            e.DragEffects = e.Data.Contains(McFolderFormat)
                 ? DragDropEffects.Move
                 : DragDropEffects.None;
         }
         catch (Exception)
         {
-            e.Effects = DragDropEffects.None;
+            e.DragEffects = DragDropEffects.None;
         }
 
         e.Handled = true;
     }
 
     // 拖拽离开时的处理
-    private void Item_DragLeave(object sender, DragEventArgs e)
+    private void Item_DragLeave(object? sender, DragEventArgs e)
     {
         try
         {
             // 恢复视觉状态
-            var item = (MyListItem)sender;
+            var item = (MyListItem)sender!;
             item.Opacity = 1.0d;
         }
         catch (Exception ex)
@@ -822,24 +830,29 @@ public partial class PageSelectLeft : IRefreshable
     }
 
     // 拖拽放下时的处理
-    private void Item_Drop(object sender, DragEventArgs e)
+    private void Item_Drop(object? sender, DragEventArgs e)
     {
         try
         {
-            var targetItem = (MyListItem)sender;
+            var targetItem = (MyListItem)sender!;
             var targetFolder = (ModFolder.McFolder)targetItem.Tag;
 
             // 恢复视觉状态
             targetItem.Opacity = 1.0d;
 
             // 检查数据有效性
-            if (!e.Data.GetDataPresent(typeof(ModFolder.McFolder)))
+            if (!e.Data.Contains(McFolderFormat))
             {
                 e.Handled = true;
                 return;
             }
 
-            var sourceFolder = (ModFolder.McFolder)e.Data.GetData(typeof(ModFolder.McFolder));
+            var sourceFolder = e.Data.TryGetValue(McFolderFormat);
+            if (sourceFolder is null)
+            {
+                e.Handled = true;
+                return;
+            }
 
             // 检查是否为有效的拖拽操作
             if (ReferenceEquals(sourceFolder, targetFolder))

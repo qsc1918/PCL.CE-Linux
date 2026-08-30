@@ -60,20 +60,20 @@ public partial class PageInstanceSaves : IRefreshable
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
         worldPath = PageInstanceLeft.McInstance.PathIndie + @"saves\";
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
         Reload();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoad)
             return;
         isLoad = true;
         CheckQuickPlay();
 
-        // 鍒濆鍖栨枃浠剁郴缁熺洃瑙嗗櫒鍜屾帓搴忔寜閽?
+        // 閸掓繂顫愰崠鏍ㄦ瀮娴犲墎閮寸紒鐔烘磧鐟欏棗娅掗崪灞惧笓鎼村繑瀵滈柦?
         SetupFileSystemWatcher();
         BtnSort.Click += BtnSortClick;
         SetSortMethod(_currentSortMethod);
@@ -94,7 +94,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         if (fileSystemWatcher is not null) fileSystemWatcher.Dispose();
 
-        // 纭繚鐩綍瀛樺湪
+        // 绾喕绻氶惄顔肩秿鐎涙ê婀?
         if (!Directory.Exists(worldPath))
             Directory.CreateDirectory(worldPath);
 
@@ -138,7 +138,7 @@ public partial class PageInstanceSaves : IRefreshable
     }
 
     /// <summary>
-    ///     纭繚褰撳墠椤甸潰涓婄殑淇℃伅宸叉纭樉绀恒€?
+    ///     绾喕绻氳ぐ鎾冲妞ょ敻娼版稉濠勬畱娣団剝浼呭鍙夘劀绾喗妯夌粈鎭掆偓?
     /// </summary>
     public void Reload()
     {
@@ -164,14 +164,14 @@ public partial class PageInstanceSaves : IRefreshable
 
             if (saveFolders.Count == 0)
             {
-                PanNoWorld.Visibility = Visibility.Visible;
-                PanContent.Visibility = Visibility.Collapsed;
+                PanNoWorld.IsVisible = true;
+                PanContent.IsVisible = false;
                 PanNoWorld.UpdateLayout();
             }
             else
             {
-                PanNoWorld.Visibility = Visibility.Collapsed;
-                PanContent.Visibility = Visibility.Visible;
+                PanNoWorld.IsVisible = false;
+                PanContent.IsVisible = true;
                 PanContent.UpdateLayout();
 
                 var showingSaves = (IsSearching ? _searchResult : saveFolders).ToList();
@@ -187,7 +187,7 @@ public partial class PageInstanceSaves : IRefreshable
 
                 foreach (var curFolder in showingSaves)
                 {
-                    // 妫€鏌ユ枃浠跺す鏄惁浠嶇劧瀛樺湪
+                    // 濡偓閺屻儲鏋冩禒璺恒仚閺勵垰鎯佹禒宥囧姧鐎涙ê婀?
                     if (!Directory.Exists(curFolder)) continue;
 
                     var saveLogo = Path.Combine(curFolder, "icon.png");
@@ -335,7 +335,7 @@ public partial class PageInstanceSaves : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "妫€鏌ュ瓨妗ｅ揩鎹峰惎鍔ㄥけ璐?,
+                "濡偓閺屻儱鐡ㄥ锝呮彥閹瑰嘲鎯庨崝銊ャ亼鐠?,
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
@@ -345,7 +345,7 @@ public partial class PageInstanceSaves : IRefreshable
     {
         try
         {
-            ModBase.Log("[World] 鍒锋柊瀛樻。鏂囦欢");
+            ModBase.Log("[World] 閸掗攱鏌婄€涙ɑ銆傞弬鍥︽");
             saveFolders.Clear();
             if (Directory.Exists(worldPath))
                 saveFolders = Directory.EnumerateDirectories(worldPath).ToList();
@@ -353,19 +353,19 @@ public partial class PageInstanceSaves : IRefreshable
                 saveFolders = new List<string>();
 
             if (ModBase.modeDebug)
-                ModBase.Log("[World] 鍏卞彂鐜?" + saveFolders.Count + " 涓瓨妗ｆ枃浠跺す", ModBase.LogLevel.Debug);
+                ModBase.Log("[World] 閸忓崬褰傞悳?" + saveFolders.Count + " 娑擃亜鐡ㄥ锝嗘瀮娴犺泛銇?, ModBase.LogLevel.Debug);
             PanList.Children.Clear();
             CheckQuickPlay();
 
             if (ModBase.modeDebug)
             {
                 if ((bool)quickPlayFeature)
-                    ModBase.Log("[World] 璇ュ疄渚嬫敮鎸佸瓨妗ｅ揩鎹峰惎鍔?, ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 鐠囥儱鐤勬笟瀣暜閹镐礁鐡ㄥ锝呮彥閹瑰嘲鎯庨崝?, ModBase.LogLevel.Debug);
                 else
-                    ModBase.Log("[World] 璇ュ疄渚嬩笉鏀寔瀛樻。蹇嵎鍚姩", ModBase.LogLevel.Debug);
+                    ModBase.Log("[World] 鐠囥儱鐤勬笟瀣╃瑝閺€顖涘瘮鐎涙ɑ銆傝箛顐ｅ祹閸氼垰濮?, ModBase.LogLevel.Debug);
             }
 
-            RefreshUI(); // 纭繚UI鍒锋柊
+            RefreshUI(); // 绾喕绻歎I閸掗攱鏌?
         }
         catch (Exception ex)
         {
@@ -385,12 +385,12 @@ public partial class PageInstanceSaves : IRefreshable
         RefreshUI();
     }
 
-    private void BtnOpenFolder_Click(object sender, MouseButtonEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenExplorer(worldPath);
     }
 
-    private void BtnPaste_Click(object sender, MouseButtonEventArgs e)
+    private void BtnPaste_Click(object sender, PointerReleasedEventArgs e)
     {
         var files = Clipboard.GetFileDropList();
         var loaders = new List<ModLoader.LoaderBase>();
@@ -438,13 +438,13 @@ public partial class PageInstanceSaves : IRefreshable
         ModMain.frmMain.BtnExtraDownload.Ribble();
     }
 
-    private void BtnDownloadNew_Click(object sender, MouseButtonEventArgs e)
+    private void BtnDownloadNew_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadWorld);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 鐏忓棗缍嬮崜宥呯杽娓氬顔曠純顔昏礋缁涙盯鈧娅?
     }
 
-    #region 鎼滅储鍜屾帓搴?
+    #region 閹兼粎鍌ㄩ崪灞惧笓鎼?
 
     private SortMethod _currentSortMethod = SortMethod.FileName;
     private List<string> _searchResult;

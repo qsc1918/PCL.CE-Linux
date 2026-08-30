@@ -30,7 +30,7 @@
                                             Change="SliderChange" />
                         </Grid>
                         <Border Background="{DynamicResource ColorBrushToolTip}" Margin="0,5,0,12" CornerRadius="4"
-                                x:Name="PanLauncherHide" Visibility="Collapsed">
+                                x:Name="PanLauncherHide" IsVisible="False">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                                 <TextBlock Text="{DynamicResource Setup.Ui.Basic.BlueHint}" FontSize="13" Margin="0,0,0,0"
                                            TextWrapping="Wrap" />
@@ -133,7 +133,7 @@
             </local:MyCard>
             <local:MyCard x:Name="CardBackground" Margin="0,0,0,15" Title="{DynamicResource Setup.Ui.Background.TitleDefault}">
                 <StackPanel Margin="25,40,25,20">
-                    <Grid x:Name="PanBackgroundSuit" Height="28" Margin="0,0,0,10" Visibility="Collapsed">
+                    <Grid x:Name="PanBackgroundSuit" Height="28" Margin="0,0,0,10" IsVisible="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -153,7 +153,7 @@
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.BottomRight}" />
                         </local:MyComboBox>
                     </Grid>
-                    <Grid x:Name="PanBackgroundOpacity" Height="22" Margin="0,0,0,7" Visibility="Collapsed">
+                    <Grid x:Name="PanBackgroundOpacity" Height="22" Margin="0,0,0,7" IsVisible="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -162,7 +162,7 @@
                         <local:MySlider x:Name="SliderBackgroundOpacity" Tag="UiBackgroundOpacity" MaxValue="1000"
                                         ValueByKey="10" Grid.Column="1" Change="SliderChange" />
                     </Grid>
-                    <Grid x:Name="PanBackgroundBlur" Height="22" Margin="0,0,0,10" Visibility="Collapsed">
+                    <Grid x:Name="PanBackgroundBlur" Height="22" Margin="0,0,0,10" IsVisible="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -190,7 +190,7 @@
                                         Margin="0,0,20,0" Click="BtnBackgroundRefresh_Click"
                                         ToolTip="{DynamicResource Setup.Ui.Background.Refresh.ToolTip}"
                                         Grid.Column="1" />
-                        <local:MyButton x:Name="BtnBackgroundClear" MinWidth="140" Text="{DynamicResource Setup.Ui.Background.Clear}" Visibility="Collapsed"
+                        <local:MyButton x:Name="BtnBackgroundClear" MinWidth="140" Text="{DynamicResource Setup.Ui.Background.Clear}" IsVisible="False"
                                         Padding="13,0" Margin="0,0,20,0" ColorType="Red"
                                         Click="BtnBackgroundClear_Click" Grid.Column="2" />
                     </Grid>
@@ -198,7 +198,7 @@
             </local:MyCard>
             <local:MyCard x:Name="CardMusic" Margin="0,0,0,15" Title="{DynamicResource Setup.Ui.Music.Title}">
                 <StackPanel Margin="25,42,25,20">
-                    <Grid x:Name="PanMusicVolume" Visibility="Collapsed" Height="22" Margin="0,0,0,10">
+                    <Grid x:Name="PanMusicVolume" IsVisible="False" Height="22" Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -207,7 +207,7 @@
                         <local:MySlider x:Name="SliderMusicVolume" Tag="UiMusicVolume" MaxValue="1000" ValueByKey="10"
                                         Grid.Column="1" Change="SliderChange" />
                     </Grid>
-                    <StackPanel x:Name="PanMusicDetail" Visibility="Collapsed" Margin="-1,0,0,3">
+                    <StackPanel x:Name="PanMusicDetail" IsVisible="False" Margin="-1,0,0,3">
                         <local:MyCheckBox Text="{DynamicResource Setup.Ui.Music.Shuffle}" Margin="0,0,0,5" Height="22" x:Name="CheckMusicRandom"
                                           Tag="UiMusicRandom" Change="CheckBoxChange" />
                         <local:MyCheckBox Text="{DynamicResource Setup.Ui.Music.AutoStart}" Margin="0,0,0,5" Height="22" x:Name="CheckMusicAuto"
@@ -232,7 +232,7 @@
                         <local:MyButton x:Name="BtnMusicRefresh" Text="{DynamicResource Setup.Ui.Music.Refresh}" MinWidth="140" Padding="13,0"
                                         Margin="0,0,20,0" Click="BtnMusicRefresh_Click"
                                         ToolTip="{DynamicResource Setup.Ui.Music.Refresh.ToolTip}" Grid.Column="1" />
-                        <local:MyButton x:Name="BtnMusicClear" Text="{DynamicResource Setup.Ui.Music.Clear}" MinWidth="140" Visibility="Collapsed"
+                        <local:MyButton x:Name="BtnMusicClear" Text="{DynamicResource Setup.Ui.Music.Clear}" MinWidth="140" IsVisible="False"
                                         Padding="13,0" Margin="0,0,20,0" ColorType="Red" Click="BtnMusicClear_Click"
                                         Grid.Column="2" />
                     </Grid>
@@ -258,8 +258,8 @@
                                           Grid.Column="3" Check="RadioBoxChange" PreviewCheck="RadioLogoType3_Check" />
                     </Grid>
                     <local:MyCheckBox Text="{DynamicResource Setup.Ui.Logo.LeftAlign}" Margin="-1,8,0,3" Height="22" x:Name="CheckLogoLeft"
-                                      Tag="UiLogoLeft" Visibility="Collapsed" Change="CheckBoxChange" />
-                    <Grid x:Name="PanLogoText" Margin="0,14,0,5" Visibility="Collapsed">
+                                      Tag="UiLogoLeft" IsVisible="False" Change="CheckBoxChange" />
+                    <Grid x:Name="PanLogoText" Margin="0,14,0,5" IsVisible="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -268,7 +268,7 @@
                         <local:MyTextBox x:Name="TextLogoText" Tag="UiLogoText" Grid.Column="1" MaxLength="100"
                                          ValidatedTextChanged="TextBoxChange" />
                     </Grid>
-                    <Grid x:Name="PanLogoChange" Margin="0,14,0,5" Height="35" Visibility="Collapsed">
+                    <Grid x:Name="PanLogoChange" Margin="0,14,0,5" Height="35" IsVisible="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
@@ -303,7 +303,7 @@
                     <local:MyHint Margin="0,15,0,6" Text="{DynamicResource Setup.Ui.Homepage.NetWarning}" Theme="Yellow"
                                   x:Name="HintCustomWarn"
                                   CanClose="True" RelativeSetup="HintCustomWarn" />
-                    <Grid Height="35" x:Name="PanCustomLocal" Visibility="Collapsed" Margin="0,10,0,5">
+                    <Grid Height="35" x:Name="PanCustomLocal" IsVisible="False" Margin="0,10,0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
@@ -316,7 +316,7 @@
                                         Padding="13,0" Margin="0,0,20,0" HorizontalAlignment="Left"
                                         Click="BtnCustomTutorial_Click" />
                     </Grid>
-                    <Grid x:Name="PanCustomNet" Visibility="Collapsed" Margin="0,10,0,5">
+                    <Grid x:Name="PanCustomNet" IsVisible="False" Margin="0,10,0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -329,7 +329,7 @@
                             </local:MyTextBox.ValidateRules>
                         </local:MyTextBox>
                     </Grid>
-                    <Grid x:Name="PanCustomPreset" Visibility="Collapsed" Margin="0,12,10,5" Height="28">
+                    <Grid x:Name="PanCustomPreset" IsVisible="False" Margin="0,12,10,5" Height="28">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
                             <ColumnDefinition />
@@ -338,7 +338,7 @@
                         <local:MyComboBox x:Name="ComboCustomPreset" Grid.ColumnSpan="2" Tag="UiCustomPreset"
                                           Grid.Column="1" SelectionChanged="ComboChange">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.Trivia}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.EchoCave}" Visibility="Collapsed" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.EchoCave}" IsVisible="False" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.McNews}" />
                             <!-- <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.SimpleHomepage}" /> -->
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.DailyModpack}" />
@@ -347,7 +347,7 @@
                             <!-- <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.PclMarket}" /> -->
                             <!-- <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.PclNews}" /> -->
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.PclManual}" />
-                            <!-- <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.OpenMcim}" Visibility="Collapsed" /> -->
+                            <!-- <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.OpenMcim}" IsVisible="False" /> -->
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.Magazine}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.GitHub}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Homepage.Preset.McUpdateSummary}" />

@@ -1,11 +1,8 @@
+<!-- [port] 移除 WPF 设计期属性：xmlns:mc/xmlns:d/mc:Ignorable/d:DesignHeight/d:DesignWidth（Avalonia 无设计期 XAML 支持） -->
 <Grid x:Class="PCL.PageLoginProfileSkin" Tag="False"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:PCL"
-      mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800">
+      xmlns:local="clr-namespace:PCL">
     <Grid Margin="0,0,0,0" Background="{StaticResource ColorBrushTransparent}" Name="PanData">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="34" />

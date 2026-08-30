@@ -5,12 +5,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Threading;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.FileIO;
@@ -93,7 +90,8 @@ public partial class PageSelectRight
             isRefreshing = true;
 
             // 确保在UI线程执行刷新
-            Dispatcher.BeginInvoke(new Action(() =>
+            // [port] WPF Dispatcher.BeginInvoke → Avalonia Dispatcher.UIThread.Post
+            Dispatcher.UIThread.Post(new Action(() =>
             {
                 McInstanceListUI(ModInstanceList.mcInstanceListLoader);
                 isRefreshing = false;
@@ -143,7 +141,7 @@ public partial class PageSelectRight
             var originalHasInstances = ModInstanceList.mcInstanceList.ToArray().Any(c => c.Value.Count > 0);
 
             // 搜索无结果时显示 PanEmptySearch
-            PanEmptySearch.Visibility = Visibility.Collapsed; // 默认隐藏
+            PanEmptySearch.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
 
             foreach (var Card in ModInstanceList.mcInstanceList.ToArray())
             {
@@ -298,7 +296,8 @@ public partial class PageSelectRight
             if (PanMain.Children.Count == 1 && ((MyCard)PanMain.Children[0]).IsSwapped)
                 ((MyCard)PanMain.Children[0]).IsSwapped = false;
 
-            PanVerSearchBox.Visibility = hasVisibleFolders ? Visibility.Visible : Visibility.Collapsed;
+            // [port] WPF Visibility 三元 → Avalonia IsVisible bool（Collapsed=false, Visible=true）
+            PanVerSearchBox.IsVisible = hasVisibleFolders;
 
             // 判断应该显示哪一个页面
             if (!hasAnyResults)
@@ -306,22 +305,21 @@ public partial class PageSelectRight
                 if (!originalHasInstances)
                 {
                     // 完全没有实例的情况
-                    PanEmpty.Visibility = Visibility.Visible;
-                    PanBack.Visibility = Visibility.Collapsed;
+                    PanEmpty.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanBack.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
                     if (showHidden)
                     {
                         LabEmptyTitle.Text = Lang.Text("Select.Instance.Hidden.EmptyTitle");
                         LabEmptyContent.Text = Lang.Text("Select.Instance.Hidden.EmptyMessage");
-                        BtnEmptyDownload.Visibility = Visibility.Collapsed;
+                        BtnEmptyDownload.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
                     }
                     else
                     {
                         LabEmptyTitle.Text = Lang.Text("Select.Instance.Empty.Title");
                         LabEmptyContent.Text = Lang.Text("Select.Instance.Empty.Message");
-                        BtnEmptyDownload.Visibility =
-                            Config.Preference.Hide.PageDownload && !PageSetupUI.HiddenForceShow
-                                ? Visibility.Collapsed
-                                : Visibility.Visible;
+                        // [port] Visibility 三元 → IsVisible bool（Collapsed=false, Visible=true）
+                        BtnEmptyDownload.IsVisible =
+                            !(Config.Preference.Hide.PageDownload && !PageSetupUI.HiddenForceShow);
                     }
                 }
                 // 有实例但搜索无结果的情况
@@ -329,10 +327,10 @@ public partial class PageSelectRight
                              c.Key == McInstanceCardType.Hidden && c.Value.Count > 0))
                 {
                     // 有隐藏实例但搜索无结果 - 显示搜索无结果提示
-                    PanVerSearchBox.Visibility = Visibility.Visible;
-                    PanEmpty.Visibility = Visibility.Collapsed;
-                    PanBack.Visibility = Visibility.Visible;
-                    PanEmptySearch.Visibility = Visibility.Visible;
+                    PanVerSearchBox.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanEmpty.IsVisible = false;
+                    PanBack.IsVisible = true;
+                    PanEmptySearch.IsVisible = true;
                     LabEmptySearchTitle.Text = Lang.Text("Select.Instance.Hidden.EmptySearchTitle");
                     LabEmptySearchContent.Text = string.IsNullOrWhiteSpace(searchText)
                         ? Lang.Text("Select.Instance.Search.EmptyInput")
@@ -341,20 +339,20 @@ public partial class PageSelectRight
                 else if (showHidden)
                 {
                     // 无隐藏实例 - 显示"无隐藏实例"提示
-                    PanEmpty.Visibility = Visibility.Visible;
-                    PanBack.Visibility = Visibility.Collapsed;
+                    PanEmpty.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanBack.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
                     LabEmptyTitle.Text = Lang.Text("Select.Instance.Hidden.EmptyTitle");
                     LabEmptyContent.Text = Lang.Text("Select.Instance.Hidden.EmptyMessage");
-                    BtnEmptyDownload.Visibility = Visibility.Collapsed;
-                    PanVerSearchBox.Visibility = Visibility.Collapsed;
+                    BtnEmptyDownload.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
+                    PanVerSearchBox.IsVisible = false; // [port] Visibility.Collapsed → IsVisible=false
                 }
                 else
                 {
                     // 普通模式下的搜索无结果
-                    PanVerSearchBox.Visibility = Visibility.Visible;
-                    PanEmpty.Visibility = Visibility.Collapsed;
-                    PanBack.Visibility = Visibility.Visible;
-                    PanEmptySearch.Visibility = Visibility.Visible;
+                    PanVerSearchBox.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+                    PanEmpty.IsVisible = false;
+                    PanBack.IsVisible = true;
+                    PanEmptySearch.IsVisible = true;
                     LabEmptySearchTitle.Text = Lang.Text("Select.Instance.EmptySearch.Title");
                     LabEmptySearchContent.Text = string.IsNullOrWhiteSpace(searchText)
                         ? Lang.Text("Select.Instance.Search.EmptyInput")
@@ -363,9 +361,9 @@ public partial class PageSelectRight
             }
             else
             {
-                PanBack.Visibility = Visibility.Visible;
-                PanEmpty.Visibility = Visibility.Collapsed;
-                PanEmptySearch.Visibility = Visibility.Collapsed;
+                PanBack.IsVisible = true;
+                PanEmpty.IsVisible = false;
+                PanEmptySearch.IsVisible = false;
             } // 有结果时隐藏
         }
 
@@ -384,7 +382,7 @@ public partial class PageSelectRight
     {
         var newItem = new MyListItem
         {
-            Title = mcInstance.Name, Info = mcInstance.Desc, Height = 42d, Tag = mcInstance, SnapsToDevicePixels = true,
+            Title = mcInstance.Name, Info = mcInstance.Desc, Height = 42d, Tag = mcInstance,
             Type = MyListItem.CheckType.Clickable
         };
         var instanceInfo = mcInstance.Info;
@@ -420,7 +418,8 @@ public partial class PageSelectRight
                 Lang.Text("Select.Instance.Error.IconLoad"),
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Select.Instance.Error.IconLoad"));
-            newItem.Logo = "pack://application:,,,/images/Blocks/RedstoneBlock.png";
+            // [port] WPF pack://application → Avalonia avares://PCL（程序集名 PCL）
+            newItem.Logo = "avares://PCL/images/Blocks/RedstoneBlock.png";
         }
 
         newItem.ContentHandler = McVersionListContent;
@@ -484,7 +483,7 @@ public partial class PageSelectRight
                 PageInstanceLeft.McInstance = version;
                 ModMain.frmMain.PageChange(FormMain.PageType.InstanceSetup);
             };
-            sender.MouseRightButtonUp += (_, _) =>
+            sender.PointerReleased += (_, _) => // [port] WPF MouseRightButtonUp → Avalonia PointerReleased
             {
                 PageInstanceLeft.McInstance = version;
                 ModMain.frmMain.PageChange(FormMain.PageType.InstanceSetup);
@@ -499,7 +498,7 @@ public partial class PageSelectRight
             ToolTipService.SetVerticalOffset(btnCont, 30d);
             ToolTipService.SetHorizontalOffset(btnCont, 2d);
             btnCont.Click += (_, _) => PageInstanceOverall.OpenVersionFolder(version);
-            sender.MouseRightButtonUp += (_, _) => PageInstanceOverall.OpenVersionFolder(version);
+            sender.PointerReleased += (_, _) => PageInstanceOverall.OpenVersionFolder(version); // [port] MouseRightButtonUp → PointerReleased
             sender.Buttons = new[] { btnStar, btnOpenFolder, btnDel, btnCont };
         }
     }
@@ -623,12 +622,11 @@ public partial class PageSelectRight
 
     public void BtnEmptyDownload_Loaded()
     {
-        var newVisibility = (Config.Preference.Hide.PageDownload && !PageSetupUI.HiddenForceShow) || showHidden
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        if (BtnEmptyDownload.Visibility != newVisibility)
+        // [port] Visibility 枚举 → IsVisible bool：Collapsed=false, Visible=true
+        var newVisibility = !((Config.Preference.Hide.PageDownload && !PageSetupUI.HiddenForceShow) || showHidden);
+        if (BtnEmptyDownload.IsVisible != newVisibility)
         {
-            BtnEmptyDownload.Visibility = newVisibility;
+            BtnEmptyDownload.IsVisible = newVisibility;
             PanLoad.TriggerForceResize();
         }
     }

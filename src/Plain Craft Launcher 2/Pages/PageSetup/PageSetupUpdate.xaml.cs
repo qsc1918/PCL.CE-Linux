@@ -68,8 +68,8 @@ public partial class PageSetupUpdate
     public async void CheckUpdate()
     {
         ModBase.Log("[Update] 寮€濮嬫鏌ユ洿鏂?);
-        CardUpdate.Visibility = Visibility.Collapsed;
-        CardCheck.Visibility = Visibility.Visible;
+        CardUpdate.Visibility = false;
+        CardCheck.Visibility = true;
         TextCurrentDesc.Text = Lang.Text("Setup.Update.Checking");
         BtnCheckAgain.IsEnabled = false;
         switch (await IsLatestAsync())
@@ -129,22 +129,22 @@ public partial class PageSetupUpdate
                     BtnUpdate.IsEnabled = true;
                 }
 
-                CardUpdate.Visibility = Visibility.Visible;
-                CardCheck.Visibility = Visibility.Collapsed;
+                CardUpdate.Visibility = true;
+                CardCheck.Visibility = false;
                 break;
             }
             case UpdateStatus.Latest:
             {
-                CardUpdate.Visibility = Visibility.Collapsed;
-                CardCheck.Visibility = Visibility.Visible;
+                CardUpdate.Visibility = false;
+                CardCheck.Visibility = true;
                 BtnCheckAgain.IsEnabled = true;
                 TextCurrentDesc.Text = Lang.Text("Setup.Update.Latest");
                 break;
             }
             case UpdateStatus.Error:
             {
-                CardUpdate.Visibility = Visibility.Collapsed;
-                CardCheck.Visibility = Visibility.Visible;
+                CardUpdate.Visibility = false;
+                CardCheck.Visibility = true;
                 BtnCheckAgain.IsEnabled = true;
                 TextCurrentDesc.Text = Lang.Text("Setup.Update.CheckFailed");
                 break;
@@ -161,7 +161,7 @@ public partial class PageSetupUpdate
         }
     }
 
-    private void BtnUpdate_Click(object sender, MouseButtonEventArgs e)
+    private void BtnUpdate_Click(object sender, PointerReleasedEventArgs e)
     {
         if (UpdateManager.isUpdateWaitingRestart) UpdateManager.UpdateRestart(true);
         // 寮€濮嬫洿鏂版祦绋?
@@ -253,12 +253,12 @@ public partial class PageSetupUpdate
         Config.Update.MirrorChyanKey = TextMirrorCDK.Password;
     }
 
-    private void BtnGetMirrorCDK_Click(object sender, MouseButtonEventArgs e)
+    private void BtnGetMirrorCDK_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenWebsite("https://mirrorchyan.com/");
     }
 
-    private void BtnChangelog_Click(object sender, MouseButtonEventArgs e)
+    private void BtnChangelog_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases/v" + ModBase.versionBaseName);
     }
@@ -273,7 +273,7 @@ public partial class PageSetupUpdate
         return $"{str} {add.Replace(".", " ").Replace("beta", "Beta").Replace("rc", "RC")}";
     }
 
-    private void BtnCheckAgain_OnClick(object sender, MouseButtonEventArgs e)
+    private void BtnCheckAgain_OnClick(object sender, PointerReleasedEventArgs e)
     {
         CheckUpdate();
     }

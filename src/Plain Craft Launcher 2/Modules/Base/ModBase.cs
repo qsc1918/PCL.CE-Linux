@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
+// [port] System.Drawing(GDI+) 在 Linux 不可用，相关转换已条件编译
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -244,11 +244,14 @@ public static class ModBase
             return Color.FromArgb(MathByte(conv.a), MathByte(conv.r), MathByte(conv.g), MathByte(conv.b));
         }
 
+        // [port] System.Drawing 随 GDI+ 不可用，此转换仅保留源码以备 Windows 目标
+#if WINDOWS
         public static implicit operator System.Drawing.Color(MyColor conv)
         {
             return System.Drawing.Color.FromArgb(MathByte(conv.a), MathByte(conv.r), MathByte(conv.g),
                 MathByte(conv.b));
         }
+#endif
 
         public static implicit operator MyColor(SolidColorBrush bru)
         {
@@ -1534,14 +1537,19 @@ public static class ModBase
 
     /// <summary>
     ///     若路径长度大于指定值，则将长路径转换为短路径。
+    ///     [port] Win32 短路径仅 Windows 有意义；Linux 上直接返回原路径以维持调用点行为
     /// </summary>
     public static string ShortenPath(string longPath, int shortenThreshold = 247)
     {
+#if WINDOWS
         if (longPath.Length <= shortenThreshold)
             return longPath;
         var shortPath = new StringBuilder(260);
         GetShortPathName(longPath, shortPath, 260);
         return shortPath.ToString();
+#else
+        return longPath;
+#endif
     }
 
     public static void MoveDirectory(string sourceDir, string targetDir)
@@ -1561,8 +1569,7 @@ public static class ModBase
         }
     }
 
-    [DllImport("kernel32", EntryPoint = "GetShortPathNameA")]
-    private static extern int GetShortPathName(string lpszLongPath, StringBuilder lpszShortPath, int cchBuffer);
+    // [port] Win32 短路径 API 已条件编译进 ShortenPath，声明保留于其上方
 
     public static void CreateSymbolicLink(string linkPath, string targetPath, int flags)
     {
@@ -3716,26 +3723,24 @@ public class MultiplicationConverter : IValueConverter
 }
 
 /// <summary>
-///     将取反的 Boolean 绑定到 Visibility。
+///     将取反的 Boolean 绑定到可见性。
+///     [port] WPF Visibility 枚举 → Avalonia IsVisible bool：true→false（隐藏），null/false→true（可见）
 /// </summary>
 public class InverseBooleanToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is null)
-            return Visibility.Visible;
-        bool boolValue;
-        return bool.TryParse(value.ToString(), out boolValue)
-            ? boolValue ? Visibility.Collapsed : Visibility.Visible
-            : Visibility.Visible;
+            return true;
+        return bool.TryParse(value.ToString(), out var boolValue) ? !boolValue : true;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is null)
             return false;
-        return value is Visibility
-            ? (Visibility)value != Visibility.Visible
+        return value is bool boolValue
+            ? !boolValue
             : false;
     }
 }

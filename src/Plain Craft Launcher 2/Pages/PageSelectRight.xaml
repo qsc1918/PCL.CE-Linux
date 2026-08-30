@@ -1,9 +1,8 @@
+<!-- [port] 移除设计期命名空间 mc/d 与 mc:Ignorable（Avalonia 无设计期 XAML 支持） -->
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageSelectRight"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageSelectRight"
     PanScroll="{Binding ElementName=PanBack}">
     <Grid>
         <Grid x:Name="PanAllBack">

@@ -19,7 +19,7 @@ public partial class MyLocalCompItem
     {
         var currentName = Entry.compFile.FileName.Replace(".jar", "");
         var newestName = Entry.UpdateFile.FileName.Replace(".jar", "");
-        // 绠€鍖栧悕绉板姣?
+        // 缁犫偓閸栨牕鎮曠粔鏉款嚠濮?
         var currentSegs = currentName.Split('-').ToList();
         var newestSegs = newestName.Split('-').ToList();
         var shortened = false;
@@ -36,7 +36,7 @@ public partial class MyLocalCompItem
         {
             currentName = currentSegs.Join("-");
             newestName = newestSegs.Join("-");
-            Entry._Version = currentName; // 浣跨敤缃戠粶淇℃伅浣滀负鏄剧ず鐨勭増鏈彿
+            Entry._Version = currentName; // 娴ｈ法鏁ょ純鎴犵捕娣団剝浼呮担婊€璐熼弰鍓с仛閻ㄥ嫮澧楅張顒€褰?
         }
 
         return
@@ -47,21 +47,21 @@ public partial class MyLocalCompItem
     {
         Dispatcher.BeginInvoke(new Func<Task>(async () =>
         {
-            // 鏇存柊
+            // 閺囧瓨鏌?
             if (Entry.CanUpdate)
             {
-                BtnUpdate.Visibility = Visibility.Visible;
+                BtnUpdate.IsVisible = true;
                 BtnUpdate.ToolTip = $"{GetUpdateCompareDescription()}\r\n{Lang.Text("Instance.Resource.Item.UpdateToolTip")}";
             }
             else
             {
-                BtnUpdate.Visibility = Visibility.Collapsed;
+                BtnUpdate.IsVisible = false;
             }
 
-            // 鏍囬涓庢弿杩?
+            // 閺嶅洭顣芥稉搴㈠伎鏉?
             string descFileName;
             if (Entry.IsFolder)
-                // 鏂囦欢澶归」鐨勭壒娈婂鐞?
+                // 閺傚洣娆㈡径褰掋€嶉惃鍕濞堝﹤顦╅悶?
                 descFileName = Entry.Name;
             else
                 switch (Entry.State)
@@ -90,17 +90,17 @@ public partial class MyLocalCompItem
             var compTemp = Entry.Comp;
             if (Entry.IsFolder)
             {
-                // 鏂囦欢澶归」鐨勭壒娈婃樉绀?
+                // 閺傚洣娆㈡径褰掋€嶉惃鍕濞堝﹥妯夌粈?
                 Title = Entry.Name;
                 newDescription = Entry.Description;
             }
             else if (Config.Download.Comp.UiCompNameSolution == 1)
             {
-                // 鏍囬鏄剧ず鏂囦欢鍚嶏紝璇︽儏鏄剧ず璇戝悕
-                // 鏍囬
+                // 閺嶅洭顣介弰鍓с仛閺傚洣娆㈤崥宥忕礉鐠囷附鍎忛弰鍓с仛鐠囨垵鎮?
+                // 閺嶅洭顣?
                 Title = descFileName;
                 SubTitle = "";
-                // 鎻忚堪
+                // 閹诲繗鍫?
                 if (Entry.Comp is null)
                 {
                     newDescription = Entry.Name;
@@ -117,8 +117,8 @@ public partial class MyLocalCompItem
             }
             else
             {
-                // 鏍囬鏄剧ず璇戝悕锛岃鎯呮樉绀烘枃浠跺悕
-                // 鏍囬
+                // 閺嶅洭顣介弰鍓с仛鐠囨垵鎮曢敍宀冾嚊閹懏妯夌粈鐑樻瀮娴犺泛鎮?
+                // 閺嶅洭顣?
                 if (Entry.Comp is null)
                 {
                     Title = Entry.Name;
@@ -131,7 +131,7 @@ public partial class MyLocalCompItem
                     SubTitle = titles.Value + (Entry.Version is null ? "" : "  |  " + Entry.Version);
                 }
 
-                // 鎻忚堪
+                // 閹诲繗鍫?
                 newDescription = descFileName;
             }
 
@@ -147,10 +147,10 @@ public partial class MyLocalCompItem
             else
                 LabTitle.SetResourceReference(TextBlock.ForegroundProperty,
                     Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine ? "ColorBrush1" : "ColorBrushGray4");
-            // 涓?Logo
+            // 娑?Logo
             Logo = Entry.GetLogo();
 
-            // 鍥炬爣鍙充笅瑙掔殑 Logo
+            // 閸ョ偓鐖ｉ崣鍏呯瑓鐟欐帞娈?Logo
             if (Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine)
             {
                 if (imgState is not null)
@@ -186,9 +186,9 @@ public partial class MyLocalCompItem
                 imgState.Source = new MyBitmap(ModBase.pathImage + $"Icons/{Entry.State}.png");
             }
 
-            // 鏍囩
+            // 閺嶅洨顒?
             if (Entry.IsFolder)
-                // 涓烘枃浠跺す娣诲姞鏍囩
+                // 娑撶儤鏋冩禒璺恒仚濞ｈ濮為弽鍥╊劮
                 Tags = new List<string> { Lang.Text("Instance.Resource.Item.FolderTag") };
             else if (Entry.Comp is not null) Tags = Entry.Comp.Tags;
         }));
@@ -197,7 +197,7 @@ public partial class MyLocalCompItem
     public void RefreshColor(object sender, EventArgs e)
     {
         InitLate(sender, e);
-        // 瑙﹀彂棰滆壊鍔ㄧ敾
+        // 鐟欙箑褰傛０婊嗗閸斻劎鏁?
         var time = IsMouseOver ? 120 : 180;
         var ani = new List<ModAnimation.AniData>();
         // ButtonStack
@@ -254,7 +254,7 @@ public partial class MyLocalCompItem
         ModAnimation.AniStart(ani, "LocalModItem Color " + Uuid);
     }
 
-    // 瑙﹀彂铏氭嫙鍖栧唴瀹?
+    // 鐟欙箑褰傞搹姘珯閸栨牕鍞寸€?
     private void InitLate(object sender, EventArgs e)
     {
         if (buttonHandler is not null)
@@ -264,8 +264,8 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鏄剧ず鏇存柊鏃ュ織
-    private void BtnUpdate_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    // 閺勫墽銇氶弴瀛樻煀閺冦儱绻?
+    private void BtnUpdate_PreviewMouseRightButtonUp(object sender, PointerReleasedEventArgs e)
     {
         e.Handled = true;
         ShowUpdateLog();
@@ -301,7 +301,7 @@ public partial class MyLocalCompItem
             userSummary: Lang.Text("Instance.Resource.Item.OpenChangelogFailed"));
     }
 
-    // 瑙﹀彂鏇存柊
+    // 鐟欙箑褰傞弴瀛樻煀
     private void BtnUpdate_Click(object sender, EventArgs e)
     {
         switch (ModMain.MyMsgBox(
@@ -309,7 +309,7 @@ public partial class MyLocalCompItem
                     Lang.Text("Instance.Resource.Item.UpdateConfirm.Title"),
                     Lang.Text("Instance.Resource.Item.Update"), Lang.Text("Instance.Resource.Item.ViewChangelog"), Lang.Text("Common.Action.Cancel")))
         {
-            case 1: // 鏇存柊
+            case 1: // 閺囧瓨鏌?
             {
                 switch (Entry.Comp.Type)
                 {
@@ -341,33 +341,33 @@ public partial class MyLocalCompItem
 
                 break;
             }
-            case 2: // 鏌ョ湅鏇存柊鏃ュ織
+            case 2: // 閺屻儳婀呴弴瀛樻煀閺冦儱绻?
             {
                 ShowUpdateLog();
                 break;
             }
-            case 3: // 鍙栨秷
+            case 3: // 閸欐牗绉?
             {
                 break;
             }
         }
     }
 
-    // 鑷€傚簲锛?4465锛?
+    // 閼奉亪鈧倸绨查敍?4465閿?
     private void PanTitle_SizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
     {
-        // 0锛氬叏閮ㄨ垝灞曪細Auto - Auto - (Auto) - 1*
-        // 1锛氬帇缂?Subtitle锛欰uto - 1* - (Auto) - 0
-        // 2锛氱户缁帇缂?Title锛?* - 0 - (Auto) - 0
+        // 0閿涙艾鍙忛柈銊ㄥ灊鐏炴洩绱癆uto - Auto - (Auto) - 1*
+        // 1閿涙艾甯囩紓?Subtitle閿涙uto - 1* - (Auto) - 0
+        // 2閿涙氨鎴风紒顓炲竾缂?Title閿?* - 0 - (Auto) - 0
         var currentCompressLevel =
-            ColumnExtend.Width.IsStar ? 0 : ColumnTitle.Width.IsStar ? 2 : 1; // Subtitle 鍙兘鏄?Collapsed
+            ColumnExtend.Width.IsStar ? 0 : ColumnTitle.Width.IsStar ? 2 : 1; // Subtitle 閸欘垵鍏橀弰?Collapsed
         var newCompressLevel = default(int);
         switch (currentCompressLevel)
         {
             case 0:
             {
                 if (ColumnExtend.Bounds.Width < 0.5d)
-                    newCompressLevel = LabSubtitle.Visibility == Visibility.Collapsed ? 2 : 1;
+                    newCompressLevel = LabSubtitle.IsVisible == false ? 2 : 1;
                 else
                     return;
 
@@ -387,7 +387,7 @@ public partial class MyLocalCompItem
             case 2:
             {
                 if (!LabTitle.IsTextTrimmed())
-                    newCompressLevel = LabSubtitle.Visibility == Visibility.Collapsed ? 0 : 1;
+                    newCompressLevel = LabSubtitle.IsVisible == false ? 0 : 1;
                 else
                     return;
 
@@ -399,7 +399,7 @@ public partial class MyLocalCompItem
         {
             case 0:
             {
-                // 鍏ㄩ儴鑸掑睍锛欰uto - Auto - (Auto) - 1*
+                // 閸忋劑鍎撮懜鎺戠潔閿涙uto - Auto - (Auto) - 1*
                 ColumnTitle.Width = GridLength.Auto;
                 ColumnSubtitle.Width = GridLength.Auto;
                 ColumnExtend.Width = new GridLength(1d, GridUnitType.Star);
@@ -407,7 +407,7 @@ public partial class MyLocalCompItem
             }
             case 1:
             {
-                // 鍘嬬缉 Subtitle锛欰uto - 1* - (Auto) - 0
+                // 閸樺缂?Subtitle閿涙uto - 1* - (Auto) - 0
                 ColumnTitle.Width = GridLength.Auto;
                 ColumnSubtitle.Width = new GridLength(1d, GridUnitType.Star);
                 ColumnExtend.Width = new GridLength(0d, GridUnitType.Pixel);
@@ -415,7 +415,7 @@ public partial class MyLocalCompItem
             }
             case 2:
             {
-                // 缁х画鍘嬬缉 Title锛?* - 0 - (Auto) - 0
+                // 缂佈呯敾閸樺缂?Title閿?* - 0 - (Auto) - 0
                 ColumnTitle.Width = new GridLength(1d, GridUnitType.Star);
                 ColumnSubtitle.Width = new GridLength(0d, GridUnitType.Pixel);
                 ColumnExtend.Width = new GridLength(0d, GridUnitType.Pixel);
@@ -424,7 +424,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    #region 鍩虹灞炴€?
+    #region 閸╄櫣顢呯仦鐐粹偓?
 
     public int Uuid = ModBase.GetUuid();
 
@@ -435,7 +435,7 @@ public partial class MyLocalCompItem
         set => PathLogo.Source = value;
     }
 
-    // 鏍囬
+    // 閺嶅洭顣?
     public string Title
     {
         get => field;
@@ -469,7 +469,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鍓爣棰?
+    // 閸擃垱鐖ｆ０?
     public string SubTitle
     {
         get => LabSubtitle?.Text ?? "";
@@ -478,11 +478,11 @@ public partial class MyLocalCompItem
             if ((LabSubtitle.Text ?? "") == (value ?? ""))
                 return;
             LabSubtitle.Text = value;
-            LabSubtitle.Visibility = string.IsNullOrEmpty(value) ? Visibility.Collapsed : Visibility.Visible;
+            LabSubtitle.IsVisible = string.IsNullOrEmpty(value) ? false : true;
         }
     }
 
-    // 鎻忚堪
+    // 閹诲繗鍫?
     public string Description
     {
         get => LabInfo.Text;
@@ -500,7 +500,7 @@ public partial class MyLocalCompItem
         set
         {
             PanTags.Children.Clear();
-            PanTags.Visibility = value.Any() ? Visibility.Visible : Visibility.Collapsed;
+            PanTags.IsVisible = value.Any() ? true : false;
             foreach (var TagText in value)
             {
                 var newTag = new Border
@@ -525,7 +525,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鐩稿叧鑱旂殑 Mod
+    // 閻╃鍙ч懕鏃傛畱 Mod
     public ModLocalComp.LocalCompFile Entry
     {
         get => (ModLocalComp.LocalCompFile)Tag;
@@ -534,12 +534,12 @@ public partial class MyLocalCompItem
 
     #endregion
 
-    #region 鐐瑰嚮涓庡嬀閫?
+    #region 閻愮懓鍤稉搴″瑎闁?
 
-    // 瑙﹀彂鐐瑰嚮浜嬩欢
+    // 鐟欙箑褰傞悙鐟板毊娴滃娆?
     public event ClickEventHandler? Click;
 
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e);
 
     public MyLocalCompItem()
     {
@@ -564,21 +564,21 @@ public partial class MyLocalCompItem
         PanTitle.SizeChanged += PanTitle_SizeChanged;
     }
 
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_MouseUp(object sender, PointerReleasedEventArgs e)
     {
         if (isMouseDown)
         {
             Click?.Invoke(sender, e);
             if (e.Handled)
                 return;
-            ModBase.Log("[Control] 鎸変笅鏈湴 Mod 鍒楄〃椤癸細" + LabTitle.Text);
+            ModBase.Log("[Control] 閹稿绗呴張顒€婀?Mod 閸掓銆冩い鐧哥窗" + LabTitle.Text);
         }
     }
 
-    // 榧犳爣鐐瑰嚮鍒ゅ畾
+    // 姒х姵鐖ｉ悙鐟板毊閸掋倕鐣?
     private bool isMouseDown;
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerReleasedEventArgs e)
     {
         if (!IsMouseDirectlyOver)
             return;
@@ -594,7 +594,7 @@ public partial class MyLocalCompItem
             buttonStack.IsHitTestVisible = true;
     }
 
-    // 婊戝姩閫変腑
+    // 濠婃垵濮╅柅澶夎厬
     public class SwipeSelect
     {
         public int Start { get; set; }
@@ -627,8 +627,8 @@ public partial class MyLocalCompItem
     private void Button_MouseSwipeStart(object sender, object e)
     {
         if (Parent is null)
-            return; // Mod 鍙兘宸茶鍒犻櫎锛?3824锛?
-        // 寮€濮嬫粦鍔?
+            return; // Mod 閸欘垵鍏樺鑼额潶閸掔娀娅庨敍?3824閿?
+        // 瀵偓婵绮﹂崝?
         var index = ((StackPanel)Parent).Children.IndexOf(this);
         CurrentSwipe.Start = index;
         CurrentSwipe.End = index;
@@ -639,22 +639,22 @@ public partial class MyLocalCompItem
     private void Button_MouseSwipe(object sender, object e)
     {
         if (Parent is null)
-            return; // Mod 鍙兘宸茶鍒犻櫎锛?3824锛?
-        // 缁撴潫婊戝姩
+            return; // Mod 閸欘垵鍏樺鑼额潶閸掔娀娅庨敍?3824閿?
+        // 缂佹挻娼鎴濆З
         if (Mouse.LeftButton != MouseButtonState.Pressed || !(Mouse.DirectlyOver is MyLocalCompItem)) // #5771
         {
             CurrentSwipe.Swiping = false;
             return;
         }
 
-        // 璁＄畻婊戝姩鑼冨洿
+        // 鐠侊紕鐣诲鎴濆З閼煎啫娲?
         var elements = ((StackPanel)Parent).Children;
         var index = elements.IndexOf(this);
         CurrentSwipe.Start =
             (int)Math.Round(ModBase.MathClamp(Math.Min(CurrentSwipe.Start, index), 0d, elements.Count - 1));
         CurrentSwipe.End =
             (int)Math.Round(ModBase.MathClamp(Math.Max(CurrentSwipe.End, index), 0d, elements.Count - 1));
-        // 鍕鹃€夋墍鏈夎寖鍥翠腑鐨勯」
+        // 閸曢箖鈧澧嶉張澶庡瘱閸ョ繝鑵戦惃鍕€?
         if (CurrentSwipe.Start == CurrentSwipe.End)
             return;
         for (int i = CurrentSwipe.Start, loopTo = CurrentSwipe.End; i <= loopTo; i++)
@@ -665,7 +665,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鍕鹃€夌姸鎬?
+    // 閸曢箖鈧濮搁幀?
     public event CheckEventHandler? Check;
 
     public delegate void CheckEventHandler(object sender, ModBase.RouteEventArgs e);
@@ -681,7 +681,7 @@ public partial class MyLocalCompItem
         {
             try
             {
-                // 瑙﹀彂灞炴€у€间慨鏀?
+                // 鐟欙箑褰傜仦鐐粹偓褍鈧棿鎱ㄩ弨?
                 var rawValue = field;
                 if (value == field)
                     return;
@@ -705,13 +705,13 @@ public partial class MyLocalCompItem
                         return;
                 }
 
-                // 鏇存敼鍔ㄧ敾
+                // 閺囧瓨鏁奸崝銊ф暰
                 if (this.IsVisibleInWindow(ModMain.frmMain))
                 {
                     var anim = new List<ModAnimation.AniData>();
                     if (Checked)
                     {
-                        // 鐢辨棤鍙樻湁
+                        // 閻㈣鲸妫ら崣妯绘箒
                         var delta = 32d - RectCheck.Bounds.Height;
                         anim.Add(ModAnimation.AaHeight(RectCheck, delta * 0.4d, 200,
                             ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
@@ -727,7 +727,7 @@ public partial class MyLocalCompItem
                     }
                     else
                     {
-                        // 鐢辨湁鍙樻棤
+                        // 閻㈣鲸婀侀崣妯绘￥
                         anim.Add(ModAnimation.AaHeight(RectCheck, -RectCheck.Bounds.Height, 120,
                             ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)));
                         anim.Add(ModAnimation.AaOpacity(RectCheck, -RectCheck.Opacity, 70, 40));
@@ -740,7 +740,7 @@ public partial class MyLocalCompItem
                 }
                 else
                 {
-                    // 涓嶅湪绐楀彛涓婃椂鐩存帴璁剧疆
+                    // 娑撳秴婀粣妤€褰涙稉濠冩閻╁瓨甯寸拋鍓х枂
                     RectCheck.VerticalAlignment = VerticalAlignment.Center;
                     RectCheck.Margin = new Thickness(-3, 0d, 0d, 0d);
                     if (Checked)
@@ -767,19 +767,19 @@ public partial class MyLocalCompItem
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, "璁剧疆 Checked 澶辫触");
+                ModBase.Log(ex, "鐠佸墽鐤?Checked 婢惰精瑙?);
             }
         }
     }
 
     #endregion
 
-    #region 鍚庡姞杞藉唴瀹?
+    #region 閸氬骸濮炴潪钘夊敶鐎?
 
-    // 鍙充笅瑙掔姸鎬佹寚绀哄浘鏍?
+    // 閸欏厖绗呯憴鎺斿Ц閹焦瀵氱粈鍝勬禈閺?
     private Image imgState;
 
-    // 鎸囧悜鑳屾櫙
+    // 閹稿洤鎮滈懗灞炬珯
     public Border RectBack
     {
         get
@@ -811,7 +811,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鎸夐挳
+    // 閹稿鎸?
     public Action<MyLocalCompItem, EventArgs> buttonHandler;
     public Control buttonStack;
     public IEnumerable<MyIconButton> Buttons
@@ -820,7 +820,7 @@ public partial class MyLocalCompItem
         set
         {
             field = value;
-            // 绉婚櫎鍘?Stack
+            // 缁夊娅庨崢?Stack
             if (buttonStack is not null)
             {
                 Children.Remove(buttonStack);
@@ -829,7 +829,7 @@ public partial class MyLocalCompItem
 
             if (!value.Any())
                 return;
-            // 娣诲姞鏂?Stack
+            // 濞ｈ濮為弬?Stack
             buttonStack = new StackPanel
             {
                 Opacity = 0d,
@@ -841,7 +841,7 @@ public partial class MyLocalCompItem
             };
             SetColumnSpan(buttonStack, 10);
             SetRowSpan(buttonStack, 10);
-            // 鏋勯€犳寜閽?
+            // 閺嬪嫰鈧姵瀵滈柦?
             foreach (var Btn in value)
             {
                 if (Btn.Height.Equals(double.NaN))
@@ -855,7 +855,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 鍕鹃€夋潯
+    // 閸曢箖鈧娼?
     public Border RectCheck
     {
         get

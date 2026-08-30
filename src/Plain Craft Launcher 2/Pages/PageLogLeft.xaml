@@ -3,18 +3,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:PCL;assembly="
     x:Class="PCL.PageLogLeft"
     AnimatedControl="{Binding ElementName=PanList, Mode=OneWay}">
-    <AdornerDecorator>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-                <RowDefinition Height="5" />
-            </Grid.RowDefinitions>
-            <local:MyScrollViewer DeltaMult="0.7" Grid.Row="1" MaxWidth="300" MinWidth="250"
-                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                                  Style="{StaticResource ScrollViewerFullMargin}">
-                <StackPanel x:Name="PanList" />
-            </local:MyScrollViewer>
-        </Grid>
-    </AdornerDecorator>
+    <!-- [port] WPF AdornerDecorator（装饰器层/吸附层）在 Avalonia 无对应元素，等价容器为其内部 Grid，已去掉包装 -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <local:MyScrollViewer DeltaMult="0.7" Grid.Row="1" MaxWidth="300" MinWidth="250"
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Style="{StaticResource ScrollViewerFullMargin}">
+            <StackPanel x:Name="PanList" />
+        </local:MyScrollViewer>
+    </Grid>
 </local:MyPageLeft>

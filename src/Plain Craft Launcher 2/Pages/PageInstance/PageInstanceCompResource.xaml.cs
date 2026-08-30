@@ -25,9 +25,9 @@ namespace PCL;
 
 public partial class PageInstanceCompResource : IRefreshable
 {
-    #region 妯＄粍淇℃伅缂撳瓨
+    #region 濡紕绮嶆穱鈩冧紖缂傛挸鐡?
 
-    // 妯＄粍淇℃伅缂撳瓨 - 瑙ｅ喅鎺掑簭鏃堕噸澶嶅垱寤篎ileInfo瀵艰嚧鐨勬€ц兘闂
+    // 濡紕绮嶆穱鈩冧紖缂傛挸鐡?- 鐟欙絽鍠呴幒鎺戠碍閺冨爼鍣告径宥呭灡瀵ょ瘞ileInfo鐎佃壈鍤ч惃鍕偓褑鍏橀梻顕€顣?
     private readonly Dictionary<string, (DateTime CreationTime, long Length)> modFileInfoCache = new();
 
     public PageInstanceCompResource()
@@ -69,7 +69,7 @@ public partial class PageInstanceCompResource : IRefreshable
         SearchBox.TextChanged += SearchRun;
     }
 
-    // 鑾峰彇妯＄粍淇℃伅锛堝甫缂撳瓨锛?
+    // 閼惧嘲褰囧Ο锛勭矋娣団剝浼呴敍鍫濈敨缂傛挸鐡ㄩ敍?
     private (DateTime CreationTime, long Length) GetModFileInfo(string path)
     {
         (DateTime CreationTime, long Length) cacheItem;
@@ -84,12 +84,12 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鑾峰彇妯＄粍淇℃伅澶辫触: " + path);
+            ModBase.Log(ex, "閼惧嘲褰囧Ο锛勭矋娣団剝浼呮径杈Е: " + path);
             return (DateTime.MinValue, 0L);
         }
     }
 
-    // 椤甸潰鍏抽棴鏃舵竻鐞嗙紦瀛?
+    // 妞ょ敻娼伴崗鎶芥４閺冭埖绔婚悶鍡欑处鐎?
     private void Page_Unloaded(object sender, RoutedEventArgs e)
     {
         modFileInfoCache.Clear();
@@ -97,7 +97,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 鍒濆鍖?
+    #region 閸掓繂顫愰崠?
 
     private readonly ModComp.CompType currentCompType = ModComp.CompType.Mod;
 
@@ -106,26 +106,26 @@ public partial class PageInstanceCompResource : IRefreshable
     public PageInstanceCompResource(ModComp.CompType loadCompType)
     {
         currentCompType = loadCompType;
-        CurrentFolderPath = ""; // 纭繚鏂囦欢澶硅矾寰勮閲嶇疆涓烘牴鐩綍
+        CurrentFolderPath = ""; // 绾喕绻氶弬鍥︽婢剁鐭惧鍕潶闁插秶鐤嗘稉鐑樼壌閻╊喖缍?
         currentSwipSelect = new MyLocalCompItem.SwipeSelect { TargetFrm = this };
 
-        // 姝よ皟鐢ㄦ槸璁捐鍣ㄦ墍蹇呴渶鐨勩€?
+        // 濮濄倛鐨熼悽銊︽Ц鐠佹崘顓搁崳銊﹀韫囧懘娓堕惃鍕┾偓?
         InitializeComponent();
 
-        // 鍦?InitializeComponent() 璋冪敤涔嬪悗娣诲姞浠讳綍鍒濆鍖栥€?
+        // 閸?InitializeComponent() 鐠嬪啰鏁ゆ稊瀣倵濞ｈ濮炴禒璁崇秿閸掓繂顫愰崠鏍モ偓?
 
         if (new[] { ModComp.CompType.Shader, ModComp.CompType.ResourcePack, ModComp.CompType.Schematic }.Contains(
                 currentCompType))
         {
-            BtnSelectEnable.Visibility = Visibility.Collapsed;
-            BtnSelectDisable.Visibility = Visibility.Collapsed;
+            BtnSelectEnable.IsVisible = false;
+            BtnSelectDisable.IsVisible = false;
         }
 
-        // 鎶曞奖鏂囦欢绠＄悊椤甸殣钘忎笅杞芥寜閽?
+        // 閹舵洖濂栭弬鍥︽缁狅紕鎮婃い鐢告閽樺繋绗呮潪鑺ュ瘻闁?
         if (currentCompType == ModComp.CompType.Schematic)
         {
-            BtnManageDownload.Visibility = Visibility.Collapsed;
-            BtnHintDownload.Visibility = Visibility.Collapsed;
+            BtnManageDownload.IsVisible = false;
+            BtnHintDownload.IsVisible = false;
         }
 
         Unloaded += Page_Unloaded;
@@ -222,14 +222,14 @@ public partial class PageInstanceCompResource : IRefreshable
         ChangeAllSelected(false);
         ModAnimation.AniControlEnabled -= 1;
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoad)
             return;
         isLoad = true;
 
-        // 妫€鏌ユ槸鍚︿负鍘熺悊鍥剧鐞嗙晫闈笖棣栨鎵撳紑
+        // 濡偓閺屻儲妲搁崥锔胯礋閸樼喓鎮婇崶鍓ь吀閻炲棛鏅棃顫瑬妫ｆ牗顐奸幍鎾崇磻
         if (currentCompType == ModComp.CompType.Schematic && !States.Hint.SchematicFirstTime)
-            // 鏄剧ず棣栨鎵撳紑鎻愮ず
+            // 閺勫墽銇氭＃鏍偧閹垫挸绱戦幓鎰仛
             ModBase.RunInUi(() =>
             {
                 ModMain.MyMsgBox(Lang.Text("Instance.Saves.Folder.DoubleClickHint.Message"), Lang.Text("Instance.Saves.Folder.DoubleClickHint.Title"), Lang.Text("Common.Action.GotIt"));
@@ -237,13 +237,13 @@ public partial class PageInstanceCompResource : IRefreshable
             }, true);
 
         ModMain.frmMain.KeyDown += FrmMain_KeyDown;
-        // 璋冩暣鎸夐挳杈硅窛锛堣繖鐜╂剰鍎挎病娉曚粠 XAML 鏀癸級
+        // 鐠嬪啯鏆ｉ幐澶愭尦鏉堢绐涢敍鍫ｇ箹閻溾晜鍓伴崕鎸庣梾濞夋洑绮?XAML 閺€鐧哥礆
         foreach (MyRadioButton Btn in PanFilter.Children)
             Btn.LabText.Margin = new Thickness(-2, 0d, 8d, 0d);
     }
 
     /// <summary>
-    ///     鍒锋柊 Mod 鍒楄〃銆?
+    ///     閸掗攱鏌?Mod 閸掓銆冮妴?
     /// </summary>
     public void ReloadCompFileList(bool forceReload = false)
     {
@@ -251,7 +251,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 ? ModLoader.LoaderFolderRunType.ForceRun
                 : ModLoader.LoaderFolderRunType.RunOnUpdated))
         {
-            ModBase.Log($"[System] 宸插埛鏂?{currentCompType} 鍒楄〃");
+            ModBase.Log($"[System] 瀹告彃鍩涢弬?{currentCompType} 閸掓銆?);
             modFileInfoCache.Clear();
 
             ModBase.RunInUi(() =>
@@ -263,7 +263,7 @@ public partial class PageInstanceCompResource : IRefreshable
         }
     }
 
-    // 寮哄埗鍒锋柊
+    // 瀵搫鍩楅崚閿嬫煀
     private void RefreshSelf()
     {
         Refresh(currentCompType);
@@ -276,17 +276,17 @@ public partial class PageInstanceCompResource : IRefreshable
 
     public static void Refresh(ModComp.CompType whichPage)
     {
-        // 寮哄埗鍒锋柊
+        // 瀵搫鍩楅崚閿嬫煀
         try
         {
             ModComp.compProjectCache.Clear();
             ModComp.compFilesCache.Clear();
             File.Delete(ModBase.pathTemp + @"Cache\LocalComp.json");
-            ModBase.Log("[CompResource] 鐢变簬鐐瑰嚮鍒锋柊鎸夐挳锛屾竻鐞嗘湰鍦板伐绋嬩俊鎭紦瀛?);
+            ModBase.Log("[CompResource] 閻㈠彉绨悙鐟板毊閸掗攱鏌婇幐澶愭尦閿涘本绔婚悶鍡樻拱閸︽澘浼愮粙瀣╀繆閹垳绱︾€?);
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "寮哄埗鍒锋柊鏃舵竻鐞嗘湰鍦板伐绋嬩俊鎭紦瀛樺け璐?);
+            ModBase.Log(ex, "瀵搫鍩楅崚閿嬫煀閺冭埖绔婚悶鍡樻拱閸︽澘浼愮粙瀣╀繆閹垳绱︾€涙ê銇戠拹?);
         }
 
         switch (whichPage)
@@ -294,7 +294,7 @@ public partial class PageInstanceCompResource : IRefreshable
             case ModComp.CompType.Mod:
             {
                 if (ModMain.frmInstanceMod is not null)
-                    ModMain.frmInstanceMod.ReloadCompFileList(true); // 鏃犻渶 Else锛岃繕娌″姞杞藉埛涓鐨勬柊
+                    ModMain.frmInstanceMod.ReloadCompFileList(true); // 閺冪娀娓?Else閿涘矁绻曞▽鈥冲鏉炶棄鍩涙稉顏堫儣閻ㄥ嫭鏌?
                 ModMain.frmInstanceLeft.ItemMod.Checked = true;
                 break;
             }
@@ -330,7 +330,7 @@ public partial class PageInstanceCompResource : IRefreshable
             _ => LoadUIFromLoaderOutput(), () => currentCompType, false);
     }
 
-    private void Load_Click(object sender, MouseButtonEventArgs e)
+    private void Load_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModLocalComp.compResourceListLoader.State == ModBase.LoadState.Failed)
             LoaderRun(ModLoader.LoaderFolderRunType.ForceRun);
@@ -340,13 +340,13 @@ public partial class PageInstanceCompResource : IRefreshable
     {
         string loadPath;
         if (string.IsNullOrEmpty(CurrentFolderPath))
-            // 鍔犺浇鏍圭洰褰?
+            // 閸旂姾娴囬弽鍦窗瑜?
             loadPath = PageInstanceLeft.McInstance.PathIndie +
                        (PageInstanceLeft.McInstance.Info.HasLabyMod
                            ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                            : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
         else
-            // 鍔犺浇褰撳墠鏂囦欢澶?
+            // 閸旂姾娴囪ぐ鎾冲閺傚洣娆㈡径?
             loadPath = CurrentFolderPath;
         return ModLoader.LoaderFolderRun(ModLocalComp.compResourceListLoader, loadPath, type,
             loaderInput: GetRequireLoaderData());
@@ -354,15 +354,15 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 鏂囦欢澶瑰鑸?
+    #region 閺傚洣娆㈡径鐟邦嚤閼?
 
     /// <summary>
-    ///     褰撳墠鏄剧ず鐨勬枃浠跺す璺緞銆傜┖瀛楃涓茶〃绀烘牴鐩綍銆?
+    ///     瑜版挸澧犻弰鍓с仛閻ㄥ嫭鏋冩禒璺恒仚鐠侯垰绶為妴鍌溾敄鐎涙顑佹稉鑼躲€冪粈鐑樼壌閻╊喖缍嶉妴?
     /// </summary>
     public string CurrentFolderPath { get; set; } = "";
 
     /// <summary>
-    ///     杩涘叆鎸囧畾鐨勬枃浠跺す銆?
+    ///     鏉╂稑鍙嗛幐鍥х暰閻ㄥ嫭鏋冩禒璺恒仚閵?
     /// </summary>
     private void EnterFolder(string folderPath)
     {
@@ -375,7 +375,7 @@ public partial class PageInstanceCompResource : IRefreshable
             }
 
             CurrentFolderPath = folderPath;
-            ModBase.Log($"[鍘熺悊鍥綸 杩涘叆鏂囦欢澶癸細{folderPath}");
+            ModBase.Log($"[閸樼喓鎮婇崶缍?鏉╂稑鍙嗛弬鍥︽婢剁櫢绱皗folderPath}");
 
             ModLoader.LoaderFolderRun(ModLocalComp.compResourceListLoader, folderPath,
                 ModLoader.LoaderFolderRunType.ForceRun, loaderInput: GetRequireLoaderData());
@@ -384,14 +384,14 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "杩涘叆鏂囦欢澶瑰け璐?,
+                "鏉╂稑鍙嗛弬鍥︽婢剁懓銇戠拹?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     杩涘叆鎸囧畾鏂囦欢澶广€?
+    ///     鏉╂稑鍙嗛幐鍥х暰閺傚洣娆㈡径骞库偓?
     /// </summary>
     private void EnterFolderWithCheck(string folderPath)
     {
@@ -403,14 +403,14 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "杩涘叆鏂囦欢澶瑰け璐?,
+                "鏉╂稑鍙嗛弬鍥︽婢剁懓銇戠拹?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     杩斿洖涓婄骇鏂囦欢澶广€?
+    ///     鏉╂柨娲栨稉濠勯獓閺傚洣娆㈡径骞库偓?
     /// </summary>
     private void GoBackToParentFolder()
     {
@@ -419,17 +419,17 @@ public partial class PageInstanceCompResource : IRefreshable
 
         try
         {
-            // 鑾峰彇鏍硅矾寰?
+            // 閼惧嘲褰囬弽纭呯熅瀵?
             var rootPath = PageInstanceLeft.McInstance.PathIndie +
                            (PageInstanceLeft.McInstance.Info.HasLabyMod
                                ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
             rootPath = Path.GetFullPath(rootPath.TrimEnd('\\'));
 
-            // 鑾峰彇鐖剁骇璺緞
+            // 閼惧嘲褰囬悥鍓侀獓鐠侯垰绶?
             var parentPath = Directory.GetParent(CurrentFolderPath)?.FullName;
 
-            // 濡傛灉鐖剁骇璺緞灏辨槸鏍硅矾寰勬垨鑰呯埗绾ц矾寰勪笉鍦ㄦ牴璺緞鑼冨洿鍐咃紝鍒欒繑鍥炴牴鐩綍
+            // 婵″倹鐏夐悥鍓侀獓鐠侯垰绶炵亸杈ㄦЦ閺嶇鐭惧鍕灗閼板懐鍩楃痪褑鐭惧鍕瑝閸︺劍鐗寸捄顖氱窞閼煎啫娲块崘鍜冪礉閸掓瑨绻戦崶鐐寸壌閻╊喖缍?
             if (parentPath is null || parentPath.Equals(rootPath, StringComparison.OrdinalIgnoreCase) ||
                 !parentPath.StartsWith(rootPath + @"\", StringComparison.OrdinalIgnoreCase))
                 CurrentFolderPath = "";
@@ -438,32 +438,32 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "璺緞澶勭悊澶辫触");
-            // 鍙戠敓閿欒鏃剁洿鎺ヨ繑鍥炴牴鐩綍
+            ModBase.Log(ex, "鐠侯垰绶炴径鍕倞婢惰精瑙?);
+            // 閸欐垹鏁撻柨娆掝嚖閺冨墎娲块幒銉ㄧ箲閸ョ偞鐗撮惄顔肩秿
             CurrentFolderPath = "";
         }
 
-        ModBase.Log($"[鍘熺悊鍥綸 杩斿洖涓婄骇鏂囦欢澶癸細{(string.IsNullOrEmpty(CurrentFolderPath) ? "鏍圭洰褰? : CurrentFolderPath)}");
+        ModBase.Log($"[閸樼喓鎮婇崶缍?鏉╂柨娲栨稉濠勯獓閺傚洣娆㈡径鐧哥窗{(string.IsNullOrEmpty(CurrentFolderPath) ? "閺嶅湱娲拌ぐ? : CurrentFolderPath)}");
 
-        // 閲嶆柊鍔犺浇褰撳墠鏂囦欢澶圭殑鍐呭
+        // 闁插秵鏌婇崝鐘烘祰瑜版挸澧犻弬鍥︽婢跺湱娈戦崘鍛啇
         string loadPath;
         if (string.IsNullOrEmpty(CurrentFolderPath))
-            // 杩斿洖鍒版牴鐩綍
+            // 鏉╂柨娲栭崚鐗堢壌閻╊喖缍?
             loadPath = PageInstanceLeft.McInstance.PathIndie +
                        (PageInstanceLeft.McInstance.Info.HasLabyMod
                            ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                            : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
         else
-            // 鍔犺浇褰撳墠鏂囦欢澶?
+            // 閸旂姾娴囪ぐ鎾冲閺傚洣娆㈡径?
             loadPath = CurrentFolderPath;
 
-        // 寮哄埗鍒锋柊UI鐘舵€?
-        // 纭繚鎸夐挳鐘舵€佹纭?
+        // 瀵搫鍩楅崚閿嬫煀UI閻樿埖鈧?
+        // 绾喕绻氶幐澶愭尦閻樿埖鈧焦顒滅涵?
         ModBase.RunInUi(() =>
             BtnManageBack.Visibility =
-                !string.IsNullOrEmpty(CurrentFolderPath) ? Visibility.Visible : Visibility.Collapsed);
+                !string.IsNullOrEmpty(CurrentFolderPath) ? true : false);
 
-        // 寤惰繜涓€甯у悗鍐嶅姞杞斤紝纭繚UI鐘舵€佸凡鏇存柊
+        // 瀵ゆ儼绻滄稉鈧敮褍鎮楅崘宥呭鏉炴枻绱濈涵顔荤箽UI閻樿埖鈧礁鍑￠弴瀛樻煀
         ModBase.RunInUi(
             () => ModLoader.LoaderFolderRun(ModLocalComp.compResourceListLoader, loadPath,
                 ModLoader.LoaderFolderRunType.ForceRun, loaderInput: GetRequireLoaderData()), true);
@@ -471,55 +471,55 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region UI 鍖?
+    #region UI 閸?
 
     /// <summary>
-    ///     宸插姞杞界殑 Mod UI 缂撳瓨锛屼笉纭繚鎸夋樉绀洪『搴忔帓鍒椼€侹ey 涓?Mod 鐨?RawPath銆?
+    ///     瀹告彃濮炴潪鐣屾畱 Mod UI 缂傛挸鐡ㄩ敍灞肩瑝绾喕绻氶幐澶嬫▔缁€娲€庢惔蹇斿笓閸掓ぜ鈧竟ey 娑?Mod 閻?RawPath閵?
     /// </summary>
     public Dictionary<string, MyLocalCompItem> modItems = new();
 
     /// <summary>
-    ///     灏嗗姞杞藉櫒缁撴灉鐨?Mod 鍒楄〃鍔犺浇涓?UI銆?
+    ///     鐏忓棗濮炴潪钘夋珤缂佹挻鐏夐惃?Mod 閸掓銆冮崝鐘烘祰娑?UI閵?
     /// </summary>
     private void LoadUIFromLoaderOutput()
     {
         try
         {
-            // 鍒ゆ柇搴旇鏄剧ず鍝竴涓〉闈?
+            // 閸掋倖鏌囨惔鏃囶嚉閺勫墽銇氶崫顏冪娑擃亪銆夐棃?
             if (ModLocalComp.compResourceListLoader.output.Any())
             {
-                PanBack.Visibility = Visibility.Visible;
-                PanEmpty.Visibility = Visibility.Collapsed;
-                PanSchematicEmpty.Visibility = Visibility.Collapsed;
+                PanBack.Visibility = true;
+                PanEmpty.Visibility = false;
+                PanSchematicEmpty.Visibility = false;
             }
             else
             {
-                // 妫€鏌ユ槸鍚︿负鎶曞奖鏂囦欢绫诲瀷涓攕chematics鏂囦欢澶逛笉瀛樺湪
+                // 濡偓閺屻儲妲搁崥锔胯礋閹舵洖濂栭弬鍥︽缁鐎锋稉鏀昪hematics閺傚洣娆㈡径閫涚瑝鐎涙ê婀?
                 if (currentCompType == ModComp.CompType.Schematic)
                 {
                     var schematicsPath = PageInstanceLeft.McInstance.PathIndie + @"schematics\";
                     if (!Directory.Exists(schematicsPath))
                     {
-                        PanSchematicEmpty.Visibility = Visibility.Visible;
-                        PanEmpty.Visibility = Visibility.Collapsed;
-                        PanBack.Visibility = Visibility.Collapsed;
+                        PanSchematicEmpty.Visibility = true;
+                        PanEmpty.Visibility = false;
+                        PanBack.Visibility = false;
                         return;
                     }
                 }
 
-                // 鏍规嵁缁勪欢绫诲瀷璁剧疆PanEmpty鐨勬枃鏈唴瀹?
+                // 閺嶈宓佺紒鍕缁鐎风拋鍓х枂PanEmpty閻ㄥ嫭鏋冮張顒€鍞寸€?
                 if (currentCompType == ModComp.CompType.Schematic)
                 {
-                    // 妫€鏌ユ槸鍚﹀湪瀛愭枃浠跺す涓?
+                    // 濡偓閺屻儲妲搁崥锕€婀€涙劖鏋冩禒璺恒仚娑?
                     if (!string.IsNullOrEmpty(CurrentFolderPath))
                     {
-                        // 瀛愭枃浠跺す涓虹┖鐨勬彁绀?
+                        // 鐎涙劖鏋冩禒璺恒仚娑撹櫣鈹栭惃鍕絹缁€?
                         TxtEmptyTitle.Text = Lang.Text("Instance.Resource.EmptyFolder.Title");
                         TxtEmptyDescription.Text = Lang.Text("Instance.Resource.EmptyFolder.Description");
                     }
                     else
                     {
-                        // 鏍圭洰褰曚负绌虹殑鎻愮ず
+                        // 閺嶅湱娲拌ぐ鏇氳礋缁岃櫣娈戦幓鎰仛
                         TxtEmptyTitle.Text = Lang.Text("Instance.Resource.Empty.Title");
                         TxtEmptyDescription.Text = Lang.Text("Instance.Resource.Empty.Description");
                     }
@@ -530,19 +530,19 @@ public partial class PageInstanceCompResource : IRefreshable
                     TxtEmptyDescription.Text = Lang.Text("Instance.Resource.Empty.DescriptionWithDownload");
                 }
 
-                // 濡傛灉褰撳墠鍦ㄥ瓙鏂囦欢澶逛腑锛屾樉绀鸿繑鍥炰笂涓€绾ф寜閽?
+                // 婵″倹鐏夎ぐ鎾冲閸︺劌鐡欓弬鍥︽婢堕€涜厬閿涘本妯夌粈楦跨箲閸ョ偘绗傛稉鈧痪褎瀵滈柦?
                 if (!string.IsNullOrEmpty(CurrentFolderPath))
-                    BtnHintBack.Visibility = Visibility.Visible;
+                    BtnHintBack.Visibility = true;
                 else
-                    BtnHintBack.Visibility = Visibility.Collapsed;
+                    BtnHintBack.Visibility = false;
 
-                PanEmpty.Visibility = Visibility.Visible;
-                PanBack.Visibility = Visibility.Collapsed;
-                PanSchematicEmpty.Visibility = Visibility.Collapsed;
+                PanEmpty.Visibility = true;
+                PanBack.Visibility = false;
+                PanSchematicEmpty.Visibility = false;
                 return;
             }
 
-            // 淇敼缂撳瓨
+            // 娣囶喗鏁肩紓鎾崇摠
             modItems.Clear();
             var rootPath = PageInstanceLeft.McInstance.PathIndie +
                            (PageInstanceLeft.McInstance.Info.HasLabyMod
@@ -562,11 +562,11 @@ public partial class PageInstanceCompResource : IRefreshable
 
             foreach (var ModEntity in itemsToShow)
                 modItems[ModEntity.RawPath] = BuildLocalCompItem(ModEntity);
-            // 鏄剧ず缁撴灉
+            // 閺勫墽銇氱紒鎾寸亯
             ModBase.RunInUi(() =>
             {
                 Filter = FilterType.All;
-                SearchBox.Text = ""; // 杩欎細瑙﹀彂缁撴灉鍒锋柊锛屾墍浠ラ渶瑕佸湪 ModItems 鏇存柊涔嬪悗锛岃瑙?#3124 鐨勮棰?
+                SearchBox.Text = ""; // 鏉╂瑤绱扮憴锕€褰傜紒鎾寸亯閸掗攱鏌婇敍灞惧娴犮儵娓剁憰浣告躬 ModItems 閺囧瓨鏌婃稊瀣倵閿涘矁顕涚憴?#3124 閻ㄥ嫯顫嬫０?
                 RefreshUI();
                 SetSortMethod(SortMethod.CompName);
             });
@@ -575,7 +575,7 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                $"鍔犺浇 {currentCompType} 鍒楄〃 UI 澶辫触",
+                $"閸旂姾娴?{currentCompType} 閸掓銆?UI 婢惰精瑙?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
@@ -603,18 +603,18 @@ public partial class PageInstanceCompResource : IRefreshable
         catch (Exception ex)
         {
             ModAnimation.AniControlEnabled -= 1;
-            ModBase.Log(ex, $"鍒涘缓 UI 椤瑰け璐ワ細{entry.RawPath}");
+            ModBase.Log(ex, $"閸掓稑缂?UI 妞ょ懓銇戠拹銉窗{entry.RawPath}");
             throw;
         }
     }
 
     private void BuildLocalCompItemBtnHandler(MyLocalCompItem sender, EventArgs e)
     {
-        // 鐐瑰嚮浜嬩欢
+        // 閻愮懓鍤禍瀣╂
         sender.Changed += (ss, ee) => CheckChanged((MyLocalCompItem)ss, ee);
         if (sender.Entry.IsFolder)
         {
-            // 鏂囦欢澶归」鐨勭偣鍑讳簨浠讹細鍙屽嚮杩涘叆鏂囦欢澶癸紝鍗曞嚮鍒囨崲閫変腑鐘舵€?
+            // 閺傚洣娆㈡径褰掋€嶉惃鍕仯閸戣绨ㄦ禒璁圭窗閸欏苯鍤潻娑樺弳閺傚洣娆㈡径鐧哥礉閸楁洖鍤崚鍥ㄥ床闁鑵戦悩鑸碘偓?
             var lastClickTime = DateTime.MinValue;
             sender.Click += (sss, _) =>
             {
@@ -623,10 +623,10 @@ public partial class PageInstanceCompResource : IRefreshable
                 var timeDiff = (currentTime - lastClickTime).TotalMilliseconds;
 
                 if (timeDiff <= 300d)
-                    // 300ms鍐呭弻鍑伙紝杩涘叆鏂囦欢澶?
+                    // 300ms閸愬懎寮婚崙浼欑礉鏉╂稑鍙嗛弬鍥︽婢?
                     EnterFolderWithCheck(ss.Entry.ActualPath);
                 else
-                    // 鍗曞嚮鍒囨崲閫変腑鐘舵€?
+                    // 閸楁洖鍤崚鍥ㄥ床闁鑵戦悩鑸碘偓?
                     ss.Checked = !ss.Checked;
 
                 lastClickTime = currentTime;
@@ -634,7 +634,7 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         else
         {
-            // 鏂囦欢椤圭殑鐐瑰嚮浜嬩欢锛氬垏鎹㈤€変腑鐘舵€?
+            // 閺傚洣娆㈡い鍦畱閻愮懓鍤禍瀣╂閿涙艾鍨忛幑銏も偓澶夎厬閻樿埖鈧?
             sender.Click += (sss, _) =>
             {
                 var ss = (MyLocalCompItem)sss;
@@ -642,7 +642,7 @@ public partial class PageInstanceCompResource : IRefreshable
             };
         }
 
-        // 鍥炬爣鎸夐挳
+        // 閸ョ偓鐖ｉ幐澶愭尦
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
         btnOpen.ToolTip = Lang.Text("Instance.Saves.OpenFileLocation");
         ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
@@ -687,7 +687,7 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     鍒锋柊鏁翠釜 UI銆?
+    ///     閸掗攱鏌婇弫缈犻嚋 UI閵?
     /// </summary>
     public void RefreshUI()
     {
@@ -696,18 +696,18 @@ public partial class PageInstanceCompResource : IRefreshable
         var showingMods = (IsSearching ? searchResult : modItems.Values.Select(i => i.Entry))
             .Where(m => CanPassFilter(m)).ToList();
 
-        // 瀵规樉绀虹殑璧勬簮杩涜鎺掑簭锛岀‘淇濇枃浠跺す缃《
+        // 鐎佃妯夌粈铏规畱鐠у嫭绨潻娑滎攽閹烘帒绨敍宀€鈥樻穱婵囨瀮娴犺泛銇欑純顕€銆?
         if (showingMods.Any())
         {
             var sortMethod = GetSortMethod(currentSortMethod);
             showingMods.Sort((a, b) => sortMethod(a, b));
         }
 
-        // 閲嶆柊鍒楀嚭鍒楄〃
+        // 闁插秵鏌婇崚妤€鍤崚妤勩€?
         ModAnimation.AniControlEnabled += 1;
         if (showingMods.Any())
         {
-            PanList.Visibility = Visibility.Visible;
+            PanList.IsVisible = true;
             PanList.Children.Clear();
             foreach (var TargetMod in showingMods)
             {
@@ -715,20 +715,20 @@ public partial class PageInstanceCompResource : IRefreshable
                     continue;
                 var item = modItems[TargetMod.RawPath];
 
-                // 纭繚鍏冪礌娌℃湁鐖跺鍣紝閬垮厤閲嶅娣诲姞寮傚父
+                // 绾喕绻氶崗鍐濞屸剝婀侀悥璺侯啇閸ｎ煉绱濋柆鍨帳闁插秴顦插ǎ璇插瀵倸鐖?
                 if (item.Parent is not null) ((Panel)item.Parent).Children.Remove(item);
 
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabTitle.Text, item.LabTitle,
                     ThemeService.IsDarkMode);
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabInfo.Text, item.LabInfo,
                     ThemeService.IsDarkMode);
-                item.Checked = selectedMods.Contains(TargetMod.RawPath); // 鏇存柊閫変腑鐘舵€?
+                item.Checked = selectedMods.Contains(TargetMod.RawPath); // 閺囧瓨鏌婇柅澶夎厬閻樿埖鈧?
                 PanList.Children.Add(item);
             }
         }
         else
         {
-            PanList.Visibility = Visibility.Collapsed;
+            PanList.IsVisible = false;
         }
 
         ModAnimation.AniControlEnabled -= 1;
@@ -738,17 +738,17 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     鍒锋柊椤舵爮鍜屽簳鏍忔樉绀恒€?
+    ///     閸掗攱鏌婃い鑸电埉閸滃苯绨抽弽蹇旀▔缁€鎭掆偓?
     /// </summary>
     public void RefreshBars()
     {
         Dispatcher.BeginInvoke(new Func<Task>(async () =>
         {
             // -----------------
-            // 椤堕儴鏍?
+            // 妞ゅ爼鍎撮弽?
             // -----------------
 
-            // 璁℃暟
+            // 鐠佲剝鏆?
             var anyCount = 0;
             var enabledCount = 0;
             var disabledCount = 0;
@@ -766,25 +766,25 @@ public partial class PageInstanceCompResource : IRefreshable
                     if (item.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable) unavalialeCount += 1;
                 }
             });
-            // 鏄剧ず
+            // 閺勫墽銇?
             BtnFilterAll.Text = IsSearching ? Lang.Text("Instance.Resource.Filter.SearchResult") : Lang.Text("Instance.Resource.Filter.AllWithCount", anyCount);
             BtnFilterCanUpdate.Text = Lang.Text("Instance.Resource.Filter.UpdatableWithCount", updateCount);
-            BtnFilterCanUpdate.Visibility = Filter == FilterType.CanUpdate || updateCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            BtnFilterCanUpdate.IsVisible = Filter == FilterType.CanUpdate || updateCount > 0
+                ? true
+                : false;
             BtnFilterEnabled.Text = Lang.Text("Instance.Resource.Filter.EnabledWithCount", enabledCount);
-            BtnFilterEnabled.Visibility = Filter == FilterType.Enabled || (enabledCount > 0 && enabledCount < anyCount)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            BtnFilterEnabled.IsVisible = Filter == FilterType.Enabled || (enabledCount > 0 && enabledCount < anyCount)
+                ? true
+                : false;
             BtnFilterDisabled.Text = Lang.Text("Instance.Resource.Filter.DisabledWithCount", disabledCount);
-            BtnFilterDisabled.Visibility = Filter == FilterType.Disabled || disabledCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            BtnFilterDisabled.IsVisible = Filter == FilterType.Disabled || disabledCount > 0
+                ? true
+                : false;
             BtnFilterError.Text = Lang.Text("Instance.Resource.Filter.ErrorWithCount", unavalialeCount);
-            BtnFilterError.Visibility = Filter == FilterType.Unavailable || unavalialeCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-            // 鏌ユ壘閲嶅椤圭洰
+            BtnFilterError.IsVisible = Filter == FilterType.Unavailable || unavalialeCount > 0
+                ? true
+                : false;
+            // 閺屻儲澹橀柌宥咁槻妞ゅ湱娲?
             var duplicateItems = await Task.Run(() => itemSource.GroupBy(m =>
             {
                 if (m.Comp is null) return ":Nothing:";
@@ -792,35 +792,35 @@ public partial class PageInstanceCompResource : IRefreshable
                 return m.Comp.Id;
             }).Where(g => g.Count() > 1 && g.First().Comp is not null).SelectMany(g => g).ToList());
             BtnFilterDuplicate.Text = Lang.Text("Instance.Resource.Filter.DuplicateWithCount", duplicateItems.Count);
-            BtnFilterDuplicate.Visibility = Filter == FilterType.Duplicate || duplicateItems.Any()
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            BtnFilterDuplicate.IsVisible = Filter == FilterType.Duplicate || duplicateItems.Any()
+                ? true
+                : false;
 
-            // 杩斿洖鎸夐挳鏄剧ず鎺у埗锛堝湪瀛愭枃浠跺す涓椂鏄剧ず锛?
+            // 鏉╂柨娲栭幐澶愭尦閺勫墽銇氶幒褍鍩楅敍鍫濇躬鐎涙劖鏋冩禒璺恒仚娑擃厽妞傞弰鍓с仛閿?
             if (!string.IsNullOrEmpty(CurrentFolderPath))
-                BtnManageBack.Visibility = Visibility.Visible;
+                BtnManageBack.IsVisible = true;
             else
-                BtnManageBack.Visibility = Visibility.Collapsed;
+                BtnManageBack.IsVisible = false;
 
             // -----------------
-            // 搴曢儴鏍?
+            // 鎼存洟鍎撮弽?
             // -----------------
 
-            // 璁℃暟
+            // 鐠佲剝鏆?
             var newCount = selectedMods.Count;
             var selected = newCount > 0;
             if (selected)
-                LabSelect.Text = Lang.Text("Instance.Resource.SelectedCount", newCount); // 鍙栨秷鎵€鏈夐€夋嫨鏃朵笉鏇存柊鏁板瓧
-            // 鎸夐挳鍙敤鎬?
+                LabSelect.Text = Lang.Text("Instance.Resource.SelectedCount", newCount); // 閸欐牗绉烽幍鈧張澶愨偓澶嬪閺冩湹绗夐弴瀛樻煀閺佹澘鐡?
+            // 閹稿鎸抽崣顖滄暏閹?
             if (selected)
             {
                 var hasUpdate = false;
                 var hasEnabled = false;
                 var hasDisabled = false;
-                var canFavoriteAndShare = true; // 鏄惁鍙互鏀惰棌鍜屽垎浜?
+                var canFavoriteAndShare = true; // 閺勵垰鎯侀崣顖欎簰閺€鎯版閸滃苯鍨庢禍?
 
 
-                // 妫€鏌ユ槸鍚︽墍鏈夐€変腑鐨勮祫婧愰兘鏈夋湁鏁堢殑椤圭洰淇℃伅锛堝嵆宸插畬鎴愯仈缃戞洿鏂帮級
+                // 濡偓閺屻儲妲搁崥锔藉閺堝鈧鑵戦惃鍕カ濠ф劙鍏橀張澶嬫箒閺佸牏娈戞い鍦窗娣団剝浼呴敍鍫濆祮瀹告彃鐣幋鎰粓缂冩垶娲块弬甯礆
                 await Task.Run(() =>
                 {
                     foreach (var ModEntity in ModLocalComp.compResourceListLoader.output)
@@ -840,32 +840,32 @@ public partial class PageInstanceCompResource : IRefreshable
                 BtnSelectEnable.IsEnabled = hasDisabled;
                 BtnSelectUpdate.IsEnabled = hasUpdate;
 
-                // 閽堝鎶曞奖鍘熺悊鍥鹃殣钘忓垎浜?鏇存柊 鏀惰棌鎸夐挳
+                // 闁藉牆顕幎鏇炲閸樼喓鎮婇崶楣冩閽樺繐鍨庢禍?閺囧瓨鏌?閺€鎯版閹稿鎸?
                 if (currentCompType == ModComp.CompType.Schematic)
                 {
-                    BtnSelectUpdate.Visibility = Visibility.Collapsed;
-                    BtnSelectFavorites.Visibility = Visibility.Collapsed;
-                    BtnSelectShare.Visibility = Visibility.Collapsed;
+                    BtnSelectUpdate.IsVisible = false;
+                    BtnSelectFavorites.IsVisible = false;
+                    BtnSelectShare.IsVisible = false;
                 }
                 else
                 {
-                    BtnSelectUpdate.Visibility = Visibility.Visible;
-                    BtnSelectFavorites.Visibility = Visibility.Visible;
-                    BtnSelectShare.Visibility = Visibility.Visible;
+                    BtnSelectUpdate.IsVisible = true;
+                    BtnSelectFavorites.IsVisible = true;
+                    BtnSelectShare.IsVisible = true;
 
-                    // 鏍规嵁鏄惁宸插姞杞介」鐩俊鎭潵鍚敤/绂佺敤鏀惰棌鍜屽垎浜寜閽?
+                    // 閺嶈宓侀弰顖氭儊瀹告彃濮炴潪浠嬨€嶉惄顔讳繆閹垱娼甸崥顖滄暏/缁備胶鏁ら弨鎯版閸滃苯鍨庢禍顐ｅ瘻闁?
                     BtnSelectFavorites.IsEnabled = canFavoriteAndShare;
                     BtnSelectShare.IsEnabled = canFavoriteAndShare;
                 }
             }
 
-            // 鏇存柊鏄剧ず鐘舵€?
+            // 閺囧瓨鏌婇弰鍓с仛閻樿埖鈧?
             if (ModAnimation.AniControlEnabled == 0)
             {
                 PanListBack.Margin = new Thickness(0d, 0d, 0d, selected ? 95 : 15);
                 if (selected)
                 {
-                    // 浠呭湪鏁伴噺澧炲姞鏃舵挱鏀惧嚭鐜?璺宠穬鍔ㄧ敾
+                    // 娴犲懎婀弫浼村櫤婢х偛濮為弮鑸垫尡閺€鎯у毉閻?鐠哄疇绌崝銊ф暰
                     if (bottomBarShownCount >= newCount)
                     {
                         bottomBarShownCount = newCount;
@@ -873,8 +873,8 @@ public partial class PageInstanceCompResource : IRefreshable
                     }
 
                     bottomBarShownCount = newCount;
-                    // 鍑虹幇/璺宠穬鍔ㄧ敾
-                    CardSelect.Visibility = Visibility.Visible;
+                    // 閸戣櫣骞?鐠哄疇绌崝銊ф暰
+                    CardSelect.IsVisible = true;
                     ModAnimation.AniStart(
                         new[]
                         {
@@ -889,18 +889,18 @@ public partial class PageInstanceCompResource : IRefreshable
                 }
                 else
                 {
-                    // 涓嶉噸澶嶆挱鏀鹃殣钘忓姩鐢?
+                    // 娑撳秹鍣告径宥嗘尡閺€楣冩閽樺繐濮╅悽?
                     if (bottomBarShownCount == 0)
                         return;
                     bottomBarShownCount = 0;
-                    // 闅愯棌鍔ㄧ敾
+                    // 闂呮劘妫岄崝銊ф暰
                     ModAnimation.AniStart(
                         new[]
                         {
                             ModAnimation.AaOpacity(CardSelect, -CardSelect.Opacity, 90),
                             ModAnimation.AaTranslateY(CardSelect, -10 - TransSelect.Y, 90,
                                 ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
-                            ModAnimation.AaCode(() => CardSelect.Visibility = Visibility.Collapsed, after: true)
+                            ModAnimation.AaCode(() => CardSelect.IsVisible = false, after: true)
                         }, "Mod Sidebar");
                 }
             }
@@ -910,13 +910,13 @@ public partial class PageInstanceCompResource : IRefreshable
                 bottomBarShownCount = newCount;
                 if (selected)
                 {
-                    CardSelect.Visibility = Visibility.Visible;
+                    CardSelect.IsVisible = true;
                     CardSelect.Opacity = 1d;
                     TransSelect.Y = -25;
                 }
                 else
                 {
-                    CardSelect.Visibility = Visibility.Collapsed;
+                    CardSelect.IsVisible = false;
                     CardSelect.Opacity = 0d;
                     TransSelect.Y = -10;
                 }
@@ -928,10 +928,10 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 绠＄悊
+    #region 缁狅紕鎮?
 
     /// <summary>
-    ///     鎵撳紑 Mods 鏂囦欢澶广€?
+    ///     閹垫挸绱?Mods 閺傚洣娆㈡径骞库偓?
     /// </summary>
     private void BtnManageBack_Click(object sender, EventArgs e)
     {
@@ -949,15 +949,15 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             string compFilePath;
 
-            // 濡傛灉褰撳墠鍦ㄥ瓙鏂囦欢澶逛腑锛屽垯鎵撳紑褰撳墠瀛愭枃浠跺す锛涘惁鍒欐墦寮€鏍圭洰褰?
+            // 婵″倹鐏夎ぐ鎾冲閸︺劌鐡欓弬鍥︽婢堕€涜厬閿涘苯鍨幍鎾崇磻瑜版挸澧犵€涙劖鏋冩禒璺恒仚閿涙稑鎯侀崚娆愬ⅵ瀵偓閺嶅湱娲拌ぐ?
             if (string.IsNullOrEmpty(CurrentFolderPath))
-                // 鎵撳紑鏍圭洰褰?
+                // 閹垫挸绱戦弽鍦窗瑜?
                 compFilePath = PageInstanceLeft.McInstance.PathIndie +
                                (PageInstanceLeft.McInstance.Info.HasLabyMod
                                    ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                    : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
             else
-                // 鎵撳紑褰撳墠瀛愭枃浠跺す
+                // 閹垫挸绱戣ぐ鎾冲鐎涙劖鏋冩禒璺恒仚
                 compFilePath = CurrentFolderPath.EndsWith(@"\") ? CurrentFolderPath : CurrentFolderPath + @"\";
             Directory.CreateDirectory(compFilePath);
             ModBase.OpenExplorer(compFilePath);
@@ -966,7 +966,7 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鎵撳紑 Mods 鏂囦欢澶瑰け璐?,
+                "閹垫挸绱?Mods 閺傚洣娆㈡径鐟般亼鐠?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
@@ -974,17 +974,17 @@ public partial class PageInstanceCompResource : IRefreshable
 
 
     /// <summary>
-    ///     鍏ㄩ€夈€?
+    ///     閸忋劑鈧鈧?
     /// </summary>
-    private void BtnManageSelectAll_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageSelectAll_Click(object sender, PointerReleasedEventArgs e)
     {
         ChangeAllSelected(selectedMods.Count < PanList.Children.Count);
     }
 
     /// <summary>
-    ///     瀹夎 Mod銆?
+    ///     鐎瑰顥?Mod閵?
     /// </summary>
-    private void BtnManageInstall_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageInstall_Click(object sender, PointerReleasedEventArgs e)
     {
         string[] fileList = null;
         switch (currentCompType)
@@ -1025,8 +1025,8 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     灏濊瘯瀹夎 Mod銆?
-    ///     杩斿洖杈撳叆鐨勬枃浠舵槸鍚︿负涓€涓?Mod 鏂囦欢锛屼粎鐢ㄤ簬鍒ゆ柇鎷栨嫿琛屼负銆?
+    ///     鐏忔繆鐦€瑰顥?Mod閵?
+    ///     鏉╂柨娲栨潏鎾冲弳閻ㄥ嫭鏋冩禒鑸垫Ц閸氾缚璐熸稉鈧稉?Mod 閺傚洣娆㈤敍灞肩矌閻劋绨崚銈嗘焽閹锋牗瀚跨悰灞艰礋閵?
     /// </summary>
     public static bool InstallMods(IEnumerable<string> filePathList)
     {
@@ -1039,7 +1039,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
         if (!allowedExtensions.Contains(extension)) return false;
 
-        LogWrapper.Info("[System] 鏂囦欢鏍煎紡涓?jar/litemod锛屽皾璇曞畨瑁呬负 Mod");
+        LogWrapper.Info("[System] 閺傚洣娆㈤弽鐓庣础娑?jar/litemod閿涘苯鐨剧拠鏇炵暔鐟佸懍璐?Mod");
 
         // 2. Check recycle bin
         if (firstFile.Contains(@":\$RECYCLE.BIN\"))
@@ -1120,12 +1120,12 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         catch (Exception ex)
         {
-            LogWrapper.Error(ex, "鎷疯礉鏂囦欢澶辫触");
+            LogWrapper.Error(ex, "閹风柉绀夐弬鍥︽婢惰精瑙?);
         }
     }
 
     /// <summary>
-    ///     瀹夎缁勪欢鏂囦欢锛圡od銆佽祫婧愬寘銆佸厜褰卞寘銆佹姇褰辨枃浠剁瓑锛夈€?
+    ///     鐎瑰顥婄紒鍕閺傚洣娆㈤敍鍦d閵嗕浇绁┃鎰瘶閵嗕礁鍘滆ぐ鍗炲瘶閵嗕焦濮囪ぐ杈ㄦ瀮娴犲墎鐡戦敍澶堚偓?
     /// </summary>
     public static void InstallCompFiles(IEnumerable<string> filePathList, ModComp.CompType compType,
         string targetFolderPath = "")
@@ -1138,19 +1138,19 @@ public partial class PageInstanceCompResource : IRefreshable
         var compTypeName = "";
         var compFolder = "";
 
-        // 妫€鏌ュ洖鏀剁珯锛氬洖鏀剁珯涓殑鏂囦欢鏈夐敊璇殑鏂囦欢鍚?
+        // 濡偓閺屻儱娲栭弨鍓佺彲閿涙艾娲栭弨鍓佺彲娑擃厾娈戦弬鍥︽閺堝鏁婄拠顖滄畱閺傚洣娆㈤崥?
         if (filePathList.First().Contains(@":\$RECYCLE.BIN\"))
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.RestoreFromRecycleBin"), HintType.Error);
             return;
         }
 
-        // 鑾峰彇骞舵鏌ョ洰鏍囧疄渚?
+        // 閼惧嘲褰囬獮鑸殿梾閺屻儳娲伴弽鍥х杽娓?
         var targetInstance = ModInstanceList.McMcInstanceSelected;
         if (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup)
             targetInstance = PageInstanceLeft.McInstance;
 
-        // 鏍规嵁缁勪欢绫诲瀷璁剧疆鐩稿叧鍙傛暟
+        // 閺嶈宓佺紒鍕缁鐎风拋鍓х枂閻╃鍙ч崣鍌涙殶
         switch (compType)
         {
             case ModComp.CompType.Mod:
@@ -1202,7 +1202,7 @@ public partial class PageInstanceCompResource : IRefreshable
             }
         }
 
-        // 妫€鏌ユ枃浠舵墿灞曞悕
+        // 濡偓閺屻儲鏋冩禒鑸靛⒖鐏炴洖鎮?
         if (!validExtensions.Contains(extension))
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.UnsupportedFormat", extension, compTypeName, string.Join(", ", validExtensions)),
@@ -1210,9 +1210,9 @@ public partial class PageInstanceCompResource : IRefreshable
             return;
         }
 
-        ModBase.Log($"[System] 鏂囦欢涓?{extension} 鏍煎紡锛屽皾璇曚綔涓簕compTypeName}瀹夎");
+        ModBase.Log($"[System] 閺傚洣娆㈡稉?{extension} 閺嶇厧绱￠敍灞界毦鐠囨洑缍旀稉绨昪ompTypeName}鐎瑰顥?);
 
-        // 妫€鏌ュ疄渚嬪吋瀹规€?
+        // 濡偓閺屻儱鐤勬笟瀣悑鐎硅鈧?
         if (compType == ModComp.CompType.Mod && (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSelect ||
                                                  targetInstance is null || !targetInstance.Modable))
         {
@@ -1220,7 +1220,7 @@ public partial class PageInstanceCompResource : IRefreshable
             return;
         }
 
-        // 纭瀹夎
+        // 绾喛顓荤€瑰顥?
         var currentPage = FormMain.PageSubType.VersionMod;
         switch (compType)
         {
@@ -1253,7 +1253,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     Lang.Text("Instance.Resource.Install.GenericConfirm.Title", compTypeName), Lang.Text("Common.Action.Confirm"), Lang.Text("Common.Action.Cancel")) != 1)
                 return;
 
-        // 鎵ц瀹夎
+        // 閹笛嗩攽鐎瑰顥?
         try
         {
             Directory.CreateDirectory(compFolder);
@@ -1280,7 +1280,7 @@ public partial class PageInstanceCompResource : IRefreshable
             else
                 HintService.Hint(Lang.Text("Instance.Resource.Install.SuccessMultiple", filePathList.Count(), compTypeName), HintType.Success);
 
-            // 鍒锋柊鍒楄〃
+            // 閸掗攱鏌婇崚妤勩€?
             if (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup &&
                 ModMain.frmMain.PageCurrentSub == currentPage)
                 switch (compType)
@@ -1310,14 +1310,14 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                $"澶嶅埗{compTypeName}鏂囦欢澶辫触",
+                $"婢跺秴鍩梴compTypeName}閺傚洣娆㈡径杈Е",
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     鑾峰彇褰撳墠鐨勭粍浠惰祫婧愮鐞嗙獥浣撱€?
+    ///     閼惧嘲褰囪ぐ鎾冲閻ㄥ嫮绮嶆禒鎯扮カ濠ф劗顓搁悶鍡欑崶娴ｆ挶鈧?
     /// </summary>
     private static PageInstanceCompResource GetCurrentCompResourceForm()
     {
@@ -1347,7 +1347,7 @@ public partial class PageInstanceCompResource : IRefreshable
         }
     }
 
-    private void BtnManageInfoExport_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageInfoExport_Click(object sender, PointerReleasedEventArgs e)
     {
         var choice =
             ModMain.MyMsgBox(
@@ -1367,7 +1367,7 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "瀵煎嚭璧勬簮淇℃伅澶辫触",
+                    "鐎电厧鍤挧鍕爱娣団剝浼呮径杈Е",
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
             }
@@ -1384,18 +1384,18 @@ public partial class PageInstanceCompResource : IRefreshable
                     exportContent.Add(ModEntity.FileName);
                     _AppendEmbeddedForExport(exportContent, ModEntity.EmbeddedMods, 1);
                 }
-                ExportText(exportContent.Join("\r\n"), PageInstanceLeft.McInstance.Name + "宸插畨瑁呯殑璧勬簮淇℃伅.txt");
+                ExportText(exportContent.Join("\r\n"), PageInstanceLeft.McInstance.Name + "瀹告彃鐣ㄧ憗鍛畱鐠у嫭绨穱鈩冧紖.txt");
                 break;
             }
 
             case 2: // CSV
             {
                 var exportContent = new List<string>();
-                exportContent.Add("鏂囦欢鍚?璧勬簮鍚嶇О,璧勬簮鐗堟湰,姝ょ増鏈洿鏂版椂闂?Mod ID,瀵瑰簲骞冲彴宸ョ▼ ID,鏂囦欢澶у皬锛堝瓧鑺傦級,鏂囦欢璺緞,鍐呭祵妯＄粍");
+                exportContent.Add("閺傚洣娆㈤崥?鐠у嫭绨崥宥囆?鐠у嫭绨悧鍫熸拱,濮濄倗澧楅張顒佹纯閺傜増妞傞梻?Mod ID,鐎电懓绨查獮鍐插酱瀹搞儳鈻?ID,閺傚洣娆㈡径褍鐨敍鍫濈摟閼哄偊绱?閺傚洣娆㈢捄顖氱窞,閸愬懎绁靛Ο锛勭矋");
                 foreach (var ModEntity in ModLocalComp.compResourceListLoader.output)
                     exportContent.Add(
                         $"{ModEntity.FileName},{ModEntity.Comp?.TranslatedName},{ModEntity.Version},{ModEntity.compFile?.ReleaseDate},{ModEntity.ModId},{ModEntity.Comp?.Id},{GetModFileInfo(ModEntity.path).Length},{ModEntity.path},{string.Join(";", _FlattenEmbeddedNames(ModEntity.EmbeddedMods))}");
-                ExportText(exportContent.Join("\r\n"), PageInstanceLeft.McInstance.Name + "宸插畨瑁呯殑璧勬簮淇℃伅.csv");
+                ExportText(exportContent.Join("\r\n"), PageInstanceLeft.McInstance.Name + "瀹告彃鐣ㄧ憗鍛畱鐠у嫭绨穱鈩冧紖.csv");
                 break;
             }
         }
@@ -1406,7 +1406,7 @@ public partial class PageInstanceCompResource : IRefreshable
         var indent = new string('\t', depth);
         foreach (var mod in mods)
         {
-            var line = indent + "鈹?" + (mod.Name ?? mod.ModId ?? mod.FileName);
+            var line = indent + "閳?" + (mod.Name ?? mod.ModId ?? mod.FileName);
             if (!string.IsNullOrWhiteSpace(mod.Version))
                 line += $" ({mod.Version})";
             lines.Add(line);
@@ -1427,9 +1427,9 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     涓嬭浇 Mod銆?
+    ///     娑撳娴?Mod閵?
     /// </summary>
-    private void BtnManageDownload_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageDownload_Click(object sender, PointerReleasedEventArgs e)
     {
         switch (currentCompType)
         {
@@ -1450,22 +1450,22 @@ public partial class PageInstanceCompResource : IRefreshable
             }
         }
 
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 鐏忓棗缍嬮崜宥呯杽娓氬顔曠純顔昏礋缁涙盯鈧娅?
     }
 
     /// <summary>
-    ///     涓嬭浇鎶曞奖Mod鎸夐挳鐐瑰嚮浜嬩欢銆?
+    ///     娑撳娴囬幎鏇炲Mod閹稿鎸抽悙鐟板毊娴滃娆㈤妴?
     /// </summary>
-    private void BtnSchematicDownloadMod_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSchematicDownloadMod_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadMod);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 鐏忓棗缍嬮崜宥呯杽娓氬顔曠純顔昏礋缁涙盯鈧娅?
     }
 
     /// <summary>
-    ///     瀹炰緥閫夋嫨鎸夐挳鐐瑰嚮浜嬩欢銆?
+    ///     鐎圭偘绶ラ柅澶嬪閹稿鎸抽悙鐟板毊娴滃娆㈤妴?
     /// </summary>
-    private void BtnSchematicVersionSelect_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSchematicVersionSelect_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Launch);
         ModMain.frmMain.PageChange(FormMain.PageType.InstanceSelect);
@@ -1473,19 +1473,19 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 閫夋嫨
+    #region 闁瀚?
 
     /// <summary>
-    ///     閫夋嫨鐨?Mod 鐨勮矾寰勶紙涓嶅惈 .disabled 鍜?.old锛夈€?
+    ///     闁瀚ㄩ惃?Mod 閻ㄥ嫯鐭惧鍕剁礄娑撳秴鎯?.disabled 閸?.old閿涘鈧?
     /// </summary>
     public HashSet<string> selectedMods = new();
 
-    // 鍗曢」鍒囨崲閫夋嫨鐘舵€?
+    // 閸楁洟銆嶉崚鍥ㄥ床闁瀚ㄩ悩鑸碘偓?
     public void CheckChanged(MyLocalCompItem sender, ModBase.RouteEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
             return;
-        // 鏇存柊閫夋嫨浜嗙殑鍐呭
+        // 閺囧瓨鏌婇柅澶嬪娴滃棛娈戦崘鍛啇
         var selectedKey = sender.Entry.RawPath;
         if (sender.Checked)
             selectedMods.Add(selectedKey);
@@ -1494,14 +1494,14 @@ public partial class PageInstanceCompResource : IRefreshable
         RefreshBars();
     }
 
-    // 鍒囨崲鎵€鏈夐」鐨勯€夋嫨鐘舵€?
+    // 閸掑洦宕查幍鈧張澶愩€嶉惃鍕偓澶嬪閻樿埖鈧?
     private void ChangeAllSelected(bool value)
     {
         ModAnimation.AniControlEnabled += 1;
         selectedMods.Clear();
         foreach (var Item in modItems.Values)
         {
-            // #4992锛孧od 浠庤繃婊ゅ櫒鐪嬪彲鑳戒笉搴斿湪鍒楄〃涓紝浣嗗洜涓哄垰鍒囨崲鐘舵€佹墍浠ヤ緷鐒朵繚鐣欏湪鍒楄〃涓紝鎵€浠ュ簲璇ヤ粠鍒楄〃 UI 鍒ゆ柇锛岃€岄潪浠庤繃婊ゅ櫒鍒ゆ柇
+            // #4992閿涘od 娴犲氦绻冨銈呮珤閻褰查懗鎴掔瑝鎼存柨婀崚妤勩€冩稉顓ㄧ礉娴ｅ棗娲滄稉鍝勫灠閸掑洦宕查悩鑸碘偓浣瑰娴犮儰绶烽悞鏈电箽閻ｆ瑥婀崚妤勩€冩稉顓ㄧ礉閹碘偓娴犮儱绨茬拠銉ょ矤閸掓銆?UI 閸掋倖鏌囬敍宀冣偓宀勬姜娴犲氦绻冨銈呮珤閸掋倖鏌?
             var shouldSelected = value && PanList.Children.Contains(Item);
             Item.Checked = shouldSelected;
             if (shouldSelected)
@@ -1520,7 +1520,7 @@ public partial class PageInstanceCompResource : IRefreshable
         ModAnimation.AniControlEnabled += cacheAniControlEnabled;
     }
 
-    private void FrmMain_KeyDown(object sender, KeyEventArgs e) // 鑻ョ洃鍚嚜宸辩殑浜嬩欢鍒欏湪杩涘叆椤甸潰鍚庨渶鐐瑰嚮鍙充晶鎺т欢鎵嶅彲鐩戝惉鍒?(#4311)
+    private void FrmMain_KeyDown(object sender, KeyEventArgs e) // 閼汇儳娲冮崥顒冨殰瀹歌京娈戞禍瀣╂閸掓瑥婀潻娑樺弳妞ょ敻娼伴崥搴ㄦ付閻愮懓鍤崣鍏呮櫠閹貉傛閹靛秴褰查惄鎴濇儔閸?(#4311)
     {
         if (!ReferenceEquals(ModMain.frmMain.pageRight, this))
             return;
@@ -1530,7 +1530,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     private void SearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        // Ctrl + A 浼氳鎼滅储妗嗘崟鑾凤紝瀵艰嚧鏃犳硶鍏ㄩ€夛紝鎵€浠ュ湪鎸変笅 Ctrl + A 鏃惰浆绉荤劍鐐逛互渚挎崟鑾?
+        // Ctrl + A 娴兼俺顫﹂幖婊呭偍濡楀棙宕熼懢鍑ょ礉鐎佃壈鍤ч弮鐘崇《閸忋劑鈧绱濋幍鈧禒銉ユ躬閹稿绗?Ctrl + A 閺冩儼娴嗙粔鑽ゅ妽閻愰€涗簰娓氭寧宕熼懢?
         if (SearchBox.Text.Any())
             return;
         if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
@@ -1539,7 +1539,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 绛涢€?
+    #region 缁涙盯鈧?
 
     public FilterType Filter
     {
@@ -1599,7 +1599,7 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     妫€鏌ヨ Mod 椤规槸鍚︾鍚堝綋鍓嶇瓫閫夌殑绫诲埆銆?
+    ///     濡偓閺屻儴顕?Mod 妞よ妲搁崥锔绢儊閸氬牆缍嬮崜宥囩摣闁娈戠猾璇插焼閵?
     /// </summary>
     private bool CanPassFilter(ModLocalComp.LocalCompFile checkingMod)
     {
@@ -1642,7 +1642,7 @@ public partial class PageInstanceCompResource : IRefreshable
         }
     }
 
-    // 鐐瑰嚮绛涢€夐」瑙﹀彂鐨勬敼鍙?
+    // 閻愮懓鍤粵娑⑩偓澶愩€嶇憴锕€褰傞惃鍕暭閸?
     private void ChangeFilter(MyRadioButton sender, bool raiseByMouse)
     {
         Filter = (FilterType)Convert.ToInt32(sender.Tag);
@@ -1652,7 +1652,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 鎺掑簭
+    #region 閹烘帒绨?
 
     private SortMethod currentSortMethod = SortMethod.CompName;
 
@@ -1734,21 +1734,21 @@ public partial class PageInstanceCompResource : IRefreshable
                 if (PanList is null || PanList.Children.Count < 2)
                     return;
 
-                // 灏嗗瓙鍏冪礌杞崲涓哄彲鎺掑簭鐨勫垪琛?
+                // 鐏忓棗鐡欓崗鍐鏉烆剚宕叉稉鍝勫讲閹烘帒绨惃鍕灙鐞?
                 var items = PanList.Children.OfType<MyLocalCompItem>().ToList();
                 var method = GetSortMethod(currentSortMethod);
 
-                // 鍒嗙鏈夋晥鍜屾棤鏁堥」锛堜繚鎸佸師濮嬬浉瀵归『搴忥級
+                // 閸掑棛顬囬張澶嬫櫏閸滃本妫ら弫鍫ャ€嶉敍鍫滅箽閹镐礁甯慨瀣祲鐎靛綊銆庢惔蹇ョ礆
                 var invalid = items.Where(i =>
                     i.Entry is null || (currentSortMethod == SortMethod.TagNums && i.Entry.Comp is null &&
                                         !i.Entry.IsFolder)).ToList();
                 var valid = items.Except(invalid).ToList();
-                // 浠呭鏈夋晥椤硅繘琛屾帓搴?
+                // 娴犲懎顕張澶嬫櫏妞ょ绻樼悰灞惧笓鎼?
                 valid.Sort((x, y) => method(x.Entry, y.Entry));
-                // 鍚堝苟淇濇寔鏃犳晥椤圭殑鍘熷椤哄簭
+                // 閸氬牆鑻熸穱婵囧瘮閺冪姵鏅ユい鍦畱閸樼喎顫愭い鍝勭碍
                 items = valid.Concat(invalid).ToList();
 
-                // 鎵归噺鏇存柊UI鍏冪礌
+                // 閹靛綊鍣洪弴瀛樻煀UI閸忓啰绀?
                 PanList.Children.Clear();
                 items.ForEach(i => PanList.Children.Add(i));
             }
@@ -1757,7 +1757,7 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "鎵ц鎺掑簭鏃跺嚭閿?,
+                    "閹笛嗩攽閹烘帒绨弮璺哄毉闁?,
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
             }
@@ -1766,14 +1766,14 @@ public partial class PageInstanceCompResource : IRefreshable
 
     private Func<ModLocalComp.LocalCompFile, ModLocalComp.LocalCompFile, int> GetSortMethod(SortMethod method)
     {
-        // 閫氱敤鐨勬枃浠跺す缃《姣旇緝鍑芥暟
+        // 闁氨鏁ら惃鍕瀮娴犺泛銇欑純顕€銆婂В鏃囩窛閸戣姤鏆?
         int folderFirstCompare(ModLocalComp.LocalCompFile a, ModLocalComp.LocalCompFile b)
         {
             if (a.IsFolder && !b.IsFolder)
                 return -1;
             if (!a.IsFolder && b.IsFolder)
                 return 1;
-            return 0; // 鐩稿悓绫诲瀷锛岄渶瑕佽繘涓€姝ユ瘮杈?
+            return 0; // 閻╃鎮撶猾璇茬€烽敍宀勬付鐟曚浇绻樻稉鈧銉︾槷鏉?
         }
 
         ;
@@ -1784,11 +1784,11 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶规垨閮芥槸鏂囦欢锛屽垯鎸夋枃浠跺悕鎺掑簭
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径瑙勫灗闁姤妲搁弬鍥︽閿涘苯鍨幐澶嬫瀮娴犺泛鎮曢幒鎺戠碍
                     return string.Compare(a.FileName, b.FileName, StringComparison.OrdinalIgnoreCase);
                 };
             }
@@ -1796,11 +1796,11 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶规垨閮芥槸鏂囦欢锛屽垯鎸夎祫婧愬悕绉版帓搴?
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径瑙勫灗闁姤妲搁弬鍥︽閿涘苯鍨幐澶庣カ濠ф劕鎮曠粔鐗堝笓鎼?
                     return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
                 };
             }
@@ -1808,23 +1808,23 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶癸紝鍒欐寜鍚嶇О鎺掑簭
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径鐧哥礉閸掓瑦瀵滈崥宥囆為幒鎺戠碍
                     if (a.IsFolder && b.IsFolder)
                         return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
-                    // 濡傛灉閮芥槸鏂囦欢锛屽垯鎸夋爣绛炬暟閲忔帓搴忥紙鏍囩澶氱殑鍦ㄥ墠锛?
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈤敍灞藉灟閹稿鐖ｇ粵鐐殶闁插繑甯撴惔蹇ョ礄閺嶅洨顒锋径姘辨畱閸︺劌澧犻敍?
                     if (!a.IsFolder && !b.IsFolder)
                     {
-                        // 瀹夊叏妫€鏌ワ紝纭繚Comp涓嶄负绌?
+                        // 鐎瑰鍙忓Λ鈧弻銉礉绾喕绻欳omp娑撳秳璐熺粚?
                         var aTagCount = a.Comp?.Tags?.Count ?? 0;
                         var bTagCount = b.Comp?.Tags?.Count ?? 0;
                         return bTagCount.CompareTo(aTagCount);
                     }
 
-                    // 鐞嗚涓婁笉浼氬埌杈捐繖閲岋紝浣嗕负浜嗗畨鍏ㄨ捣瑙?
+                    // 閻炲棜顔戞稉濠佺瑝娴兼艾鍩屾潏鎹愮箹闁插矉绱濇担鍡曡礋娴滃棗鐣ㄩ崗銊ㄦ崳鐟?
                     return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
                 };
             }
@@ -1832,11 +1832,11 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶规垨閮芥槸鏂囦欢锛屽垯鎸夊垱寤烘椂闂存帓搴忥紙鏂扮殑鍦ㄥ墠锛?
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径瑙勫灗闁姤妲搁弬鍥︽閿涘苯鍨幐澶婂灡瀵ょ儤妞傞梻瀛樺笓鎼村骏绱欓弬鎵畱閸︺劌澧犻敍?
                     var aPath = a.IsFolder ? a.ActualPath : a.path;
                     var bPath = b.IsFolder ? b.ActualPath : b.path;
                     var aDate = GetModFileInfo(aPath).CreationTime;
@@ -1844,7 +1844,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     if (aDate == DateTime.MinValue && bDate == DateTime.MinValue)
                         return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
 
-                    if (aDate == DateTime.MinValue) return 1; // 鍑洪敊鐨勬枃浠舵帓鍦ㄥ悗闈?
+                    if (aDate == DateTime.MinValue) return 1; // 閸戞椽鏁婇惃鍕瀮娴犺埖甯撻崷銊ユ倵闂?
 
                     if (bDate == DateTime.MinValue) return -1;
                     return bDate.CompareTo(aDate);
@@ -1854,14 +1854,14 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶癸紝鍒欐寜鍚嶇О鎺掑簭
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径鐧哥礉閸掓瑦瀵滈崥宥囆為幒鎺戠碍
                     if (a.IsFolder && b.IsFolder)
                         return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
-                    // 濡傛灉閮芥槸鏂囦欢锛屽垯鎸夋枃浠跺ぇ灏忔帓搴忥紙澶х殑鍦ㄥ墠锛?
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈤敍灞藉灟閹稿鏋冩禒璺恒亣鐏忓繑甯撴惔蹇ョ礄婢堆呮畱閸︺劌澧犻敍?
                     if (!a.IsFolder && !b.IsFolder)
                     {
                         var aSize = GetModFileInfo(a.ActualPath).Length;
@@ -1875,7 +1875,7 @@ public partial class PageInstanceCompResource : IRefreshable
                         return bSize.CompareTo(aSize);
                     }
 
-                    // 鐞嗚涓婁笉浼氬埌杈捐繖閲岋紝浣嗕负浜嗗畨鍏ㄨ捣瑙?
+                    // 閻炲棜顔戞稉濠佺瑝娴兼艾鍩屾潏鎹愮箹闁插矉绱濇担鍡曡礋娴滃棗鐣ㄩ崗銊ㄦ崳鐟?
                     return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
                 };
             }
@@ -1884,11 +1884,11 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 return (a, b) =>
                 {
-                    // 鏂囦欢澶瑰缁堟帓鍦ㄦ渶鍓嶉潰
+                    // 閺傚洣娆㈡径鐟邦潗缂佸牊甯撻崷銊︽付閸撳秹娼?
                     var folderResult = folderFirstCompare(a, b);
                     if (folderResult != 0)
                         return folderResult;
-                    // 濡傛灉閮芥槸鏂囦欢澶规垨閮芥槸鏂囦欢锛屽垯鎸夊悕绉版帓搴?
+                    // 婵″倹鐏夐柈鑺ユЦ閺傚洣娆㈡径瑙勫灗闁姤妲搁弬鍥︽閿涘苯鍨幐澶婃倳缁夌増甯撴惔?
                     return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
                 };
             }
@@ -1897,9 +1897,9 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 涓嬭竟鏍?
+    #region 娑撳绔熼弽?
 
-    // 鍚敤 / 绂佺敤
+    // 閸氼垳鏁?/ 缁備胶鏁?
     private void BtnSelectED_Click(object sender, ModBase.RouteEventArgs e)
     {
         EDMods(ModLocalComp.compResourceListLoader.output.Where(m => selectedMods.Contains(m.RawPath)).ToList(),
@@ -1912,24 +1912,24 @@ public partial class PageInstanceCompResource : IRefreshable
         var isSuccessful = true;
         foreach (var ModE in modList)
         {
-            var modEntity = ModE; // 浠呯敤浜庡幓闄よ凯浠ｅ彉閲忔棤娉曚慨鏀圭殑闄愬埗
+            var modEntity = ModE; // 娴犲懐鏁ゆ禍搴″箵闂勩倛鍑禒锝呭綁闁插繑妫ゅ▔鏇氭叏閺€鍦畱闂勬劕鍩?
             string newPath = null;
             if (modEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine && !isEnable)
-                // 绂佺敤
+                // 缁備胶鏁?
                 newPath = modEntity.path + (File.Exists(modEntity.path + ".old") ? ".old" : ".disabled");
             else if (modEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Disabled && isEnable)
-                // 鍚敤
+                // 閸氼垳鏁?
                 newPath = modEntity.RawPath;
             else
                 continue;
-            // 閲嶅懡鍚?
+            // 闁插秴鎳￠崥?
             try
             {
                 if (File.Exists(newPath))
                 {
                     if (File.Exists(modEntity.path))
                     {
-                        // 鍚屾椂瀛樺湪涓や釜鍚嶇О鐨?Mod
+                        // 閸氬本妞傜€涙ê婀稉銈勯嚋閸氬秶袨閻?Mod
                         if ((ModBase.GetFileMD5(modEntity.path) ?? "") != (ModBase.GetFileMD5(newPath) ?? ""))
                         {
                             ModMain.MyMsgBox(
@@ -1940,8 +1940,8 @@ public partial class PageInstanceCompResource : IRefreshable
                     }
                     else
                     {
-                        // 宸茬粡閲嶅懡鍚嶈繃浜?
-                        ModBase.Log("[Mod] Mod 鐨勭姸鎬佸凡琚垏鎹?, ModBase.LogLevel.Debug);
+                        // 瀹歌尙绮￠柌宥呮嚒閸氬秷绻冩禍?
+                        ModBase.Log("[Mod] Mod 閻ㄥ嫮濮搁幀浣稿嚒鐞氼偄鍨忛幑?, ModBase.LogLevel.Debug);
                         continue;
                     }
                 }
@@ -1953,7 +1953,7 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"鏈壘鍒伴渶瑕侀噸鍛藉悕鐨?Mod锛坽modEntity.path ?? "null"}锛?,
+                    $"閺堫亝澹橀崚浼存付鐟曚線鍣搁崨钘夋倳閻?Mod閿涘澖modEntity.path ?? "null"}閿?,
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
                 ReloadCompFileList(true);
@@ -1961,11 +1961,11 @@ public partial class PageInstanceCompResource : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"閲嶅懡鍚?Mod 澶辫触锛坽modEntity.path ?? "null"}锛?);
+                ModBase.Log(ex, $"闁插秴鎳￠崥?Mod 婢惰精瑙﹂敍鍧絤odEntity.path ?? "null"}閿?);
                 isSuccessful = false;
             }
 
-            // 鏇存敼 Loader 涓殑鍒楄〃
+            // 閺囧瓨鏁?Loader 娑擃厾娈戦崚妤勩€?
             var newModEntity = new ModLocalComp.LocalCompFile(newPath);
             newModEntity.FromJson(modEntity.ToJson());
             if (ModLocalComp.compResourceListLoader.output.Contains(modEntity))
@@ -1982,7 +1982,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 searchResult.Insert(indexOfResult, newModEntity);
             }
 
-            // 鏇存敼 UI 涓殑鍒楄〃
+            // 閺囧瓨鏁?UI 娑擃厾娈戦崚妤勩€?
             try
             {
                 var newItem = BuildLocalCompItem(newModEntity);
@@ -1990,7 +1990,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 var indexOfUi = PanList.Children.IndexOf(PanList.Children.OfType<MyLocalCompItem>()
                     .FirstOrDefault(i => ReferenceEquals(i.Entry, modEntity)));
                 if (indexOfUi == -1)
-                    continue; // 鍥犱负鏈煡鍘熷洜 Mod 鐨勭姸鎬佸凡缁忓垏鎹㈠畬浜?
+                    continue; // 閸ョ姳璐熼張顏嗙叀閸樼喎娲?Mod 閻ㄥ嫮濮搁幀浣稿嚒缂佸繐鍨忛幑銏犵暚娴?
                 PanList.Children.RemoveAt(indexOfUi);
                 PanList.Children.Insert(indexOfUi, newItem);
             }
@@ -1998,7 +1998,7 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"鏇存柊 UI 鍒楄〃椤瑰け璐ワ細{modEntity.FileName}",
+                    $"閺囧瓨鏌?UI 閸掓銆冩い鐟般亼鐠愩儻绱皗modEntity.FileName}",
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
             }
@@ -2018,7 +2018,7 @@ public partial class PageInstanceCompResource : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 鏇存柊
+    // 閺囧瓨鏌?
     private void BtnSelectUpdate_Click(object sender, ModBase.RouteEventArgs e)
     {
         var updateList = ModLocalComp.compResourceListLoader.output
@@ -2030,13 +2030,13 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     璁板綍姝ｅ湪杩涜 Mod 鏇存柊鐨?mods 鏂囦欢澶硅矾寰勩€?
+    ///     鐠佹澘缍嶅锝呮躬鏉╂稖顢?Mod 閺囧瓨鏌婇惃?mods 閺傚洣娆㈡径纭呯熅瀵板嫨鈧?
     /// </summary>
     public static List<string> updatingVersions = new();
 
     public void UpdateResource(IEnumerable<ModLocalComp.LocalCompFile> modList)
     {
-        // 鏇存柊鍓嶈鍛?
+        // 閺囧瓨鏌婇崜宥堫劅閸?
         if (currentCompType == ModComp.CompType.Mod && (!States.Hint.UpdateMod || modList.Count() >= 15))
         {
             if (ModMain.MyMsgBox(
@@ -2049,8 +2049,8 @@ public partial class PageInstanceCompResource : IRefreshable
 
         try
         {
-            // 鏋勯€犱笅杞戒俊鎭?
-            modList = modList.ToList(); // 闃叉鍒锋柊褰卞搷杩唬鍣?
+            // 閺嬪嫰鈧姳绗呮潪鎴掍繆閹?
+            modList = modList.ToList(); // 闂冨弶顒涢崚閿嬫煀瑜板崬鎼锋潻顓濆敩閸?
             var fileList = new List<DownloadFile>();
             var fileCopyList = new Dictionary<string, string>();
             foreach (var Entry in modList)
@@ -2058,7 +2058,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 var file = Entry.UpdateFile;
                 if (!file.Available)
                     continue;
-                // 纭鏇存柊鍚庣殑鏂囦欢鍚?
+                // 绾喛顓婚弴瀛樻煀閸氬海娈戦弬鍥︽閸?
                 var currentReplaceName = Entry.compFile.FileName.Replace(".jar", "").Replace(".old", "")
                     .Replace(".disabled", "");
                 var newestReplaceName = Entry.UpdateFile.FileName.Replace(".jar", "").Replace(".old", "")
@@ -2066,7 +2066,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 var currentSegs = currentReplaceName.Split('-').ToList();
                 var newestSegs = newestReplaceName.Split('-').ToList();
                 var shortened = false;
-                while (true) // 绉婚櫎鍓嶅鐩稿悓閮ㄥ垎锛堜笉鑳界Щ闄ゆ墍鏈夌浉鍚岄」锛岃繖浼氬鑷翠緥濡?1.2-forge-2 鍜?1.3-forge-3 涓棿鐨?forge 琚幓鎺夛紝瀵艰嚧灏濊瘯鏇挎崲 1.2-2锛?
+                while (true) // 缁夊娅庨崜宥咁嚤閻╃鎮撻柈銊ュ瀻閿涘牅绗夐懗鐣屝╅梽銈嗗閺堝娴夐崥宀勩€嶉敍宀冪箹娴兼艾顕遍懛缈犵伐婵?1.2-forge-2 閸?1.3-forge-3 娑擃參妫块惃?forge 鐞氼偄骞撻幒澶涚礉鐎佃壈鍤х亸婵婄槸閺囨寧宕?1.2-2閿?
                 {
                     if (!currentSegs.Any() || !newestSegs.Any())
                         break;
@@ -2077,7 +2077,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     shortened = true;
                 }
 
-                while (true) // 绉婚櫎鍚庡鐩稿悓閮ㄥ垎
+                while (true) // 缁夊娅庨崥搴☆嚤閻╃鎮撻柈銊ュ瀻
                 {
                     if (!currentSegs.Any() || !newestSegs.Any())
                         break;
@@ -2094,7 +2094,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     newestReplaceName = newestSegs.Join("-");
                 }
 
-                // 娣诲姞鍒颁笅杞藉垪琛?
+                // 濞ｈ濮為崚棰佺瑓鏉炶棄鍨悰?
                 var tempAddress = ModBase.pathTemp + @"DownloadedComp\" +
                                   Entry.FileName.Replace(currentReplaceName, newestReplaceName);
                 var realAddress = ModBase.GetPathFromFullPath(Entry.path) +
@@ -2103,11 +2103,11 @@ public partial class PageInstanceCompResource : IRefreshable
                 fileCopyList[tempAddress] = realAddress;
             }
 
-            // 鏋勯€犲姞杞藉櫒
+            // 閺嬪嫰鈧姴濮炴潪钘夋珤
             var installLoaders = new List<ModLoader.LoaderBase>();
             var finishedFileNames = new List<string>();
             installLoaders.Add(new LoaderDownload(Lang.Text("Instance.Resource.Update.Task.DownloadFiles"), fileList)
-                { ProgressWeight = modList.Count() * 1.5d }); // 姣忎釜 Mod 闇€瑕?1.5s
+                { ProgressWeight = modList.Count() * 1.5d }); // 濮ｅ繋閲?Mod 闂団偓鐟?1.5s
             installLoaders.Add(new ModLoader.LoaderTask<int, int>(
                 Lang.Text("Instance.Resource.Update.Task.ReplaceFiles"), _ =>
             {
@@ -2118,7 +2118,7 @@ public partial class PageInstanceCompResource : IRefreshable
                             Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.path, UIOption.AllDialogs,
                                 RecycleOption.SendToRecycleBin);
                         else
-                            ModBase.Log($"[CompUpdate] 鏈壘鍒版洿鏂板墠鐨勮祫婧愭枃浠讹紝璺宠繃瀵瑰畠鐨勫垹闄わ細{Entry.path}", ModBase.LogLevel.Debug);
+                            ModBase.Log($"[CompUpdate] 閺堫亝澹橀崚鐗堟纯閺傛澘澧犻惃鍕カ濠ф劖鏋冩禒璁圭礉鐠哄疇绻冪€电懓鐣犻惃鍕灩闂勩倧绱皗Entry.path}", ModBase.LogLevel.Debug);
 
                     foreach (var Entry in fileCopyList)
                     {
@@ -2126,7 +2126,7 @@ public partial class PageInstanceCompResource : IRefreshable
                         {
                             Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.Value, UIOption.AllDialogs,
                                 RecycleOption.SendToRecycleBin);
-                            ModBase.Log($"[Mod] 鏇存柊鍚庣殑璧勬簮鏂囦欢宸插瓨鍦紝灏嗕細鎶婂畠鏀惧叆鍥炴敹绔欙細{Entry.Value}", ModBase.LogLevel.Debug);
+                            ModBase.Log($"[Mod] 閺囧瓨鏌婇崥搴ｆ畱鐠у嫭绨弬鍥︽瀹告彃鐡ㄩ崷顭掔礉鐏忓棔绱伴幎濠傜暊閺€鎯у弳閸ョ偞鏁圭粩娆欑窗{Entry.Value}", ModBase.LogLevel.Debug);
                         }
 
                         if (Directory.Exists(ModBase.GetPathFromFullPath(Entry.Value)))
@@ -2136,16 +2136,16 @@ public partial class PageInstanceCompResource : IRefreshable
                         }
                         else
                         {
-                            ModBase.Log($"[Mod] 鏇存柊鍚庣殑鐩爣鏂囦欢澶瑰凡琚垹闄わ細{Entry.Value}", ModBase.LogLevel.Debug);
+                            ModBase.Log($"[Mod] 閺囧瓨鏌婇崥搴ｆ畱閻╊喗鐖ｉ弬鍥︽婢剁懓鍑＄悮顐㈠灩闂勩倧绱皗Entry.Value}", ModBase.LogLevel.Debug);
                         }
                     }
                 }
                 catch (OperationCanceledException ex)
                 {
-                    ModBase.Log(ex, "鏇挎崲鏃х増璧勬簮鏂囦欢鏃惰涓诲姩鍙栨秷");
+                    ModBase.Log(ex, "閺囨寧宕查弮褏澧楃挧鍕爱閺傚洣娆㈤弮鎯邦潶娑撹濮╅崣鏍ㄧХ");
                 }
             }));
-            // 缁撴潫澶勭悊
+            // 缂佹挻娼径鍕倞
             var loader =
                 new ModLoader.LoaderCombo<IEnumerable<ModLocalComp.LocalCompFile>>(
                     Lang.Text("Instance.Resource.Update.Task.Title", PageInstanceLeft.McInstance.Name), installLoaders);
@@ -2155,16 +2155,16 @@ public partial class PageInstanceCompResource : IRefreshable
                                : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
             loader.OnStateChanged = _ =>
             {
-                // 缁撴灉鎻愮ず
+                // 缂佹挻鐏夐幓鎰仛
                 switch (loader.State)
                 {
                     case ModBase.LoadState.Finished:
                     {
                         switch (finishedFileNames.Count)
                         {
-                            case 0: // 涓€鑸槸鐢变簬 Mod 鏂囦欢琚崰鐢紝鐒跺悗鐜╁涓诲姩鍙栨秷
+                            case 0: // 娑撯偓閼割剚妲搁悽鍙樼艾 Mod 閺傚洣娆㈢悮顐㈠窗閻㈩煉绱濋悞璺烘倵閻溾晛顔嶆稉璇插З閸欐牗绉?
                             {
-                                ModBase.Log("[CompUpdate] 娌℃湁璧勬簮琚垚鍔熸洿鏂?);
+                                ModBase.Log("[CompUpdate] 濞屸剝婀佺挧鍕爱鐞氼偅鍨氶崝鐔告纯閺?);
                                 break;
                             }
                             case 1:
@@ -2199,9 +2199,9 @@ public partial class PageInstanceCompResource : IRefreshable
                     }
                 }
 
-                ModBase.Log($"[CompUpdate] 宸蹭粠姝ｅ湪杩涜璧勬簮鏇存柊鐨勬枃浠跺す鍒楄〃绉婚櫎锛歿pathMods}");
+                ModBase.Log($"[CompUpdate] 瀹歌弓绮犲锝呮躬鏉╂稖顢戠挧鍕爱閺囧瓨鏌婇惃鍕瀮娴犺泛銇欓崚妤勩€冪粔濠氭珟閿涙pathMods}");
                 updatingVersions.Remove(pathMods);
-                // 娓呯悊缂撳瓨
+                // 濞撳懐鎮婄紓鎾崇摠
                 ModBase.RunInNewThread(() =>
                 {
                     try
@@ -2212,12 +2212,12 @@ public partial class PageInstanceCompResource : IRefreshable
                     }
                     catch (Exception ex)
                     {
-                        ModBase.Log(ex, "娓呯悊璧勬簮鏇存柊缂撳瓨澶辫触");
+                        ModBase.Log(ex, "濞撳懐鎮婄挧鍕爱閺囧瓨鏌婄紓鎾崇摠婢惰精瑙?);
                     }
                 }, "Clean Comp Update Cache", ThreadPriority.BelowNormal);
             };
-            // 鍚姩鍔犺浇鍣?
-            ModBase.Log($"[CompUpdate] 寮€濮嬫洿鏂?{modList.Count()} 涓祫婧愶細{pathMods}");
+            // 閸氼垰濮╅崝鐘烘祰閸?
+            ModBase.Log($"[CompUpdate] 瀵偓婵娲块弬?{modList.Count()} 娑擃亣绁┃鎰剁窗{pathMods}");
             updatingVersions.Add(pathMods);
             loader.Start();
             ModLoader.LoaderTaskbarAdd(loader);
@@ -2227,11 +2227,11 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鍒濆鍖栬祫婧愭洿鏂板け璐?);
+            ModBase.Log(ex, "閸掓繂顫愰崠鏍カ濠ф劖娲块弬鏉裤亼鐠?);
         }
     }
 
-    // 鍒犻櫎
+    // 閸掔娀娅?
     private void BtnSelectDelete_Click(object sender, ModBase.RouteEventArgs e)
     {
         DeleteMods(ModLocalComp.compResourceListLoader.output.Where(m => selectedMods.Contains(m.RawPath)));
@@ -2244,8 +2244,8 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             var isSuccessful = true;
             var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            // 纭闇€瑕佸垹闄ょ殑鏂囦欢
-            // 鏂囦欢澶瑰彧闇€瑕佸垹闄よ嚜韬?
+            // 绾喛顓婚棁鈧憰浣稿灩闂勩倗娈戦弬鍥︽
+            // 閺傚洣娆㈡径鐟板涧闂団偓鐟曚礁鍨归梽銈堝殰闊?
             modList = modList.SelectMany(target =>
                 {
                     if (target.IsFolder) return new[] { target.path };
@@ -2259,22 +2259,22 @@ public partial class PageInstanceCompResource : IRefreshable
                 .Where(m => m.EndsWithF(@"\__FOLDER__", true)
                     ? Directory.Exists(m.Replace(@"\__FOLDER__", ""))
                     : File.Exists(m)).Select(m => new ModLocalComp.LocalCompFile(m)).ToList();
-            // 瀹為檯鍒犻櫎鏂囦欢
+            // 鐎圭偤妾崚鐘绘珟閺傚洣娆?
             foreach (var ModEntity in modList)
             {
-                // 鍒犻櫎
+                // 閸掔娀娅?
                 try
                 {
                     if (ModEntity.IsFolder)
                     {
-                        // 鍒犻櫎鏂囦欢澶?
+                        // 閸掔娀娅庨弬鍥︽婢?
                         if (isShiftPressed)
                             Directory.Delete(ModEntity.ActualPath, true);
                         else
                             Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(ModEntity.ActualPath,
                                 UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
-                    // 鍒犻櫎鏂囦欢
+                    // 閸掔娀娅庨弬鍥︽
                     else if (isShiftPressed)
                     {
                         File.Delete(ModEntity.path);
@@ -2287,7 +2287,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 }
                 catch (OperationCanceledException ex)
                 {
-                    ModBase.Log(ex, "鍒犻櫎璧勬簮琚富鍔ㄥ彇娑?);
+                    ModBase.Log(ex, "閸掔娀娅庣挧鍕爱鐞氼偂瀵岄崝銊ュ絿濞?);
                     ReloadCompFileList(true);
                     return;
                 }
@@ -2295,15 +2295,15 @@ public partial class PageInstanceCompResource : IRefreshable
                 {
                     ModBase.Log(
                         ex,
-                        $"鍒犻櫎璧勬簮澶辫触锛坽ModEntity.path}锛?,
+                        $"閸掔娀娅庣挧鍕爱婢惰精瑙﹂敍鍧組odEntity.path}閿?,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
                     isSuccessful = false;
                 }
 
-                // 鍙栨秷閫変腑
+                // 閸欐牗绉烽柅澶夎厬
                 selectedMods.Remove(ModEntity.RawPath);
-                // 鏇存敼 Loader 鍜?UI 涓殑鍒楄〃
+                // 閺囧瓨鏁?Loader 閸?UI 娑擃厾娈戦崚妤勩€?
                 ModLocalComp.compResourceListLoader.output.Remove(ModEntity);
                 searchResult?.Remove(ModEntity);
                 modItems.Remove(ModEntity.RawPath);
@@ -2321,14 +2321,14 @@ public partial class PageInstanceCompResource : IRefreshable
             }
             else if (PanList.Children.Count == 0)
             {
-                ReloadCompFileList(true); // 鍒犻櫎浜嗗叏閮ㄩ」鐩?
+                ReloadCompFileList(true); // 閸掔娀娅庢禍鍡楀弿闁劑銆嶉惄?
             }
             else
             {
                 RefreshBars();
             }
 
-            // 鏄剧ず缁撴灉鎻愮ず
+            // 閺勫墽銇氱紒鎾寸亯閹绘劗銇?
             if (!isSuccessful)
                 return;
             if (isShiftPressed)
@@ -2349,14 +2349,14 @@ public partial class PageInstanceCompResource : IRefreshable
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log(ex, "鍒犻櫎璧勬簮琚富鍔ㄥ彇娑?);
+            ModBase.Log(ex, "閸掔娀娅庣挧鍕爱鐞氼偂瀵岄崝銊ュ絿濞?);
             ReloadCompFileList(true);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                "鍒犻櫎璧勬簮鍑虹幇鏈煡閿欒",
+                "閸掔娀娅庣挧鍕爱閸戣櫣骞囬張顏嗙叀闁挎瑨顕?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
             ReloadCompFileList(true);
@@ -2365,13 +2365,13 @@ public partial class PageInstanceCompResource : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 鍙栨秷閫夋嫨
+    // 閸欐牗绉烽柅澶嬪
     private void BtnSelectCancel_Click(object sender, ModBase.RouteEventArgs e)
     {
         ChangeAllSelected(false);
     }
 
-    // 鏀惰棌
+    // 閺€鎯版
     private void BtnSelectFavorites_Click(object sender, ModBase.RouteEventArgs e)
     {
         var selected = ModLocalComp.compResourceListLoader.output
@@ -2379,7 +2379,7 @@ public partial class PageInstanceCompResource : IRefreshable
         ModComp.CompFavorites.ShowMenu(selected, (Control)sender);
     }
 
-    // 鍒嗕韩
+    // 閸掑棔闊?
     private void BtnSelectShare_Click(object sender, ModBase.RouteEventArgs e)
     {
         var shareList = ModLocalComp.compResourceListLoader.output
@@ -2390,17 +2390,17 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 鍗曚釜璧勬簮椤?
+    #region 閸楁洑閲滅挧鍕爱妞?
 
-    // 璇︽儏
+    // 鐠囷附鍎?
     public void Info_Click(object sender, EventArgs e)
     {
         try
         {
             var modEntry = ((MyLocalCompItem)(sender is MyIconButton iconButton ? iconButton.Tag : sender)).Entry;
-            // 鍒ゆ柇璇?LabyMod 鏄惁鏀寔瀹夎 Fabric Mod
+            // 閸掋倖鏌囩拠?LabyMod 閺勵垰鎯侀弨顖涘瘮鐎瑰顥?Fabric Mod
             var moddedLabyMod = PageInstanceLeft.McInstance.Info.HasLabyMod && PageInstanceLeft.McInstance.Modable;
-            // 鍔犺浇澶辫触淇℃伅
+            // 閸旂姾娴囨径杈Е娣団剝浼?
             if (modEntry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable)
             {
                 ModMain.MyMsgBox(
@@ -2412,7 +2412,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
             if (modEntry.Comp is not null)
             {
-                // 璺宠浆鍒?Mod 涓嬭浇椤甸潰
+                // 鐠哄疇娴嗛崚?Mod 娑撳娴囨い鐢告桨
                 ModMain.frmMain.PageChange(new FormMain.PageStackData
                 {
                     page = FormMain.PageType.CompDetail,
@@ -2426,7 +2426,7 @@ public partial class PageInstanceCompResource : IRefreshable
             }
             else
             {
-                // 瀵逛簬鍘熺悊鍥炬枃浠讹紝浣跨敤寮傛鍔犺浇閬垮厤UI鍗￠】
+                // 鐎甸€涚艾閸樼喓鎮婇崶鐐瀮娴犺绱濇担璺ㄦ暏瀵倹顒為崝鐘烘祰闁灝鍘I閸楋繝銆?
                 if (modEntry.path.EndsWithF(".litematic", true) || modEntry.path.EndsWithF(".schem", true) ||
                     modEntry.path.EndsWithF(".schematic", true) || modEntry.path.EndsWithF(".nbt", true))
                 {
@@ -2434,20 +2434,20 @@ public partial class PageInstanceCompResource : IRefreshable
                     return;
                 }
 
-                // 鑾峰彇淇℃伅
+                // 閼惧嘲褰囨穱鈩冧紖
                 var contentLines = new List<string>();
 
-                // 妫€鏌ユ槸鍚︿负鏂囦欢澶?
+                // 濡偓閺屻儲妲搁崥锔胯礋閺傚洣娆㈡径?
                 if (modEntry.IsFolder)
                 {
-                    // 澶勭悊鏂囦欢澶硅鎯?
+                    // 婢跺嫮鎮婇弬鍥︽婢剁顕涢幆?
                     var folderPath = modEntry.ActualPath;
                     if (Directory.Exists(folderPath))
                     {
                         var fileCount = 0;
                         try
                         {
-                            // 鏍规嵁褰撳墠璧勬簮绫诲瀷璁＄畻鏂囦欢鏁伴噺
+                            // 閺嶈宓佽ぐ鎾冲鐠у嫭绨猾璇茬€风拋锛勭暬閺傚洣娆㈤弫浼村櫤
                             switch (currentCompType)
                             {
                                 case ModComp.CompType.Schematic:
@@ -2506,7 +2506,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 }
                 else
                 {
-                    // 澶勭悊鏅€氭枃浠惰鎯?
+                    // 婢跺嫮鎮婇弲顕€鈧碍鏋冩禒鎯邦嚊閹?
                     if (modEntry.Description is not null)
                         contentLines.Add(modEntry.Description + "\r\n");
                     if (modEntry.Authors is not null)
@@ -2515,10 +2515,10 @@ public partial class PageInstanceCompResource : IRefreshable
                     if (modEntry.Version is not null)
                         contentLines.Add(Lang.Text("Instance.Resource.Item.Info.Version", modEntry.Version));
 
-                    // 鍘熺悊鍥炬枃浠剁殑璇︽儏淇℃伅宸查€氳繃寮傛鏂规硶澶勭悊
+                    // 閸樼喓鎮婇崶鐐瀮娴犲墎娈戠拠锔藉剰娣団剝浼呭鏌モ偓姘崇箖瀵倹顒為弬瑙勭《婢跺嫮鎮?
                 }
 
-                // 鍙湁鏅€氭枃浠舵墠鏄剧ず璋冭瘯淇℃伅
+                // 閸欘亝婀侀弲顕€鈧碍鏋冩禒鑸靛閺勫墽銇氱拫鍐槸娣団剝浼?
                 if (!modEntry.IsFolder)
                 {
                     var debugInfo = new List<string>();
@@ -2539,15 +2539,15 @@ public partial class PageInstanceCompResource : IRefreshable
                     }
                 }
 
-                // 鏄剧ず璇︽儏淇℃伅
+                // 閺勫墽銇氱拠锔藉剰娣団剝浼?
                 if (modEntry.IsFolder)
                 {
-                    // 鏂囦欢澶瑰彧鏄剧ず鍩烘湰淇℃伅锛屼笉鎻愪緵鎼滅储鍔熻兘
+                    // 閺傚洣娆㈡径鐟板涧閺勫墽銇氶崺鐑樻拱娣団剝浼呴敍灞肩瑝閹绘劒绶甸幖婊呭偍閸旂喕鍏?
                     ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.Return"));
                 }
                 else
                 {
-                    // 鑾峰彇鐢ㄤ簬鎼滅储鐨?Mod 鍚嶇О
+                    // 閼惧嘲褰囬悽銊ょ艾閹兼粎鍌ㄩ惃?Mod 閸氬秶袨
                     var modOriginalName = modEntry.Name.Replace(" ", "+");
                     var modSearchName = modOriginalName.Substring(0, 1);
                     for (int i = 1, loopTo = modOriginalName.Count() - 1; i <= loopTo; i++)
@@ -2557,22 +2557,22 @@ public partial class PageInstanceCompResource : IRefreshable
                         var isCurrentLower = modOriginalName[i].ToString().ToLower()
                             .Equals(modOriginalName[i].ToString());
                         if (isLastLower && !isCurrentLower)
-                            // 涓婁竴涓瓧姣嶄负灏忓啓锛岃繖涓€涓瓧姣嶄负澶у啓
+                            // 娑撳﹣绔存稉顏勭摟濮ｅ秳璐熺亸蹇撳晸閿涘矁绻栨稉鈧稉顏勭摟濮ｅ秳璐熸径褍鍟?
                             modSearchName += "+";
                         modSearchName += modOriginalName[i].ToString();
                     }
 
                     modSearchName = modSearchName.Replace("++", "+").Replace("pti+Fine", "ptiFine");
-                    // 鏄剧ず
+                    // 閺勫墽銇?
                     if (currentCompType == ModComp.CompType.Schematic || !Lang.IsChineseMainland)
                     {
-                        // 鎶曞奖鍘熺悊鍥炬枃浠舵垨闈炰腑鏂囧尯鍩熶笉鏄剧ず鐧剧鎼滅储閫夐」
+                        // 閹舵洖濂栭崢鐔烘倞閸ョ偓鏋冩禒鑸靛灗闂堢偘鑵戦弬鍥у隘閸╃喍绗夐弰鍓с仛閻у墽顫栭幖婊呭偍闁銆?
                         if (modEntry.Url is null)
                             ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.Return"));
                         else if (ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.OpenWebsite"), Lang.Text("Instance.Resource.Item.Info.Return")) ==
                                  1) ModBase.OpenWebsite(modEntry.Url);
                     }
-                    // 鍏朵粬璧勬簮绫诲瀷淇濈暀鐧剧鎼滅储鍔熻兘
+                    // 閸忔湹绮挧鍕爱缁鐎锋穱婵堟殌閻у墽顫栭幖婊呭偍閸旂喕鍏?
                     else if (modEntry.Url is null)
                     {
                         if (ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.McMod"), Lang.Text("Instance.Resource.Item.Info.Return")) == 1)
@@ -2603,19 +2603,19 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鑾峰彇璧勬簮璇︽儏澶辫触",
+                "閼惧嘲褰囩挧鍕爱鐠囷附鍎忔径杈Е",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
     }
 
-    // 鎵撳紑鏂囦欢鎵€鍦ㄧ殑浣嶇疆
+    // 閹垫挸绱戦弬鍥︽閹碘偓閸︺劎娈戞担宥囩枂
     public void Open_Click(MyIconButton sender, EventArgs e)
     {
         try
         {
             var listItem = (MyLocalCompItem)sender.Tag;
-            // 瀵逛簬鏂囦欢澶逛娇鐢ㄥ疄闄呰矾寰勶紝瀵逛簬鏂囦欢浣跨敤鍘熻矾寰?
+            // 鐎甸€涚艾閺傚洣娆㈡径閫涘▏閻劌鐤勯梽鍛扮熅瀵板嫸绱濈€甸€涚艾閺傚洣娆㈡担璺ㄦ暏閸樼喕鐭惧?
             var targetPath = listItem.Entry.IsFolder ? listItem.Entry.ActualPath : listItem.Entry.path;
             ModBase.OpenExplorer(targetPath);
         }
@@ -2623,20 +2623,20 @@ public partial class PageInstanceCompResource : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鎵撳紑璧勬簮鏂囦欢浣嶇疆澶辫触",
+                "閹垫挸绱戠挧鍕爱閺傚洣娆㈡担宥囩枂婢惰精瑙?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
         }
     }
 
-    // 鍒犻櫎
+    // 閸掔娀娅?
     public void Delete_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
         DeleteMods(new[] { listItem.Entry });
     }
 
-    // 鍚敤 / 绂佺敤
+    // 閸氼垳鏁?/ 缁備胶鏁?
     public void ED_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
@@ -2644,28 +2644,28 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     寮傛鏄剧ず鍘熺悊鍥捐鎯呬俊鎭紝閬垮厤UI鍗￠】
+    ///     瀵倹顒為弰鍓с仛閸樼喓鎮婇崶鎹愵嚊閹懍淇婇幁顖ょ礉闁灝鍘I閸楋繝銆?
     /// </summary>
     private void ShowSchematicInfoAsync(ModLocalComp.LocalCompFile modEntry)
     {
-        // 鏄剧ず鍔犺浇鎻愮ず
+        // 閺勫墽銇氶崝鐘烘祰閹绘劗銇?
         HintService.Hint(Lang.Text("Instance.Resource.Item.Info.LoadingDetail"));
 
-        // 鍦ㄥ悗鍙扮嚎绋嬩腑鍔犺浇NBT鏁版嵁
-        // 纭繚 NBT 鏁版嵁宸插姞杞?
+        // 閸︺劌鎮楅崣鎵殠缁嬪鑵戦崝鐘烘祰NBT閺佺増宓?
+        // 绾喕绻?NBT 閺佺増宓佸鎻掑鏉?
 
-        // 鍦?UI 绾跨▼涓樉绀鸿鎯?
-        // 鏋勫缓璇︽儏淇℃伅
-
-
-        // 鏍规嵁鏂囦欢绫诲瀷鏄剧ず璇︾粏淇℃伅
-
-        // 鏄剧ず璋冭瘯淇℃伅
-
-        // 鏄剧ず璇︽儏瀵硅瘽妗?
+        // 閸?UI 缁捐法鈻兼稉顓熸▔缁€楦款嚊閹?
+        // 閺嬪嫬缂撶拠锔藉剰娣団剝浼?
 
 
-        // 璁板綍閿欒鏃ュ織浣嗕笉鏄剧ず閿欒鎻愮ず锛屽洜涓洪€氱敤鐨勬枃浠剁姸鎬佹鏌ュ凡缁忓鐞嗕簡
+        // 閺嶈宓侀弬鍥︽缁鐎烽弰鍓с仛鐠囷妇绮忔穱鈩冧紖
+
+        // 閺勫墽銇氱拫鍐槸娣団剝浼?
+
+        // 閺勫墽銇氱拠锔藉剰鐎电鐦藉?
+
+
+        // 鐠佹澘缍嶉柨娆掝嚖閺冦儱绻旀担鍡曠瑝閺勫墽銇氶柨娆掝嚖閹绘劗銇氶敍灞芥礈娑撴椽鈧氨鏁ら惃鍕瀮娴犲墎濮搁幀浣诡梾閺屻儱鍑＄紒蹇擃槱閻炲棔绨?
         ModBase.RunInNewThread(() =>
         {
             try
@@ -2694,7 +2694,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     {
                         ModBase.Log(
                             ex,
-                            "鏄剧ず鍘熺悊鍥捐鎯呭け璐?,
+                            "閺勫墽銇氶崢鐔烘倞閸ユ崘顕涢幆鍛亼鐠?,
                             ModBase.LogLevel.Feedback,
                             userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
                     }
@@ -2704,43 +2704,43 @@ public partial class PageInstanceCompResource : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "鍔犺浇鍘熺悊鍥?NBT 鏁版嵁澶辫触",
+                    "閸旂姾娴囬崢鐔烘倞閸?NBT 閺佺増宓佹径杈Е",
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Resource.Error.OperationFailed"));
             }
         });
     }
 
-    #region 鍘熺悊鍥炬枃浠惰缁嗕俊鎭樉绀?
+    #region 閸樼喓鎮婇崶鐐瀮娴犳儼顕涚紒鍡曚繆閹垱妯夌粈?
 
     /// <summary>
-    ///     鏄剧ず Litematic 鏂囦欢鐨勮缁嗕俊鎭?
+    ///     閺勫墽銇?Litematic 閺傚洣娆㈤惃鍕嚊缂佸棔淇婇幁?
     /// </summary>
     private void ShowLitematicDetails(List<string> contentLines, ModLocalComp.LocalCompFile modEntry)
     {
         contentLines.Add("");
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DetailInfo"));
 
-        // 鏄剧ず鍘熷鍚嶇О锛堜粠 NBT Metadata/Name 璇诲彇锛?
+        // 閺勫墽銇氶崢鐔奉潗閸氬秶袨閿涘牅绮?NBT Metadata/Name 鐠囪褰囬敍?
         if (modEntry.LitematicOriginalName is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.OriginalName") + modEntry.LitematicOriginalName);
 
-        // 鏄剧ず鐗堟湰淇℃伅
+        // 閺勫墽銇氶悧鍫熸拱娣団剝浼?
         if (modEntry.LitematicVersion.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.Version") + modEntry.LitematicVersion.Value);
 
-        // 鏄剧ず灏哄淇℃伅
+        // 閺勫墽銇氱亸鍝勵嚟娣団剝浼?
         if (modEntry.LitematicEnclosingSize is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.EnclosingSize") + modEntry.LitematicEnclosingSize);
 
-        // 鏄剧ず鏂瑰潡鍜屼綋绉粺璁?
+        // 閺勫墽銇氶弬鐟版健閸滃奔缍嬬粔顖滅埠鐠?
         if (modEntry.LitematicTotalBlocks.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalBlocks") + Lang.Number(modEntry.LitematicTotalBlocks.Value, "N0"));
 
         if (modEntry.LitematicTotalVolume.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalVolume") + Lang.Number(modEntry.LitematicTotalVolume.Value, "N0"));
 
-        // 鏄剧ず鍖哄煙鏁伴噺
+        // 閺勫墽銇氶崠鍝勭厵閺佷即鍣?
         if (modEntry.LitematicRegionCount.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.RegionCount") + modEntry.LitematicRegionCount.Value);
 
-        // 鏄剧ず鏃堕棿淇℃伅
+        // 閺勫墽銇氶弮鍫曟？娣団剝浼?
         if (modEntry.LitematicTimeCreated.HasValue)
             try
             {
@@ -2767,34 +2767,34 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     鏄剧ず Schem 鏂囦欢鐨勮缁嗕俊鎭?
+    ///     閺勫墽銇?Schem 閺傚洣娆㈤惃鍕嚊缂佸棔淇婇幁?
     /// </summary>
     private void ShowSchemDetails(List<string> contentLines, ModLocalComp.LocalCompFile modEntry)
     {
         contentLines.Add("");
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DetailInfo"));
 
-        // 鏄剧ず鍘熷鍚嶇О锛堜粠 NBT Metadata/Name 璇诲彇锛?
+        // 閺勫墽銇氶崢鐔奉潗閸氬秶袨閿涘牅绮?NBT Metadata/Name 鐠囪褰囬敍?
         if (modEntry.SchemOriginalName is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.OriginalName") + modEntry.SchemOriginalName);
 
-        // 鏄剧ず鐗堟湰淇℃伅
+        // 閺勫墽銇氶悧鍫熸拱娣団剝浼?
         if (modEntry.StructureGameVersion is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.GameVersion") + modEntry.StructureGameVersion);
 
         if (modEntry.SpongeVersion.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.SpongeVersion") + modEntry.SpongeVersion.Value);
 
         if (modEntry.StructureDataVersion.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DataVersion") + modEntry.StructureDataVersion.Value);
 
-        // 鏄剧ず灏哄淇℃伅
+        // 閺勫墽銇氱亸鍝勵嚟娣団剝浼?
         if (modEntry.LitematicEnclosingSize is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.EnclosingDimensions") + modEntry.LitematicEnclosingSize);
 
-        // 鏄剧ず鏂瑰潡鍜屼綋绉粺璁?
+        // 閺勫墽銇氶弬鐟版健閸滃奔缍嬬粔顖滅埠鐠?
         if (modEntry.LitematicTotalBlocks.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalBlocks") + Lang.Number(modEntry.LitematicTotalBlocks.Value, "N0"));
 
         if (modEntry.LitematicTotalVolume.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalVolume") + Lang.Number(modEntry.LitematicTotalVolume.Value, "N0"));
 
-        // 鏄剧ず鍖哄煙鏁伴噺
+        // 閺勫墽銇氶崠鍝勭厵閺佷即鍣?
         if (modEntry.LitematicRegionCount.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.RegionCount") + modEntry.LitematicRegionCount.Value);
 
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.FileType",
@@ -2802,17 +2802,17 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     鏄剧ず Schematic 鏂囦欢鐨勮缁嗕俊鎭?
+    ///     閺勫墽銇?Schematic 閺傚洣娆㈤惃鍕嚊缂佸棔淇婇幁?
     /// </summary>
     private void ShowSchematicDetails(List<string> contentLines, ModLocalComp.LocalCompFile modEntry)
     {
         contentLines.Add("");
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DetailInfo"));
 
-        // 鏄剧ず灏哄淇℃伅
+        // 閺勫墽銇氱亸鍝勵嚟娣団剝浼?
         if (modEntry.LitematicEnclosingSize is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.Size") + modEntry.LitematicEnclosingSize);
 
-        // 鏄剧ず鏂瑰潡鍜屼綋绉粺璁?
+        // 閺勫墽銇氶弬鐟版健閸滃奔缍嬬粔顖滅埠鐠?
         if (modEntry.LitematicTotalBlocks.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalBlocks") + Lang.Number(modEntry.LitematicTotalBlocks.Value, "N0"));
 
@@ -2824,32 +2824,32 @@ public partial class PageInstanceCompResource : IRefreshable
     }
 
     /// <summary>
-    ///     鏄剧ず NBT 缁撴瀯鏂囦欢鐨勮缁嗕俊鎭?
+    ///     閺勫墽銇?NBT 缂佹挻鐎弬鍥︽閻ㄥ嫯顕涚紒鍡曚繆閹?
     /// </summary>
     private void ShowNbtDetails(List<string> contentLines, ModLocalComp.LocalCompFile modEntry)
     {
         contentLines.Add("");
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DetailInfo"));
 
-        // 鏄剧ず浣滆€呬俊鎭?
+        // 閺勫墽銇氭担婊嗏偓鍛繆閹?
         if (modEntry.StructureAuthor is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Info.Author", modEntry.StructureAuthor));
 
-        // 鏄剧ず鐗堟湰淇℃伅
+        // 閺勫墽銇氶悧鍫熸拱娣団剝浼?
         if (modEntry.StructureGameVersion is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.GameVersion") + modEntry.StructureGameVersion);
 
         if (modEntry.StructureDataVersion.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.DataVersion") + modEntry.StructureDataVersion.Value);
 
-        // 鏄剧ず灏哄淇℃伅
+        // 閺勫墽銇氱亸鍝勵嚟娣団剝浼?
         if (modEntry.LitematicEnclosingSize is not null) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.EnclosingDimensions") + modEntry.LitematicEnclosingSize);
 
-        // 鏄剧ず鏂瑰潡鍜屼綋绉粺璁?
+        // 閺勫墽銇氶弬鐟版健閸滃奔缍嬬粔顖滅埠鐠?
         if (modEntry.LitematicTotalBlocks.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalBlocks") + Lang.Number(modEntry.LitematicTotalBlocks.Value, "N0"));
 
         if (modEntry.LitematicTotalVolume.HasValue)
             contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.TotalVolume") + Lang.Number(modEntry.LitematicTotalVolume.Value, "N0"));
 
-        // 鏄剧ず鍖哄煙鏁伴噺
+        // 閺勫墽銇氶崠鍝勭厵閺佷即鍣?
         if (modEntry.LitematicRegionCount.HasValue) contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.RegionCount") + modEntry.LitematicRegionCount.Value);
 
         contentLines.Add(Lang.Text("Instance.Resource.Item.Schematic.FileType",
@@ -2880,7 +2880,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     private void ShowSchematicDialog(List<string> contentLines, ModLocalComp.LocalCompFile modEntry)
     {
-        // 鎶曞奖鍘熺悊鍥炬枃浠朵笉鏄剧ず鐧剧鎼滅储閫夐」
+        // 閹舵洖濂栭崢鐔烘倞閸ョ偓鏋冩禒鏈电瑝閺勫墽銇氶惂鍓ь潠閹兼粎鍌ㄩ柅澶愩€?
         if (modEntry.Url is null)
             ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.Return"));
         else if (ModMain.MyMsgBox(contentLines.Join("\r\n"), modEntry.Name, Lang.Text("Instance.Resource.Item.Info.OpenWebsite"), Lang.Text("Instance.Resource.Item.Info.Return")) == 1)
@@ -2889,7 +2889,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
     #endregion
 
-    #region 鎼滅储
+    #region 閹兼粎鍌?
 
     public bool IsSearching => !string.IsNullOrWhiteSpace(SearchBox.Text);
     private List<ModLocalComp.LocalCompFile> searchResult;
@@ -2924,14 +2924,14 @@ public partial class PageInstanceCompResource : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, "鎼滅储杩囩▼涓彂鐢熷紓甯?);
+                ModBase.Log(ex, "閹兼粎鍌ㄦ潻鍥┾柤娑擃厼褰傞悽鐔风磽鐢?);
             }
         }));
     }
 
     private List<ModLocalComp.LocalCompFile> GetSearchResult(string query)
     {
-        // 鏋勯€犺姹?
+        // 閺嬪嫰鈧姾顕Ч?
         var queryList = new List<ModBase.SearchEntry<ModLocalComp.LocalCompFile>>();
         foreach (var Entry in ModLocalComp.compResourceListLoader.output.AsReadOnly())
         {
@@ -2956,7 +2956,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 { item = Entry, searchSource = searchSource });
         }
 
-        // 杩涜鎼滅储
+        // 鏉╂稖顢戦幖婊呭偍
         return ModBase.Search(queryList, query, ModBase.MaxLocalSearchDepth, 0.35d).Select(r => r.item).ToList();
     }
 

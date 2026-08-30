@@ -72,21 +72,21 @@ public partial class PageInstanceSetup
 
     private void PageSetupSystem_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
         RefreshRam(false);
 
-        // 鐢变簬鍚勪釜瀹炰緥涓嶅悓锛屾瘡娆￠兘闇€瑕侀噸鏂板姞杞?
+        // 閻㈠彉绨崥鍕嚋鐎圭偘绶ユ稉宥呮倱閿涘本鐦″▎锟犲厴闂団偓鐟曚線鍣搁弬鏉垮鏉?
         ModAnimation.AniControlEnabled += 1;
         Reload();
         ModAnimation.AniControlEnabled -= 1;
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
 
-        // 鍐呭瓨鑷姩鍒锋柊
+        // 閸愬懎鐡ㄩ懛顏勫З閸掗攱鏌?
         var timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 1) };
         timer.Tick += (_, _) => RefreshRam();
         timer.Start();
@@ -97,23 +97,23 @@ public partial class PageInstanceSetup
     {
         try
         {
-            // 鍚姩鍙傛暟
+            // 閸氼垰濮╅崣鍌涙殶
             TextArgumentTitle.Text = Config.Instance.Title[PageInstanceLeft.McInstance.PathInstance];
             CheckArgumentTitleEmpty.Checked = Config.Instance.UseGlobalTitle[PageInstanceLeft.McInstance.PathInstance];
             TextArgumentInfo.Text = Config.Instance.TypeInfo[PageInstanceLeft.McInstance.PathInstance];
-            var _unused = PageInstanceLeft.McInstance.PathIndie; // 瑙﹀彂鑷姩鍒ゅ畾
+            var _unused = PageInstanceLeft.McInstance.PathIndie; // 鐟欙箑褰傞懛顏勫З閸掋倕鐣?
             ComboArgumentIndieV2.SelectedIndex = Config.Instance.IndieV2[PageInstanceLeft.McInstance.PathInstance] ? 0 : 1;
-            CheckArgumentTitleEmpty.Visibility = TextArgumentTitle.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+            CheckArgumentTitleEmpty.IsVisible = TextArgumentTitle.Text.Length > 0 ? false : true;
             TextArgumentTitle.HintText = CheckArgumentTitleEmpty.Checked == true ? Lang.Text("Common.Option.Default") : Lang.Text("Instance.Setup.FollowGlobal");
             RefreshJavaComboBox();
 
-            // 娓告垙鍐呭瓨
+            // 濞撳憡鍨欓崘鍛摠
             var ramType = Config.Instance.MemorySolution[PageInstanceLeft.McInstance.PathInstance];
             ((MyRadioBox)FindName("RadioRamType" + ramType)).Checked = true;
             SliderRamCustom.Value = Config.Instance.CustomMemorySize[PageInstanceLeft.McInstance.PathInstance];
             RamType(ramType);
 
-            // 鏈嶅姟鍣?
+            // 閺堝秴濮熼崳?
             TextServerEnter.Text = Config.Instance.ServerToEnter[PageInstanceLeft.McInstance.PathInstance];
             ComboServerLoginRequire.SelectedIndex = Config.InstanceAuth.LoginRequirementSolution[PageInstanceLeft.McInstance.PathInstance];
             comboServerLoginLast = ComboServerLoginRequire.SelectedIndex;
@@ -122,7 +122,7 @@ public partial class PageInstanceSetup
             TextServerAuthName.Text = Config.InstanceAuth.AuthServerDisplayName[PageInstanceLeft.McInstance.PathInstance];
             TextServerAuthRegister.Text = Config.InstanceAuth.AuthRegisterAddress[PageInstanceLeft.McInstance.PathInstance];
 
-            // 楂樼骇璁剧疆
+            // 妤傛楠囩拋鍓х枂
             ComboAdvanceRenderer.SelectedIndex = Config.Instance.Renderer[PageInstanceLeft.McInstance.PathInstance];
             TextAdvanceClasspathHead.Text = Config.Instance.ClasspathHead[PageInstanceLeft.McInstance.PathInstance];
             TextAdvanceJvm.Text = Config.Instance.JvmArgs[PageInstanceLeft.McInstance.PathInstance];
@@ -132,7 +132,7 @@ public partial class PageInstanceSetup
             CheckAdvanceDisableLwjglUnsafeAgent.Checked = Config.Instance.DisableLwjglUnsafeAgent[PageInstanceLeft.McInstance.PathInstance];
             if (Config.Instance.AssetVerifySolutionV1[PageInstanceLeft.McInstance.PathInstance] == 2)
             {
-                ModBase.Log("[Setup] 宸茶縼绉昏€佺増鏈殑鍏抽棴鏂囦欢鏍￠獙璁剧疆");
+                ModBase.Log("[Setup] 瀹歌尪绺肩粔鏄忊偓浣哄閺堫剛娈戦崗鎶芥４閺傚洣娆㈤弽锟犵崣鐠佸墽鐤?);
                 Config.Instance.AssetVerifySolutionV1Config.Reset(PageInstanceLeft.McInstance.PathInstance);
                 Config.Instance.DisableAssetVerifyV2[PageInstanceLeft.McInstance.PathInstance] = true;
             }
@@ -158,13 +158,13 @@ public partial class PageInstanceSetup
         {
             ModBase.Log(
                 ex,
-                "閲嶈浇瀹炰緥鐙珛璁剧疆鏃跺嚭閿?,
+                "闁插秷娴囩€圭偘绶ラ悪顒傜彌鐠佸墽鐤嗛弮璺哄毉闁?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Setup.Error.OperationFailed"));
         }
     }
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     public void Reset()
     {
         try
@@ -174,14 +174,14 @@ public partial class PageInstanceSetup
 
             Config.Instance.Reset(PageInstanceLeft.McInstance.PathInstance);
 
-            ModBase.Log("[Setup] 宸插垵濮嬪寲瀹炰緥鐙珛璁剧疆");
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣鐎圭偘绶ラ悪顒傜彌鐠佸墽鐤?);
             HintService.Hint(Lang.Text("Instance.Setup.Initialize.Success"), HintType.Success, false);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                "鍒濆鍖栧疄渚嬬嫭绔嬭缃け璐?,
+                "閸掓繂顫愰崠鏍х杽娓氬瀚粩瀣啎缂冾喖銇戠拹?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Setup.Error.OperationFailed"));
         }
@@ -189,7 +189,7 @@ public partial class PageInstanceSetup
         Reload();
     }
 
-    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
+    // 鐏忓棙甯舵禒鑸垫暭閸欐鐭鹃悽鍗炲煂鐠佸墽鐤嗛弨鐟板綁
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value, PageInstanceLeft.McInstance.PathInstance);
 
@@ -240,13 +240,13 @@ public partial class PageInstanceSetup
         SetByTag(checkBox.Tag?.ToString(), checkBox.Checked.GetValueOrDefault());
     }
 
-    // 鍒囨崲鍒板叏灞€璁剧疆
-    private void BtnSwitch_Click(object sender, MouseButtonEventArgs e)
+    // 閸掑洦宕查崚鏉垮弿鐏炩偓鐠佸墽鐤?
+    private void BtnSwitch_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType.Setup);
     }
 
-    #region 娓告垙鍐呭瓨
+    #region 濞撳憡鍨欓崘鍛摠
     public void RamType(int type)
     {
         if (SliderRamCustom is null)
@@ -255,7 +255,7 @@ public partial class PageInstanceSetup
     }
 
     /// <summary>
-    ///     鍒锋柊 UI 涓婄殑 RAM 鏄剧ず銆?
+    ///     閸掗攱鏌?UI 娑撳﹦娈?RAM 閺勫墽銇氶妴?
     /// </summary>
     public void RefreshRam(bool showAnim)
     {
@@ -263,7 +263,7 @@ public partial class PageInstanceSetup
             ModMain.frmMain.pageCurrent != FormMain.PageType.InstanceSetup ||
             ModMain.frmInstanceLeft.pageID != FormMain.PageSubType.VersionSetup)
             return;
-        // 鑾峰彇鍐呭瓨鎯呭喌
+        // 閼惧嘲褰囬崘鍛摠閹懎鍠?
         var ramGame = Math.Round(GetRam(PageInstanceLeft.McInstance), 5);
         var phyRam = KernelInterop.GetPhysicalMemoryBytes();
         var ramTotal = Math.Round((double)(phyRam.Total / 1024 / 1024 / 1024), 1);
@@ -271,7 +271,7 @@ public partial class PageInstanceSetup
         var ramGameActual = Math.Round(Math.Min(ramGame, ramAvailable), 5);
         var ramUsed = Math.Round(ramTotal - ramAvailable, 5);
         var ramEmpty = Math.Round(ModBase.MathClamp(ramTotal - ramUsed - ramGame, 0d, 1000d), 1);
-        // 璁剧疆鏈€澶у彲鐢ㄥ唴瀛?
+        // 鐠佸墽鐤嗛張鈧径褍褰查悽銊ュ敶鐎?
         if (ramTotal <= 1.5d)
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Max(Math.Floor((ramTotal - 0.3d) / 0.1d), 1d));
         else if (ramTotal <= 8d)
@@ -280,19 +280,19 @@ public partial class PageInstanceSetup
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Floor((ramTotal - 8d) / 1d) + 25d);
         else
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Floor((ramTotal - 16d) / 2d) + 33d);
-        // 璁剧疆鏂囨湰
+        // 鐠佸墽鐤嗛弬鍥ㄦ拱
         LabRamGame.Text = $"{Lang.Number(ramGame, "N1")} GiB{(ramGame != ramGameActual ? $" ({Lang.Text("Setup.Launch.Memory.AvailableSuffix", Lang.Number(ramGameActual, "N1"))})" : "")}";
         LabRamUsed.Text = $"{Lang.Number(ramUsed, "N1")} GiB";
         LabRamTotal.Text = $" / {Lang.Number(ramTotal, "N1")} GiB";
-        LabRamWarn.Visibility =
+        LabRamWarn.IsVisible =
             ramGame == 1d && !ModJava.IsGameSet64BitJava(PageInstanceLeft.McInstance) && !SystemInfo.Is32BitSystem &&
             ModJava.Javas.ExistAnyJava()
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-        HintRamTooHigh.Visibility = ramGame / ramTotal > 0.75d ? Visibility.Visible : Visibility.Collapsed;
+                ? true
+                : false;
+        HintRamTooHigh.IsVisible = ramGame / ramTotal > 0.75d ? true : false;
         if (showAnim)
         {
-            // 瀹藉害鍔ㄧ敾
+            // 鐎硅棄瀹抽崝銊ф暰
             ModAnimation.AniStart(
                 new[]
                 {
@@ -306,7 +306,7 @@ public partial class PageInstanceSetup
         }
         else
         {
-            // 瀹藉害璁剧疆
+            // 鐎硅棄瀹崇拋鍓х枂
             ColumnRamUsed.Width = new GridLength(ramUsed, GridUnitType.Star);
             ColumnRamGame.Width = new GridLength(ramGameActual, GridUnitType.Star);
             ColumnRamEmpty.Width = new GridLength(ramEmpty, GridUnitType.Star);
@@ -322,11 +322,11 @@ public partial class PageInstanceSetup
     private int ramTextRight = 1;
 
     /// <summary>
-    ///     鍒锋柊 UI 涓婄殑鏂囨湰浣嶇疆銆?
+    ///     閸掗攱鏌?UI 娑撳﹦娈戦弬鍥ㄦ拱娴ｅ秶鐤嗛妴?
     /// </summary>
     private void RefreshRamText()
     {
-        // 鑾峰彇瀹藉害淇℃伅
+        // 閼惧嘲褰囩€硅棄瀹虫穱鈩冧紖
         var rectUsedWidth = RectRamUsed.Bounds.Width;
         var totalWidth = PanRamDisplay.Bounds.Width;
         var labGameWidth = LabRamGame.Bounds.Width;
@@ -334,16 +334,16 @@ public partial class PageInstanceSetup
         var labTotalWidth = LabRamTotal.Bounds.Width;
         var labGameTitleWidth = LabRamGameTitle.Bounds.Width;
         var labUsedTitleWidth = LabRamUsedTitle.Bounds.Width;
-        // 宸︿晶
+        // 瀹革缚鏅?
         int left;
         if (rectUsedWidth - 30d < labUsedWidth || rectUsedWidth - 30d < labUsedTitleWidth)
-            // 鍏ㄥ啓涓嶄笅浜?
+            // 閸忋劌鍟撴稉宥勭瑓娴?
             left = 0;
         else if (rectUsedWidth - 25d < labUsedWidth + labTotalWidth)
-            // 鏄剧ず涓嶄笅瀹屾暣鏁版嵁
+            // 閺勫墽銇氭稉宥勭瑓鐎瑰本鏆ｉ弫鐗堝祦
             left = 1;
         else
-            // 姝ｅ父
+            // 濮濓絽鐖?
             left = 2;
         if (ramTextLeft != left)
         {
@@ -386,20 +386,20 @@ public partial class PageInstanceSetup
             }
         }
 
-        // 鍙充晶
+        // 閸欏厖鏅?
         int right;
         if (totalWidth < labGameWidth + 2d + rectUsedWidth || totalWidth < labGameTitleWidth + 2d + rectUsedWidth)
-            // 鎸ゅ埌鏈€鍙宠竟
+            // 閹搞倕鍩岄張鈧崣瀹犵珶
             right = 0;
         else
-            // 姝ｅ父鎯呭喌
+            // 濮濓絽鐖堕幆鍛枌
             right = 1;
         if (right == 0)
         {
             if (ModAnimation.AniControlEnabled == 0 &&
                 (ramTextRight != right || ModAnimation.AniIsRun("VersionSetup Ram TextRight")))
             {
-                // 闇€瑕佸姩鐢?
+                // 闂団偓鐟曚礁濮╅悽?
                 ModAnimation.AniStart(
                     new[]
                     {
@@ -411,7 +411,7 @@ public partial class PageInstanceSetup
             }
             else
             {
-                // 涓嶉渶瑕佸姩鐢?
+                // 娑撳秹娓剁憰浣稿З閻?
                 LabRamGame.Margin = new Thickness(totalWidth - labGameWidth, 3d, 0d, 0d);
                 LabRamGameTitle.Margin = new Thickness(totalWidth - labGameTitleWidth, 0d, 0d, 5d);
             }
@@ -419,7 +419,7 @@ public partial class PageInstanceSetup
         else if (ModAnimation.AniControlEnabled == 0 &&
                  (ramTextRight != right || ModAnimation.AniIsRun("VersionSetup Ram TextRight")))
         {
-            // 闇€瑕佸姩鐢?
+            // 闂団偓鐟曚礁濮╅悽?
             ModAnimation.AniStart(
                 new[]
                 {
@@ -431,7 +431,7 @@ public partial class PageInstanceSetup
         }
         else
         {
-            // 涓嶉渶瑕佸姩鐢?
+            // 娑撳秹娓剁憰浣稿З閻?
             LabRamGame.Margin = new Thickness(2d + rectUsedWidth, 3d, 0d, 0d);
             LabRamGameTitle.Margin = new Thickness(2d + rectUsedWidth, 0d, 0d, 5d);
         }
@@ -440,36 +440,36 @@ public partial class PageInstanceSetup
     }
 
     /// <summary>
-    ///     鑾峰彇褰撳墠璁剧疆鐨?RAM 鍊笺€傚崟浣嶄负 GB銆?
+    ///     閼惧嘲褰囪ぐ鎾冲鐠佸墽鐤嗛惃?RAM 閸婄鈧倸宕熸担宥勮礋 GB閵?
     /// </summary>
     public static double GetRam(McInstance version, bool? is32BitJava = default)
     {
         var instancePath = version?.PathInstance;
-        // 璺熼殢鍏ㄥ眬璁剧疆
+        // 鐠虹喖娈㈤崗銊ョ湰鐠佸墽鐤?
         if (Config.Instance.MemorySolution[instancePath] == 2)
             return PageSetupLaunch.GetRam(version, true, is32BitJava);
 
         // ------------------------------------------
-        // 淇敼涓嬫柟浠ｇ爜鏃堕渶瑕佷竴骞朵慨鏀?PageSetupLaunch
+        // 娣囶喗鏁兼稉瀣煙娴狅絿鐖滈弮鍫曟付鐟曚椒绔撮獮鏈垫叏閺€?PageSetupLaunch
         // ------------------------------------------
 
-        // 浣跨敤褰撳墠瀹炰緥鐨勮缃?
+        // 娴ｈ法鏁よぐ鎾冲鐎圭偘绶ラ惃鍕啎缂?
         var ramGive = default(double);
         if (Config.Instance.MemorySolution[instancePath] == 0)
         {
-            // 鑷姩閰嶇疆
+            // 閼奉亜濮╅柊宥囩枂
             var ramAvailable =
                 Math.Round((double)(KernelInterop.GetAvailablePhysicalMemoryBytes() / 1024 / 1024 / 1024 * 10)) / 10;
-            // 纭畾闇€姹傜殑鍐呭瓨鍊?
-            double ramMininum; // 鏃犺濡備綍涔熼渶瑕佷繚璇佺殑鏈€浣庨檺搴﹀唴瀛?
-            double ramTarget1; // 浼拌鑳藉媺寮哄甫鍔ㄤ簡鐨勫唴瀛?
-            double ramTarget2; // 浼拌娌″暐闂浜嗙殑鍐呭瓨
-            double ramTarget3; // 瀹夎杩囧闄勫姞缁勪欢闇€瑕佺殑鍐呭瓨
+            // 绾喖鐣鹃棁鈧Ч鍌滄畱閸愬懎鐡ㄩ崐?
+            double ramMininum; // 閺冪姾顔戞俊鍌欑秿娑旂喖娓剁憰浣风箽鐠囦胶娈戦張鈧担搴ㄦ鎼达箑鍞寸€?
+            double ramTarget1; // 娴兼媽顓搁懗钘夊瀵搫鐢崝銊ょ啊閻ㄥ嫬鍞寸€?
+            double ramTarget2; // 娴兼媽顓稿▽鈥虫殣闂傤噣顣芥禍鍡欐畱閸愬懎鐡?
+            double ramTarget3; // 鐎瑰顥婃潻鍥ь樋闂勫嫬濮炵紒鍕闂団偓鐟曚胶娈戦崘鍛摠
             if (version is not null && !version.IsLoaded)
                 version.Load();
             if (version is not null && version.Modable)
             {
-                // 鍙畨瑁?Mod 鐨勫疄渚?
+                // 閸欘垰鐣ㄧ憗?Mod 閻ㄥ嫬鐤勬笟?
                 var modDir = new DirectoryInfo(version.PathIndie + @"mods\");
                 var modCount = modDir.Exists ? modDir.GetFiles().Length : 0;
                 ramMininum = 0.5d + modCount / 150d;
@@ -479,7 +479,7 @@ public partial class PageInstanceSetup
             }
             else if (version is not null && version.Info.HasOptiFine)
             {
-                // OptiFine 瀹炰緥
+                // OptiFine 鐎圭偘绶?
                 ramMininum = 0.5d;
                 ramTarget1 = 1.5d;
                 ramTarget2 = 3d;
@@ -487,7 +487,7 @@ public partial class PageInstanceSetup
             }
             else
             {
-                // 鏅€氬疄渚?
+                // 閺咁噣鈧艾鐤勬笟?
                 ramMininum = 0.5d;
                 ramTarget1 = 1.5d;
                 ramTarget2 = 2.5d;
@@ -495,25 +495,25 @@ public partial class PageInstanceSetup
             }
 
             double ramDelta;
-            // 棰勫垎閰嶅唴瀛橈紝闃舵涓€锛? ~ T1锛?00%
+            // 妫板嫬鍨庨柊宥呭敶鐎涙﹫绱濋梼鑸殿唽娑撯偓閿? ~ T1閿?00%
             ramDelta = ramTarget1;
             ramGive += Math.Min(ramAvailable, ramDelta);
             ramAvailable -= ramDelta;
             if (ramAvailable >= 0.1d)
             {
-                // 棰勫垎閰嶅唴瀛橈紝闃舵浜岋紝T1 ~ T2锛?0%
+                // 妫板嫬鍨庨柊宥呭敶鐎涙﹫绱濋梼鑸殿唽娴滃矉绱漈1 ~ T2閿?0%
                 ramDelta = ramTarget2 - ramTarget1;
                 ramGive += Math.Min(ramAvailable * 0.7d, ramDelta);
                 ramAvailable -= ramDelta / 0.7d;
                 if (ramAvailable >= 0.1d)
                 {
-                    // 棰勫垎閰嶅唴瀛橈紝闃舵涓夛紝T2 ~ T3锛?0%
+                    // 妫板嫬鍨庨柊宥呭敶鐎涙﹫绱濋梼鑸殿唽娑撳绱漈2 ~ T3閿?0%
                     ramDelta = ramTarget3 - ramTarget2;
                     ramGive += Math.Min(ramAvailable * 0.4d, ramDelta);
                     ramAvailable -= ramDelta / 0.4d;
                     if (ramAvailable >= 0.1d)
                     {
-                        // 棰勫垎閰嶅唴瀛橈紝闃舵鍥涳紝T3 ~ T3 * 2锛?5%
+                        // 妫板嫬鍨庨柊宥呭敶鐎涙﹫绱濋梼鑸殿唽閸ユ冻绱漈3 ~ T3 * 2閿?5%
                         ramDelta = ramTarget3;
                         ramGive += Math.Min(ramAvailable * 0.15d, ramDelta);
                         ramAvailable -= ramDelta / 0.15d;
@@ -521,12 +521,12 @@ public partial class PageInstanceSetup
                 }
             }
 
-            // 涓嶄綆浜庢渶浣庡€?
+            // 娑撳秳缍嗘禍搴㈡付娴ｅ骸鈧?
             ramGive = Math.Round(Math.Max(ramGive, ramMininum), 1);
         }
         else
         {
-            // 鎵嬪姩閰嶇疆
+            // 閹靛濮╅柊宥囩枂
             var value = Config.Instance.CustomMemorySize[instancePath];
             if (value <= 12)
                 ramGive = value * 0.1d + 0.3d;
@@ -538,7 +538,7 @@ public partial class PageInstanceSetup
                 ramGive = (value - 33) * 2 + 16;
         }
 
-        // 鑻ヤ娇鐢?32 浣?Java锛屽垯闄愬埗涓?1G
+        // 閼汇儰濞囬悽?32 娴?Java閿涘苯鍨梽鎰煑娑?1G
         if (is32BitJava ?? !ModJava.IsGameSet64BitJava(PageInstanceLeft.McInstance))
             ramGive = Math.Min(1d, ramGive);
         return ramGive;
@@ -546,9 +546,9 @@ public partial class PageInstanceSetup
 
     #endregion
 
-    #region 鏈嶅姟鍣?
+    #region 閺堝秴濮熼崳?
 
-    // 鍏ㄥ眬
+    // 閸忋劌鐪?
     private int comboServerLoginLast;
 
     private void ComboServerLogin_Changed(object sender, SelectionChangedEventArgs e)
@@ -600,21 +600,21 @@ public partial class PageInstanceSetup
 
     public void ServerLogin(int type)
     {
-        LabServerAuthName.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        TextServerAuthName.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        LabServerAuthRegister.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        TextServerAuthRegister.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        LabServerAuthServer.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        TextServerAuthServer.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        BtnServerAuthLittle.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
-        BtnServerNewProfile.Visibility = type == 2 || type == 3 ? Visibility.Visible : Visibility.Collapsed;
+        LabServerAuthName.IsVisible = type == 2 || type == 3 ? true : false;
+        TextServerAuthName.IsVisible = type == 2 || type == 3 ? true : false;
+        LabServerAuthRegister.IsVisible = type == 2 || type == 3 ? true : false;
+        TextServerAuthRegister.IsVisible = type == 2 || type == 3 ? true : false;
+        LabServerAuthServer.IsVisible = type == 2 || type == 3 ? true : false;
+        TextServerAuthServer.IsVisible = type == 2 || type == 3 ? true : false;
+        BtnServerAuthLittle.IsVisible = type == 2 || type == 3 ? true : false;
+        BtnServerNewProfile.IsVisible = type == 2 || type == 3 ? true : false;
         if (type == 0 || type == 1)
-            BtnServerAuthLock.Visibility = Visibility.Collapsed;
+            BtnServerAuthLock.IsVisible = false;
         else
-            BtnServerAuthLock.Visibility = Visibility.Visible;
+            BtnServerAuthLock.IsVisible = true;
         if (Config.InstanceAuth.AuthLocked[PageInstanceLeft.McInstance.PathInstance])
         {
-            HintServerLoginLock.Visibility = Visibility.Visible;
+            HintServerLoginLock.IsVisible = true;
             ComboServerLoginRequire.IsEnabled = false;
             TextServerAuthServer.IsEnabled = false;
             TextServerAuthName.IsEnabled = false;
@@ -623,7 +623,7 @@ public partial class PageInstanceSetup
         }
         else
         {
-            HintServerLoginLock.Visibility = Visibility.Collapsed;
+            HintServerLoginLock.IsVisible = false;
             ComboServerLoginRequire.IsEnabled = true;
             TextServerAuthServer.IsEnabled = true;
             TextServerAuthName.IsEnabled = true;
@@ -632,36 +632,36 @@ public partial class PageInstanceSetup
         }
 
         CardServer.TriggerForceResize();
-        // 閬垮厤姝ｇ増楠岃瘉鍜岀绾块獙璇佸嚭鐜版鎻愮ず
+        // 闁灝鍘ゅ锝囧妤犲矁鐦夐崪宀€顬囩痪鍧楃崣鐠囦礁鍤悳鐗堫劃閹绘劗銇?
         if (type != 2 && type != 3)
         {
-            LabServerAuthServerSecurity.Visibility = Visibility.Collapsed;
-            LabServerAuthServerSecurityCL.Visibility = Visibility.Collapsed;
-            LabServerAuthServerSecurityVerify.Visibility = Visibility.Collapsed;
+            LabServerAuthServerSecurity.IsVisible = false;
+            LabServerAuthServerSecurityCL.IsVisible = false;
+            LabServerAuthServerSecurityVerify.IsVisible = false;
         }
-        // 濡傛灉寮€澶翠负 http:// 缁欎簣璀﹀憡
+        // 婵″倹鐏夊鈧径缈犺礋 http:// 缂佹瑤绨ｇ拃锕€鎲?
         else if (TextServerAuthServer.Text.StartsWithF("https://"))
         {
-            LabServerAuthServerSecurity.Visibility = Visibility.Collapsed;
-            LabServerAuthServerSecurityVerify.Visibility = Visibility.Visible;
-            LabServerAuthServerSecurityCL.Visibility = Visibility.Visible;
+            LabServerAuthServerSecurity.IsVisible = false;
+            LabServerAuthServerSecurityVerify.IsVisible = true;
+            LabServerAuthServerSecurityCL.IsVisible = true;
         }
         else if (TextServerAuthServer.Text.StartsWithF("http://"))
         {
-            LabServerAuthServerSecurity.Visibility = Visibility.Visible;
-            LabServerAuthServerSecurityCL.Visibility = Visibility.Visible;
-            LabServerAuthServerSecurityVerify.Visibility = Visibility.Collapsed;
+            LabServerAuthServerSecurity.IsVisible = true;
+            LabServerAuthServerSecurityCL.IsVisible = true;
+            LabServerAuthServerSecurityVerify.IsVisible = false;
         }
         else
         {
-            LabServerAuthServerSecurity.Visibility = Visibility.Collapsed;
-            LabServerAuthServerSecurityVerify.Visibility = Visibility.Collapsed;
-            LabServerAuthServerSecurityCL.Visibility = Visibility.Collapsed;
+            LabServerAuthServerSecurity.IsVisible = false;
+            LabServerAuthServerSecurityVerify.IsVisible = false;
+            LabServerAuthServerSecurityCL.IsVisible = false;
         }
     }
 
     // LittleSkin
-    private void BtnServerAuthLittle_Click(object sender, MouseButtonEventArgs e)
+    private void BtnServerAuthLittle_Click(object sender, PointerReleasedEventArgs e)
     {
         if (!string.IsNullOrEmpty(TextServerAuthServer.Text) &&
         TextServerAuthServer.Text != "https://littleskin.cn/api/yggdrasil" && ModMain.MyMsgBox(
@@ -673,8 +673,8 @@ public partial class PageInstanceSetup
         TextServerAuthName.Text = Lang.Text("Instance.Setup.Server.LittleSkin.Name");
     }
 
-    // 閿佸畾璁剧疆
-    private void BtnServerAuthLock_Click(object sender, MouseButtonEventArgs e)
+    // 闁夸礁鐣剧拋鍓х枂
+    private void BtnServerAuthLock_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModMain.MyMsgBox(
                 Lang.Text("Instance.Setup.Server.LockLoginMethod.Message"),
@@ -685,8 +685,8 @@ public partial class PageInstanceSetup
         }
     }
 
-    // 璺宠浆鏂板缓妗ｆ
-    private void BtnServerNewProfile_Click(object sender, MouseButtonEventArgs e)
+    // 鐠哄疇娴嗛弬鏉跨紦濡楋絾顢?
+    private void BtnServerNewProfile_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmMain.PageChange(new FormMain.PageStackData { page = FormMain.PageType.Launch });
         PageLoginAuth.draggedAuthServer = TextServerAuthServer.Text;
@@ -699,40 +699,40 @@ public partial class PageInstanceSetup
 
     private static void TextServerEnter_Change(object sender, TextChangedEventArgs e)
     {
-        if (sender is MyTextBox textBox) textBox.Text = textBox.Text.Replace("锛?, ":");
+        if (sender is MyTextBox textBox) textBox.Text = textBox.Text.Replace("閿?, ":");
     }
 
     #endregion
 
-    #region Java 閫夋嫨
+    #region Java 闁瀚?
 
-    // 鍒锋柊 Java 涓嬫媺妗嗘樉绀?
+    // 閸掗攱鏌?Java 娑撳濯哄鍡樻▔缁€?
     public void RefreshJavaComboBox()
     {
         if (ComboArgumentJava is null)
             return;
 
-        // 鑾峰彇瀹炰緥鐨?Java 鍋忓ソ锛堝凡鍏煎鏂版棫鏍煎紡锛?
+        // 閼惧嘲褰囩€圭偘绶ラ惃?Java 閸嬪繐銈介敍鍫濆嚒閸忕厧顔愰弬鐗堟＋閺嶇厧绱￠敍?
         var preference = ModJava.GetInstanceJavaPreference(PageInstanceLeft.McInstance);
 
-        // === 1. 鍒濆鍖栧浐瀹氶€夐」锛堜娇鐢ㄧ被鍨嬪畨鍏ㄧ殑 Tag锛?===
+        // === 1. 閸掓繂顫愰崠鏍ф祼鐎规岸鈧銆嶉敍鍫滃▏閻劎琚崹瀣暔閸忋劎娈?Tag閿?===
         ComboArgumentJava.Items.Clear();
 
-        // 閫夐」 0: 璺熼殢鍏ㄥ眬璁剧疆
+        // 闁銆?0: 鐠虹喖娈㈤崗銊ョ湰鐠佸墽鐤?
         ComboArgumentJava.Items.Add(new MyComboBoxItem
         {
             Content = Lang.Text("Instance.Setup.FollowGlobal"),
             Tag = new UseGlobalPreference()
         });
 
-        // 閫夐」 1: 鑷姩閫夋嫨
+        // 闁銆?1: 閼奉亜濮╅柅澶嬪
         ComboArgumentJava.Items.Add(new MyComboBoxItem
         {
             Content = Lang.Text("Instance.Setup.Options.Java.AutoSelect"),
-            Tag = new AutoSelect() // Nothing 琛ㄧず鑷姩閫夋嫨
+            Tag = new AutoSelect() // Nothing 鐞涖劎銇氶懛顏勫З闁瀚?
         });
 
-        // 閫夐」 2: 鐩稿璺緞閫夐」
+        // 闁銆?2: 閻╃顕捄顖氱窞闁銆?
         MyComboBoxItem relativePathItem;
         if (preference is UseRelativePath)
         {
@@ -742,7 +742,7 @@ public partial class PageInstanceSetup
 
             if (Files.IsPathWithinDirectory(absPath, Basics.ExecutableDirectory) && javaEntry is not null &&
                 javaEntry.IsEnabled)
-                // 鏈夋晥璺緞锛氭樉绀哄叿浣?Java 淇℃伅
+                // 閺堝鏅ョ捄顖氱窞閿涙碍妯夌粈鍝勫徔娴?Java 娣団剝浼?
                 relativePathItem = new MyComboBoxItem
                 {
                     Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative.WithJava", javaEntry.ToString()),
@@ -750,7 +750,7 @@ public partial class PageInstanceSetup
                     ToolTip = Lang.Text("Instance.Setup.Options.Java.RelativePathToolTip", relPref.RelativePath, absPath)
                 };
             else
-                // 鏃犳晥璺緞锛氭彁绀虹敤鎴烽噸鏂伴€夋嫨
+                // 閺冪姵鏅ョ捄顖氱窞閿涙碍褰佺粈铏规暏閹寸兘鍣搁弬浼粹偓澶嬪
                 relativePathItem = new MyComboBoxItem
                 {
                     Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative.Invalid"),
@@ -760,7 +760,7 @@ public partial class PageInstanceSetup
         }
         else
         {
-            // 鏈厤缃浉瀵硅矾寰勶細浣跨敤榛樿妯℃澘
+            // 閺堫亪鍘ょ純顔炬祲鐎电鐭惧鍕剁窗娴ｈ法鏁ゆ妯款吇濡剝婢?
             relativePathItem = new MyComboBoxItem
             {
                 Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative"),
@@ -771,7 +771,7 @@ public partial class PageInstanceSetup
 
         ComboArgumentJava.Items.Add(relativePathItem);
 
-        // === 2. 娣诲姞鎵€鏈夊彲鐢?Java 杩愯鏃?===
+        // === 2. 濞ｈ濮為幍鈧張澶婂讲閻?Java 鏉╂劘顢戦弮?===
         MyComboBoxItem selectedItem = null;
         try
         {
@@ -791,10 +791,10 @@ public partial class PageInstanceSetup
         }
         catch (Exception ex)
         {
-            Config.Instance.SelectedJava[PageInstanceLeft.McInstance.PathInstance] = "浣跨敤鍏ㄥ眬璁剧疆";
+            Config.Instance.SelectedJava[PageInstanceLeft.McInstance.PathInstance] = "娴ｈ法鏁ら崗銊ョ湰鐠佸墽鐤?;
             ModBase.Log(
                 ex,
-                "鏇存柊瀹炰緥璁剧疆 Java 涓嬫媺妗嗗け璐?,
+                "閺囧瓨鏌婄€圭偘绶ョ拋鍓х枂 Java 娑撳濯哄鍡椼亼鐠?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Setup.Error.OperationFailed"));
             ComboArgumentJava.Items.Clear();
@@ -808,10 +808,10 @@ public partial class PageInstanceSetup
             return;
         }
 
-        // === 3. 鏍规嵁褰撳墠鍋忓ソ璁剧疆閫変腑椤癸紙浼樺厛浣跨敤鏂版牸寮?preference锛?===
+        // === 3. 閺嶈宓佽ぐ鎾冲閸嬪繐銈界拋鍓х枂闁鑵戞い鐧哥礄娴兼ê鍘涙担璺ㄦ暏閺傜増鐗稿?preference閿?===
         if (preference is null)
         {
-            // 鑷姩閫夋嫨
+            // 閼奉亜濮╅柅澶嬪
             selectedItem = ComboArgumentJava.Items[1] as MyComboBoxItem;
         }
         else if (preference is UseGlobalPreference)
@@ -825,7 +825,7 @@ public partial class PageInstanceSetup
         else if (preference is ExistingJava)
         {
             var existPref = (ExistingJava)preference;
-            // 鍦?Java 鍒楄〃涓煡鎵惧尮閰嶉」锛堜粠绱㈠紩 3 寮€濮嬶級
+            // 閸?Java 閸掓銆冩稉顓熺叀閹垫儳灏柊宥夈€嶉敍鍫滅矤缁便垹绱?3 瀵偓婵绱?
             for (int i = 3, loopTo = ComboArgumentJava.Items.Count - 1; i <= loopTo; i++)
             {
                 var item = ComboArgumentJava.Items[i] as MyComboBoxItem;
@@ -842,14 +842,14 @@ public partial class PageInstanceSetup
             }
         }
 
-        // 闄嶇骇澶勭悊锛氭棤鍖归厤椤规椂鍥為€€鍒拌嚜鍔ㄩ€夋嫨
+        // 闂勫秶楠囨径鍕倞閿涙碍妫ら崠褰掑帳妞よ妞傞崶鐐衡偓鈧崚鎷屽殰閸斻劑鈧瀚?
         if (selectedItem is null && ComboArgumentJava.Items.Count > 1)
             selectedItem = ComboArgumentJava.Items[1] as MyComboBoxItem;
 
-        // 璁剧疆閫変腑椤?
+        // 鐠佸墽鐤嗛柅澶夎厬妞?
         if (selectedItem is not null) ComboArgumentJava.SelectedItem = selectedItem;
 
-        // === 4. 鏃犲彲鐢?Java 鏃剁殑闄嶇骇澶勭悊 ===
+        // === 4. 閺冪姴褰查悽?Java 閺冨墎娈戦梽宥囬獓婢跺嫮鎮?===
         if (!ModJava.Javas.ExistAnyJava() && ComboArgumentJava.Items.Count <= 3)
         {
             ComboArgumentJava.Items.Clear();
@@ -863,11 +863,11 @@ public partial class PageInstanceSetup
             ComboArgumentJava.SelectedItem = noJavaItem;
         }
 
-        // === 5. 鍒锋柊鍏宠仈鎺т欢 ===
+        // === 5. 閸掗攱鏌婇崗瀹犱粓閹貉傛 ===
         RefreshRam(true);
     }
 
-    // 闃绘鍦ㄦ棤鏁堢姸鎬佷笅灞曞紑涓嬫媺妗?
+    // 闂冪粯顒涢崷銊︽￥閺佸牏濮搁幀浣风瑓鐏炴洖绱戞稉瀣濡?
     private void ComboArgumentJava_DropDownOpened(object? sender, EventArgs e)
     {
         if (ComboArgumentJava.SelectedItem is null)
@@ -883,7 +883,7 @@ public partial class PageInstanceSetup
             ComboArgumentJava.IsDropDownOpen = false;
     }
 
-    // 涓嬫媺妗嗛€夋嫨鏇存敼澶勭悊锛堜繚瀛樻柊鏍煎紡閰嶇疆锛?
+    // 娑撳濯哄鍡涒偓澶嬪閺囧瓨鏁兼径鍕倞閿涘牅绻氱€涙ɑ鏌婇弽鐓庣础闁板秶鐤嗛敍?
     private void JavaSelectionUpdate(object sender, SelectionChangedEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
@@ -899,30 +899,30 @@ public partial class PageInstanceSetup
         JavaPreference preference = default;
         var logMessage = "";
 
-        // 鏍规嵁 Tag 绫诲瀷鐢熸垚鍋忓ソ瀵硅薄
+        // 閺嶈宓?Tag 缁鐎烽悽鐔稿灇閸嬪繐銈界€电钖?
         if (selectedItem.Tag is null or AutoSelect)
         {
-            // 鑷姩閫夋嫨锛氬瓨鍌ㄧ┖瀛楃涓?
+            // 閼奉亜濮╅柅澶嬪閿涙艾鐡ㄩ崒銊р敄鐎涙顑佹稉?
             preference = new AutoSelect();
-            logMessage = "[Java] 淇敼瀹炰緥 Java 閫夋嫨璁剧疆锛氳嚜鍔ㄩ€夋嫨";
+            logMessage = "[Java] 娣囶喗鏁肩€圭偘绶?Java 闁瀚ㄧ拋鍓х枂閿涙俺鍤滈崝銊┾偓澶嬪";
         }
         else if (selectedItem.Tag is UseGlobalPreference)
         {
             preference = new UseGlobalPreference();
-            logMessage = "[Java] 淇敼瀹炰緥 Java 閫夋嫨璁剧疆锛氳窡闅忓叏灞€璁剧疆";
+            logMessage = "[Java] 娣囶喗鏁肩€圭偘绶?Java 闁瀚ㄧ拋鍓х枂閿涙俺绐￠梾蹇撳弿鐏炩偓鐠佸墽鐤?;
         }
         else if (selectedItem.Tag is UseRelativePath)
         {
-            // 鐩稿璺緞锛氶渶瑕佺敤鎴烽€夋嫨瀹為檯鏂囦欢
+            // 閻╃顕捄顖氱窞閿涙岸娓剁憰浣烘暏閹寸兘鈧瀚ㄧ€圭偤妾弬鍥︽
             var ret = SystemDialogs.SelectFile(Lang.Text("Setup.Java.SelectFile.Filter"), Lang.Text("Setup.Java.SelectFile.Title"), Basics.ExecutableDirectory);
             if (string.IsNullOrWhiteSpace(ret))
-                // 鐢ㄦ埛鍙栨秷锛屼笉淇濆瓨閰嶇疆锛屼繚鎸佸師閫夋嫨
+                // 閻劍鍩涢崣鏍ㄧХ閿涘奔绗夋穱婵嗙摠闁板秶鐤嗛敍灞肩箽閹镐礁甯柅澶嬪
                 return;
 
             ret = Path.GetFullPath(ret);
             var relativePath = Path.GetRelativePath(Basics.ExecutableDirectory, ret);
 
-            // 楠岃瘉璺緞鏄惁鍦ㄥ惎鍔ㄥ櫒鐩綍鍐?
+            // 妤犲矁鐦夌捄顖氱窞閺勵垰鎯侀崷銊ユ儙閸斻劌娅掗惄顔肩秿閸?
             if (!Files.IsPathWithinDirectory(relativePath, Basics.ExecutableDirectory))
             {
                 HintService.Hint(Lang.Text("Instance.Setup.Options.Java.PathOutOfRange"), HintType.Error);
@@ -930,16 +930,16 @@ public partial class PageInstanceSetup
             }
 
             preference = new UseRelativePath(relativePath);
-            logMessage = $"[Java] 淇敼瀹炰緥 Java 閫夋嫨璁剧疆锛氱浉瀵硅矾寰?| {relativePath}";
+            logMessage = $"[Java] 娣囶喗鏁肩€圭偘绶?Java 闁瀚ㄧ拋鍓х枂閿涙氨娴夌€电鐭惧?| {relativePath}";
         }
         else if (selectedItem.Tag is JavaEntry)
         {
             var javaEntry = (JavaEntry)selectedItem.Tag;
             preference = new ExistingJava(javaEntry.Installation.JavaExePath);
-            logMessage = $"[Java] 淇敼瀹炰緥 Java 閫夋嫨璁剧疆锛歿javaEntry}";
+            logMessage = $"[Java] 娣囶喗鏁肩€圭偘绶?Java 闁瀚ㄧ拋鍓х枂閿涙javaEntry}";
         }
 
-        // 淇濆瓨閰嶇疆
+        // 娣囨繂鐡ㄩ柊宥囩枂
         var json = JsonSerializer.Serialize(preference, JsonCompat.SerializerOptions);
         Config.Instance.SelectedJava[PageInstanceLeft.McInstance.PathInstance] = json;
 
@@ -950,9 +950,9 @@ public partial class PageInstanceSetup
 
     #endregion
 
-    #region 鍏朵粬璁剧疆
+    #region 閸忔湹绮拋鍓х枂
 
-    // 鐗堟湰闅旂璀﹀憡
+    // 閻楀牊婀伴梾鏃傤瀲鐠€锕€鎲?
     private bool isReverting;
 
     private void ComboArgumentIndieV2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -976,7 +976,7 @@ public partial class PageInstanceSetup
         }
     }
 
-    // 娓告垙绐楀彛
+    // 濞撳憡鍨欑粣妤€褰?
     private void CheckArgumentTitleEmpty_Change(object sender, bool e)
     {
         TextArgumentTitle.HintText = CheckArgumentTitleEmpty.Checked == true ? Lang.Text("Common.Option.Default") : Lang.Text("Instance.Setup.FollowGlobal");
@@ -985,17 +985,17 @@ public partial class PageInstanceSetup
 
     private void TextArgumentTitle_TextChanged(object sender, TextChangedEventArgs e)
     {
-        CheckArgumentTitleEmpty.Visibility = TextArgumentTitle.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+        CheckArgumentTitleEmpty.IsVisible = TextArgumentTitle.Text.Length > 0 ? false : true;
         TextBoxChange(sender,e);
     }
 
     #endregion
 
-    #region 楂樼骇璁剧疆
+    #region 妤傛楠囩拋鍓х枂
 
     private void TextAdvanceRun_TextChanged(object sender, TextChangedEventArgs e)
     {
-        CheckAdvanceRunWait.Visibility = string.IsNullOrEmpty(TextAdvanceRun.Text) ? Visibility.Collapsed : Visibility.Visible;
+        CheckAdvanceRunWait.IsVisible = string.IsNullOrEmpty(TextAdvanceRun.Text) ? false : true;
         TextBoxChange(sender,e);
     }
 
@@ -1004,7 +1004,7 @@ public partial class PageInstanceSetup
         if (ModAnimation.AniControlEnabled != 0)
             return;
 
-        var args = e; // 杞崲浜嬩欢鍙傛暟
+        var args = e; // 鏉烆剚宕叉禍瀣╂閸欏倹鏆?
 
         if (!States.Hint.Renderer && ComboAdvanceRenderer.SelectedIndex != 0)
         {

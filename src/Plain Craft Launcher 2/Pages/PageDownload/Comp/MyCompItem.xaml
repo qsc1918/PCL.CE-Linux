@@ -37,11 +37,11 @@
                    Foreground="{DynamicResource ColorBrush1}" />
         <TextBlock x:Name="LabTitleRaw" TextTrimming="WordEllipsis" FontSize="12"
                    Foreground="{StaticResource ColorBrushGray1}" Opacity="0.4" VerticalAlignment="Center"
-                   Visibility="Collapsed" />
+                   IsVisible="False" />
     </StackPanel>
     <!-- Tag 与 详情 -->
     <StackPanel x:Name="PanTags" Grid.Row="2" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center"
-                Margin="-1,0,1,0" Visibility="Collapsed">
+                Margin="-1,0,1,0" IsVisible="False">
         <!--<corelocal:BlurBorder Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0" UseLayoutRounding="False">
             <TextBlock Text="科技" Foreground="{DynamicResource ColorBrush2}" FontSize="11" />
         </corelocal:BlurBorder>-->
@@ -134,7 +134,7 @@
 
         <!-- 快速下载按钮 -->
         <local:MyIconButton x:Name="BtnDownload" Height="25" Width="25" SvgIcon="lucide/download"
-                            Margin="0,0,4,0" Visibility="Collapsed"
+                            Margin="0,0,4,0" IsVisible="False"
                             ToolTip="{DynamicResource Download.Comp.QuickDownload.Btn.ToolTip}" />
 
         <!-- 删除收藏按钮 -->

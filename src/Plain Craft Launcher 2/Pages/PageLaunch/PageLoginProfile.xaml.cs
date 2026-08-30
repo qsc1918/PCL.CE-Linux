@@ -51,7 +51,8 @@ public partial class PageLoginProfile
         {
             foreach (var p in ModProfile.profileList)
                 ProfileCollection.Add(new ProfileItem(p));
-            HintMicrosoft.Visibility = ModProfile.profileList.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            // [port] Visibility.Visible/Collapsed → IsVisible true/false
+            HintMicrosoft.IsVisible = ModProfile.profileList.Count == 0 ? true : false;
             ModBase.Log("[Profile] 档案列表刷新完成");
         }
         catch (Exception ex)
@@ -66,11 +67,13 @@ public partial class PageLoginProfile
         if (!ModProfile.profileList.Any())
         {
             States.Hint.LaunchWithProfile = true;
-            HintCreate.Visibility = Visibility.Visible;
+            // [port] Visibility.Visible → IsVisible=true
+            HintCreate.IsVisible = true;
         }
         else
         {
-            HintCreate.Visibility = Visibility.Collapsed;
+            // [port] Visibility.Collapsed → IsVisible=false
+            HintCreate.IsVisible = false;
         }
     }
 
@@ -102,7 +105,8 @@ public partial class PageLoginProfile
 
     #region 控件
 
-    private void SelectProfile(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    private void SelectProfile(object sender, PointerPressedEventArgs e)
     {
         var item = (MyListItem)sender;
         var tag = (ModProfile.McProfile)item.Tag;

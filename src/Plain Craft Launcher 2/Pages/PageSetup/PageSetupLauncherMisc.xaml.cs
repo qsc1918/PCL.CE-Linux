@@ -32,10 +32,10 @@ public partial class PageSetupLauncherMisc
 
     private void PageSetupLink_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -48,28 +48,28 @@ public partial class PageSetupLauncherMisc
 
     public void Reload()
     {
-        // 绯荤粺璁剧疆
+        // 缁崵绮虹拋鍓х枂
         ComboSystemActivity.SelectedIndex = States.System.AnnounceSolution;
         CheckSystemDisableHardwareAcceleration.Checked = Config.System.DisableHardwareAcceleration;
         SliderAniFPS.Value = Config.System.AnimationFpsLimit;
         SliderMaxLog.Value = Config.System.MaxGameLog;
         CheckSystemTelemetry.Checked = Config.System.Telemetry;
 
-        // 缃戠粶
+        // 缂冩垹绮?
         TextSystemHttpProxy.Text = Config.Network.HttpProxy.CustomAddress;
         TextSystemHttpProxyCustomUsername.Text = Config.Network.HttpProxy.CustomUsername;
         TextSystemHttpProxyCustomPassword.Text = Config.Network.HttpProxy.CustomPassword;
         ((MyRadioBox)FindName($"RadioHttpProxyType{Config.Network.HttpProxy.Type}")).SetChecked(true, false);
         CheckNetDohEnable.Checked = Config.Network.EnableDoH;
 
-        // 璋冭瘯閫夐」
+        // 鐠嬪啳鐦柅澶愩€?
         SliderDebugAnim.Value = Config.Debug.AnimationSpeed;
         CheckDebugSkipCopy.Checked = Config.Debug.DontCopy;
         CheckDebugMode.Checked = Config.Debug.Enabled;
         CheckDebugDelay.Checked = Config.Debug.AddRandomDelay;
     }
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     public void Reset()
     {
         try
@@ -77,7 +77,7 @@ public partial class PageSetupLauncherMisc
             Config.Network.Reset();
             Config.Debug.Reset();
             Config.System.Reset();
-            ModBase.Log("[Setup] 宸插垵濮嬪寲鍚姩鍣?鏉傞」椤佃缃?);
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣閸氼垰濮╅崳?閺夊倿銆嶆い浣冾啎缂?);
             HintService.Hint(Lang.Text("Setup.Misc.Initialized"), HintType.Success, false);
             Reload();
         }
@@ -93,7 +93,7 @@ public partial class PageSetupLauncherMisc
         Reload();
     }
 
-    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
+    // 鐏忓棙甯舵禒鑸垫暭閸欐鐭鹃悽鍗炲煂鐠佸墽鐤嗛弨鐟板綁
     private void ComboChange(object senderRaw, SelectionChangedEventArgs e)
     {
         var sender = (MyComboBox)senderRaw;
@@ -126,15 +126,15 @@ public partial class PageSetupLauncherMisc
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value);
 
-    // 缃戠粶
-    private void ApplyHttpProxyBtn_OnClicked(object sender, MouseButtonEventArgs e)
+    // 缂冩垹绮?
+    private void ApplyHttpProxyBtn_OnClicked(object sender, PointerReleasedEventArgs e)
     {
         Config.Network.HttpProxy.CustomAddress = TextSystemHttpProxy.Text;
         Config.Network.HttpProxy.CustomUsername = TextSystemHttpProxyCustomUsername.Text;
         Config.Network.HttpProxy.CustomPassword = TextSystemHttpProxyCustomPassword.Text;
     }
 
-    // 婊戝姩鏉?
+    // 濠婃垵濮╅弶?
     private void SliderLoad()
     {
         SliderDebugAnim.getHintText = new Func<object, object>(v =>
@@ -158,20 +158,20 @@ public partial class PageSetupLauncherMisc
         });
     }
 
-    // 纭欢鍔犻€?
+    // 绾兛娆㈤崝鐘烩偓?
     private void Check_DisableHardwareAcceleration(object _, bool __)
     {
         HintService.Hint(Lang.Text("Setup.Misc.HardwareAcceleration.RestartNotice"));
     }
 
-    // 璋冭瘯妯″紡
+    // 鐠嬪啳鐦Ο鈥崇础
     private void CheckDebugMode_Change(object _, bool __)
     {
         if (ModAnimation.AniControlEnabled == 0)
             HintService.Hint(Lang.Text("Setup.Misc.Debug.Mode.Hint"), log: false);
     }
 
-    // 鑷姩鏇存柊
+    // 閼奉亜濮╅弴瀛樻煀
     private void ComboSystemActivity_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
@@ -204,12 +204,12 @@ public partial class PageSetupLauncherMisc
         ComboSystemActivity_SelectionChanged(sender, e);
     }
 
-    #region 瀵煎嚭 / 瀵煎叆璁剧疆
+    #region 鐎电厧鍤?/ 鐎电厧鍙嗙拋鍓х枂
 
-    private void BtnSystemSettingExp_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSystemSettingExp_Click(object sender, PointerReleasedEventArgs e)
     {
         var savePath =
-            SystemDialogs.SelectSaveFile(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 鍏ㄥ眬閰嶇疆.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
+            SystemDialogs.SelectSaveFile(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 閸忋劌鐪柊宥囩枂.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
         if (string.IsNullOrWhiteSpace(savePath))
             return;
         File.Copy(ConfigService.SharedConfigPath, savePath, true);
@@ -217,7 +217,7 @@ public partial class PageSetupLauncherMisc
         ModBase.OpenExplorer(savePath);
     }
 
-    private void BtnSystemSettingImp_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSystemSettingImp_Click(object sender, PointerReleasedEventArgs e)
     {
         var sourcePath = SystemDialogs.SelectFile(Lang.Text("Setup.Misc.System.ExportSettings.Filter"), Lang.Text("Setup.Misc.System.ImportSettings.SelectTitle"));
         if (string.IsNullOrWhiteSpace(sourcePath))
@@ -230,9 +230,9 @@ public partial class PageSetupLauncherMisc
 
     #endregion
 
-    #region 鍋滄浣跨敤 PCL CE
+    #region 閸嬫粍顒涙担璺ㄦ暏 PCL CE
 
-    private void BtnSystemStopUsingPclCe_Click(object sender, MouseButtonEventArgs e)
+    private void BtnSystemStopUsingPclCe_Click(object sender, PointerReleasedEventArgs e)
     {
         var result = ModMain.MyMsgBox(
             Lang.Text("Setup.Misc.System.StopUsingPclCe.Message"),
@@ -258,7 +258,7 @@ public partial class PageSetupLauncherMisc
 
     private void StopUsingPClCeCore(bool removeMcResources)
     {
-        // 鍒犻櫎 MC 鏂囦欢澶瑰唴鐨?PCL CE 閰嶇疆
+        // 閸掔娀娅?MC 閺傚洣娆㈡径鐟板敶閻?PCL CE 闁板秶鐤?
         if (removeMcResources && States.Game.Folders != "")
         {
             foreach (var path in States.Game.Folders.Split('|'))
@@ -276,7 +276,7 @@ public partial class PageSetupLauncherMisc
             }
         }
         
-        // 鐢变簬 CE 鏂囦欢澶规鍦ㄤ娇鐢紝浣跨敤寤惰繜璋冪敤 CMD 鐨勬柟娉曞垹闄?
+        // 閻㈠彉绨?CE 閺傚洣娆㈡径瑙勵劀閸︺劋濞囬悽顭掔礉娴ｈ法鏁ゅ鎯扮箿鐠嬪啰鏁?CMD 閻ㄥ嫭鏌熷▔鏇炲灩闂?
         List<string> foldersToDelete =
         [
             Paths.Data,
@@ -302,7 +302,7 @@ public partial class PageSetupLauncherMisc
             UseShellExecute = false
         });
 
-        // 寮哄埗閫€鍑?
+        // 瀵搫鍩楅柅鈧崙?
         KernelInterop.ExitProcess();
             
         void Delete(IEnumerable<string> paths)

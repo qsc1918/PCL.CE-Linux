@@ -46,7 +46,7 @@ public partial class PageDownloadCompFavorites
         Btn_FavoritesShare.Click += Btn_FavoritesShare_Clicked;
         Btn_FavoritesDownload.Click += Btn_FavoritesDownload_Clicked;
         ComboTargetFav.SelectionChanged += ComboTargetFav_Selected;
-        HintGetFail.MouseLeftButtonDown += HintGetFail_MouseLeftButtonDown;
+        HintGetFail.PointerPressed += HintGetFail_PointerPressed;
         PanSearchBox.TextChanged += SearchRun;
         WeakLanguageChanged.Add(this, OnLanguageChanged); 
     }
@@ -60,7 +60,7 @@ public partial class PageDownloadCompFavorites
             if (selectedItem is null)
             {
                 ModBase.Log("[Favorites] 异常：未选择收藏夹");
-                selectedItem = (MyComboBoxItem)ComboTargetFav.Items.GetItemAt(0);
+                selectedItem = (MyComboBoxItem)ComboTargetFav.Items[0]; // [port] WPF Items.GetItemAt(0) → Avalonia 索引器
             }
 
             return ModComp.CompFavorites.FavoritesList
@@ -320,7 +320,7 @@ public partial class PageDownloadCompFavorites
         // ---操作逻辑---
         // 右键查看详细信息界面
         if (compItem.Tag is ModComp.CompProject)
-            compItem.MouseRightButtonUp += (_, _) => ModMain.frmMain.PageChange(
+            compItem.PointerReleased += (_, _) => ModMain.frmMain.PageChange(
                 new FormMain.PageStackData
                 {
                     page = FormMain.PageType.CompDetail,
@@ -708,7 +708,8 @@ public partial class PageDownloadCompFavorites
 
     private void Page_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.A && (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl)))
+        // [port] WPF e.KeyboardDevice.IsKeyDown(LeftCtrl/RightCtrl) → Avalonia KeyEventArgs.KeyModifiers
+        if (e.Key == Key.A && (e.KeyModifiers & KeyModifiers.Control) != 0)
             Items_SetSelectAll(true);
     }
 
@@ -861,7 +862,7 @@ public partial class PageDownloadCompFavorites
         loader.Start(isForceRestart: true);
     }
 
-    private void HintGetFail_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void HintGetFail_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         var content = Lang.Text("Download.Comp.Favorites.Dialog.GetFailed.Content") + "\r\n" + "\r\n";
         var failIds = loader.input.Except(loader.output.Select(i => i.Id).ToList()).ToList();

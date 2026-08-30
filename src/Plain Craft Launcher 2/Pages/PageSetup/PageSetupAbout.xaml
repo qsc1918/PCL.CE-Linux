@@ -481,7 +481,7 @@
                                     local:CustomEventService.EventType="OpenUrl"
                                     Padding="13,0"
                                     Text="{DynamicResource Setup.About.Licenses.ViewWebsite}"
-                                    Visibility="{Binding WebsiteUri, Converter={StaticResource NullToVisibilityConverter}}" />
+                                    IsVisible="{Binding WebsiteUri, Converter={StaticResource NullToVisibilityConverter}}" />
                                 <local:MyButton
                                     Grid.Row="1"
                                     Grid.Column="3"
@@ -492,7 +492,7 @@
                                     local:CustomEventService.EventType="OpenUrl"
                                     Padding="13,0"
                                     Text="{DynamicResource Setup.About.Licenses.ViewLicense}"
-                                    Visibility="{Binding LicenseUri, Converter={StaticResource NullToVisibilityConverter}}" />
+                                    IsVisible="{Binding LicenseUri, Converter={StaticResource NullToVisibilityConverter}}" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

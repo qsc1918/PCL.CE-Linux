@@ -23,10 +23,10 @@ public partial class PageSetupGameManage
 
     private void PageSetupSystem_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -37,10 +37,10 @@ public partial class PageSetupGameManage
 
         if (!Lang.IsChineseMainland)
         {
-            TextFilenameFormat.Visibility = Visibility.Collapsed;
-            ComboDownloadTranslateV2.Visibility = Visibility.Collapsed;
-            TextModManageStyle.Visibility = Visibility.Collapsed;
-            ComboModLocalNameStyle.Visibility = Visibility.Collapsed;
+            TextFilenameFormat.IsVisible = false;
+            ComboDownloadTranslateV2.IsVisible = false;
+            TextModManageStyle.IsVisible = false;
+            ComboModLocalNameStyle.IsVisible = false;
             
             RowFilenameFormat.Height = new GridLength(0);
             RowFilenameFormatGap.Height = new GridLength(0);
@@ -53,7 +53,7 @@ public partial class PageSetupGameManage
 
     public void Reload()
     {
-        // 涓嬭浇
+        // 娑撳娴?
         SliderDownloadThread.Value = Config.Download.ThreadLimit;
         SliderDownloadSpeed.Value = Config.Download.SpeedLimit;
         ComboDownloadSource.SelectedIndex = Config.Download.FileSource;
@@ -61,7 +61,7 @@ public partial class PageSetupGameManage
         CheckDownloadAutoSelectVersion.Checked = Config.Download.AutoSelectInstance;
         CheckFixAuthlib.Checked = Config.Download.FixAuthLib;
 
-        // Mod 涓庢暣鍚堝寘
+        // Mod 娑撳孩鏆ｉ崥鍫濆瘶
         ComboDownloadTranslateV2.SelectedIndex = Config.Download.Comp.NameFormatV2;
         ComboDownloadMod.SelectedIndex = Config.Download.Comp.CompSourceSolution;
         ComboModLocalNameStyle.SelectedIndex = Config.Download.Comp.UiCompNameSolution;
@@ -70,22 +70,22 @@ public partial class PageSetupGameManage
         CheckDownloadAutoInstallDependencies.Checked = Config.Download.Comp.AutoInstallDependencies;
         CheckDownloadClipboard.Checked = Config.Download.Comp.ReadClipboard;
 
-        // Minecraft 鏇存柊鎻愮ず
+        // Minecraft 閺囧瓨鏌婇幓鎰仛
         CheckUpdateRelease.Checked = Config.Tool.ReleaseNotification;
         CheckUpdateSnapshot.Checked = Config.Tool.SnapshotNotification;
 
-        // 杈呭姪璁剧疆
+        // 鏉堝懎濮拋鍓х枂
         CheckHelpLauncherLanguage.Checked = Config.Tool.AutoChangeLanguage;
     }
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     public void Reset()
     {
         try
         {
             Config.Download.Reset();
             Config.Tool.Reset();
-            ModBase.Log("[Setup] 宸插垵濮嬪寲鍏朵粬椤佃缃?);
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣閸忔湹绮い浣冾啎缂?);
             HintService.Hint(Lang.Text("Setup.GameManage.Initialized"), HintType.Success, false);
         }
         catch (Exception ex)
@@ -100,7 +100,7 @@ public partial class PageSetupGameManage
         Reload();
     }
 
-    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
+    // 鐏忓棙甯舵禒鑸垫暭閸欐鐭鹃悽鍗炲煂鐠佸墽鐤嗛弨鐟板綁
     private void CheckBoxChange(object senderRaw, bool user)
     {
         var sender = (MyCheckBox)senderRaw;
@@ -125,7 +125,7 @@ public partial class PageSetupGameManage
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value);
 
-    // 婊戝姩鏉?
+    // 濠婃垵濮╅弶?
     private void SliderLoad()
     {
         SliderDownloadThread.getHintText = new Func<object, object>(v => (int)v + 1);

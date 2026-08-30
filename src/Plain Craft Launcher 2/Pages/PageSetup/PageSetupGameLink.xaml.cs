@@ -30,10 +30,10 @@ public partial class PageSetupGameLink
 
     private void PageSetupLink_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -55,7 +55,7 @@ public partial class PageSetupGameLink
         CheckEnableIPv6.Checked = Config.Link.EnableIPv6;
         CheckEnableCliOutput.Checked = Config.Link.EnableCliOutput;
 
-        // TextRelays.Text = "姝ｅ湪鑾峰彇淇℃伅..."
+        // TextRelays.Text = "濮濓絽婀懢宄板絿娣団剝浼?.."
         // Do While Not (PageLinkLobby.LobbyAnnouncementLoader.State = LoadState.Finished OrElse PageLinkLobby.LobbyAnnouncementLoader.State = LoadState.Failed)
         // Thread.Sleep(500)
         // Loop
@@ -64,27 +64,27 @@ public partial class PageSetupGameLink
         // For Each Relay In ETRelay.RelayList
         // Select Case Relay.Type
         // Case ETRelayType.Community
-        // TextRelays.Text += "[绀惧尯] "
+        // TextRelays.Text += "[缁€鎯у隘] "
         // Case ETRelayType.Selfhosted
-        // TextRelays.Text += "[鑷湁] "
+        // TextRelays.Text += "[閼奉亝婀乚 "
         // Case Else 'ETRelayType.Custom
-        // TextRelays.Text += "[鑷畾涔塢 "
+        // TextRelays.Text += "[閼奉亜鐣炬稊濉?"
         // End Select
-        // TextRelays.Text += Relay.Name & "锛?
+        // TextRelays.Text += Relay.Name & "閿?
         // Next
-        // TextRelays.Text = TextRelays.Text.BeforeLast("锛?)
+        // TextRelays.Text = TextRelays.Text.BeforeLast("閿?)
         // Else
-        // TextRelays.Text = "鏆傛棤锛屼綘鍙兘闇€瑕佹墜鍔ㄦ坊鍔犱腑缁ф湇鍔″櫒"
+        // TextRelays.Text = "閺嗗倹妫ら敍灞肩稑閸欘垵鍏橀棁鈧憰浣瑰閸斻劍鍧婇崝鐘辫厬缂佈勬箛閸斺€虫珤"
         // End If
     }
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     public void Reset()
     {
         try
         {
             Config.Link.Reset();
-            ModBase.Log("[Setup] 宸插垵濮嬪寲鑱旀満椤佃缃?);
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣閼辨梹婧€妞や絻顔曠純?);
             HintService.Hint(Lang.Text("Setup.GameLink.Initialized"), HintType.Success, false);
             Reload();
         }
@@ -100,7 +100,7 @@ public partial class PageSetupGameLink
         Reload();
     }
 
-    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
+    // 鐏忓棙甯舵禒鑸垫暭閸欐鐭鹃悽鍗炲煂鐠佸墽鐤嗛弨鐟板綁
     private void TextBoxChange(object senderRaw, TextChangedEventArgs e)
     {
         var sender = (MyTextBox)senderRaw;
@@ -142,8 +142,8 @@ public partial class PageSetupGameLink
             }
     }
 
-    // 缃戠粶娴嬭瘯
-    private void BtnNetTest_Click(object sender, MouseButtonEventArgs e)
+    // 缂冩垹绮跺ù瀣槸
+    private void BtnNetTest_Click(object sender, PointerReleasedEventArgs e)
     {
         try
         {
@@ -170,7 +170,7 @@ public partial class PageSetupGameLink
         catch (Exception ex)
         {
             ModBase.Log(ex,
-                "[Link] 鑾峰彇缃戠粶娴嬭瘯缁撴灉澶辫触",
+                "[Link] 閼惧嘲褰囩純鎴犵捕濞村鐦紒鎾寸亯婢惰精瑙?,
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Setup.GameLink.Error.NetworkTestFailed"));
             BtnNetTest.IsEnabled = true;

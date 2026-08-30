@@ -113,7 +113,9 @@ public partial class MyMsgText
         // 结束线程阻塞
         if (myConverter.ForceWait || !string.IsNullOrEmpty(myConverter.Button2))
             myConverter.WaitFrame.Continue = false;
-        ComponentDispatcher.PopModal();
+        // [port] 移除 WPF 的 ComponentDispatcher.PopModal()：Avalonia 无 ComponentDispatcher（WPF 模态消息环）。
+        //       模态阻塞由调用方 ModMain 的 Dispatcher.PushFrame(converter.WaitFrame) 提供，
+        //       并由上文 WaitFrame.Continue = false 解除；本弹窗是主窗体上的覆盖网格，不直接参与模态环控制。
         // 动画
         ModAnimation.AniStart(new[]
         {

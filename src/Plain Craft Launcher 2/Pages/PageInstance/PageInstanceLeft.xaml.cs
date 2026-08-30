@@ -12,7 +12,7 @@ namespace PCL;
 public partial class PageInstanceLeft : IRefreshable
 {
     /// <summary>
-    ///     褰撳墠鏄剧ず璁剧疆鐨?MC 瀹炰緥銆?
+    ///     瑜版挸澧犻弰鍓с仛鐠佸墽鐤嗛惃?MC 鐎圭偘绶ラ妴?
     /// </summary>
     public static McInstance McInstance = null;
 
@@ -33,20 +33,20 @@ public partial class PageInstanceLeft : IRefreshable
 
         if (McInstance is not null && McInstance.Modable)
         {
-            ItemMod.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceMod
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-            ItemModDisabled.Visibility = Visibility.Collapsed;
+            ItemMod.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceMod
+                ? false
+                : true;
+            ItemModDisabled.IsVisible = false;
         }
         else
         {
-            ItemMod.Visibility = Visibility.Collapsed;
-            ItemModDisabled.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceMod
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            ItemMod.IsVisible = false;
+            ItemModDisabled.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceMod
+                ? false
+                : true;
         }
 
-        // 鍔熻兘闅愯棌
+        // 閸旂喕鍏橀梾鎰
         if (!PageSetupUI.HiddenForceShow)
         {
             var disableCount = 0;
@@ -65,42 +65,42 @@ public partial class PageInstanceLeft : IRefreshable
             if (hide.InstanceServer)
                 disableCount += 1;
             if (disableCount == 7)
-                TextResource.Visibility = Visibility.Collapsed;
+                TextResource.IsVisible = false;
             else
-                TextResource.Visibility = Visibility.Visible;
+                TextResource.IsVisible = true;
         }
         else
         {
-            TextResource.Visibility = Visibility.Visible;
+            TextResource.IsVisible = true;
         }
 
-        ItemInstall.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceEdit
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemExport.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceExport
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemWorld.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceSave
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemScreenshot.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceScreenshot
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemResourcePack.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceResourcePack
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemShader.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceShader
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemSchematic.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceSchematic
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        ItemServer.Visibility = !PageSetupUI.HiddenForceShow && hide.InstanceServer
-            ? Visibility.Collapsed
-            : Visibility.Visible;
+        ItemInstall.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceEdit
+            ? false
+            : true;
+        ItemExport.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceExport
+            ? false
+            : true;
+        ItemWorld.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceSave
+            ? false
+            : true;
+        ItemScreenshot.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceScreenshot
+            ? false
+            : true;
+        ItemResourcePack.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceResourcePack
+            ? false
+            : true;
+        ItemShader.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceShader
+            ? false
+            : true;
+        ItemSchematic.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceSchematic
+            ? false
+            : true;
+        ItemServer.IsVisible = !PageSetupUI.HiddenForceShow && hide.InstanceServer
+            ? false
+            : true;
     }
 
-    private void RefreshButton_Click(object sender, EventArgs e) // 鐢辫竟鏍忔寜閽尶鍚嶈皟鐢?
+    private void RefreshButton_Click(object sender, EventArgs e) // 閻㈣精绔熼弽蹇斿瘻闁筋喖灏堕崥宥堢殶閻?
     {
         Refresh((FormMain.PageSubType)ModBase.Val(((MyIconButton)sender).Tag));
     }
@@ -186,15 +186,15 @@ public partial class PageInstanceLeft : IRefreshable
         }
     }
 
-    #region 椤甸潰鍒囨崲
+    #region 妞ょ敻娼伴崚鍥ㄥ床
 
     /// <summary>
-    ///     褰撳墠椤甸潰鐨勭紪鍙枫€備粠 0 寮€濮嬭绠椼€?
+    ///     瑜版挸澧犳い鐢告桨閻ㄥ嫮绱崣鏋偓鍌欑矤 0 瀵偓婵顓哥粻妞尖偓?
     /// </summary>
     public FormMain.PageSubType pageID = FormMain.PageSubType.Default;
 
     /// <summary>
-    ///     鍕鹃€変簨浠舵敼鍙橀〉闈€?
+    ///     閸曢箖鈧绨ㄦ禒鑸垫暭閸欐﹢銆夐棃顫偓?
     /// </summary>
     private void PageCheck(object sender, ModBase.RouteEventArgs e)
     {
@@ -283,13 +283,13 @@ public partial class PageInstanceLeft : IRefreshable
 
             default:
             {
-                throw new Exception("鏈煡鐨勫疄渚嬭缃瓙椤甸潰绉嶇被锛? + (int)id);
+                throw new Exception("閺堫亞鐓￠惃鍕杽娓氬顔曠純顔肩摍妞ょ敻娼扮粔宥囪閿? + (int)id);
             }
         }
     }
 
     /// <summary>
-    ///     鍒囨崲鐜版湁椤甸潰銆?
+    ///     閸掑洦宕查悳鐗堟箒妞ょ敻娼伴妴?
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -305,7 +305,7 @@ public partial class PageInstanceLeft : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鍒囨崲鍒嗛〉闈㈠け璐ワ紙ID " + (int)id + "锛?,
+                "閸掑洦宕查崚鍡涖€夐棃銏犮亼鐠愩儻绱橧D " + (int)id + "閿?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Error.OperationFailed"));
         }
@@ -317,7 +317,7 @@ public partial class PageInstanceLeft : IRefreshable
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 鍋滄涓婚〉闈㈢殑鍙抽〉闈㈠垏鎹㈠姩鐢伙紝闃叉瀹冧笌鏈姩鐢讳竴璧疯Е鍙戝娆?PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 閸嬫粍顒涙稉濠氥€夐棃銏㈡畱閸欐娊銆夐棃銏犲瀼閹广垹濮╅悽浼欑礉闂冨弶顒涚€瑰啩绗岄張顒€濮╅悽璁崇鐠х柉袝閸欐垵顦垮▎?PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -332,7 +332,7 @@ public partial class PageInstanceLeft : IRefreshable
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 寤惰繜瑙﹀彂椤甸潰閫氱敤鍔ㄧ敾锛屼互浣垮緱鍦?Loaded 浜嬩欢涓姞杞界殑鎺т欢寰椾互澶勭悊
+                // 瀵ゆ儼绻滅憴锕€褰傛い鐢告桨闁氨鏁ら崝銊ф暰閿涘奔浜掓担鍨繁閸?Loaded 娴滃娆㈡稉顓炲鏉炵晫娈戦幒褌娆㈠妞句簰婢跺嫮鎮?
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)

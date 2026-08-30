@@ -204,7 +204,8 @@ public partial class PageLaunchLeft
     }
 
     // 实例选择按钮
-    private void BtnInstance_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    private void BtnInstance_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoader.State == ModBase.LoadState.Loading)
             return;
@@ -295,7 +296,7 @@ public partial class PageLaunchLeft
                 ModMain.frmLaunchLeft.BtnLaunch.IsEnabled = false;
                 ModMain.frmLaunchLeft.LabVersion.Text = Lang.Text("Launch.Home.Instance.Loading");
                 ModMain.frmLaunchLeft.BtnInstance.IsEnabled = false;
-                ModMain.frmLaunchLeft.BtnMore.Visibility = Visibility.Collapsed;
+                ModMain.frmLaunchLeft.BtnMore.IsVisible = false;
                 break;
             }
             case 1:
@@ -306,7 +307,7 @@ public partial class PageLaunchLeft
                 ModMain.frmLaunchLeft.BtnLaunch.IsEnabled = false;
                 ModMain.frmLaunchLeft.LabVersion.Text = Lang.Text("Launch.Home.Instance.NotFound");
                 ModMain.frmLaunchLeft.BtnInstance.IsEnabled = true;
-                ModMain.frmLaunchLeft.BtnMore.Visibility = Visibility.Collapsed;
+                ModMain.frmLaunchLeft.BtnMore.IsVisible = false;
                 break;
             }
             case 2:
@@ -317,7 +318,7 @@ public partial class PageLaunchLeft
                 ModMain.frmLaunchLeft.BtnLaunch.IsEnabled = true;
                 ModMain.frmLaunchLeft.LabVersion.Text = Lang.Text("Launch.Home.Instance.NotFound");
                 ModMain.frmLaunchLeft.BtnInstance.IsEnabled = true;
-                ModMain.frmLaunchLeft.BtnMore.Visibility = Visibility.Collapsed;
+                ModMain.frmLaunchLeft.BtnMore.IsVisible = false;
                 break;
             }
             case 3:
@@ -333,21 +334,23 @@ public partial class PageLaunchLeft
                 ModMain.frmLaunchLeft.LabVersion.Text = ModInstanceList.McMcInstanceSelected.Name;
                 break;
             }
-            // FrmLaunchLeft.BtnMore.Visibility = Visibility.Visible '由功能隐藏设置修改
+            // [port] 原: FrmLaunchLeft.BtnMore.Visibility = Visibility.Visible（由功能隐藏设置修改）
         }
 
         ExitRefresh: ;
 
         // 功能隐藏
-        ModMain.frmLaunchLeft.BtnInstance.Visibility =
+        // [port] Visibility.Visible/Collapsed → IsVisible true/false
+        ModMain.frmLaunchLeft.BtnInstance.IsVisible =
             !PageSetupUI.HiddenForceShow && Config.Preference.Hide.FunctionSelect
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-        if (currentState == 3) ModMain.frmLaunchLeft.BtnMore.Visibility = ModMain.frmLaunchLeft.BtnInstance.Visibility;
+                ? false
+                : true;
+        if (currentState == 3) ModMain.frmLaunchLeft.BtnMore.IsVisible = ModMain.frmLaunchLeft.BtnInstance.IsVisible;
     }
 
     // 取消按钮
-    private void BtnCancel_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    private void BtnCancel_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoaderReal is not null)
         {
@@ -373,7 +376,8 @@ public partial class PageLaunchLeft
     }
 
     // 实例设置按钮
-    private void BtnMore_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    private void BtnMore_Click(object sender, PointerPressedEventArgs e)
     {
         if (ModLaunch.mcLaunchLoader.State == ModBase.LoadState.Loading)
             return;
@@ -464,11 +468,11 @@ public partial class PageLaunchLeft
                     ease: new ModAnimation.AniEaseOutFluent())
             };
             var isDownloadStateChanged =
-                hasLaunchDownloader == (LabLaunchingDownload.Visibility == Visibility.Collapsed);
+                hasLaunchDownloader == !LabLaunchingDownload.IsVisible;
             if (isDownloadStateChanged)
             {
-                LabLaunchingDownload.Visibility = Visibility.Visible;
-                LabLaunchingDownloadLeft.Visibility = Visibility.Visible;
+                LabLaunchingDownload.IsVisible = true;
+                LabLaunchingDownloadLeft.IsVisible = true;
                 animList.AddRange(new[]
                 {
                     ModAnimation.AaOpacity(LabLaunchingDownload,
@@ -479,19 +483,19 @@ public partial class PageLaunchLeft
                     {
                         if (!hasLaunchDownloader)
                         {
-                            LabLaunchingDownload.Visibility = Visibility.Collapsed;
-                            LabLaunchingDownloadLeft.Visibility = Visibility.Collapsed;
+                            LabLaunchingDownload.IsVisible = false;
+                            LabLaunchingDownloadLeft.IsVisible = false;
                         }
                     }, 110)
                 });
             }
 
-            var isProgressStateChanged = !isLaunched == (LabLaunchingProgress.Visibility == Visibility.Collapsed);
+            var isProgressStateChanged = !isLaunched == !LabLaunchingProgress.IsVisible;
             if (isProgressStateChanged)
             {
-                LabLaunchingProgress.Visibility = Visibility.Visible;
-                LabLaunchingProgressLeft.Visibility = Visibility.Visible;
-                if (isLaunched && shouldShowHint) PanLaunchingHint.Visibility = Visibility.Visible;
+                LabLaunchingProgress.IsVisible = true;
+                LabLaunchingProgressLeft.IsVisible = true;
+                if (isLaunched && shouldShowHint) PanLaunchingHint.IsVisible = true;
                 animList.AddRange(new[]
                 {
                     ModAnimation.AaOpacity(LabLaunchingProgress, (!isLaunched ? 1 : 0) - LabLaunchingProgress.Opacity,
@@ -556,7 +560,8 @@ public partial class PageLaunchLeft
     }
 
     // 启动游戏按钮
-    private void BtnLaunch_Click(object sender, MouseButtonEventArgs e)
+    // [port] MouseButtonEventArgs → PointerPressedEventArgs
+    private void BtnLaunch_Click(object sender, PointerPressedEventArgs e)
     {
         LaunchButtonClick();
     }
@@ -598,18 +603,18 @@ public partial class PageLaunchLeft
             : Lang.Text("Launch.Status.Title.ExportingScript");
         LabLaunchingProgress.Text = Lang.Number(0d, "P2");
         LabLaunchingProgress.Opacity = 1d;
-        LabLaunchingDownload.Visibility = Visibility.Visible;
+        LabLaunchingDownload.IsVisible = true;
         LabLaunchingProgressLeft.Opacity = 0.6d;
-        LabLaunchingDownload.Visibility = Visibility.Visible;
+        LabLaunchingDownload.IsVisible = true;
         LabLaunchingDownload.Text = ModBase.GetString(0) + "/s";
         LabLaunchingDownload.Opacity = 0d;
-        LabLaunchingDownload.Visibility = Visibility.Collapsed;
+        LabLaunchingDownload.IsVisible = false;
         LabLaunchingDownloadLeft.Opacity = 0d;
-        LabLaunchingDownloadLeft.Visibility = Visibility.Collapsed;
+        LabLaunchingDownloadLeft.IsVisible = false;
         ProgressLaunchingFinished.Width = new GridLength(0d, GridUnitType.Star);
         ProgressLaunchingUnfinished.Width = new GridLength(1d, GridUnitType.Star);
         PanLaunchingHint.Opacity = 0d;
-        PanLaunchingHint.Visibility = Visibility.Collapsed;
+        PanLaunchingHint.IsVisible = false;
         PanLaunchingInfo.Width = double.NaN; // 重置宽度改变动画
         ModLaunch.mcLaunchProcess = null;
         ModLaunch.mcLaunchWatcher = null;
@@ -624,7 +629,7 @@ public partial class PageLaunchLeft
         PanInput.IsHitTestVisible = false;
         PanLaunching.IsHitTestVisible = false;
         LoadLaunching.State.LoadingState = MyLoading.MyLoadingState.Run;
-        PanLaunching.Visibility = Visibility.Visible;
+        PanLaunching.IsVisible = true;
         ModAnimation.AniStart(
             new[]
             {
@@ -648,7 +653,7 @@ public partial class PageLaunchLeft
         PanInput.IsHitTestVisible = false;
         PanLaunching.IsHitTestVisible = false;
         LoadLaunching.State.LoadingState = MyLoading.MyLoadingState.Stop;
-        PanInput.Visibility = Visibility.Visible;
+        PanInput.IsVisible = true;
         ModAnimation.AniStart(
             new[]
             {

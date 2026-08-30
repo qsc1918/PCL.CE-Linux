@@ -117,7 +117,7 @@
                                           Check="RadioBoxChange" />
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="1" x:Name="HttpProxyCustom"
-                          Visibility="{Binding ElementName=RadioHttpProxyType2,Path=Checked,Converter={StaticResource BooleanToVisibilityConverter}}">
+                          IsVisible="{Binding ElementName=RadioHttpProxyType2,Path=Checked,Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28" />
                             <RowDefinition Height="9" />

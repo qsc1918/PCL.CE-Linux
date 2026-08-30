@@ -1,9 +1,9 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageDownloadCompFavorites">
+    xmlns:local="clr-namespace:PCL"
+   
+    x:Class="PCL.PageDownloadCompFavorites">
     <Grid>
         <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                               x:Name="PanBack">
@@ -29,7 +29,7 @@
                         </Grid>
                         <local:MyHint Text="{DynamicResource Download.Comp.Favorites.GetInfoFailed}" Theme="Yellow"
                                       Margin="0,0,0,15" x:Name="HintGetFail"
-                                      Visibility="Collapsed" />
+                                      IsVisible="False" />
                         <StackPanel x:Name="PanContentList" />
                         <!--<local:MyCard x:Name="CardProjectsMod" Title="Mod" IsSwapped="True" CanSwap="True" Margin="0,0,0,15">
                             <StackPanel x:Name="PanProjectsMod" Margin="12,38,12,12" />
@@ -67,7 +67,7 @@
                 </local:MyCard>
             </Grid>
         </local:MyScrollViewer>
-        <local:MyCard x:Name="CardSelect" Visibility="Collapsed" Opacity="0"
+        <local:MyCard x:Name="CardSelect" IsVisible="False" Opacity="0"
                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="25,25,25,0" UseAnimation="False"
                       HasMouseAnimation="False">
             <local:MyCard.RenderTransform>

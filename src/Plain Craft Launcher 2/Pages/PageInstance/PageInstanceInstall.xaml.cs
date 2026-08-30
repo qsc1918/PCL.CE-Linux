@@ -75,7 +75,7 @@ public partial class PageInstanceInstall
         ModDownload.dlLegacyFabricApiLoader.Start(isForceRestart: needRefresh);
         ModDownload.dlOptiFabricLoader.Start(isForceRestart: needRefresh);
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoad)
         {
             ReloadSelected();
@@ -97,18 +97,18 @@ public partial class PageInstanceInstall
         LoadLegacyFabricApi.State = ModDownload.dlLegacyFabricApiLoader;
     }
 
-    #region 瀹夎
+    #region 鐎瑰顥?
 
-    private void BtnSelectStart_Click(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+    private void BtnSelectStart_Click(object sender, PointerReleasedEventArgs mouseButtonEventArgs)
     {
-        // Quilt 瀹炰緥鏃犳硶閫氳繃瀹夎绠＄嚎閲嶈/淇敼锛堝凡绉婚櫎 Quilt 瀹夎鏀寔锛?
+        // Quilt 鐎圭偘绶ラ弮鐘崇《闁俺绻冪€瑰顥婄粻锛勫殠闁插秷顥?娣囶喗鏁奸敍鍫濆嚒缁夊娅?Quilt 鐎瑰顥婇弨顖涘瘮閿?
         if (PageInstanceLeft.McInstance.Info.HasQuilt)
         {
             HintService.Hint(Lang.Text("Instance.Overall.Reset.QuiltUnsupported"));
             return;
         }
 
-        // 纭鐗堟湰闅旂
+        // 绾喛顓婚悧鍫熸拱闂呮梻顬?
         if (selectedLoaderName is not null &&
             (Config.Launch.IndieSolutionV2 == 0 ||
              Config.Launch.IndieSolutionV2 == 2))
@@ -125,25 +125,25 @@ public partial class PageInstanceInstall
                 ) == 2)
                 return;
 
-        // 鍒犻櫎 LabyMod Neo 鏂囦欢
+        // 閸掔娀娅?LabyMod Neo 閺傚洣娆?
         if ((PageInstanceLeft.McInstance.PathIndie ?? "") != (PageInstanceLeft.McInstance.PathInstance ?? "") &&
             PageInstanceLeft.McInstance.Info.HasLabyMod)
             Directory.Delete(System.IO.Path.Combine(PageInstanceLeft.McInstance.PathIndie, "labymod-neo"), true);
-        // 澶囦唤瀹炰緥鏍稿績鏂囦欢
+        // 婢跺洣鍞ょ€圭偘绶ラ弽绋跨妇閺傚洣娆?
         ModBase.CopyFile(PageInstanceLeft.McInstance.PathInstance + PageInstanceLeft.McInstance.Name + ".json",
             PageInstanceLeft.McInstance.PathInstance + @"PCLInstallBackups\" + PageInstanceLeft.McInstance.Name + ".json");
         if (File.Exists(PageInstanceLeft.McInstance.PathInstance + PageInstanceLeft.McInstance.Name + ".jar"))
             ModBase.CopyFile(PageInstanceLeft.McInstance.PathInstance + PageInstanceLeft.McInstance.Name + ".jar",
                 PageInstanceLeft.McInstance.PathInstance + @"PCLInstallBackups\" + PageInstanceLeft.McInstance.Name +
                 ".jar");
-        // 纭鐙珛 API (濡?Fabric API 绛? 鏄惁闇€瑕佽淇敼
+        // 绾喛顓婚悪顒傜彌 API (婵?Fabric API 缁? 閺勵垰鎯侀棁鈧憰浣筋潶娣囶喗鏁?
         if (selectedFabricApi?.Equals(_currentFabricApi) == true)
             selectedFabricApi = null;
         if (selectedLegacyFabricApi?.Equals(_currentLegacyFabricApi) == true)
             selectedLegacyFabricApi = null;
         if (selectedOptiFabric?.Equals(_currentOptiFabric) == true)
             selectedOptiFabric = null;
-        // 鎻愪氦瀹夎鐢宠
+        // 閹绘劒姘︾€瑰顥婇悽瀹狀嚞
         var request = new ModDownloadLib.McInstallRequest
         {
             targetInstanceName = PageInstanceLeft.McInstance.Name,
@@ -168,14 +168,14 @@ public partial class PageInstanceInstall
         BtnSelectStart.IsEnabled = false;
         if (!ModDownloadLib.McInstall(request, _installAction == InstallAction.Modify ? Lang.Text("Instance.Install.Action.ModifyLabel") : Lang.Text("Common.Action.Reset")))
             return;
-        // 鍒犻櫎鏃х殑鐙珛 API 鏂囦欢
+        // 閸掔娀娅庨弮褏娈戦悪顒傜彌 API 閺傚洣娆?
         if (selectedFabricApi is not null && _currentFabricApiPath is not null)
             File.Delete(_currentFabricApiPath);
         if (selectedLegacyFabricApi is not null && _currentLegacyFabricApiPath is not null)
             File.Delete(_currentLegacyFabricApiPath);
         if (selectedOptiFabric is not null && _currentOptiFabricPath is not null)
             File.Delete(_currentOptiFabricPath);
-        // 杩斿洖涓婚〉
+        // 鏉╂柨娲栨稉濠氥€?
         ModMain.frmMain.PageChange(new FormMain.PageStackData { page = FormMain.PageType.Launch });
     }
 
@@ -208,9 +208,9 @@ public partial class PageInstanceInstall
         }
     }
 
-    #region 椤甸潰鍒囨崲
+    #region 妞ょ敻娼伴崚鍥ㄥ床
 
-    // 椤甸潰鍒囨崲鍔ㄧ敾
+    // 妞ょ敻娼伴崚鍥ㄥ床閸斻劎鏁?
     public bool isInSelectPage;
     private bool isFirstLoaded;
 
@@ -224,7 +224,7 @@ public partial class PageInstanceInstall
         BtnSelectStart.Show = true;
         autoSelectedFabricApi = false;
         autoSelectedOptiFabric = false;
-        PanSelect.Visibility = Visibility.Visible;
+        PanSelect.Visibility = true;
         PanSelect.IsHitTestVisible = true;
         PanMinecraft.IsHitTestVisible = false;
         PanBack.IsHitTestVisible = false;
@@ -249,14 +249,14 @@ public partial class PageInstanceInstall
             HintService.Hint(Lang.Text("Download.Install.Hint.MinecraftBack"));
         }
 
-        // 濡傛灉鍦ㄩ€夋嫨椤甸潰鎸変簡鍒锋柊閿紝閫夋嫨椤电殑涓滆タ鍙兘浼氱敱浜庡姩鐢昏闅愯棌锛屼絾涓嶄細鐢变簬鍔犺浇缁撴潫鑰屽啀娆℃樉绀猴紝鍥犳杩欓噷闇€瑕佹墜鍔ㄦ仮澶?
+        // 婵″倹鐏夐崷銊┾偓澶嬪妞ょ敻娼伴幐澶夌啊閸掗攱鏌婇柨顕嗙礉闁瀚ㄦい鐢垫畱娑撴粏銈块崣顖濆厴娴兼氨鏁辨禍搴″З閻㈡槒顫﹂梾鎰閿涘奔绲炬稉宥勭窗閻㈠彉绨崝鐘烘祰缂佹挻娼懓灞藉晙濞嗏剝妯夌粈鐚寸礉閸ョ姵顒濇潻娆撳櫡闂団偓鐟曚焦澧滈崝銊︿划婢?
         foreach (var Card in GetAllAnimControls(PanSelect))
         {
             Card.Opacity = 1d;
             Card.RenderTransform = new TranslateTransform();
         }
 
-        // 鍚姩 Forge 鍔犺浇
+        // 閸氼垰濮?Forge 閸旂姾娴?
         if (McInstanceInfo.IsFormatFit(_vanillaName))
         {
             var forgeLoader =
@@ -266,7 +266,7 @@ public partial class PageInstanceInstall
             forgeLoader.Start(_vanillaName);
         }
 
-        // 鍚姩 Fabric API銆丩egacy Fabric API銆丱ptiFabric 鍔犺浇
+        // 閸氼垰濮?Fabric API閵嗕俯egacy Fabric API閵嗕副ptiFabric 閸旂姾娴?
         ModDownload.dlFabricApiLoader.Start();
         ModDownload.dlLegacyFabricApiLoader.Start();
         ModDownload.dlOptiFabricLoader.Start();
@@ -293,9 +293,9 @@ public partial class PageInstanceInstall
             ModAnimation.AaOpacity(PanSelect, 1d - PanSelect.Opacity, 250, 150),
             ModAnimation.AaCode(() =>
             {
-                PanMinecraft.Visibility = Visibility.Collapsed;
+                PanMinecraft.Visibility = false;
                 PanBack.IsHitTestVisible = true;
-                // 鍒濆鍖?Binding
+                // 閸掓繂顫愰崠?Binding
                 if (isFirstLoaded)
                     return;
                 isFirstLoaded = true;
@@ -337,8 +337,8 @@ public partial class PageInstanceInstall
         disabledPageAnimControls.Add(BtnSelectStart);
         BtnSelectStart.Show = false;
 
-        ClearSelected(); // 娓呴櫎宸查€夋嫨椤?
-        PanMinecraft.Visibility = Visibility.Visible;
+        ClearSelected(); // 濞撳懘娅庡鏌モ偓澶嬪妞?
+        PanMinecraft.Visibility = true;
         PanSelect.IsHitTestVisible = false;
         PanMinecraft.IsHitTestVisible = true;
         PanBack.IsHitTestVisible = false;
@@ -351,14 +351,14 @@ public partial class PageInstanceInstall
             ModAnimation.AaOpacity(PanMinecraft, 1d - PanMinecraft.Opacity, 150, 100),
             ModAnimation.AaCode(() =>
             {
-                PanSelect.Visibility = Visibility.Collapsed;
+                PanSelect.Visibility = false;
                 PanBack.IsHitTestVisible = true;
             }, after: true)
         }, "FrmInstanceInstall SelectPageSwitch");
     }
 
-    // 椤甸潰鍒囨崲瑙﹀彂
-    public void MinecraftSelected(MyListItem sender, MouseButtonEventArgs e)
+    // 妞ょ敻娼伴崚鍥ㄥ床鐟欙箑褰?
+    public void MinecraftSelected(MyListItem sender, PointerReleasedEventArgs e)
     {
         _vanillaName = sender.Title;
         _vanillaData = (JsonObject)sender.Tag;
@@ -374,7 +374,7 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region 閫夋嫨
+    #region 闁瀚?
 
     // Minecraft
     private string? _vanillaName;
@@ -386,12 +386,12 @@ public partial class PageInstanceInstall
     private ModDownload.DlOptiFineListEntry? selectedOptiFine;
 
     /// <summary>
-    ///     閫夊畾鐨?Mod Loader 鍚嶇О锛屽唴瀹瑰簲涓?Forge / NeoForge / Fabric / Cleanroom / LabyMod / LegacyFabric
+    ///     闁鐣鹃惃?Mod Loader 閸氬秶袨閿涘苯鍞寸€圭懓绨叉稉?Forge / NeoForge / Fabric / Cleanroom / LabyMod / LegacyFabric
     /// </summary>
     private string? selectedLoaderName;
 
     /// <summary>
-    ///     閫夊畾鐨?Mod Loader API 鍚嶇О锛屽唴瀹瑰簲涓?Fabric API
+    ///     闁鐣鹃惃?Mod Loader API 閸氬秶袨閿涘苯鍞寸€圭懓绨叉稉?Fabric API
     /// </summary>
     private string? selectedAPIName;
 
@@ -429,10 +429,10 @@ public partial class PageInstanceInstall
     // OptiFabric
     private ModComp.CompFile? selectedOptiFabric;
 
-    private bool _ReloadSelected_Ongoing; // #3742 涓紝LoadOptiFineGetError 浼氬垵濮嬪寲 LoadOptiFine锛岃Е鍙戜簨浠?LoadOptiFine.StateChanged锛屽鑷村啀娆¤皟鐢?SelectReload
+    private bool _ReloadSelected_Ongoing; // #3742 娑擃叏绱滾oadOptiFineGetError 娴兼艾鍨垫慨瀣 LoadOptiFine閿涘矁袝閸欐垳绨ㄦ禒?LoadOptiFine.StateChanged閿涘苯顕遍懛鏉戝晙濞喡ょ殶閻?SelectReload
 
     /// <summary>
-    ///     閲嶈浇宸查€夋嫨鐨勯」鐩殑鏄剧ず銆?
+    ///     闁插秷娴囧鏌モ偓澶嬪閻ㄥ嫰銆嶉惄顔炬畱閺勫墽銇氶妴?
     /// </summary>
     private void ReloadSelected()
     {
@@ -442,7 +442,7 @@ public partial class PageInstanceInstall
         try
         {
         var selectedInfo = GetSelectInfo();
-        // 涓婚瑙?
+        // 娑撳顣╃憴?
         ItemSelect.Title = PageInstanceLeft.McInstance.Name;
         ItemSelect.Logo = GetSelectLogo();
         BtnSelectStart.IsEnabled = true;
@@ -455,7 +455,7 @@ public partial class PageInstanceInstall
         }
         else
         {
-            ItemSelect.Info = currentInfo + " 鈫?" + selectedInfo;
+            ItemSelect.Info = currentInfo + " 閳?" + selectedInfo;
             BtnSelectStart.Text = Lang.Text("Instance.Install.Action.StartModify");
             _installAction = InstallAction.Modify;
             BtnSelectStart.SvgIcon = "lucide/pencil";
@@ -468,27 +468,27 @@ public partial class PageInstanceInstall
         // OptiFine
         if (!McVersionComparer.CompareVersionGe(_vanillaName, "1.7.2"))
         {
-            CardOptiFine.Visibility = Visibility.Collapsed;
+            CardOptiFine.Visibility = false;
         }
         else
         {
-            CardOptiFine.Visibility = Visibility.Visible;
+            CardOptiFine.Visibility = true;
             var optiFineError = LoadOptiFineGetError();
-            CardOptiFine.MainSwap.Visibility = optiFineError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardOptiFine.MainSwap.Visibility = optiFineError is null ? true : false;
             if (optiFineError is not null)
                 CardOptiFine.IsSwapped = true;
             SetPanelVisibility(PanOptiFineInfo, CardOptiFine.IsSwapped);
             if (selectedOptiFine is null)
             {
-                BtnOptiFineClear.Visibility = Visibility.Collapsed;
-                ImgOptiFine.Visibility = Visibility.Collapsed;
+                BtnOptiFineClear.Visibility = false;
+                ImgOptiFine.Visibility = false;
                 LabOptiFine.Text = optiFineError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabOptiFine.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnOptiFineClear.Visibility = Visibility.Visible;
-                ImgOptiFine.Visibility = Visibility.Visible;
+                BtnOptiFineClear.Visibility = true;
+                ImgOptiFine.Visibility = true;
                 LabOptiFine.Text = selectedOptiFine.DisplayName.Replace(_vanillaName + " ", "");
                 LabOptiFine.Foreground = ThemeManager.colorGray1;
             }
@@ -499,27 +499,27 @@ public partial class PageInstanceInstall
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.5.2")
             || !McVersionComparer.CompareVersionGe("1.12.2", _vanillaName))
         {
-            CardLiteLoader.Visibility = Visibility.Collapsed;
+            CardLiteLoader.Visibility = false;
         }
         else
         {
-            CardLiteLoader.Visibility = Visibility.Visible;
+            CardLiteLoader.Visibility = true;
             var liteLoaderError = LoadLiteLoaderGetError();
-            CardLiteLoader.MainSwap.Visibility = liteLoaderError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLiteLoader.MainSwap.Visibility = liteLoaderError is null ? true : false;
             if (liteLoaderError is not null)
-                CardLiteLoader.IsSwapped = true; // 渚嬪鍦ㄥ悓鏃跺睍寮€鍗＄墖鏃堕€夋嫨浜嗕笉鍏煎椤瑰垯寮哄埗鎶樺彔
+                CardLiteLoader.IsSwapped = true; // 娓氬顩ч崷銊ユ倱閺冭泛鐫嶅鈧崡锛勫閺冨爼鈧瀚ㄦ禍鍡曠瑝閸忕厧顔愭い鐟板灟瀵搫鍩楅幎妯哄綌
             SetPanelVisibility(PanLiteLoaderInfo, CardLiteLoader.IsSwapped);
             if (selectedLiteLoader is null)
             {
-                BtnLiteLoaderClear.Visibility = Visibility.Collapsed;
-                ImgLiteLoader.Visibility = Visibility.Collapsed;
+                BtnLiteLoaderClear.Visibility = false;
+                ImgLiteLoader.Visibility = false;
                 LabLiteLoader.Text = liteLoaderError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLiteLoader.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLiteLoaderClear.Visibility = Visibility.Visible;
-                ImgLiteLoader.Visibility = Visibility.Visible;
+                BtnLiteLoaderClear.Visibility = true;
+                ImgLiteLoader.Visibility = true;
                 LabLiteLoader.Text = selectedLiteLoader.Inherit;
                 LabLiteLoader.Foreground = ThemeManager.colorGray1;
             }
@@ -529,27 +529,27 @@ public partial class PageInstanceInstall
         if (!McInstanceInfo.IsFormatFit(_vanillaName)
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.1"))
         {
-            CardForge.Visibility = Visibility.Collapsed;
+            CardForge.Visibility = false;
         }
         else
         {
-            CardForge.Visibility = Visibility.Visible;
+            CardForge.Visibility = true;
             var forgeError = LoadForgeGetError();
-            CardForge.MainSwap.Visibility = forgeError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardForge.MainSwap.Visibility = forgeError is null ? true : false;
             if (forgeError is not null)
                 CardForge.IsSwapped = true;
             SetPanelVisibility(PanForgeInfo, CardForge.IsSwapped);
             if (selectedForge is null)
             {
-                BtnForgeClear.Visibility = Visibility.Collapsed;
-                ImgForge.Visibility = Visibility.Collapsed;
+                BtnForgeClear.Visibility = false;
+                ImgForge.Visibility = false;
                 LabForge.Text = forgeError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabForge.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnForgeClear.Visibility = Visibility.Visible;
-                ImgForge.Visibility = Visibility.Visible;
+                BtnForgeClear.Visibility = true;
+                ImgForge.Visibility = true;
                 LabForge.Text = selectedForge.VersionName;
                 LabForge.Foreground = ThemeManager.colorGray1;
             }
@@ -558,56 +558,56 @@ public partial class PageInstanceInstall
         // Cleanroom
         if (_vanillaName == "1.12.2")
         {
-            CardCleanroom.Visibility = Visibility.Visible;
+            CardCleanroom.Visibility = true;
             var cleanroomError = LoadCleanroomGetError();
-            CardCleanroom.MainSwap.Visibility = cleanroomError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardCleanroom.MainSwap.Visibility = cleanroomError is null ? true : false;
             if (cleanroomError is not null)
                 CardCleanroom.IsSwapped = true;
             SetPanelVisibility(PanCleanroomInfo, CardCleanroom.IsSwapped);
             if (selectedCleanroom is null)
             {
-                BtnCleanroomClear.Visibility = Visibility.Collapsed;
-                ImgCleanroom.Visibility = Visibility.Collapsed;
+                BtnCleanroomClear.Visibility = false;
+                ImgCleanroom.Visibility = false;
                 LabCleanroom.Text = cleanroomError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabCleanroom.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnCleanroomClear.Visibility = Visibility.Visible;
-                ImgCleanroom.Visibility = Visibility.Visible;
+                BtnCleanroomClear.Visibility = true;
+                ImgCleanroom.Visibility = true;
                 LabCleanroom.Text = selectedCleanroom.VersionName;
                 LabCleanroom.Foreground = ThemeManager.colorGray1;
             }
         }
         else
         {
-            CardCleanroom.Visibility = Visibility.Collapsed;
+            CardCleanroom.Visibility = false;
         }
 
         // NeoForge
         if (!McVersionComparer.CompareVersionGe(_vanillaName, "1.20.1"))
         {
-            CardNeoForge.Visibility = Visibility.Collapsed;
+            CardNeoForge.Visibility = false;
         }
         else
         {
-            CardNeoForge.Visibility = Visibility.Visible;
+            CardNeoForge.Visibility = true;
             var neoForgeError = LoadNeoForgeGetError();
-            CardNeoForge.MainSwap.Visibility = neoForgeError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardNeoForge.MainSwap.Visibility = neoForgeError is null ? true : false;
             if (neoForgeError is not null)
                 CardNeoForge.IsSwapped = true;
             SetPanelVisibility(PanNeoForgeInfo, CardNeoForge.IsSwapped);
             if (selectedNeoForge is null)
             {
-                BtnNeoForgeClear.Visibility = Visibility.Collapsed;
-                ImgNeoForge.Visibility = Visibility.Collapsed;
+                BtnNeoForgeClear.Visibility = false;
+                ImgNeoForge.Visibility = false;
                 LabNeoForge.Text = neoForgeError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabNeoForge.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnNeoForgeClear.Visibility = Visibility.Visible;
-                ImgNeoForge.Visibility = Visibility.Visible;
+                BtnNeoForgeClear.Visibility = true;
+                ImgNeoForge.Visibility = true;
                 LabNeoForge.Text = selectedNeoForge.VersionName;
                 LabNeoForge.Foreground = ThemeManager.colorGray1;
             }
@@ -617,27 +617,27 @@ public partial class PageInstanceInstall
         if (VanillaDrop < 130
             || (VanillaDrop == 130 && !McVersionComparer.CompareVersionGe(_vanillaName, "18w43b")))
         {
-            CardFabric.Visibility = Visibility.Collapsed;
+            CardFabric.Visibility = false;
         }
         else
         {
-            CardFabric.Visibility = Visibility.Visible;
+            CardFabric.Visibility = true;
             var fabricError = LoadFabricGetError();
-            CardFabric.MainSwap.Visibility = fabricError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardFabric.MainSwap.Visibility = fabricError is null ? true : false;
             if (fabricError is not null)
                 CardFabric.IsSwapped = true;
             SetPanelVisibility(PanFabricInfo, CardFabric.IsSwapped);
             if (selectedFabric is null)
             {
-                BtnFabricClear.Visibility = Visibility.Collapsed;
-                ImgFabric.Visibility = Visibility.Collapsed;
+                BtnFabricClear.Visibility = false;
+                ImgFabric.Visibility = false;
                 LabFabric.Text = fabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnFabricClear.Visibility = Visibility.Visible;
-                ImgFabric.Visibility = Visibility.Visible;
+                BtnFabricClear.Visibility = true;
+                ImgFabric.Visibility = true;
                 LabFabric.Text = selectedFabric.Replace("+build", "");
                 LabFabric.Foreground = ThemeManager.colorGray1;
             }
@@ -646,27 +646,27 @@ public partial class PageInstanceInstall
         // FabricApi
         if (selectedFabric is null)
         {
-            CardFabricApi.Visibility = Visibility.Collapsed;
+            CardFabricApi.Visibility = false;
         }
         else
         {
-            CardFabricApi.Visibility = Visibility.Visible;
+            CardFabricApi.Visibility = true;
             var fabricApiError = LoadFabricApiGetError();
-            CardFabricApi.MainSwap.Visibility = fabricApiError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardFabricApi.MainSwap.Visibility = fabricApiError is null ? true : false;
             if (fabricApiError is not null || selectedFabric is null)
                 CardFabricApi.IsSwapped = true;
             SetPanelVisibility(PanFabricApiInfo, CardFabricApi.IsSwapped);
             if (selectedFabricApi is null)
             {
-                BtnFabricApiClear.Visibility = Visibility.Collapsed;
-                ImgFabricApi.Visibility = Visibility.Collapsed;
+                BtnFabricApiClear.Visibility = false;
+                ImgFabricApi.Visibility = false;
                 LabFabricApi.Text = fabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabFabricApi.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnFabricApiClear.Visibility = Visibility.Visible;
-                ImgFabricApi.Visibility = Visibility.Visible;
+                BtnFabricApiClear.Visibility = true;
+                ImgFabricApi.Visibility = true;
                 LabFabricApi.Text = selectedFabricApi.DisplayName.Split("]")[1].Replace("Fabric API ", "")
                     .Replace(" build ", ".").Split("+").First().Trim();
                 LabFabricApi.Foreground = ThemeManager.colorGray1;
@@ -676,28 +676,28 @@ public partial class PageInstanceInstall
         // LegacyFabric
         if (VanillaDrop < 30 || VanillaDrop > 130)
         {
-            CardLegacyFabric.Visibility = Visibility.Collapsed;
+            CardLegacyFabric.Visibility = false;
         }
         else
         {
-            CardLegacyFabric.Visibility = Visibility.Visible;
+            CardLegacyFabric.Visibility = true;
             var legacyFabricError = LoadLegacyFabricGetError();
             CardLegacyFabric.MainSwap.Visibility =
-                legacyFabricError is null ? Visibility.Visible : Visibility.Collapsed;
+                legacyFabricError is null ? true : false;
             if (legacyFabricError is not null)
                 CardLegacyFabric.IsSwapped = true;
             SetPanelVisibility(PanLegacyFabricInfo, CardLegacyFabric.IsSwapped);
             if (selectedLegacyFabric is null)
             {
-                BtnLegacyFabricClear.Visibility = Visibility.Collapsed;
-                ImgLegacyFabric.Visibility = Visibility.Collapsed;
+                BtnLegacyFabricClear.Visibility = false;
+                ImgLegacyFabric.Visibility = false;
                 LabLegacyFabric.Text = legacyFabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLegacyFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLegacyFabricClear.Visibility = Visibility.Visible;
-                ImgLegacyFabric.Visibility = Visibility.Visible;
+                BtnLegacyFabricClear.Visibility = true;
+                ImgLegacyFabric.Visibility = true;
                 LabLegacyFabric.Text = selectedLegacyFabric.Replace("+build", "");
                 LabLegacyFabric.Foreground = ThemeManager.colorGray1;
             }
@@ -706,28 +706,28 @@ public partial class PageInstanceInstall
         // LegacyFabricApi
         if (selectedLegacyFabric is null)
         {
-            CardLegacyFabricApi.Visibility = Visibility.Collapsed;
+            CardLegacyFabricApi.Visibility = false;
         }
         else
         {
-            CardLegacyFabricApi.Visibility = Visibility.Visible;
+            CardLegacyFabricApi.Visibility = true;
             var legacyFabricApiError = LoadLegacyFabricApiGetError();
             CardLegacyFabricApi.MainSwap.Visibility =
-                legacyFabricApiError is null ? Visibility.Visible : Visibility.Collapsed;
+                legacyFabricApiError is null ? true : false;
             if (legacyFabricApiError is not null || selectedLegacyFabric is null)
                 CardLegacyFabricApi.IsSwapped = true;
             SetPanelVisibility(PanLegacyFabricApiInfo, CardLegacyFabricApi.IsSwapped);
             if (selectedLegacyFabricApi is null)
             {
-                BtnLegacyFabricApiClear.Visibility = Visibility.Collapsed;
-                ImgLegacyFabricApi.Visibility = Visibility.Collapsed;
+                BtnLegacyFabricApiClear.Visibility = false;
+                ImgLegacyFabricApi.Visibility = false;
                 LabLegacyFabricApi.Text = legacyFabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLegacyFabricApi.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLegacyFabricApiClear.Visibility = Visibility.Visible;
-                ImgLegacyFabricApi.Visibility = Visibility.Visible;
+                BtnLegacyFabricApiClear.Visibility = true;
+                ImgLegacyFabricApi.Visibility = true;
                 LabLegacyFabricApi.Text = selectedLegacyFabricApi.DisplayName.Replace("Legacy Fabric API ", "");
                 LabLegacyFabricApi.Foreground = ThemeManager.colorGray1;
             }
@@ -737,27 +737,27 @@ public partial class PageInstanceInstall
         if (!McInstanceInfo.IsFormatFit(_vanillaName)
             || !McVersionComparer.CompareVersionGe(_vanillaName, "1.8.9"))
         {
-            CardLabyMod.Visibility = Visibility.Collapsed;
+            CardLabyMod.Visibility = false;
         }
         else
         {
-            CardLabyMod.Visibility = Visibility.Visible;
+            CardLabyMod.Visibility = true;
             var labyModError = LoadLabyModGetError();
-            CardLabyMod.MainSwap.Visibility = labyModError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardLabyMod.MainSwap.Visibility = labyModError is null ? true : false;
             if (labyModError is not null)
                 CardLabyMod.IsSwapped = true;
             SetPanelVisibility(PanLabyModInfo, CardLabyMod.IsSwapped);
             if (selectedLabyModVersion is null)
             {
-                BtnLabyModClear.Visibility = Visibility.Collapsed;
-                ImgLabyMod.Visibility = Visibility.Collapsed;
+                BtnLabyModClear.Visibility = false;
+                ImgLabyMod.Visibility = false;
                 LabLabyMod.Text = labyModError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabLabyMod.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnLabyModClear.Visibility = Visibility.Visible;
-                ImgLabyMod.Visibility = Visibility.Visible;
+                BtnLabyModClear.Visibility = true;
+                ImgLabyMod.Visibility = true;
                 LabLabyMod.Text = selectedLabyModVersion;
                 LabLabyMod.Foreground = ThemeManager.colorGray1;
             }
@@ -766,78 +766,78 @@ public partial class PageInstanceInstall
         // OptiFabric
         if (selectedFabric is null || selectedOptiFine is null)
         {
-            CardOptiFabric.Visibility = Visibility.Collapsed;
+            CardOptiFabric.Visibility = false;
         }
         else
         {
-            CardOptiFabric.Visibility = Visibility.Visible;
+            CardOptiFabric.Visibility = true;
             var optiFabricError = LoadOptiFabricGetError();
-            CardOptiFabric.MainSwap.Visibility = optiFabricError is null ? Visibility.Visible : Visibility.Collapsed;
+            CardOptiFabric.MainSwap.Visibility = optiFabricError is null ? true : false;
             if (optiFabricError is not null || selectedFabric is null)
                 CardOptiFabric.IsSwapped = true;
             SetPanelVisibility(PanOptiFabricInfo, CardOptiFabric.IsSwapped);
             if (selectedOptiFabric is null)
             {
-                BtnOptiFabricClear.Visibility = Visibility.Collapsed;
-                ImgOptiFabric.Visibility = Visibility.Collapsed;
+                BtnOptiFabricClear.Visibility = false;
+                ImgOptiFabric.Visibility = false;
                 LabOptiFabric.Text = optiFabricError ?? Lang.Text("Download.Install.State.CanAdd");
                 LabOptiFabric.Foreground = ThemeManager.colorGray4;
             }
             else
             {
-                BtnOptiFabricClear.Visibility = Visibility.Visible;
-                ImgOptiFabric.Visibility = Visibility.Visible;
+                BtnOptiFabricClear.Visibility = true;
+                ImgOptiFabric.Visibility = true;
                 LabOptiFabric.Text = selectedOptiFabric.DisplayName.ToLower().Replace("optifabric-", "")
                     .Replace(".jar", "").Trim().TrimStart('v');
                 LabOptiFabric.Foreground = ThemeManager.colorGray1;
             }
         }
 
-        // 涓昏鍛?
+        // 娑撴槒顒熼崨?
         if (selectedFabric is not null && selectedFabricApi is null)
-            HintFabricAPI.Visibility = Visibility.Visible;
+            HintFabricAPI.Visibility = true;
         else
-            HintFabricAPI.Visibility = Visibility.Collapsed;
+            HintFabricAPI.Visibility = false;
         if (selectedLegacyFabric is not null && selectedLegacyFabricApi is null)
-            HintLegacyFabricAPI.Visibility = Visibility.Visible;
+            HintLegacyFabricAPI.Visibility = true;
         else
-            HintLegacyFabricAPI.Visibility = Visibility.Collapsed;
+            HintLegacyFabricAPI.Visibility = false;
 
         if ((selectedFabric is not null || selectedLegacyFabric is not null) && selectedOptiFine is not null &&
             selectedOptiFabric is null)
         {
             if (VanillaDrop >= 140 && VanillaDrop <= 150)
             {
-                HintOptiFabric.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
-                HintOptiFabricOld.Visibility = Visibility.Visible;
+                HintOptiFabric.Visibility = false;
+                HintLegacyOptiFabric.Visibility = false;
+                HintOptiFabricOld.Visibility = true;
             }
             else if (selectedLegacyFabric is not null)
             {
-                HintOptiFabric.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Visible;
-                HintOptiFabricOld.Visibility = Visibility.Collapsed;
+                HintOptiFabric.Visibility = false;
+                HintLegacyOptiFabric.Visibility = true;
+                HintOptiFabricOld.Visibility = false;
             }
             else
             {
-                HintOptiFabric.Visibility = Visibility.Visible;
-                HintOptiFabricOld.Visibility = Visibility.Collapsed;
-                HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
+                HintOptiFabric.Visibility = true;
+                HintOptiFabricOld.Visibility = false;
+                HintLegacyOptiFabric.Visibility = false;
             }
         }
         else
         {
-            HintOptiFabric.Visibility = Visibility.Collapsed;
-            HintOptiFabricOld.Visibility = Visibility.Collapsed;
-            HintLegacyOptiFabric.Visibility = Visibility.Collapsed;
+            HintOptiFabric.Visibility = false;
+            HintOptiFabricOld.Visibility = false;
+            HintLegacyOptiFabric.Visibility = false;
         }
 
         if (VanillaDrop >= 160 && selectedOptiFine is not null &&
             (selectedForge is not null || selectedFabric is not null))
-            HintModOptiFine.Visibility = Visibility.Visible;
+            HintModOptiFine.Visibility = true;
         else
-            HintModOptiFine.Visibility = Visibility.Collapsed;
-        // 缁撴潫
+            HintModOptiFine.Visibility = false;
+        // 缂佹挻娼?
         }
         finally
         {
@@ -846,7 +846,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     娓呯┖宸查€夋嫨鐨勯」鐩€?
+    ///     濞撳懐鈹栧鏌モ偓澶嬪閻ㄥ嫰銆嶉惄顔衡偓?
     /// </summary>
     private void ClearSelected()
     {
@@ -872,7 +872,7 @@ public partial class PageInstanceInstall
         selectedLegacyFabricApi = null;
     }
 
-    // 淇℃伅鏍忓姩鐢?
+    // 娣団剝浼呴弽蹇撳З閻?
     private void SetPanelVisibility(Grid panel, bool visible)
     {
         if (Equals(panel.Tag, visible.ToString()))
@@ -896,31 +896,31 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     鑾峰彇瀹炰緥鍥炬爣銆?
+    ///     閼惧嘲褰囩€圭偘绶ラ崶鐐垼閵?
     /// </summary>
     private string GetSelectLogo()
     {
-        if (selectedFabric is not null) return "pack://application:,,,/images/Blocks/Fabric.png";
+        if (selectedFabric is not null) return "avares://PCL/Images/Blocks/Fabric.png";
 
-        if (selectedLegacyFabric is not null) return "pack://application:,,,/images/Blocks/Fabric.png";
+        if (selectedLegacyFabric is not null) return "avares://PCL/Images/Blocks/Fabric.png";
 
-        if (selectedForge is not null) return "pack://application:,,,/images/Blocks/Anvil.png";
+        if (selectedForge is not null) return "avares://PCL/Images/Blocks/Anvil.png";
 
-        if (selectedNeoForge is not null) return "pack://application:,,,/images/Blocks/NeoForge.png";
+        if (selectedNeoForge is not null) return "avares://PCL/Images/Blocks/NeoForge.png";
 
-        if (selectedLiteLoader is not null) return "pack://application:,,,/images/Blocks/Egg.png";
+        if (selectedLiteLoader is not null) return "avares://PCL/Images/Blocks/Egg.png";
 
-        if (selectedOptiFine is not null) return "pack://application:,,,/images/Blocks/GrassPath.png";
+        if (selectedOptiFine is not null) return "avares://PCL/Images/Blocks/GrassPath.png";
 
-        if (selectedCleanroom is not null) return "pack://application:,,,/images/Blocks/Cleanroom.png";
+        if (selectedCleanroom is not null) return "avares://PCL/Images/Blocks/Cleanroom.png";
 
-        if (selectedLabyModVersion is not null) return "pack://application:,,,/images/Blocks/LabyMod.png";
+        if (selectedLabyModVersion is not null) return "avares://PCL/Images/Blocks/LabyMod.png";
 
         return _vanillaIcon;
     }
 
     /// <summary>
-    ///     鑾峰彇瀹炰緥鎻忚堪淇℃伅銆?
+    ///     閼惧嘲褰囩€圭偘绶ラ幓蹇氬牚娣団剝浼呴妴?
     /// </summary>
     private string GetSelectInfo()
     {
@@ -965,16 +965,16 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region 褰撳墠淇℃伅鑾峰彇
+    #region 瑜版挸澧犳穱鈩冧紖閼惧嘲褰?
 
-    private ModComp.CompFile _currentFabricApi; // 鍔犺浇瀹屾垚鍚庣洿鎺ヨ皟鐢ㄤ互鎻愰珮鎬ц兘
+    private ModComp.CompFile _currentFabricApi; // 閸旂姾娴囩€瑰本鍨氶崥搴ｆ纯閹恒儴鐨熼悽銊や簰閹绘劙鐝幀褑鍏?
     private string _currentFabricApiPath;
 
-    private object GetCurrentFabricApi() // 杩涘叆椤甸潰鍜岃仈缃戝姞杞芥椂璋冪敤
+    private object GetCurrentFabricApi() // 鏉╂稑鍙嗘い鐢告桨閸滃矁浠堢純鎴濆鏉炶姤妞傜拫鍐暏
     {
         var loaderOutput = ModDownload.dlFabricApiLoader.output;
         if (loaderOutput is null)
-            return null; // 纭繚鑱旂綉淇℃伅宸插姞杞?
+            return null; // 绾喕绻氶懕鏃傜秹娣団剝浼呭鎻掑鏉?
         var localComp = ModLocalComp.GetModLocalCompByKeywords(PageInstanceLeft.McInstance,
             new[] { "fabric-api", "fabric" }, "fabric", "api");
         if (localComp is null)
@@ -989,14 +989,14 @@ public partial class PageInstanceInstall
         return result;
     }
 
-    private ModComp.CompFile _currentLegacyFabricApi; // 鍔犺浇瀹屾垚鍚庣洿鎺ヨ皟鐢ㄤ互鎻愰珮鎬ц兘
+    private ModComp.CompFile _currentLegacyFabricApi; // 閸旂姾娴囩€瑰本鍨氶崥搴ｆ纯閹恒儴鐨熼悽銊や簰閹绘劙鐝幀褑鍏?
     private string _currentLegacyFabricApiPath;
 
-    private object GetCurrentLegacyFabricApi() // 杩涘叆椤甸潰鍜岃仈缃戝姞杞芥椂璋冪敤
+    private object GetCurrentLegacyFabricApi() // 鏉╂稑鍙嗘い鐢告桨閸滃矁浠堢純鎴濆鏉炶姤妞傜拫鍐暏
     {
         var loaderOutput = ModDownload.dlLegacyFabricApiLoader.output;
         if (loaderOutput is null)
-            return null; // 纭繚鑱旂綉淇℃伅宸插姞杞?
+            return null; // 绾喕绻氶懕鏃傜秹娣団剝浼呭鎻掑鏉?
         var localComp = ModLocalComp.GetModLocalCompByKeywords(PageInstanceLeft.McInstance,
             new[] { "legacy-fabric-api", "legacy-fabric" }, "legacy-fabric", "api");
         if (localComp is null)
@@ -1033,7 +1033,7 @@ public partial class PageInstanceInstall
         return result;
     }
 
-    // 褰撳墠淇℃伅鑾峰彇
+    // 瑜版挸澧犳穱鈩冧紖閼惧嘲褰?
     public void GetCurrentInfo()
     {
         ClearSelected();
@@ -1096,7 +1096,7 @@ public partial class PageInstanceInstall
 
         if (currentInstance.HasFabric && currentInstance.HasOptiFine)
             selectedOptiFabric = (ModComp.CompFile)GetCurrentOptiFabric();
-        _vanillaIcon = "pack://application:,,,/images/Blocks/Grass.png"; // TODO: 闇€瑕佸垽鏂?Icon
+        _vanillaIcon = "avares://PCL/Images/Blocks/Grass.png"; // TODO: 闂団偓鐟曚礁鍨介弬?Icon
         currentInfo = GetSelectInfo();
         EnterSelectPage();
     }
@@ -1105,57 +1105,57 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region 鍔犺浇鍣?
+    #region 閸旂姾娴囬崳?
 
-    // 缁撴灉鏁版嵁鍖?
+    // 缂佹挻鐏夐弫鐗堝祦閸?
     private static string GetVersionTypeTitle(string key) => key switch
     {
-        "姝ｅ紡鐗? => Lang.Text("Download.Version.Type.Release"),
-        "棰勮鐗? => Lang.Text("Download.Version.Type.Development"),
-        "杩滃彜鐗? => Lang.Text("Download.Version.Type.BeforeRelease"),
-        "鎰氫汉鑺傜増" => Lang.Text("Download.Version.Type.AprilFools"),
+        "濮濓絽绱￠悧? => Lang.Text("Download.Version.Type.Release"),
+        "妫板嫯顫嶉悧? => Lang.Text("Download.Version.Type.Development"),
+        "鏉╂粌褰滈悧? => Lang.Text("Download.Version.Type.BeforeRelease"),
+        "閹版矮姹夐懞鍌滃" => Lang.Text("Download.Version.Type.AprilFools"),
         _ => key
     };
 
     private void LoadMinecraft_OnFinish()
     {
-        ExitSelectPage(); // 杩斿洖
+        ExitSelectPage(); // 鏉╂柨娲?
         do
         {
             try
             {
                 var dict = new Dictionary<string, List<JsonObject>>
                 {
-                    { "姝ｅ紡鐗?, new List<JsonObject>() }, { "棰勮鐗?, new List<JsonObject>() }, { "杩滃彜鐗?, new List<JsonObject>() },
-                    { "鎰氫汉鑺傜増", new List<JsonObject>() }
+                    { "濮濓絽绱￠悧?, new List<JsonObject>() }, { "妫板嫯顫嶉悧?, new List<JsonObject>() }, { "鏉╂粌褰滈悧?, new List<JsonObject>() },
+                    { "閹版矮姹夐懞鍌滃", new List<JsonObject>() }
                 };
                 var versions = (JsonArray)ModDownload.dlClientListLoader.output.Value["versions"];
                 foreach (JsonObject Version in versions)
                 {
-                    // 纭畾鍒嗙被
+                    // 绾喖鐣鹃崚鍡欒
                     var type = Version["type"].ToString();
                     var versionId = Version["id"].ToString().ToLower();
                     switch (type ?? "")
                     {
                         case "release":
                         {
-                            type = "姝ｅ紡鐗?;
+                            type = "濮濓絽绱￠悧?;
                             break;
                         }
                         case "snapshot":
                         case "pending":
                         {
-                            type = "棰勮鐗?;
-                            // Mojang 璇垎绫?
+                            type = "妫板嫯顫嶉悧?;
+                            // Mojang 鐠囶垰鍨庣猾?
                             if (versionId.StartsWith("1.") && !versionId.Contains("combat") &&
                                 !versionId.Contains("rc") && !versionId.Contains("experimental") &&
                                 !versionId.Equals("1.2") && !versionId.Contains("pre"))
                             {
-                                type = "姝ｅ紡鐗?;
+                                type = "濮濓絽绱￠悧?;
                                 Version["type"] = "release";
                             }
 
-                            // 鎰氫汉鑺傜増鏈?
+                            // 閹版矮姹夐懞鍌滃閺?
                             switch (Version["id"].ToString().ToLower() ?? "")
                             {
                                 case "2point0_blue":
@@ -1166,17 +1166,17 @@ public partial class PageInstanceInstall
                                 case "2.0_purple":
                                 case "2.0":
                                 {
-                                    type = "鎰氫汉鑺傜増";
+                                    type = "閹版矮姹夐懞鍌滃";
                                     Version["id"] = Version["id"].ToString().Replace("point", ".");
                                     Version["type"] = "special";
                                     Version.Add("lore", McVersionClassifier.GetMcFoolName((string)Version["id"]));
                                     break;
                                 }
                                 case "20w14infinite":
-                                case "20w14鈭?:
+                                case "20w14閳?:
                                 {
-                                    type = "鎰氫汉鑺傜増";
-                                    Version["id"] = "20w14鈭?;
+                                    type = "閹版矮姹夐懞鍌滃";
+                                    Version["id"] = "20w14閳?;
                                     Version["type"] = "special";
                                     Version.Add("lore", McVersionClassifier.GetMcFoolName((string)Version["id"]));
                                     break;
@@ -1191,10 +1191,10 @@ public partial class PageInstanceInstall
                                 case "25w14craftmine":
                                 case "26w14a":
                                 {
-                                    type = "鎰氫汉鑺傜増";
+                                    type = "閹版矮姹夐懞鍌滃";
                                     Version["type"] = "special";
                                     Version.Add("lore",
-                                        McVersionClassifier.GetMcFoolName((string)Version["id"])); // 4/1 鑷姩瑙嗕綔鎰氫汉鑺傜増
+                                        McVersionClassifier.GetMcFoolName((string)Version["id"])); // 4/1 閼奉亜濮╃憴鍡曠稊閹版矮姹夐懞鍌滃
                                     break;
                                 }
 
@@ -1203,7 +1203,7 @@ public partial class PageInstanceInstall
                                     var releaseDate = McVersionClassifier.GetReleaseTime(Version).ToUniversalTime().AddHours(2d);
                                     if (releaseDate.Month == 4 && releaseDate.Day == 1)
                                     {
-                                        type = "鎰氫汉鑺傜増";
+                                        type = "閹版矮姹夐懞鍌滃";
                                         Version["type"] = "special";
                                     }
 
@@ -1215,36 +1215,36 @@ public partial class PageInstanceInstall
                         }
                         case "special":
                         {
-                            // 宸茶澶勭悊鐨勬剼浜鸿妭鐗?
-                            type = "鎰氫汉鑺傜増";
+                            // 瀹歌尪顫︽径鍕倞閻ㄥ嫭鍓兼禍楦垮Ν閻?
+                            type = "閹版矮姹夐懞鍌滃";
                             break;
                         }
 
                         default:
                         {
-                            type = "杩滃彜鐗?;
+                            type = "鏉╂粌褰滈悧?;
                             break;
                         }
                     }
 
-                    // 鍔犲叆杈炲吀
+                    // 閸旂姴鍙嗘潏鐐插悁
                     dict[type].Add(Version);
                 }
 
-                // 鎺掑簭
+                // 閹烘帒绨?
                 foreach (var Pair in dict.ToList())
                     dict[Pair.Key] = Pair.Value.OrderByDescending(McVersionClassifier.GetReleaseTime).ToList();
-                // 娓呯┖褰撳墠
+                // 濞撳懐鈹栬ぐ鎾冲
                 PanMinecraft.Children.Clear();
-                // 娣诲姞鏈€鏂扮増鏈?
+                // 濞ｈ濮為張鈧弬鎵閺?
                 var cardInfo = new MyCard { Title = Lang.Text("Download.Version.Latest.Title"), Margin = new Thickness(0d, 15d, 0d, 15d) };
                 var topestVersions = new List<JsonObject>();
-                var release = (JsonObject)dict["姝ｅ紡鐗?][0].DeepClone();
+                var release = (JsonObject)dict["濮濓絽绱￠悧?][0].DeepClone();
                 release["lore"] = Lang.Text("Download.Version.Latest.Release", Lang.Date(release["releaseTime"].ToObject<DateTime>(), "g"));
                 topestVersions.Add(release);
-                if (dict["姝ｅ紡鐗?][0]["releaseTime"].ToObject<DateTime>() < dict["棰勮鐗?][0]["releaseTime"].ToObject<DateTime>())
+                if (dict["濮濓絽绱￠悧?][0]["releaseTime"].ToObject<DateTime>() < dict["妫板嫯顫嶉悧?][0]["releaseTime"].ToObject<DateTime>())
                 {
-                    var snapshot = (JsonObject)dict["棰勮鐗?][0].DeepClone();
+                    var snapshot = (JsonObject)dict["妫板嫯顫嶉悧?][0].DeepClone();
                     snapshot["lore"] = Lang.Text("Download.Version.Latest.Development", Lang.Date(snapshot["releaseTime"].ToObject<DateTime>(), "g"));
                     topestVersions.Add(snapshot);
                 }
@@ -1267,12 +1267,12 @@ public partial class PageInstanceInstall
                 MyCard.StackInstall(ref panInfo, StackInstall);
                 cardInfo.Children.Add(panInfo);
                 PanMinecraft.Children.Insert(0, cardInfo);
-                // 娣诲姞鍏朵粬鐗堟湰
+                // 濞ｈ濮為崗鏈电铂閻楀牊婀?
                 foreach (var Pair in dict)
                 {
                     if (!Pair.Value.Any())
                         continue;
-                    // 澧炲姞鍗＄墖
+                    // 婢х偛濮為崡锛勫
                     var newCard = new MyCard
                         { Title = GetVersionTypeTitle(Pair.Key) + " (" + Pair.Value.Count + ")", Margin = new Thickness(0d, 0d, 0d, 15d) };
                     var newStack = new StackPanel
@@ -1283,16 +1283,16 @@ public partial class PageInstanceInstall
                     };
                     newCard.Children.Add(newStack);
                     newCard.SwapControl = newStack;
-                    // 涓嶈兘浣跨敤 AddressOf锛岃繖瀵艰嚧浜?#535锛屽師鍥犲畬鍏ㄤ笉鏄庯紝鐤戜技鏄紪璇戝櫒 Bug
+                    // 娑撳秷鍏樻担璺ㄦ暏 AddressOf閿涘矁绻栫€佃壈鍤ф禍?#535閿涘苯甯崶鐘茬暚閸忋劋绗夐弰搴礉閻ゆ垳鎶€閺勵垳绱拠鎴濇珤 Bug
                     newCard.InstallMethod = StackInstall;
                     newCard.IsSwapped = true;
                     PanMinecraft.Children.Add(newCard);
                 }
 
-                // 鑷姩閫夋嫨鐗堟湰
+                // 閼奉亜濮╅柅澶嬪閻楀牊婀?
                 if (mcVersionWaitingForSelect is null)
                     break;
-                ModBase.Log("[Download] 鑷姩閫夋嫨 MC 鐗堟湰锛? + mcVersionWaitingForSelect);
+                ModBase.Log("[Download] 閼奉亜濮╅柅澶嬪 MC 閻楀牊婀伴敍? + mcVersionWaitingForSelect);
                 foreach (JsonObject Version in versions)
                 {
                     if ((Version["id"].ToString() ?? "") != (mcVersionWaitingForSelect ?? ""))
@@ -1305,7 +1305,7 @@ public partial class PageInstanceInstall
             {
                 ModBase.Log(
                     ex,
-                    "鍙鍖栧畨瑁呯増鏈垪琛ㄥ嚭閿?,
+                    "閸欘垵顫嬮崠鏍х暔鐟佸懐澧楅張顒€鍨悰銊ュ毉闁?,
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
             }
@@ -1313,16 +1313,16 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     褰?MC 鐗堟湰鍒楄〃鍔犺浇瀹屾椂锛岀珛鍗宠嚜鍔ㄩ€夋嫨鐨勭増鏈€傜敤浜庡閮ㄨ皟鐢ㄣ€?
+    ///     瑜?MC 閻楀牊婀伴崚妤勩€冮崝鐘烘祰鐎瑰本妞傞敍宀€鐝涢崡瀹犲殰閸斻劑鈧瀚ㄩ惃鍕閺堫兙鈧倻鏁ゆ禍搴☆樆闁劏鐨熼悽銊ｂ偓?
     /// </summary>
     public static string mcVersionWaitingForSelect = null;
 
     #endregion
 
-    #region OptiFine 鍒楄〃
+    #region OptiFine 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 OptiFine 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?OptiFine 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadOptiFineGetError()
     {
@@ -1332,27 +1332,27 @@ public partial class PageInstanceInstall
             return Lang.Text("Download.Install.State.Loading");
         if (LoadOptiFine.State.LoadingState == MyLoading.MyLoadingState.Error)
             return $"{Lang.Text("Download.Install.State.GetVersionListFailed")}{((ModLoader.LoaderBase)LoadOptiFine.State).Error.Message}";
-        // 妫€鏌?Forge 1.13 - 1.14.3锛氬叏閮ㄤ笉鍏煎
+        // 濡偓閺?Forge 1.13 - 1.14.3閿涙艾鍙忛柈銊ょ瑝閸忕厧顔?
         if (selectedLoaderName == "Forge" && McVersionComparer.CompareVersion(_vanillaName, "1.13") >= 0 &&
             McVersionComparer.CompareVersion("1.14.3", _vanillaName) >= 0) return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
-        // 妫€鏌?Fabric 1.20.5+: 鍏ㄩ儴涓嶅吋瀹?
+        // 濡偓閺?Fabric 1.20.5+: 閸忋劑鍎存稉宥呭悑鐎?
         if (selectedFabric is not null && McVersionComparer.CompareVersion(_vanillaName, "1.20.4") > 0)
             return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadOptiFine) is not null)
             return GetLoaderError(LoadOptiFine);
-        // 妫€鏌?Forge 鐗堟湰
+        // 濡偓閺?Forge 閻楀牊婀?
         var hasAny = false;
         var hasRequiredVersion = false;
         foreach (var OptiFineVersion in ModDownload.dlOptiFineListLoader.output.Value)
         {
             if (!OptiFineVersion.DisplayName.StartsWith(_vanillaName + " "))
-                continue; // 涓嶆槸鍚屼竴涓ぇ鐗堟湰
+                continue; // 娑撳秵妲搁崥灞肩娑擃亜銇囬悧鍫熸拱
             hasAny = true;
             if (selectedForge is null)
-                return null; // 鏈€夋嫨 Forge
+                return null; // 閺堫亪鈧瀚?Forge
             if ((bool)IsOptiFineSuitForForge(OptiFineVersion, selectedForge))
-                return null; // 璇ョ増鏈彲鐢?
+                return null; // 鐠囥儳澧楅張顒€褰查悽?
             if (OptiFineVersion.RequiredForgeVersion is not null)
                 hasRequiredVersion = true;
         }
@@ -1364,14 +1364,14 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
     }
 
-    // 妫€鏌ユ煇涓?OptiFine 鏄惁涓庢煇涓?Forge 鍏煎
+    // 濡偓閺屻儲鐓囨稉?OptiFine 閺勵垰鎯佹稉搴㈢厙娑?Forge 閸忕厧顔?
     private object IsOptiFineSuitForForge(ModDownload.DlOptiFineListEntry optiFine,
         ModDownload.DlForgeVersionEntry forge)
     {
         if ((forge.Inherit ?? "") != (optiFine.Inherit ?? ""))
-            return false; // 涓嶆槸鍚屼竴涓ぇ鐗堟湰
+            return false; // 娑撳秵妲搁崥灞肩娑擃亜銇囬悧鍫熸拱
         if (optiFine.RequiredForgeVersion is null)
-            return false; // 涓嶅吋瀹?Forge
+            return false; // 娑撳秴鍚嬬€?Forge
         if (string.IsNullOrWhiteSpace(optiFine.RequiredForgeVersion))
             return true; // #4183
         if (optiFine.RequiredForgeVersion.Contains(".")) // XX.X.XXX
@@ -1381,7 +1381,7 @@ public partial class PageInstanceInstall
         return forge.version.Revision == Convert.ToDouble(optiFine.RequiredForgeVersion);
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardOptiFine_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadOptiFineGetError() is not null)
@@ -1389,7 +1389,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?OptiFine 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?OptiFine 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void OptiFine_Loaded()
     {
@@ -1398,7 +1398,7 @@ public partial class PageInstanceInstall
             if (ModDownload.dlOptiFineListLoader.State != ModBase.LoadState.Finished)
                 return;
 
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = new List<ModDownload.DlOptiFineListEntry>();
             foreach (var Version in ModDownload.dlOptiFineListLoader.output.Value)
             {
@@ -1411,7 +1411,7 @@ public partial class PageInstanceInstall
 
             if (!versions.Any())
                 return;
-            // 鎺掑簭
+            // 閹烘帒绨?
             versions.Sort((left, right) =>
             {
                 if (!left.IsPreview && right.IsPreview)
@@ -1420,7 +1420,7 @@ public partial class PageInstanceInstall
                     return false;
                 return McVersionComparer.CompareVersion(left.DisplayName, right.DisplayName) != 0;
             });
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanOptiFine.Children.Clear();
             foreach (var Version in versions)
                 PanOptiFine.Children.Add(
@@ -1431,13 +1431,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?OptiFine 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?OptiFine 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void OptiFine_Selected(MyListItem sender, EventArgs e)
     {
         selectedOptiFine = (ModDownload.DlOptiFineListEntry)sender.Tag;
@@ -1451,7 +1451,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void OptiFine_Clear(object sender, MouseButtonEventArgs e)
+    private void OptiFine_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedOptiFine = null;
         selectedOptiFabric = null;
@@ -1465,25 +1465,25 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region LiteLoader 鍒楄〃
+    #region LiteLoader 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 LiteLoader 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?LiteLoader 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadLiteLoaderGetError()
     {
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadLiteLoader) is not null)
             return GetLoaderError(LoadLiteLoader);
         if (selectedLoaderName == "NeoForge" || selectedLoaderName == "LegacyFabric" || selectedLoaderName == "LabyMod" || selectedLoaderName == "Cleanroom")
             return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         return ModDownload.dlLiteLoaderListLoader.output.Value.Any(v => (v.Inherit ?? "") == (_vanillaName ?? ""))
             ? null
             : Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardLiteLoader_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadLiteLoaderGetError() is not null)
@@ -1491,7 +1491,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?LiteLoader 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?LiteLoader 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void LiteLoader_Loaded()
     {
@@ -1499,14 +1499,14 @@ public partial class PageInstanceInstall
         {
             if (ModDownload.dlLiteLoaderListLoader.State != ModBase.LoadState.Finished)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = new List<ModDownload.DlLiteLoaderListEntry>();
             foreach (var Version in ModDownload.dlLiteLoaderListLoader.output.Value)
                 if ((Version.Inherit ?? "") == (_vanillaName ?? ""))
                     versions.Add(Version);
             if (!versions.Any())
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanLiteLoader.Children.Clear();
             foreach (var Version in versions)
                 PanLiteLoader.Children.Add(ModDownloadLib.LiteLoaderDownloadListItem(Version,
@@ -1516,13 +1516,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?LiteLoader 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?LiteLoader 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void LiteLoader_Selected(MyListItem sender, EventArgs e)
     {
         selectedLiteLoader = (ModDownload.DlLiteLoaderListEntry)sender.Tag;
@@ -1530,7 +1530,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void LiteLoader_Clear(object sender, MouseButtonEventArgs e)
+    private void LiteLoader_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedLiteLoader = null;
         CardLiteLoader.IsSwapped = true;
@@ -1540,10 +1540,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region Forge 鍒楄〃
+    #region Forge 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 Forge 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?Forge 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadForgeGetError()
     {
@@ -1553,22 +1553,22 @@ public partial class PageInstanceInstall
         if (selectedLoaderName is not null && !ReferenceEquals(selectedLoaderName, "Forge"))
             return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
 
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadForge) is not null)
             return GetLoaderError(LoadForge);
         var loader = (ModLoader.LoaderTask<string, List<ModDownload.DlForgeVersionEntry>>)LoadForge.State;
         if ((_vanillaName ?? "") != (loader.input ?? ""))
             return Lang.Text("Download.Install.State.Getting");
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         foreach (var Version in loader.output)
         {
             if (Version.Category == "universal" || Version.Category == "client")
-                continue; // 璺宠繃鏃犳硶鑷姩瀹夎鐨勭増鏈?
+                continue; // 鐠哄疇绻冮弮鐘崇《閼奉亜濮╃€瑰顥婇惃鍕閺?
             if (selectedLoaderName is not null && selectedLoaderName != "Forge")
                 return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
             if (selectedOptiFine is not null && McVersionComparer.CompareVersionGe(_vanillaName, "1.13") &&
                 McVersionComparer.CompareVersionGe("1.14.3", _vanillaName))
-                return Lang.Text("Download.Install.Compat.IncompatibleWithOptiFine"); // 1.13 ~ 1.14.3 OptiFine 妫€鏌?
+                return Lang.Text("Download.Install.Compat.IncompatibleWithOptiFine"); // 1.13 ~ 1.14.3 OptiFine 濡偓閺?
             if (selectedOptiFine is not null && !(bool)IsOptiFineSuitForForge(selectedOptiFine, Version))
                 continue;
             return null;
@@ -1577,7 +1577,7 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.Compat.IncompatibleWithOptiFine");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardForge_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadForgeGetError() is not null)
@@ -1585,7 +1585,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?Forge 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?Forge 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void Forge_Loaded()
     {
@@ -1598,15 +1598,15 @@ public partial class PageInstanceInstall
                 return;
             if (loader.State != ModBase.LoadState.Finished)
                 return;
-            // 鑾峰彇瑕佹樉绀虹殑鐗堟湰
-            var versions = loader.output.ToList(); // 澶嶅埗鏁扮粍锛屼互鍏?Output 鍦ㄥ疄渚嬪寲鍚庡彉绌?
+            // 閼惧嘲褰囩憰浣规▔缁€铏规畱閻楀牊婀?
+            var versions = loader.output.ToList(); // 婢跺秴鍩楅弫鎵矋閿涘奔浜掗崗?Output 閸︺劌鐤勬笟瀣閸氬骸褰夌粚?
             if (!loader.output.Any())
                 return;
             PanForge.Children.Clear();
             versions = versions.Where(v =>
             {
                 if (v.Category == "universal" || v.Category == "client")
-                    return false; // 璺宠繃鏃犳硶鑷姩瀹夎鐨勭増鏈?
+                    return false; // 鐠哄疇绻冮弮鐘崇《閼奉亜濮╃€瑰顥婇惃鍕閺?
                 if (selectedOptiFine is not null &&
                                           !(bool)IsOptiFineSuitForForge(selectedOptiFine, v))
                     return false;
@@ -1622,13 +1622,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?Forge 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?Forge 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void Forge_Selected(MyListItem sender, EventArgs e)
     {
         selectedForge = (ModDownload.DlForgeVersionEntry)sender.Tag;
@@ -1641,7 +1641,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void Forge_Clear(object sender, MouseButtonEventArgs e)
+    private void Forge_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedForge = null;
         selectedLoaderName = null;
@@ -1653,10 +1653,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region NeoForge 鍒楄〃
+    #region NeoForge 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 NeoForge 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?NeoForge 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadNeoForgeGetError()
     {
@@ -1664,16 +1664,16 @@ public partial class PageInstanceInstall
             return Lang.Text("Download.Install.Compat.IncompatibleWithOptiFine");
         if (selectedLoaderName is not null && !ReferenceEquals(selectedLoaderName, "NeoForge"))
             return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadNeoForge) is not null)
             return GetLoaderError(LoadNeoForge);
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         return ModDownload.dlNeoForgeListLoader.output.Value.Any(v => (v.Inherit ?? "") == (_vanillaName ?? ""))
             ? null
             : Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardNeoForge_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadNeoForgeGetError() is not null)
@@ -1681,20 +1681,20 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?NeoForge 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?NeoForge 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void NeoForge_Loaded()
     {
         try
         {
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             if (ModDownload.dlNeoForgeListLoader.State != ModBase.LoadState.Finished)
                 return;
             var versions = ModDownload.dlNeoForgeListLoader.output.Value
                 .Where(v => (v.Inherit ?? "") == (_vanillaName ?? "")).ToList();
             if (!versions.Any())
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanNeoForge.Children.Clear();
             ModDownloadLib.NeoForgeDownloadListItemPreload(PanNeoForge, versions,
                 (a, b) => this.NeoForge_Selected((dynamic)a, b),
@@ -1708,13 +1708,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?NeoForge 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?NeoForge 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void NeoForge_Selected(MyListItem sender, EventArgs e)
     {
         selectedNeoForge = (ModDownload.DlNeoForgeListEntry)sender.Tag;
@@ -1724,7 +1724,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void NeoForge_Clear(object sender, MouseButtonEventArgs e)
+    private void NeoForge_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedNeoForge = null;
         selectedLoaderName = null;
@@ -1736,10 +1736,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region Cleanroom 鍒楄〃
+    #region Cleanroom 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 Cleanroom 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?Cleanroom 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadCleanroomGetError()
     {
@@ -1751,16 +1751,16 @@ public partial class PageInstanceInstall
             return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
         if (selectedLiteLoader is not null) 
             return Lang.Text("Download.Install.Compat.IncompatibleWithLiteLoader");
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadCleanroom) is not null)
             return GetLoaderError(LoadCleanroom);
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         return ModDownload.dlCleanroomListLoader.output.Value.Any(v => (v.Inherit ?? "") == (_vanillaName ?? ""))
             ? null
             : Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardCleanroom_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadCleanroomGetError() is not null)
@@ -1768,20 +1768,20 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?Cleanroom 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?Cleanroom 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void Cleanroom_Loaded()
     {
         try
         {
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             if (ModDownload.dlCleanroomListLoader.State != ModBase.LoadState.Finished)
                 return;
             var versions = ModDownload.dlCleanroomListLoader.output.Value
                 .Where(v => (v.Inherit ?? "") == (_vanillaName ?? "")).ToList();
             if (!versions.Any())
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanCleanroom.Children.Clear();
             ModDownloadLib.CleanroomDownloadListItemPreload(PanCleanroom, versions,
                 (a, b) => this.Cleanroom_Selected((dynamic)a, b), false);
@@ -1794,13 +1794,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?Cleanroom 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?Cleanroom 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void Cleanroom_Selected(MyListItem sender, EventArgs e)
     {
         selectedCleanroom = (ModDownload.DlCleanroomListEntry)sender.Tag;
@@ -1810,7 +1810,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void Cleanroom_Clear(object sender, MouseButtonEventArgs e)
+    private void Cleanroom_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedCleanroom = null;
         selectedCleanroomVersion = null;
@@ -1824,23 +1824,23 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region Fabric 鍒楄〃
+    #region Fabric 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 Fabric 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?Fabric 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadFabricGetError()
     {
-        // 妫€鏌?OptiFine 1.20.5+锛氭病鏈?OptiFabric 鏁呭叏閮ㄤ笉鍏煎
+        // 濡偓閺?OptiFine 1.20.5+閿涙碍鐥呴張?OptiFabric 閺佸懎鍙忛柈銊ょ瑝閸忕厧顔?
         if (selectedOptiFine is not null && McVersionComparer.CompareVersionGe(_vanillaName, "1.20.5"))
             return Lang.Text("Download.Install.Compat.IncompatibleWithOptiFine");
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadFabric) is not null)
             return GetLoaderError(LoadFabric);
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         foreach (JsonObject version in ModDownload.dlFabricListLoader.output.Value["game"].AsArray())
             if ((version["version"].ToString() ?? "") ==
-                (_vanillaName.Replace("鈭?, "infinite").Replace("Combat Test 7c", "1.16_combat-3") ?? ""))
+                (_vanillaName.Replace("閳?, "infinite").Replace("Combat Test 7c", "1.16_combat-3") ?? ""))
             {
                 if (selectedLoaderName is not null && !ReferenceEquals(selectedLoaderName, "Fabric"))
                     return Lang.Text("Download.Install.Compat.IncompatibleWithLoader", selectedLoaderName);
@@ -1850,7 +1850,7 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardFabric_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadFabricGetError() is not null)
@@ -1858,7 +1858,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?Fabric 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?Fabric 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void Fabric_Loaded()
     {
@@ -1866,11 +1866,11 @@ public partial class PageInstanceInstall
         {
             if (ModDownload.dlFabricListLoader.State != ModBase.LoadState.Finished)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = (JsonArray)ModDownload.dlFabricListLoader.output.Value["loader"];
             if (!versions.Any())
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanFabric.Children.Clear();
             PanFabric.Tag = versions;
             CardFabric.SwapControl = PanFabric;
@@ -1886,13 +1886,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?Fabric 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?Fabric 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     public void Fabric_Selected(MyListItem sender, EventArgs e)
     {
         selectedFabric = ((dynamic)sender.Tag)["version"].ToString();
@@ -1903,7 +1903,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void Fabric_Clear(object sender, MouseButtonEventArgs e)
+    private void Fabric_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedFabric = null;
         selectedFabricApi = null;
@@ -1919,10 +1919,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region Fabric API 鍒楄〃
+    #region Fabric API 閸掓銆?
 
     /// <summary>
-    ///     鍒ゆ柇鏌?Fabric API 鏄惁閫傞厤褰撳墠閫夋嫨鐨勫師鐗堢増鏈€?
+    ///     閸掋倖鏌囬弻?Fabric API 閺勵垰鎯侀柅鍌炲帳瑜版挸澧犻柅澶嬪閻ㄥ嫬甯悧鍫㈠閺堫兙鈧?
     /// </summary>
     public bool IsFabricApiCompatible(ModComp.CompFile fabricApi)
     {
@@ -1932,26 +1932,26 @@ public partial class PageInstanceInstall
             if (fabricApiName is null || _vanillaName is null)
                 return false;
             fabricApiName = fabricApiName.ToLower();
-            _vanillaName = _vanillaName.Replace("鈭?, "infinite").Replace("Combat Test 7c", "1.16_combat-3").ToLower();
+            _vanillaName = _vanillaName.Replace("閳?, "infinite").Replace("Combat Test 7c", "1.16_combat-3").ToLower();
             if (fabricApiName.StartsWith("[" + _vanillaName + "]"))
                 return true;
             if (!fabricApiName.Contains("/") || !fabricApiName.Contains("]"))
                 return false;
-            // 鐩存帴鐨勫垽鏂紙渚嬪 1.18.1/22w03a锛?
+            // 閻╁瓨甯撮惃鍕灲閺傤叏绱欐笟瀣洤 1.18.1/22w03a閿?
             foreach (var part in fabricApiName.BeforeFirst("]").TrimStart('[').Split("/"))
                 if ((part ?? "") == (_vanillaName ?? ""))
                     return true;
-            // 灏嗙増鏈悕鍒嗗壊璇礌锛堜緥濡?1.16.4/5锛?
+            // 鐏忓棛澧楅張顒€鎮曢崚鍡楀鐠囶厾绀岄敍鍫滅伐婵?1.16.4/5閿?
             var lefts = fabricApiName.BeforeFirst("]").RegexSearch("[a-z/]+|[0-9/]+");
             var rights = _vanillaName.BeforeFirst("]").RegexSearch("[a-z/]+|[0-9/]+");
-            // 瀵规瘡娈佃繘琛屽垽鏂?
+            // 鐎佃鐦″▓浣冪箻鐞涘苯鍨介弬?
             var i = 0;
             while (true)
             {
-                // 涓よ竟鍧囩己澶憋紝鎰熻鏄竴涓笢瑗?
+                // 娑撱倛绔熼崸鍥╁繁婢舵唻绱濋幇鐔活潕閺勵垯绔存稉顏冪鐟?
                 if (lefts.Count - 1 < i && rights.Count - 1 < i)
                     return true;
-                // 纭畾涓よ竟鏄惁涓€鑷?
+                // 绾喖鐣炬稉銈堢珶閺勵垰鎯佹稉鈧懛?
                 var leftValue = lefts.Count - 1 < i ? "-1" : lefts[i];
                 var rightValue = rights.Count - 1 < i ? "-1" : rights[i];
                 if (!leftValue.Contains("/"))
@@ -1959,7 +1959,7 @@ public partial class PageInstanceInstall
                     if ((leftValue ?? "") != (rightValue ?? ""))
                         return false;
                 }
-                // 宸﹁竟瀛樺湪鏂滄潬
+                // 瀹革箒绔熺€涙ê婀弬婊勬浆
                 else if (!leftValue.Contains(rightValue))
                 {
                     return false;
@@ -1972,29 +1972,29 @@ public partial class PageInstanceInstall
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鍒ゆ柇 Fabric API 鐗堟湰閫傞厤鎬у嚭閿欙紙" + fabricApiName + ", " + _vanillaName + "锛?);
+            ModBase.Log(ex, "閸掋倖鏌?Fabric API 閻楀牊婀伴柅鍌炲帳閹冨毉闁挎瑱绱? + fabricApiName + ", " + _vanillaName + "閿?);
             return false;
         }
     }
 
     /// <summary>
-    ///     鑾峰彇 FabricApi 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?FabricApi 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadFabricApiGetError()
     {
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadFabricApi) is not null)
             return GetLoaderError(LoadFabricApi);
         if (ModDownload.dlFabricApiLoader.output is null)
             return selectedFabric is null ? Lang.Text("Download.Install.Compat.RequiresFabric") : Lang.Text("Download.Install.State.Getting");
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         if (ModDownload.dlFabricApiLoader.output.Any(f => IsFabricApiCompatible(f)))
             return selectedFabric is null ? Lang.Text("Download.Install.Compat.RequiresFabric") : null;
 
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardFabricApi_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadFabricApiGetError() is not null)
@@ -2004,7 +2004,7 @@ public partial class PageInstanceInstall
     private bool autoSelectedFabricApi;
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?FabricApi 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?FabricApi 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void FabricApi_Loaded()
     {
@@ -2014,14 +2014,14 @@ public partial class PageInstanceInstall
                 return;
             if (_vanillaName is null || selectedFabric is null)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = new List<ModComp.CompFile>();
             foreach (var version in ModDownload.dlFabricApiLoader.output)
                 if (IsFabricApiCompatible(version))
                 {
                     if (!version.DisplayName.StartsWith("["))
                     {
-                        ModBase.Log("[Download] 宸茬壒鍒や慨鏀?Fabric API 鏄剧ず鍚嶏細" + version.DisplayName, ModBase.LogLevel.Debug);
+                        ModBase.Log("[Download] 瀹歌尙澹掗崚銈勬叏閺€?Fabric API 閺勫墽銇氶崥宥忕窗" + version.DisplayName, ModBase.LogLevel.Debug);
                         version.DisplayName = "[" + _vanillaName + "] " + version.DisplayName;
                     }
 
@@ -2031,7 +2031,7 @@ public partial class PageInstanceInstall
             if (!versions.Any())
                 return;
             versions = versions.OrderByDescending(v => v.ReleaseDate).ToList();
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanFabricApi.Children.Clear();
             foreach (var version in versions)
             {
@@ -2042,11 +2042,11 @@ public partial class PageInstanceInstall
                         (a, b) => this.FabricApi_Selected((dynamic)a, b)));
             }
 
-            // 鑷姩閫夋嫨 Fabric API
+            // 閼奉亜濮╅柅澶嬪 Fabric API
             if (!autoSelectedFabricApi)
             {
                 autoSelectedFabricApi = true;
-                ModBase.Log($"[Download] 宸茶嚜鍔ㄩ€夋嫨 Fabric API锛歿((MyListItem)PanFabricApi.Children[0]).Title}");
+                ModBase.Log($"[Download] 瀹歌尪鍤滈崝銊┾偓澶嬪 Fabric API閿涙((MyListItem)PanFabricApi.Children[0]).Title}");
                 FabricApi_Selected((MyListItem)PanFabricApi.Children[0], null);
             }
         }
@@ -2054,13 +2054,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?Fabric API 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?Fabric API 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void FabricApi_Selected(MyListItem sender, EventArgs e)
     {
         selectedFabricApi = (ModComp.CompFile)sender.Tag;
@@ -2069,7 +2069,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void FabricApi_Clear(object sender, MouseButtonEventArgs e)
+    private void FabricApi_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedFabricApi = null;
         selectedAPIName = null;
@@ -2080,10 +2080,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region LegacyFabric 鍒楄〃
+    #region LegacyFabric 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 LegacyFabric 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?LegacyFabric 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadLegacyFabricGetError()
     {
@@ -2104,7 +2104,7 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardLegacyFabric_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadLegacyFabricGetError() is not null)
@@ -2112,7 +2112,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?LegacyFabric 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?LegacyFabric 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void LegacyFabric_Loaded()
     {
@@ -2120,11 +2120,11 @@ public partial class PageInstanceInstall
         {
             if (ModDownload.dlLegacyFabricListLoader.State != ModBase.LoadState.Finished)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = (JsonArray)ModDownload.dlLegacyFabricListLoader.output.Value["loader"];
             if (!versions.Any())
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanLegacyFabric.Children.Clear();
             PanLegacyFabric.Tag = versions;
             CardLegacyFabric.SwapControl = PanLegacyFabric;
@@ -2139,13 +2139,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?LegacyFabric 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?LegacyFabric 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     public void LegacyFabric_Selected(MyListItem sender, EventArgs e)
     {
         selectedLegacyFabric = ((dynamic)sender.Tag)["version"].ToString();
@@ -2155,7 +2155,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void LegacyFabric_Clear(object sender, MouseButtonEventArgs e)
+    private void LegacyFabric_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedLegacyFabric = null;
         selectedLegacyFabricApi = null;
@@ -2169,10 +2169,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region Legacy Fabric API 鍒楄〃
+    #region Legacy Fabric API 閸掓銆?
 
     /// <summary>
-    ///     浠庢樉绀哄悕鍒ゆ柇璇?API 鏄惁涓庢煇鐗堟湰閫傞厤銆?
+    ///     娴犲孩妯夌粈鍝勬倳閸掋倖鏌囩拠?API 閺勵垰鎯佹稉搴㈢厙閻楀牊婀伴柅鍌炲帳閵?
     /// </summary>
     public static bool IsSuitableLegacyFabricApi(List<string> supportVersions, string minecraftVersion)
     {
@@ -2184,13 +2184,13 @@ public partial class PageInstanceInstall
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鍒ゆ柇 Legacy Fabric API 鐗堟湰閫傞厤鎬у嚭閿欙紙" + supportVersions + ", " + minecraftVersion + "锛?);
+            ModBase.Log(ex, "閸掋倖鏌?Legacy Fabric API 閻楀牊婀伴柅鍌炲帳閹冨毉闁挎瑱绱? + supportVersions + ", " + minecraftVersion + "閿?);
             return false;
         }
     }
 
     /// <summary>
-    ///     鑾峰彇 LegacyFabricApi 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?LegacyFabricApi 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadLegacyFabricApiGetError()
     {
@@ -2219,7 +2219,7 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardLegacyFabricApi_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadLegacyFabricApiGetError() is not null)
@@ -2229,7 +2229,7 @@ public partial class PageInstanceInstall
     private bool autoSelectedLegacyFabricApi;
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?LegacyFabricApi 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?LegacyFabricApi 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void LegacyFabricApi_Loaded()
     {
@@ -2239,7 +2239,7 @@ public partial class PageInstanceInstall
                 return;
             if (_vanillaName is null || selectedLegacyFabric is null)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = new List<ModComp.CompFile>();
             foreach (var Version in ModDownload.dlLegacyFabricApiLoader.output)
                 if (IsSuitableLegacyFabricApi(Version.GameVersions, _vanillaName))
@@ -2248,7 +2248,7 @@ public partial class PageInstanceInstall
             if (!versions.Any())
                 return;
             versions = versions.OrderByDescending(v => v.ReleaseDate).ToList();
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanLegacyFabricApi.Children.Clear();
             foreach (var Version in versions)
             {
@@ -2259,11 +2259,11 @@ public partial class PageInstanceInstall
                         (a, b) => this.LegacyFabricApi_Selected((dynamic)a, b)));
             }
 
-            // 鑷姩閫夋嫨 Legacy Fabric API
+            // 閼奉亜濮╅柅澶嬪 Legacy Fabric API
             if (!autoSelectedLegacyFabricApi)
             {
                 autoSelectedLegacyFabricApi = true;
-                ModBase.Log($"[Download] 宸茶嚜鍔ㄩ€夋嫨 Legacy Fabric API锛歿((MyListItem)PanLegacyFabricApi.Children[0]).Title}");
+                ModBase.Log($"[Download] 瀹歌尪鍤滈崝銊┾偓澶嬪 Legacy Fabric API閿涙((MyListItem)PanLegacyFabricApi.Children[0]).Title}");
                 LegacyFabricApi_Selected((MyListItem)PanLegacyFabricApi.Children[0], null);
             }
         }
@@ -2271,13 +2271,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?Legacy Fabric API 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?Legacy Fabric API 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void LegacyFabricApi_Selected(MyListItem sender, EventArgs e)
     {
         selectedLegacyFabricApi = (ModComp.CompFile)sender.Tag;
@@ -2286,7 +2286,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void LegacyFabricApi_Clear(object sender, MouseButtonEventArgs e)
+    private void LegacyFabricApi_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedLegacyFabricApi = null;
         selectedAPIName = null;
@@ -2298,10 +2298,10 @@ public partial class PageInstanceInstall
     #endregion
 
 
-    #region OptiFabric 鍒楄〃
+    #region OptiFabric 閸掓銆?
 
     /// <summary>
-    ///     鍒ゆ柇鏌?OptiFabric 鏄惁閫傞厤褰撳墠閫夋嫨鐨勫師鐗堢増鏈€?
+    ///     閸掋倖鏌囬弻?OptiFabric 閺勵垰鎯侀柅鍌炲帳瑜版挸澧犻柅澶嬪閻ㄥ嫬甯悧鍫㈠閺堫兙鈧?
     /// </summary>
     private bool IsOptiFabricCompatible(ModComp.CompFile modFile)
     {
@@ -2313,7 +2313,7 @@ public partial class PageInstanceInstall
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鍒ゆ柇 OptiFabric 鐗堟湰閫傞厤鎬у嚭閿欙紙" + _vanillaName + "锛?);
+            ModBase.Log(ex, "閸掋倖鏌?OptiFabric 閻楀牊婀伴柅鍌炲帳閹冨毉闁挎瑱绱? + _vanillaName + "閿?);
             return false;
         }
     }
@@ -2321,16 +2321,16 @@ public partial class PageInstanceInstall
     private bool autoSelectedOptiFabric;
 
     /// <summary>
-    ///     鑾峰彇 OptiFabric 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?OptiFabric 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadOptiFabricGetError()
     {
         if (VanillaDrop >= 140 && VanillaDrop <= 150)
             return Lang.Text("Download.Install.Compat.OptiFabricOriginsRequired");
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadOptiFabric) is not null)
             return GetLoaderError(LoadOptiFabric);
-        // 妫€鏌ョ増鏈?
+        // 濡偓閺屻儳澧楅張?
         if (ModDownload.dlOptiFabricLoader.output is null)
         {
             if (selectedFabric is null && selectedOptiFine is null)
@@ -2352,13 +2352,13 @@ public partial class PageInstanceInstall
                 return Lang.Text("Download.Install.Compat.RequiresFabric");
             if (selectedOptiFine is null)
                 return Lang.Text("Download.Install.Compat.RequiresOptiFine");
-            return null; // 閫氳繃妫€鏌?
+            return null; // 闁俺绻冨Λ鈧弻?
         }
 
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardOptiFabric_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadOptiFabricGetError() is not null)
@@ -2366,7 +2366,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?OptiFabric 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?OptiFabric 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void OptiFabric_Loaded()
     {
@@ -2376,16 +2376,16 @@ public partial class PageInstanceInstall
                 return;
             if (_vanillaName is null || selectedFabric is null || selectedOptiFine is null)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = new List<ModComp.CompFile>();
             foreach (var Version in ModDownload.dlOptiFabricLoader.output)
                 if (IsOptiFabricCompatible(Version))
                     versions.Add(Version);
             if (!versions.Any())
                 return;
-            // 鎺掑簭
+            // 閹烘帒绨?
             versions = versions.OrderByDescending(v => v.ReleaseDate).ToList();
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             PanOptiFabric.Children.Clear();
             foreach (var Version in versions)
             {
@@ -2396,24 +2396,24 @@ public partial class PageInstanceInstall
                         (a, b) => this.OptiFabric_Selected((dynamic)a, b)));
             }
 
-            // 鑷姩閫夋嫨 OptiFabric
+            // 閼奉亜濮╅柅澶嬪 OptiFabric
             if (autoSelectedOptiFabric || (VanillaDrop >= 140 && VanillaDrop <= 150))
-                return; // 1.14~15 涓嶈嚜鍔ㄩ€夋嫨
+                return; // 1.14~15 娑撳秷鍤滈崝銊┾偓澶嬪
             autoSelectedOptiFabric = true;
-            ModBase.Log($"[Download] 宸茶嚜鍔ㄩ€夋嫨 OptiFabric锛歿((MyListItem)PanOptiFabric.Children[0]).Title}");
+            ModBase.Log($"[Download] 瀹歌尪鍤滈崝銊┾偓澶嬪 OptiFabric閿涙((MyListItem)PanOptiFabric.Children[0]).Title}");
             OptiFabric_Selected((MyListItem)PanOptiFabric.Children[0], null);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?OptiFabric 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?OptiFabric 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     private void OptiFabric_Selected(MyListItem sender, EventArgs e)
     {
         selectedOptiFabric = (ModComp.CompFile)sender.Tag;
@@ -2421,7 +2421,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void OptiFabric_Clear(object sender, MouseButtonEventArgs e)
+    private void OptiFabric_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedOptiFabric = null;
         CardOptiFabric.IsSwapped = true;
@@ -2431,10 +2431,10 @@ public partial class PageInstanceInstall
 
     #endregion
 
-    #region LabyMod 鍒楄〃
+    #region LabyMod 閸掓銆?
 
     /// <summary>
-    ///     鑾峰彇 LabyMod 鐨勫姞杞藉紓甯镐俊鎭€傝嫢姝ｅ父鍒欒繑鍥?Nothing銆?
+    ///     閼惧嘲褰?LabyMod 閻ㄥ嫬濮炴潪钘夌磽鐢晲淇婇幁顖樷偓鍌濆濮濓絽鐖堕崚娆掔箲閸?Nothing閵?
     /// </summary>
     private string LoadLabyModGetError()
     {
@@ -2442,7 +2442,7 @@ public partial class PageInstanceInstall
             return Lang.Text("Download.Install.State.Loading");
         if (LoadLabyMod.State.LoadingState == MyLoading.MyLoadingState.Error)
             return Lang.Text("Download.Install.State.GetVersionListFailed", ((ModLoader.LoaderBase)LoadLabyMod.State).Error.Message);
-        // 妫€鏌?Loader
+        // 濡偓閺?Loader
         if (GetLoaderError(LoadLabyMod) is not null)
             return GetLoaderError(LoadLabyMod);
         if (selectedOptiFine is not null)
@@ -2460,7 +2460,7 @@ public partial class PageInstanceInstall
         return Lang.Text("Download.Install.State.NoVersion");
     }
 
-    // 闄愬埗灞曞紑
+    // 闂勬劕鍩楃仦鏇炵磻
     private void CardLabyMod_PreviewSwap(object sender, ModBase.RouteEventArgs e)
     {
         if (LoadLabyModGetError() is not null)
@@ -2468,7 +2468,7 @@ public partial class PageInstanceInstall
     }
 
     /// <summary>
-    ///     灏濊瘯閲嶆柊鍙鍖?LabyMod 鐗堟湰鍒楄〃銆?
+    ///     鐏忔繆鐦柌宥嗘煀閸欘垵顫嬮崠?LabyMod 閻楀牊婀伴崚妤勩€冮妴?
     /// </summary>
     private void LabyMod_Loaded()
     {
@@ -2476,11 +2476,11 @@ public partial class PageInstanceInstall
         {
             if (LoadLabyMod.State.LoadingState == MyLoading.MyLoadingState.Run)
                 return;
-            // 鑾峰彇鐗堟湰鍒楄〃
+            // 閼惧嘲褰囬悧鍫熸拱閸掓銆?
             var versions = ModDownload.dlLabyModListLoader.output.Value;
             if (versions is null || versions["production"] is null || versions["snapshot"] is null)
                 return;
-            // 鍙鍖?
+            // 閸欘垵顫嬮崠?
             var processedVersions = new JsonArray();
             foreach (JsonObject Production in versions["production"]["minecraftVersions"].AsArray())
                 if ((Production["version"].ToString() ?? "") == (_vanillaName ?? ""))
@@ -2517,13 +2517,13 @@ public partial class PageInstanceInstall
         {
             ModBase.Log(
                 ex,
-                "鍙鍖?LabyMod 瀹夎鐗堟湰鍒楄〃鍑洪敊",
+                "閸欘垵顫嬮崠?LabyMod 鐎瑰顥婇悧鍫熸拱閸掓銆冮崙娲晩",
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Install.Error.OperationFailed"));
         }
     }
 
-    // 閫夋嫨涓庢竻闄?
+    // 闁瀚ㄦ稉搴㈢闂?
     public void LabyMod_Selected(MyListItem sender, EventArgs e)
     {
         selectedLabyModChannel = ((dynamic)sender.Tag)("channel").ToString();
@@ -2535,7 +2535,7 @@ public partial class PageInstanceInstall
         ReloadSelected();
     }
 
-    private void LabyMod_Clear(object sender, MouseButtonEventArgs e)
+    private void LabyMod_Clear(object sender, PointerReleasedEventArgs e)
     {
         selectedLabyModCommitRef = null;
         selectedLabyModVersion = null;

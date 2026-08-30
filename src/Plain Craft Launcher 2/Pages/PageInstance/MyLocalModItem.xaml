@@ -64,7 +64,7 @@
             IsHitTestVisible="False"
             Opacity="0.4"
             TextTrimming="CharacterEllipsis"
-            Visibility="Collapsed" />
+            IsVisible="False" />
         <!-- 更新按钮 -->
         <local:MyIconButton
             x:Name="BtnUpdate"
@@ -78,7 +78,7 @@
             ToolTipService.InitialShowDelay="100"
             ToolTipService.Placement="Right"
             ToolTipService.VerticalOffset="-9"
-            Visibility="Collapsed" />
+            IsVisible="False" />
     </Grid>
     <!-- Tag 与 详情 -->
     <StackPanel
@@ -89,7 +89,7 @@
         VerticalAlignment="Center"
         IsHitTestVisible="False"
         Orientation="Horizontal"
-        Visibility="Collapsed">
+        IsVisible="False">
         <!--<corelocal:BlurBorder Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0">
             <TextBlock Text="科技" Foreground="{DynamicResource ColorBrush2}" FontSize="11" />
         </corelocal:BlurBorder>-->
