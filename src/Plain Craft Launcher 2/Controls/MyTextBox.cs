@@ -42,7 +42,7 @@ public class MyTextBox : TextBox
 
     // 额外控件初始化
 
-    public List<RoutedEventHandler> changedEventList = new();
+    public List<EventHandler> changedEventList = new();
 
     // 提示文本
 
@@ -135,7 +135,7 @@ public class MyTextBox : TextBox
         set => SetValue(HintTextProperty, value);
     }
 
-    public override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         if (string.IsNullOrEmpty(HintText) || !string.IsNullOrEmpty(labHint.Text))
@@ -145,7 +145,7 @@ public class MyTextBox : TextBox
 
     public event ValidateChangedEventHandler? ValidateChanged;
 
-    public event RoutedEventHandler ValidatedTextChanged
+    public event EventHandler? ValidatedTextChanged
     {
         add => changedEventList.Add(value);
         remove => changedEventList.Remove(value);

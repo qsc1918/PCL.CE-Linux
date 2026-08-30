@@ -10,7 +10,7 @@
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled"
                                       x:Name="PanBack">
-                    <RichTextBox x:Name="PanLog"
+                    <SelectableTextBlock x:Name="PanLog"
                                  FontSize="14"
                                  FontFamily="Consolas"
                                  HorizontalAlignment="Stretch"

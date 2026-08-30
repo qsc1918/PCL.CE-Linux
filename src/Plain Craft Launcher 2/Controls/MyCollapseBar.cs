@@ -6,7 +6,6 @@ using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
-using Path = Avalonia.Controls.Shapes.Path;
 
 namespace PCL;
 

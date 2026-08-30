@@ -69,8 +69,6 @@ public partial class FormMain
     public FormMain()
     {
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
-        // [port] Avalonia Window 无 OnActivated 覆写 → 订阅 Activated 事件
-        Activated += FormMain_Activated;
         // 刷新主题
         // ThemeCheckAll(False)
         // ThemeRefreshColor()
@@ -1299,15 +1297,6 @@ public partial class FormMain
             }
         }
     }
-
-    // 解决龙猫的非通用实现史山
-    // [port] Avalonia Window 无 OnActivated 覆写 → 构造函数订阅 Activated 事件
-    private void FormMain_Activated(object? sender, EventArgs e)
-    {
-        if (Hidden)
-            Hidden = false;
-    }
-
     /// <summary>
     ///     把当前窗口拖到最前面。
     /// </summary>

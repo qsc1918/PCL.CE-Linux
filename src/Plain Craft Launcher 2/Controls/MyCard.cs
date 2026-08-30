@@ -9,7 +9,6 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.UI.Controls;
 
 namespace PCL;

@@ -22,7 +22,6 @@ public static class ModLoader
     // 任务栏进度条
     public static ModBase.SafeList<LoaderBase> loaderTaskbar = new();
     public static double loaderTaskbarProgress; // 平滑后的进度
-    private static TaskbarItemProgressState loaderTaskbarProgressLast = TaskbarItemProgressState.None;
 
     // 文件夹刷新类委托
     private static readonly Dictionary<LoaderBase, LoaderFolderDictionaryEntry> loaderFolderDictionary = new();
@@ -73,7 +72,7 @@ public static class ModLoader
 
             if (loaderTaskbarProgressLast != newState)
             {
-                loaderTaskbarProgressLast = newState;
+                
                 ModMain.frmMain.BtnExtraDownload.ShowRefresh();
             }
         }

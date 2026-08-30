@@ -15,7 +15,7 @@ public partial class PageLogLeft
 {
     public ModWatcher.Watcher currentLog;
     public int currentUuid;
-    public Dictionary<int, FlowDocument> flowDocuments = new();
+    public Dictionary<int, SelectableTextBlock> flowDocuments = new(); // [port] WPF FlowDocument -> Avalonia SelectableTextBlock（RichTextBlock 在 Avalonia 12 不存在）
     public int isLoading;
     public List<KeyValuePair<int, ModWatcher.Watcher>> shownLogs = new();
 
@@ -109,8 +109,10 @@ public partial class PageLogLeft
                     margin = new Thickness(0d);
                 ModBase.RunInUi(() =>
                 {
-                    var paragraph = new Paragraph(new Run(e.logText)) { Foreground = e.color, Margin = margin };
-                    flowDocuments[uuid].Blocks.Add(paragraph);
+                    var run = new Run(e.logText) { Foreground = e.color };
+                    flowDocuments[uuid].Inlines.Add(run);
+                    flowDocuments[uuid].Inlines.Add(new LineBreak()); // [port] 每条日志一段 -> Inlines + LineBreak
+                    
                     var maxLog = (ulong)Config.System.MaxGameLog;
                     switch (maxLog)
                     {
@@ -137,7 +139,11 @@ public partial class PageLogLeft
                     }
 
                     while (flowDocuments[uuid].Blocks.Count > (decimal)maxLog)
-                        flowDocuments[uuid].Blocks.Remove(flowDocuments[uuid].Blocks.FirstBlock);
+                    {
+                        // [port] FlowDocument.FirstBlock 在 Avalonia 无对应，取第一个块移除
+                        var firstBlock = flowDocuments[uuid].Blocks.FirstOrDefault();
+                        if (firstBlock is not null) flowDocuments[uuid].Blocks.Remove(firstBlock);
+                    }
                 });
                 return;
             }
@@ -148,7 +154,7 @@ public partial class PageLogLeft
         var uuid = ModBase.GetUuid();
         shownLogs.Add(new KeyValuePair<int, ModWatcher.Watcher>(uuid, watcher));
         watcher.LogOutput += OnLogOutput;
-        ModBase.RunInUi(() => flowDocuments.Add(uuid, new FlowDocument())); // TODO：在 UI 线程创建
+        ModBase.RunInUi(() => flowDocuments.Add(uuid, new SelectableTextBlock())); // TODO：在 UI 线程创建
         SelectionChange(uuid);
         ModMain.frmMain.BtnExtraLog.ShowRefresh();
     }

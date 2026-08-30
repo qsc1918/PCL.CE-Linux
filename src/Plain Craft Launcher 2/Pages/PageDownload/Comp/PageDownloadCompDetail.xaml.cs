@@ -21,7 +21,7 @@ using PCL.Core.Utils;
 using PCL.Core.Utils.Validate;
 using PCL.Network;
 using PCL.Network.Loaders;
-using Control = Avalonia.Forms.Control;
+using Control = Avalonia.Controls.Control; // [port] original WinForms Control alias -> Avalonia Control
 
 namespace PCL;
 

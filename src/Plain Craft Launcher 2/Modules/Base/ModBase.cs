@@ -36,7 +36,7 @@ using PCL.Core.Utils.Hash;
 using PCL.Core.Utils.OS;
 using Brush = Avalonia.Media.Brush;
 using Color = Avalonia.Media.Color;
-using ColorConverter = Avalonia.Media.ColorConverter;
+
 using Size = Avalonia.Size;
 
 namespace PCL;
@@ -152,7 +152,7 @@ public static class ModBase
 
         public MyColor(string hexString)
         {
-            var stringColor = (Color)ColorConverter.ConvertFromString(hexString);
+            var stringColor = (Color)Color.Parse(hexString);
             a = stringColor.A;
             r = stringColor.R;
             g = stringColor.G;

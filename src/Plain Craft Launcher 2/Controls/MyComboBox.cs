@@ -97,7 +97,7 @@ public class MyComboBox : ComboBox
     public ContentPresenter ContentPresenter => (ContentPresenter)Template.FindName("PART_Content", this);
     public event TextChangedEventHandler? TextChanged;
 
-    public override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         if (!IsEditable)
