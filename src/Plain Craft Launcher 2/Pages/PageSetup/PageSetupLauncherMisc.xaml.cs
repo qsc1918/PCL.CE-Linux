@@ -6,9 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
@@ -34,10 +32,10 @@ public partial class PageSetupLauncherMisc
 
     private void PageSetupLink_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -50,28 +48,28 @@ public partial class PageSetupLauncherMisc
 
     public void Reload()
     {
-        // 系统设置
+        // 绯荤粺璁剧疆
         ComboSystemActivity.SelectedIndex = States.System.AnnounceSolution;
         CheckSystemDisableHardwareAcceleration.Checked = Config.System.DisableHardwareAcceleration;
         SliderAniFPS.Value = Config.System.AnimationFpsLimit;
         SliderMaxLog.Value = Config.System.MaxGameLog;
         CheckSystemTelemetry.Checked = Config.System.Telemetry;
 
-        // 网络
+        // 缃戠粶
         TextSystemHttpProxy.Text = Config.Network.HttpProxy.CustomAddress;
         TextSystemHttpProxyCustomUsername.Text = Config.Network.HttpProxy.CustomUsername;
         TextSystemHttpProxyCustomPassword.Text = Config.Network.HttpProxy.CustomPassword;
         ((MyRadioBox)FindName($"RadioHttpProxyType{Config.Network.HttpProxy.Type}")).SetChecked(true, false);
         CheckNetDohEnable.Checked = Config.Network.EnableDoH;
 
-        // 调试选项
+        // 璋冭瘯閫夐」
         SliderDebugAnim.Value = Config.Debug.AnimationSpeed;
         CheckDebugSkipCopy.Checked = Config.Debug.DontCopy;
         CheckDebugMode.Checked = Config.Debug.Enabled;
         CheckDebugDelay.Checked = Config.Debug.AddRandomDelay;
     }
 
-    // 初始化
+    // 鍒濆鍖?
     public void Reset()
     {
         try
@@ -79,7 +77,7 @@ public partial class PageSetupLauncherMisc
             Config.Network.Reset();
             Config.Debug.Reset();
             Config.System.Reset();
-            ModBase.Log("[Setup] 已初始化启动器-杂项页设置");
+            ModBase.Log("[Setup] 宸插垵濮嬪寲鍚姩鍣?鏉傞」椤佃缃?);
             HintService.Hint(Lang.Text("Setup.Misc.Initialized"), HintType.Success, false);
             Reload();
         }
@@ -95,7 +93,7 @@ public partial class PageSetupLauncherMisc
         Reload();
     }
 
-    // 将控件改变路由到设置改变
+    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
     private void ComboChange(object senderRaw, SelectionChangedEventArgs e)
     {
         var sender = (MyComboBox)senderRaw;
@@ -128,7 +126,7 @@ public partial class PageSetupLauncherMisc
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value);
 
-    // 网络
+    // 缃戠粶
     private void ApplyHttpProxyBtn_OnClicked(object sender, MouseButtonEventArgs e)
     {
         Config.Network.HttpProxy.CustomAddress = TextSystemHttpProxy.Text;
@@ -136,7 +134,7 @@ public partial class PageSetupLauncherMisc
         Config.Network.HttpProxy.CustomPassword = TextSystemHttpProxyCustomPassword.Text;
     }
 
-    // 滑动条
+    // 婊戝姩鏉?
     private void SliderLoad()
     {
         SliderDebugAnim.getHintText = new Func<object, object>(v =>
@@ -160,20 +158,20 @@ public partial class PageSetupLauncherMisc
         });
     }
 
-    // 硬件加速
+    // 纭欢鍔犻€?
     private void Check_DisableHardwareAcceleration(object _, bool __)
     {
         HintService.Hint(Lang.Text("Setup.Misc.HardwareAcceleration.RestartNotice"));
     }
 
-    // 调试模式
+    // 璋冭瘯妯″紡
     private void CheckDebugMode_Change(object _, bool __)
     {
         if (ModAnimation.AniControlEnabled == 0)
             HintService.Hint(Lang.Text("Setup.Misc.Debug.Mode.Hint"), log: false);
     }
 
-    // 自动更新
+    // 鑷姩鏇存柊
     private void ComboSystemActivity_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
@@ -206,12 +204,12 @@ public partial class PageSetupLauncherMisc
         ComboSystemActivity_SelectionChanged(sender, e);
     }
 
-    #region 导出 / 导入设置
+    #region 瀵煎嚭 / 瀵煎叆璁剧疆
 
     private void BtnSystemSettingExp_Click(object sender, MouseButtonEventArgs e)
     {
         var savePath =
-            SystemDialogs.SelectSaveFile(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 全局配置.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
+            SystemDialogs.SelectSaveFile(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 鍏ㄥ眬閰嶇疆.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
         if (string.IsNullOrWhiteSpace(savePath))
             return;
         File.Copy(ConfigService.SharedConfigPath, savePath, true);
@@ -232,7 +230,7 @@ public partial class PageSetupLauncherMisc
 
     #endregion
 
-    #region 停止使用 PCL CE
+    #region 鍋滄浣跨敤 PCL CE
 
     private void BtnSystemStopUsingPclCe_Click(object sender, MouseButtonEventArgs e)
     {
@@ -260,7 +258,7 @@ public partial class PageSetupLauncherMisc
 
     private void StopUsingPClCeCore(bool removeMcResources)
     {
-        // 删除 MC 文件夹内的 PCL CE 配置
+        // 鍒犻櫎 MC 鏂囦欢澶瑰唴鐨?PCL CE 閰嶇疆
         if (removeMcResources && States.Game.Folders != "")
         {
             foreach (var path in States.Game.Folders.Split('|'))
@@ -278,7 +276,7 @@ public partial class PageSetupLauncherMisc
             }
         }
         
-        // 由于 CE 文件夹正在使用，使用延迟调用 CMD 的方法删除
+        // 鐢变簬 CE 鏂囦欢澶规鍦ㄤ娇鐢紝浣跨敤寤惰繜璋冪敤 CMD 鐨勬柟娉曞垹闄?
         List<string> foldersToDelete =
         [
             Paths.Data,
@@ -304,7 +302,7 @@ public partial class PageSetupLauncherMisc
             UseShellExecute = false
         });
 
-        // 强制退出
+        // 寮哄埗閫€鍑?
         KernelInterop.ExitProcess();
             
         void Delete(IEnumerable<string> paths)

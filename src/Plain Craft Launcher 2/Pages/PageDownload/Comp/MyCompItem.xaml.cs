@@ -135,7 +135,7 @@ public partial class MyCompItem
             if ((LabTitleRaw.Text ?? "") == (value ?? ""))
                 return;
             LabTitleRaw.Text = value;
-            LabTitleRaw.Visibility = string.IsNullOrEmpty(value) ? Visibility.Collapsed : Visibility.Visible;
+            LabTitleRaw.IsVisible = string.IsNullOrEmpty(value) ? false : true;
         }
     }
 
@@ -199,7 +199,7 @@ public partial class MyCompItem
         set
         {
             PanTags.Children.Clear();
-            PanTags.Visibility = value.Any() ? Visibility.Visible : Visibility.Collapsed;
+            PanTags.IsVisible = value.Any() ? true : false;
             foreach (var tagText in value)
             {
                 var newTag = new Border
@@ -226,10 +226,10 @@ public partial class MyCompItem
     // ‘收藏按钮
     public bool ShowFavoriteBtn
     {
-        get => BtnDelete.Visibility == Visibility.Visible;
+        get => BtnDelete.IsVisible == true;
         set
         {
-            BtnDelete.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            BtnDelete.IsVisible = value ? true : false;
             _UpdatePanButtons();
         }
     }
@@ -237,10 +237,10 @@ public partial class MyCompItem
     // 快速下载按钮
     public bool ShowDownloadBtn
     {
-        get => BtnDownload.Visibility == Visibility.Visible;
+        get => BtnDownload.IsVisible == true;
         set
         {
-            BtnDownload.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            BtnDownload.IsVisible = value ? true : false;
             _UpdatePanButtons();
         }
     }
@@ -251,7 +251,7 @@ public partial class MyCompItem
     private void _UpdatePanButtons()
     {
         if (PanButtons is null) return;
-        PanButtons.Visibility = _HasActionButtons ? Visibility.Visible : Visibility.Collapsed;
+        PanButtons.IsVisible = _HasActionButtons ? true : false;
     }
 
     /// <summary>
@@ -399,7 +399,7 @@ public partial class MyCompItem
         var clickPosition = e.GetPosition(this);
         var isClickOnButton = false;
 
-        if (PanButtons.Visibility == Visibility.Visible)
+        if (PanButtons.IsVisible == true)
             isClickOnButton = _IsClickOnActionButton(BtnDelete, clickPosition) ||
                               _IsClickOnActionButton(BtnDownload, clickPosition);
 
@@ -409,7 +409,7 @@ public partial class MyCompItem
         // 如果点击在其他区域，按原逻辑处理
         // 也要检查是否点击在LabInfo区域（支持ToolTip点击）
         var isClickOnLabInfo = false;
-        if (LabInfo.Visibility == Visibility.Visible)
+        if (LabInfo.IsVisible == true)
         {
             var labInfoBounds = new Rect(LabInfo.TranslatePoint(new Point(0d, 0d), this), LabInfo.RenderSize);
             isClickOnLabInfo = labInfoBounds.Contains(clickPosition);
@@ -426,7 +426,7 @@ public partial class MyCompItem
     // 判断点击是否落在某个操作按钮（收藏 / 下载）上
     private bool _IsClickOnActionButton(Control button, Point clickPosition)
     {
-        if (button is null || button.Visibility != Visibility.Visible) return false;
+        if (button is null || button.IsVisible != true) return false;
         var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this), button.RenderSize);
         return bounds.Contains(clickPosition);
     }

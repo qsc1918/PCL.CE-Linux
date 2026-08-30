@@ -233,7 +233,7 @@ public partial class PageDownloadCompFavorites
             allowSearch = true;
             compItemList.Clear();
             var someGetFail = loader.input.Count != loader.output.Count;
-            HintGetFail.Visibility = someGetFail ? Visibility.Visible : Visibility.Collapsed;
+            HintGetFail.IsVisible = someGetFail ? true : false;
             foreach (var item in loader.output)
             {
                 var compItem = item.ToListItem();
@@ -245,16 +245,16 @@ public partial class PageDownloadCompFavorites
             {
                 if (!IsSearching)
                 {
-                    PanSearchBox.Visibility = Visibility.Visible;
-                    PanContentList.Visibility = Visibility.Visible;
-                    CardNoContent.Visibility = Visibility.Collapsed;
+                    PanSearchBox.IsVisible = true;
+                    PanContentList.IsVisible = true;
+                    CardNoContent.IsVisible = false;
                 }
             }
             else // 没有收藏
             {
-                PanSearchBox.Visibility = Visibility.Collapsed;
-                PanContentList.Visibility = Visibility.Collapsed;
-                CardNoContent.Visibility = Visibility.Visible;
+                PanSearchBox.IsVisible = false;
+                PanContentList.IsVisible = false;
+                CardNoContent.IsVisible = true;
             }
 
             RefreshContent();
@@ -358,7 +358,7 @@ public partial class PageDownloadCompFavorites
 
                 bottomBarShownCount = newCount;
                 // 出现/跳跃动画
-                CardSelect.Visibility = Visibility.Visible;
+                CardSelect.IsVisible = true;
                 ModAnimation.AniStart(
                     new[]
                     {
@@ -384,7 +384,7 @@ public partial class PageDownloadCompFavorites
                         ModAnimation.AaOpacity(CardSelect, -CardSelect.Opacity, 90),
                         ModAnimation.AaTranslateY(CardSelect, -10 - TransSelect.Y, 90,
                             ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
-                        ModAnimation.AaCode(() => CardSelect.Visibility = Visibility.Collapsed, after: true)
+                        ModAnimation.AaCode(() => CardSelect.IsVisible = false, after: true)
                     }, "CompFavorites Sidebar");
             }
         }
@@ -394,13 +394,13 @@ public partial class PageDownloadCompFavorites
             bottomBarShownCount = newCount;
             if (selected)
             {
-                CardSelect.Visibility = Visibility.Visible;
+                CardSelect.IsVisible = true;
                 CardSelect.Opacity = 1d;
                 TransSelect.Y = -25;
             }
             else
             {
-                CardSelect.Visibility = Visibility.Collapsed;
+                CardSelect.IsVisible = false;
                 CardSelect.Opacity = 0d;
                 TransSelect.Y = -10;
             }

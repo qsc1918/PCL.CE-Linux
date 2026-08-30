@@ -3,12 +3,9 @@ using System.Collections.Concurrent;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
-using Avalonia.Interactivity;
-using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.Utils;
@@ -146,6 +143,8 @@ public static partial class ModAnimation
                         if (anim.timeFinished >= anim.timeTotal)
                         {
                             // 如果是去向颜色资源的动画，设置引用
+                            // [port] WPF SetResourceReference(obj, prop, key) → Avalonia obj.SetResourceReference(prop, key)：
+                            //       此处已是 Avalonia 2 参形式（obj=[0], prop=[1], key=[2]），无需修改。
                             if (anim.typeMain == AniType.Color &&
                                 !string.Equals(((dynamic)anim.obj)[2] as string, "", StringComparison.Ordinal))
                                 ((dynamic)anim.obj)[0]

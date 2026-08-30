@@ -22,8 +22,9 @@ internal static class SvgIconControlHelper
         SvgIcon svgIcon,
         bool useSvgIcon)
     {
-        legacyIcon.Visibility = useSvgIcon ? Visibility.Collapsed : Visibility.Visible;
-        svgIcon.Visibility = useSvgIcon ? Visibility.Visible : Visibility.Collapsed;
+        // [port] WPF Visibility → Avalonia IsVisible 布尔
+        legacyIcon.IsVisible = !useSvgIcon;
+        svgIcon.IsVisible = useSvgIcon;
     }
 
     internal static void ApplyIcon(Path legacyIcon, SvgIcon svgIcon, string? svgIconName)
@@ -55,7 +56,7 @@ internal static class SvgIconControlHelper
         int duration,
         string? animationKey = null)
     {
-        if (svgIcon.Visibility == Visibility.Visible)
+        if (svgIcon.IsVisible)
             svgIcon.AnimateIconBrushTo(
                 ResolveResourceColor(resourceKey),
                 TimeSpan.FromMilliseconds(duration),
@@ -68,7 +69,7 @@ internal static class SvgIconControlHelper
         int duration,
         string? animationKey = null)
     {
-        if (svgIcon.Visibility == Visibility.Visible)
+        if (svgIcon.IsVisible)
             svgIcon.AnimateIconBrushTo(
                 new NColor((Color)color),
                 TimeSpan.FromMilliseconds(duration),

@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using System.Text.Json.Serialization;
 using PCL.Network;
@@ -55,9 +53,9 @@ public partial class PageSetupFeedback
     private void PageOtherFeedback_Loaded(object sender, RoutedEventArgs e)
     {
         PageLoaderInit(Load, PanLoad, PanContent, PanInfo, Loader, _ => RefreshList());
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (_isLoaded)
             return;
         _isLoaded = true;
@@ -71,7 +69,7 @@ public partial class PageSetupFeedback
             {
                 Retries = 3,
                 UseBrowserUserAgent = true
-            }) as JsonArray; // 获取近期 200 条数据就够了
+            }) as JsonArray; // 鑾峰彇杩戞湡 200 鏉℃暟鎹氨澶熶簡
         if (list is null)
             throw new Exception(Lang.Text("Setup.Feedback.LoadFailed"));
         var res = new List<Feedback>();

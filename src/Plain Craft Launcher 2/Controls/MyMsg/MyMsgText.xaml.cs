@@ -65,7 +65,7 @@ public partial class MyMsgText
     private static void ConfigureSecondaryButton(MyButton button, string text)
     {
         button.Text = text;
-        button.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+        button.IsVisible = string.IsNullOrEmpty(text) ? false : true;
     }
 
     private void Load(object sender, RoutedEventArgs e)

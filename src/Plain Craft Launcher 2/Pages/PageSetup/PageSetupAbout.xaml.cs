@@ -14,7 +14,7 @@ namespace PCL;
 
 public partial class PageSetupAbout
 {
-    // 彩蛋
+    // 褰╄泲
     private int clickCount;
 
     private new bool isLoaded;
@@ -29,10 +29,10 @@ public partial class PageSetupAbout
 
     private void PageOtherAbout_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoaded)
             return;
         isLoaded = true;

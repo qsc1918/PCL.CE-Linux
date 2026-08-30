@@ -3,11 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
-using Avalonia.Media;
 using Microsoft.VisualBasic;
 using PCL.Core.App;
 using PCL.Core.Utils;
@@ -22,7 +19,7 @@ public partial class MyLocalCompItem
     {
         var currentName = Entry.compFile.FileName.Replace(".jar", "");
         var newestName = Entry.UpdateFile.FileName.Replace(".jar", "");
-        // 简化名称对比
+        // 绠€鍖栧悕绉板姣?
         var currentSegs = currentName.Split('-').ToList();
         var newestSegs = newestName.Split('-').ToList();
         var shortened = false;
@@ -39,7 +36,7 @@ public partial class MyLocalCompItem
         {
             currentName = currentSegs.Join("-");
             newestName = newestSegs.Join("-");
-            Entry._Version = currentName; // 使用网络信息作为显示的版本号
+            Entry._Version = currentName; // 浣跨敤缃戠粶淇℃伅浣滀负鏄剧ず鐨勭増鏈彿
         }
 
         return
@@ -50,7 +47,7 @@ public partial class MyLocalCompItem
     {
         Dispatcher.BeginInvoke(new Func<Task>(async () =>
         {
-            // 更新
+            // 鏇存柊
             if (Entry.CanUpdate)
             {
                 BtnUpdate.Visibility = Visibility.Visible;
@@ -61,10 +58,10 @@ public partial class MyLocalCompItem
                 BtnUpdate.Visibility = Visibility.Collapsed;
             }
 
-            // 标题与描述
+            // 鏍囬涓庢弿杩?
             string descFileName;
             if (Entry.IsFolder)
-                // 文件夹项的特殊处理
+                // 鏂囦欢澶归」鐨勭壒娈婂鐞?
                 descFileName = Entry.Name;
             else
                 switch (Entry.State)
@@ -93,17 +90,17 @@ public partial class MyLocalCompItem
             var compTemp = Entry.Comp;
             if (Entry.IsFolder)
             {
-                // 文件夹项的特殊显示
+                // 鏂囦欢澶归」鐨勭壒娈婃樉绀?
                 Title = Entry.Name;
                 newDescription = Entry.Description;
             }
             else if (Config.Download.Comp.UiCompNameSolution == 1)
             {
-                // 标题显示文件名，详情显示译名
-                // 标题
+                // 鏍囬鏄剧ず鏂囦欢鍚嶏紝璇︽儏鏄剧ず璇戝悕
+                // 鏍囬
                 Title = descFileName;
                 SubTitle = "";
-                // 描述
+                // 鎻忚堪
                 if (Entry.Comp is null)
                 {
                     newDescription = Entry.Name;
@@ -120,8 +117,8 @@ public partial class MyLocalCompItem
             }
             else
             {
-                // 标题显示译名，详情显示文件名
-                // 标题
+                // 鏍囬鏄剧ず璇戝悕锛岃鎯呮樉绀烘枃浠跺悕
+                // 鏍囬
                 if (Entry.Comp is null)
                 {
                     Title = Entry.Name;
@@ -134,7 +131,7 @@ public partial class MyLocalCompItem
                     SubTitle = titles.Value + (Entry.Version is null ? "" : "  |  " + Entry.Version);
                 }
 
-                // 描述
+                // 鎻忚堪
                 newDescription = descFileName;
             }
 
@@ -150,10 +147,10 @@ public partial class MyLocalCompItem
             else
                 LabTitle.SetResourceReference(TextBlock.ForegroundProperty,
                     Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine ? "ColorBrush1" : "ColorBrushGray4");
-            // 主 Logo
+            // 涓?Logo
             Logo = Entry.GetLogo();
 
-            // 图标右下角的 Logo
+            // 鍥炬爣鍙充笅瑙掔殑 Logo
             if (Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine)
             {
                 if (imgState is not null)
@@ -189,9 +186,9 @@ public partial class MyLocalCompItem
                 imgState.Source = new MyBitmap(ModBase.pathImage + $"Icons/{Entry.State}.png");
             }
 
-            // 标签
+            // 鏍囩
             if (Entry.IsFolder)
-                // 为文件夹添加标签
+                // 涓烘枃浠跺す娣诲姞鏍囩
                 Tags = new List<string> { Lang.Text("Instance.Resource.Item.FolderTag") };
             else if (Entry.Comp is not null) Tags = Entry.Comp.Tags;
         }));
@@ -200,7 +197,7 @@ public partial class MyLocalCompItem
     public void RefreshColor(object sender, EventArgs e)
     {
         InitLate(sender, e);
-        // 触发颜色动画
+        // 瑙﹀彂棰滆壊鍔ㄧ敾
         var time = IsMouseOver ? 120 : 180;
         var ani = new List<ModAnimation.AniData>();
         // ButtonStack
@@ -257,7 +254,7 @@ public partial class MyLocalCompItem
         ModAnimation.AniStart(ani, "LocalModItem Color " + Uuid);
     }
 
-    // 触发虚拟化内容
+    // 瑙﹀彂铏氭嫙鍖栧唴瀹?
     private void InitLate(object sender, EventArgs e)
     {
         if (buttonHandler is not null)
@@ -267,7 +264,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 显示更新日志
+    // 鏄剧ず鏇存柊鏃ュ織
     private void BtnUpdate_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
         e.Handled = true;
@@ -304,7 +301,7 @@ public partial class MyLocalCompItem
             userSummary: Lang.Text("Instance.Resource.Item.OpenChangelogFailed"));
     }
 
-    // 触发更新
+    // 瑙﹀彂鏇存柊
     private void BtnUpdate_Click(object sender, EventArgs e)
     {
         switch (ModMain.MyMsgBox(
@@ -312,7 +309,7 @@ public partial class MyLocalCompItem
                     Lang.Text("Instance.Resource.Item.UpdateConfirm.Title"),
                     Lang.Text("Instance.Resource.Item.Update"), Lang.Text("Instance.Resource.Item.ViewChangelog"), Lang.Text("Common.Action.Cancel")))
         {
-            case 1: // 更新
+            case 1: // 鏇存柊
             {
                 switch (Entry.Comp.Type)
                 {
@@ -344,26 +341,26 @@ public partial class MyLocalCompItem
 
                 break;
             }
-            case 2: // 查看更新日志
+            case 2: // 鏌ョ湅鏇存柊鏃ュ織
             {
                 ShowUpdateLog();
                 break;
             }
-            case 3: // 取消
+            case 3: // 鍙栨秷
             {
                 break;
             }
         }
     }
 
-    // 自适应（#4465）
+    // 鑷€傚簲锛?4465锛?
     private void PanTitle_SizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
     {
-        // 0：全部舒展：Auto - Auto - (Auto) - 1*
-        // 1：压缩 Subtitle：Auto - 1* - (Auto) - 0
-        // 2：继续压缩 Title：1* - 0 - (Auto) - 0
+        // 0锛氬叏閮ㄨ垝灞曪細Auto - Auto - (Auto) - 1*
+        // 1锛氬帇缂?Subtitle锛欰uto - 1* - (Auto) - 0
+        // 2锛氱户缁帇缂?Title锛?* - 0 - (Auto) - 0
         var currentCompressLevel =
-            ColumnExtend.Width.IsStar ? 0 : ColumnTitle.Width.IsStar ? 2 : 1; // Subtitle 可能是 Collapsed
+            ColumnExtend.Width.IsStar ? 0 : ColumnTitle.Width.IsStar ? 2 : 1; // Subtitle 鍙兘鏄?Collapsed
         var newCompressLevel = default(int);
         switch (currentCompressLevel)
         {
@@ -402,7 +399,7 @@ public partial class MyLocalCompItem
         {
             case 0:
             {
-                // 全部舒展：Auto - Auto - (Auto) - 1*
+                // 鍏ㄩ儴鑸掑睍锛欰uto - Auto - (Auto) - 1*
                 ColumnTitle.Width = GridLength.Auto;
                 ColumnSubtitle.Width = GridLength.Auto;
                 ColumnExtend.Width = new GridLength(1d, GridUnitType.Star);
@@ -410,7 +407,7 @@ public partial class MyLocalCompItem
             }
             case 1:
             {
-                // 压缩 Subtitle：Auto - 1* - (Auto) - 0
+                // 鍘嬬缉 Subtitle锛欰uto - 1* - (Auto) - 0
                 ColumnTitle.Width = GridLength.Auto;
                 ColumnSubtitle.Width = new GridLength(1d, GridUnitType.Star);
                 ColumnExtend.Width = new GridLength(0d, GridUnitType.Pixel);
@@ -418,7 +415,7 @@ public partial class MyLocalCompItem
             }
             case 2:
             {
-                // 继续压缩 Title：1* - 0 - (Auto) - 0
+                // 缁х画鍘嬬缉 Title锛?* - 0 - (Auto) - 0
                 ColumnTitle.Width = new GridLength(1d, GridUnitType.Star);
                 ColumnSubtitle.Width = new GridLength(0d, GridUnitType.Pixel);
                 ColumnExtend.Width = new GridLength(0d, GridUnitType.Pixel);
@@ -427,7 +424,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    #region 基础属性
+    #region 鍩虹灞炴€?
 
     public int Uuid = ModBase.GetUuid();
 
@@ -438,7 +435,7 @@ public partial class MyLocalCompItem
         set => PathLogo.Source = value;
     }
 
-    // 标题
+    // 鏍囬
     public string Title
     {
         get => field;
@@ -472,7 +469,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 副标题
+    // 鍓爣棰?
     public string SubTitle
     {
         get => LabSubtitle?.Text ?? "";
@@ -485,7 +482,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 描述
+    // 鎻忚堪
     public string Description
     {
         get => LabInfo.Text;
@@ -512,7 +509,6 @@ public partial class MyLocalCompItem
                     Padding = new Thickness(3d, 1d, 3d, 1d),
                     CornerRadius = new CornerRadius(3d),
                     Margin = new Thickness(0d, 0d, 3d, 0d),
-                    SnapsToDevicePixels = true,
                     UseLayoutRounding = false
                 };
                 var tagTextBlock = new TextBlock
@@ -529,7 +525,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 相关联的 Mod
+    // 鐩稿叧鑱旂殑 Mod
     public ModLocalComp.LocalCompFile Entry
     {
         get => (ModLocalComp.LocalCompFile)Tag;
@@ -538,9 +534,9 @@ public partial class MyLocalCompItem
 
     #endregion
 
-    #region 点击与勾选
+    #region 鐐瑰嚮涓庡嬀閫?
 
-    // 触发点击事件
+    // 瑙﹀彂鐐瑰嚮浜嬩欢
     public event ClickEventHandler? Click;
 
     public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
@@ -575,11 +571,11 @@ public partial class MyLocalCompItem
             Click?.Invoke(sender, e);
             if (e.Handled)
                 return;
-            ModBase.Log("[Control] 按下本地 Mod 列表项：" + LabTitle.Text);
+            ModBase.Log("[Control] 鎸変笅鏈湴 Mod 鍒楄〃椤癸細" + LabTitle.Text);
         }
     }
 
-    // 鼠标点击判定
+    // 榧犳爣鐐瑰嚮鍒ゅ畾
     private bool isMouseDown;
 
     private void Button_MouseDown(object sender, MouseButtonEventArgs e)
@@ -598,7 +594,7 @@ public partial class MyLocalCompItem
             buttonStack.IsHitTestVisible = true;
     }
 
-    // 滑动选中
+    // 婊戝姩閫変腑
     public class SwipeSelect
     {
         public int Start { get; set; }
@@ -631,8 +627,8 @@ public partial class MyLocalCompItem
     private void Button_MouseSwipeStart(object sender, object e)
     {
         if (Parent is null)
-            return; // Mod 可能已被删除（#3824）
-        // 开始滑动
+            return; // Mod 鍙兘宸茶鍒犻櫎锛?3824锛?
+        // 寮€濮嬫粦鍔?
         var index = ((StackPanel)Parent).Children.IndexOf(this);
         CurrentSwipe.Start = index;
         CurrentSwipe.End = index;
@@ -643,22 +639,22 @@ public partial class MyLocalCompItem
     private void Button_MouseSwipe(object sender, object e)
     {
         if (Parent is null)
-            return; // Mod 可能已被删除（#3824）
-        // 结束滑动
+            return; // Mod 鍙兘宸茶鍒犻櫎锛?3824锛?
+        // 缁撴潫婊戝姩
         if (Mouse.LeftButton != MouseButtonState.Pressed || !(Mouse.DirectlyOver is MyLocalCompItem)) // #5771
         {
             CurrentSwipe.Swiping = false;
             return;
         }
 
-        // 计算滑动范围
+        // 璁＄畻婊戝姩鑼冨洿
         var elements = ((StackPanel)Parent).Children;
         var index = elements.IndexOf(this);
         CurrentSwipe.Start =
             (int)Math.Round(ModBase.MathClamp(Math.Min(CurrentSwipe.Start, index), 0d, elements.Count - 1));
         CurrentSwipe.End =
             (int)Math.Round(ModBase.MathClamp(Math.Max(CurrentSwipe.End, index), 0d, elements.Count - 1));
-        // 勾选所有范围中的项
+        // 鍕鹃€夋墍鏈夎寖鍥翠腑鐨勯」
         if (CurrentSwipe.Start == CurrentSwipe.End)
             return;
         for (int i = CurrentSwipe.Start, loopTo = CurrentSwipe.End; i <= loopTo; i++)
@@ -669,7 +665,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 勾选状态
+    // 鍕鹃€夌姸鎬?
     public event CheckEventHandler? Check;
 
     public delegate void CheckEventHandler(object sender, ModBase.RouteEventArgs e);
@@ -685,7 +681,7 @@ public partial class MyLocalCompItem
         {
             try
             {
-                // 触发属性值修改
+                // 瑙﹀彂灞炴€у€间慨鏀?
                 var rawValue = field;
                 if (value == field)
                     return;
@@ -709,13 +705,13 @@ public partial class MyLocalCompItem
                         return;
                 }
 
-                // 更改动画
+                // 鏇存敼鍔ㄧ敾
                 if (this.IsVisibleInWindow(ModMain.frmMain))
                 {
                     var anim = new List<ModAnimation.AniData>();
                     if (Checked)
                     {
-                        // 由无变有
+                        // 鐢辨棤鍙樻湁
                         var delta = 32d - RectCheck.Bounds.Height;
                         anim.Add(ModAnimation.AaHeight(RectCheck, delta * 0.4d, 200,
                             ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
@@ -731,7 +727,7 @@ public partial class MyLocalCompItem
                     }
                     else
                     {
-                        // 由有变无
+                        // 鐢辨湁鍙樻棤
                         anim.Add(ModAnimation.AaHeight(RectCheck, -RectCheck.Bounds.Height, 120,
                             ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)));
                         anim.Add(ModAnimation.AaOpacity(RectCheck, -RectCheck.Opacity, 70, 40));
@@ -744,7 +740,7 @@ public partial class MyLocalCompItem
                 }
                 else
                 {
-                    // 不在窗口上时直接设置
+                    // 涓嶅湪绐楀彛涓婃椂鐩存帴璁剧疆
                     RectCheck.VerticalAlignment = VerticalAlignment.Center;
                     RectCheck.Margin = new Thickness(-3, 0d, 0d, 0d);
                     if (Checked)
@@ -771,19 +767,19 @@ public partial class MyLocalCompItem
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, "设置 Checked 失败");
+                ModBase.Log(ex, "璁剧疆 Checked 澶辫触");
             }
         }
     }
 
     #endregion
 
-    #region 后加载内容
+    #region 鍚庡姞杞藉唴瀹?
 
-    // 右下角状态指示图标
+    // 鍙充笅瑙掔姸鎬佹寚绀哄浘鏍?
     private Image imgState;
 
-    // 指向背景
+    // 鎸囧悜鑳屾櫙
     public Border RectBack
     {
         get
@@ -797,7 +793,6 @@ public partial class MyLocalCompItem
                     RenderTransform = new ScaleTransform(0.8d, 0.8d),
                     RenderTransformOrigin = new Point(0.5d, 0.5d),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
-                    SnapsToDevicePixels = true,
                     IsHitTestVisible = false,
                     Opacity = 0d
                 };
@@ -816,7 +811,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 按钮
+    // 鎸夐挳
     public Action<MyLocalCompItem, EventArgs> buttonHandler;
     public Control buttonStack;
     public IEnumerable<MyIconButton> Buttons
@@ -825,7 +820,7 @@ public partial class MyLocalCompItem
         set
         {
             field = value;
-            // 移除原 Stack
+            // 绉婚櫎鍘?Stack
             if (buttonStack is not null)
             {
                 Children.Remove(buttonStack);
@@ -834,12 +829,11 @@ public partial class MyLocalCompItem
 
             if (!value.Any())
                 return;
-            // 添加新 Stack
+            // 娣诲姞鏂?Stack
             buttonStack = new StackPanel
             {
                 Opacity = 0d,
                 Margin = new Thickness(0d, 0d, 5d, 0d),
-                SnapsToDevicePixels = false,
                 Orientation = (Orientation)Avalonia.Forms.Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -847,7 +841,7 @@ public partial class MyLocalCompItem
             };
             SetColumnSpan(buttonStack, 10);
             SetRowSpan(buttonStack, 10);
-            // 构造按钮
+            // 鏋勯€犳寜閽?
             foreach (var Btn in value)
             {
                 if (Btn.Height.Equals(double.NaN))
@@ -861,7 +855,7 @@ public partial class MyLocalCompItem
         }
     }
 
-    // 勾选条
+    // 鍕鹃€夋潯
     public Border RectCheck
     {
         get
@@ -876,7 +870,6 @@ public partial class MyLocalCompItem
                     VerticalAlignment = Checked ? VerticalAlignment.Stretch : VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     UseLayoutRounding = false,
-                    SnapsToDevicePixels = false,
                     Margin = Checked ? new Thickness(-3, 6d, 0d, 6d) : new Thickness(-3, 0d, 0d, 0d)
                 };
                 field.SetResourceReference(Border.BackgroundProperty, "ColorBrush3");

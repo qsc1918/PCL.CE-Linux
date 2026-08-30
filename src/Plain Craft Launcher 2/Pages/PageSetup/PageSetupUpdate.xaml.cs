@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.Utils;
@@ -41,19 +39,19 @@ public partial class PageSetupUpdate
     {
         try
         {
-            // 修复：使用 dynamic 绕过命名空间重名导致的编译期类型冲突，
-            // 或者你可以尝试替换为 PCL.Core.App.SemVer.Parse(ModBase.versionBaseName)
+            // 淇锛氫娇鐢?dynamic 缁曡繃鍛藉悕绌洪棿閲嶅悕瀵艰嚧鐨勭紪璇戞湡绫诲瀷鍐茬獊锛?
+            // 鎴栬€呬綘鍙互灏濊瘯鏇挎崲涓?PCL.Core.App.SemVer.Parse(ModBase.versionBaseName)
             if (await UpdateManager.remoteServer.IsLatestAsync(
                     UpdateManager.IsCurrentVersionBeta ? UpdateChannel.beta : UpdateChannel.stable,
                     SystemInfo.IsArm64System ? UpdateArch.arm64 : UpdateArch.x64,
                     SemVer.Parse(ModBase.versionBaseName),
                     ModBase.versionCode))
             {
-                ModBase.Log("[Update] 已是最新版本");
+                ModBase.Log("[Update] 宸叉槸鏈€鏂扮増鏈?);
                 return UpdateStatus.Latest;
             }
 
-            ModBase.Log("[Update] 有可用的新版本");
+            ModBase.Log("[Update] 鏈夊彲鐢ㄧ殑鏂扮増鏈?);
             return UpdateStatus.Available;
         }
         catch (Exception ex)
@@ -69,7 +67,7 @@ public partial class PageSetupUpdate
 
     public async void CheckUpdate()
     {
-        ModBase.Log("[Update] 开始检查更新");
+        ModBase.Log("[Update] 寮€濮嬫鏌ユ洿鏂?);
         CardUpdate.Visibility = Visibility.Collapsed;
         CardCheck.Visibility = Visibility.Visible;
         TextCurrentDesc.Text = Lang.Text("Setup.Update.Checking");
@@ -104,12 +102,12 @@ public partial class PageSetupUpdate
                     if (checkUpdateEx is not null)
                         ModBase.Log(
                             checkUpdateEx,
-                            "[Update] 检查更新失败",
+                            "[Update] 妫€鏌ユ洿鏂板け璐?,
                             ModBase.LogLevel.Msgbox,
                             userSummary: Lang.Text("Update.Check.Failed"));
                     else
                         ModBase.Log(
-                            "[Update] 检查更新失败",
+                            "[Update] 妫€鏌ユ洿鏂板け璐?,
                             ModBase.LogLevel.Msgbox,
                             userSummary: Lang.Text("Update.Check.Failed"));
                     return;
@@ -166,7 +164,7 @@ public partial class PageSetupUpdate
     private void BtnUpdate_Click(object sender, MouseButtonEventArgs e)
     {
         if (UpdateManager.isUpdateWaitingRestart) UpdateManager.UpdateRestart(true);
-        // 开始更新流程
+        // 寮€濮嬫洿鏂版祦绋?
         UpdateManager.UpdateStart(UpdateEnums.UpdateType.UpdateNow);
     }
 

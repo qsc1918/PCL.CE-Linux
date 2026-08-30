@@ -4,9 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Threading;
 using PCL.Core.App;
@@ -28,7 +26,7 @@ public partial class PageSetupLaunch
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
         RefreshRam(false);
         if (ModInstanceList.McMcInstanceSelected is null)
@@ -36,7 +34,7 @@ public partial class PageSetupLaunch
         else
             BtnSwitch.Visibility = Visibility.Visible;
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoad)
             return;
         isLoad = true;
@@ -45,7 +43,7 @@ public partial class PageSetupLaunch
         Reload();
         ModAnimation.AniControlEnabled -= 1;
 
-        // 内存自动刷新
+        // 鍐呭瓨鑷姩鍒锋柊
         var timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 1) };
         timer.Tick += (_, _) => RefreshRam();
         timer.Start();
@@ -56,7 +54,7 @@ public partial class PageSetupLaunch
     {
         try
         {
-            // 启动参数
+            // 鍚姩鍙傛暟
             TextArgumentTitle.Text = Config.Launch.Title;
             TextArgumentInfo.Text = Config.Launch.TypeInfo;
             ComboArgumentIndieV2.SelectedIndex = Config.Launch.IndieSolutionV2;
@@ -69,12 +67,12 @@ public partial class PageSetupLaunch
             ComboPreferredIpStack.SelectedIndex = (int)Config.Launch.PreferredIpStack;
             WindowTypeUIRefresh();
 
-            // 游戏内存
+            // 娓告垙鍐呭瓨
             ((MyRadioBox)FindName("RadioRamType" + Config.Launch.MemoryAllocationMode)).Checked = true;
             SliderRamCustom.Value = Config.Launch.CustomMemorySize;
             RamType(Config.Launch.MemoryAllocationMode);
 
-            // 高级设置
+            // 楂樼骇璁剧疆
             ComboAdvanceRenderer.SelectedIndex = Config.Launch.Renderer;
             TextAdvanceJvm.Text = Config.Launch.JvmArgs;
             TextAdvanceGame.Text = Config.Launch.GameArgs;
@@ -117,13 +115,13 @@ public partial class PageSetupLaunch
         }
     }
 
-    // 初始化
+    // 鍒濆鍖?
     public void Reset()
     {
         try
         {
             Config.Launch.Reset();
-            ModBase.Log("[Setup] 已初始化启动设置");
+            ModBase.Log("[Setup] 宸插垵濮嬪寲鍚姩璁剧疆");
             HintService.Hint(Lang.Text("Setup.Launch.Initialized"), HintType.Success, false);
         }
         catch (Exception ex)
@@ -138,7 +136,7 @@ public partial class PageSetupLaunch
         Reload();
     }
 
-    // 将控件改变路由到设置改变
+    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
     private void RadioBoxChange(object senderRaw, ModBase.RouteEventArgs e)
     {
         var sender = (MyRadioBox)senderRaw;
@@ -190,7 +188,7 @@ public partial class PageSetupLaunch
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value);
 
-    // 切换到实例独立设置
+    // 鍒囨崲鍒板疄渚嬬嫭绔嬭缃?
     private void BtnSwitch_Click(object sender, MouseButtonEventArgs e)
     {
         ModInstanceList.McMcInstanceSelected.Load();
@@ -210,7 +208,7 @@ public partial class PageSetupLaunch
         ComboArgumentIndie_SelectionChanged(sender, e);
     }
 
-    #region 游戏内存
+    #region 娓告垙鍐呭瓨
 
     public void RamType(int type)
     {
@@ -220,14 +218,14 @@ public partial class PageSetupLaunch
     }
 
     /// <summary>
-    ///     刷新 UI 上的 RAM 显示。
+    ///     鍒锋柊 UI 涓婄殑 RAM 鏄剧ず銆?
     /// </summary>
     public void RefreshRam(bool showAnim)
     {
         if (LabRamGame is null || LabRamUsed is null || ModMain.frmMain.pageCurrent != FormMain.PageType.Setup ||
             ModMain.frmSetupLeft.pageID != FormMain.PageSubType.SetupLaunch)
             return;
-        // 获取内存情况
+        // 鑾峰彇鍐呭瓨鎯呭喌
         var ramGame = Math.Round(GetRam(ModInstanceList.McMcInstanceSelected, false), 5);
         var phyRam = KernelInterop.GetPhysicalMemoryBytes();
         var ramTotal = Math.Round((double)phyRam.Total / 1024 / 1024 / 1024, 1);
@@ -235,7 +233,7 @@ public partial class PageSetupLaunch
         var ramGameActual = Math.Round(Math.Min(ramGame, ramAvailable), 5);
         var ramUsed = Math.Round(ramTotal - ramAvailable, 5);
         var ramEmpty = Math.Round(ModBase.MathClamp(ramTotal - ramUsed - ramGame, 0d, 1000d), 1);
-        // 设置最大可用内存
+        // 璁剧疆鏈€澶у彲鐢ㄥ唴瀛?
         if (ramTotal <= 1.5d)
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Max(Math.Floor((ramTotal - 0.3d) / 0.1d), 1d));
         else if (ramTotal <= 8d)
@@ -244,7 +242,7 @@ public partial class PageSetupLaunch
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Floor((ramTotal - 8d) / 1d) + 25d);
         else
             SliderRamCustom.MaxValue = (int)Math.Round(Math.Floor((ramTotal - 16d) / 2d) + 33d);
-        // 设置文本
+        // 璁剧疆鏂囨湰
         LabRamGame.Text = $"{Lang.Number(ramGame, "N1")} GiB{(ramGame != ramGameActual ? $" ({Lang.Text("Setup.Launch.Memory.AvailableSuffix", Lang.Number(ramGameActual, "N1"))})" : "")}";
         LabRamUsed.Text = $"{Lang.Number(ramUsed, "N1")} GiB";
         LabRamTotal.Text = $" / {Lang.Number(ramTotal, "N1")} GiB";
@@ -255,7 +253,7 @@ public partial class PageSetupLaunch
         HintRamTooHigh.Visibility = ramGame / ramTotal > 0.75d ? Visibility.Visible : Visibility.Collapsed;
         if (showAnim)
         {
-            // 宽度动画
+            // 瀹藉害鍔ㄧ敾
             ModAnimation.AniStart(
                 new[]
                 {
@@ -269,7 +267,7 @@ public partial class PageSetupLaunch
         }
         else
         {
-            // 宽度设置
+            // 瀹藉害璁剧疆
             ColumnRamUsed.Width = new GridLength(ramUsed, GridUnitType.Star);
             ColumnRamGame.Width = new GridLength(ramGameActual, GridUnitType.Star);
             ColumnRamEmpty.Width = new GridLength(ramEmpty, GridUnitType.Star);
@@ -285,11 +283,11 @@ public partial class PageSetupLaunch
     private int ramTextRight = 1;
 
     /// <summary>
-    ///     刷新 UI 上的文本位置。
+    ///     鍒锋柊 UI 涓婄殑鏂囨湰浣嶇疆銆?
     /// </summary>
     private void RefreshRamText()
     {
-        // 获取宽度信息
+        // 鑾峰彇瀹藉害淇℃伅
         var rectUsedWidth = RectRamUsed.Bounds.Width;
         var totalWidth = PanRamDisplay.Bounds.Width;
         var labGameWidth = LabRamGame.Bounds.Width;
@@ -297,16 +295,16 @@ public partial class PageSetupLaunch
         var labTotalWidth = LabRamTotal.Bounds.Width;
         var labGameTitleWidth = LabRamGameTitle.Bounds.Width;
         var labUsedTitleWidth = LabRamUsedTitle.Bounds.Width;
-        // 左侧
+        // 宸︿晶
         int left;
         if (rectUsedWidth - 30d < labUsedWidth || rectUsedWidth - 30d < labUsedTitleWidth)
-            // 全写不下了
+            // 鍏ㄥ啓涓嶄笅浜?
             left = 0;
         else if (rectUsedWidth - 25d < labUsedWidth + labTotalWidth)
-            // 显示不下完整数据
+            // 鏄剧ず涓嶄笅瀹屾暣鏁版嵁
             left = 1;
         else
-            // 正常
+            // 姝ｅ父
             left = 2;
         if (ramTextLeft != left)
         {
@@ -349,20 +347,20 @@ public partial class PageSetupLaunch
             }
         }
 
-        // 右侧
+        // 鍙充晶
         int right;
         if (totalWidth < labGameWidth + 2d + rectUsedWidth || totalWidth < labGameTitleWidth + 2d + rectUsedWidth)
-            // 挤到最右边
+            // 鎸ゅ埌鏈€鍙宠竟
             right = 0;
         else
-            // 正常情况
+            // 姝ｅ父鎯呭喌
             right = 1;
         if (right == 0)
         {
             if (ModAnimation.AniControlEnabled == 0 &&
                 (ramTextRight != right || ModAnimation.AniIsRun("SetupLaunch Ram TextRight")))
             {
-                // 需要动画
+                // 闇€瑕佸姩鐢?
                 ModAnimation.AniStart(
                     new[]
                     {
@@ -374,7 +372,7 @@ public partial class PageSetupLaunch
             }
             else
             {
-                // 不需要动画
+                // 涓嶉渶瑕佸姩鐢?
                 ModAnimation.AniStop("SetupLaunch Ram TextRight");
                 LabRamGame.Margin = new Thickness(totalWidth - labGameWidth, 3d, 0d, 0d);
                 LabRamGameTitle.Margin = new Thickness(totalWidth - labGameTitleWidth, 0d, 0d, 5d);
@@ -383,7 +381,7 @@ public partial class PageSetupLaunch
         else if (ModAnimation.AniControlEnabled == 0 &&
                  (ramTextRight != right || ModAnimation.AniIsRun("SetupLaunch Ram TextRight")))
         {
-            // 需要动画
+            // 闇€瑕佸姩鐢?
             ModAnimation.AniStart(
                 new[]
                 {
@@ -395,7 +393,7 @@ public partial class PageSetupLaunch
         }
         else
         {
-            // 不需要动画
+            // 涓嶉渶瑕佸姩鐢?
             ModAnimation.AniStop("SetupLaunch Ram TextRight");
             LabRamGame.Margin = new Thickness(2d + rectUsedWidth, 3d, 0d, 0d);
             LabRamGameTitle.Margin = new Thickness(2d + rectUsedWidth, 0d, 0d, 5d);
@@ -405,30 +403,30 @@ public partial class PageSetupLaunch
     }
 
     /// <summary>
-    ///     获取当前设置的 RAM 值。单位为 GB。
+    ///     鑾峰彇褰撳墠璁剧疆鐨?RAM 鍊笺€傚崟浣嶄负 GB銆?
     /// </summary>
     public static double GetRam(McInstance version, bool useVersionJavaSetup, bool? is32BitJava = default)
     {
         // ------------------------------------------
-        // 修改下方代码时需要一并修改 PageInstanceSetup
+        // 淇敼涓嬫柟浠ｇ爜鏃堕渶瑕佷竴骞朵慨鏀?PageInstanceSetup
         // ------------------------------------------
 
         var ramGive = default(double);
         if (Config.Launch.MemoryAllocationMode == 0)
         {
-            // 自动配置
+            // 鑷姩閰嶇疆
             var ramAvailable =
                 Math.Round((double)KernelInterop.GetAvailablePhysicalMemoryBytes() / 1024 / 1024 / 1024 * 10) / 10;
-            // 确定需求的内存值
-            double ramMininum; // 无论如何也需要保证的最低限度内存
-            double ramTarget1; // 估计能勉强带动了的内存
-            double ramTarget2; // 估计没啥问题了的内存
-            double ramTarget3; // 放一百万个材质和 Mod 和光影需要的内存
+            // 纭畾闇€姹傜殑鍐呭瓨鍊?
+            double ramMininum; // 鏃犺濡備綍涔熼渶瑕佷繚璇佺殑鏈€浣庨檺搴﹀唴瀛?
+            double ramTarget1; // 浼拌鑳藉媺寮哄甫鍔ㄤ簡鐨勫唴瀛?
+            double ramTarget2; // 浼拌娌″暐闂浜嗙殑鍐呭瓨
+            double ramTarget3; // 鏀句竴鐧句竾涓潗璐ㄥ拰 Mod 鍜屽厜褰遍渶瑕佺殑鍐呭瓨
             if (version is not null && !version.IsLoaded)
                 version.Load();
             if (version is not null && version.Modable)
             {
-                // 可安装 Mod 的实例
+                // 鍙畨瑁?Mod 鐨勫疄渚?
                 var modDir = new DirectoryInfo(version.PathIndie + @"mods\");
                 var modCount = modDir.Exists ? modDir.GetFiles().Length : 0;
                 ramMininum = 0.5d + modCount / 150d;
@@ -438,7 +436,7 @@ public partial class PageSetupLaunch
             }
             else if (version is not null && version.Info.HasOptiFine)
             {
-                // OptiFine 实例
+                // OptiFine 瀹炰緥
                 ramMininum = 0.5d;
                 ramTarget1 = 1.5d;
                 ramTarget2 = 3d;
@@ -446,7 +444,7 @@ public partial class PageSetupLaunch
             }
             else
             {
-                // 普通实例
+                // 鏅€氬疄渚?
                 ramMininum = 0.5d;
                 ramTarget1 = 1.5d;
                 ramTarget2 = 2.5d;
@@ -468,12 +466,12 @@ public partial class PageSetupLaunch
                     break;
             }
 
-            // 不低于最低值
+            // 涓嶄綆浜庢渶浣庡€?
             ramGive = Math.Round(Math.Max(ramGive, ramMininum), 1);
         }
         else
         {
-            // 手动配置
+            // 鎵嬪姩閰嶇疆
             var value = Config.Launch.CustomMemorySize;
             ramGive = value switch
             {
@@ -484,7 +482,7 @@ public partial class PageSetupLaunch
             };
         }
 
-        // 若使用 32 位 Java，则限制为 1G
+        // 鑻ヤ娇鐢?32 浣?Java锛屽垯闄愬埗涓?1G
         if (is32BitJava ?? !ModJava.IsGameSet64BitJava(useVersionJavaSetup ? version : null))
             ramGive = Math.Min(1d, ramGive);
         return ramGive;
@@ -492,7 +490,7 @@ public partial class PageSetupLaunch
 
     #endregion
 
-    #region 其他选项
+    #region 鍏朵粬閫夐」
 
     private void WindowTypeUIRefresh()
     {
@@ -514,7 +512,7 @@ public partial class PageSetupLaunch
         }
     }
 
-    // 可见性选择直接关闭的警告
+    // 鍙鎬ч€夋嫨鐩存帴鍏抽棴鐨勮鍛?
     private void ComboArgumentVisibie_SelectionChanged(object sender, SelectionChangedEventArgs sizeChangedEventArgs)
     {
         ComboChange(sender, sizeChangedEventArgs);
@@ -529,7 +527,7 @@ public partial class PageSetupLaunch
                 ComboArgumentVisibie.SelectedItem = sizeChangedEventArgs.RemovedItems[0];
     }
 
-    // 实例隔离提示
+    // 瀹炰緥闅旂鎻愮ず
     private void ComboArgumentIndie_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
@@ -539,7 +537,7 @@ public partial class PageSetupLaunch
 
     #endregion
 
-    #region 高级设置
+    #region 楂樼骇璁剧疆
 
     private void TextAdvanceRun_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -547,7 +545,7 @@ public partial class PageSetupLaunch
             string.IsNullOrEmpty(TextAdvanceRun.Text) ? Visibility.Collapsed : Visibility.Visible;
     }
 
-    // JVM 参数重设
+    // JVM 鍙傛暟閲嶈
     private void TextAdvanceJvm_TextChanged(object sender, TextChangedEventArgs e)
     {
         BtnAdvanceJvmReset.Visibility =

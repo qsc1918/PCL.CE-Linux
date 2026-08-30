@@ -70,7 +70,7 @@ public partial class MyMsgSelect
     private void ConfigureSecondaryButton(string text)
     {
         Btn2.Text = text;
-        Btn2.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+        Btn2.IsVisible = string.IsNullOrEmpty(text) ? false : true;
     }
 
     private void InitializeSelectionList(object content)

@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.App.Localization;
@@ -25,10 +23,10 @@ public partial class PageSetupGameManage
 
     private void PageSetupSystem_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -55,7 +53,7 @@ public partial class PageSetupGameManage
 
     public void Reload()
     {
-        // 下载
+        // 涓嬭浇
         SliderDownloadThread.Value = Config.Download.ThreadLimit;
         SliderDownloadSpeed.Value = Config.Download.SpeedLimit;
         ComboDownloadSource.SelectedIndex = Config.Download.FileSource;
@@ -63,7 +61,7 @@ public partial class PageSetupGameManage
         CheckDownloadAutoSelectVersion.Checked = Config.Download.AutoSelectInstance;
         CheckFixAuthlib.Checked = Config.Download.FixAuthLib;
 
-        // Mod 与整合包
+        // Mod 涓庢暣鍚堝寘
         ComboDownloadTranslateV2.SelectedIndex = Config.Download.Comp.NameFormatV2;
         ComboDownloadMod.SelectedIndex = Config.Download.Comp.CompSourceSolution;
         ComboModLocalNameStyle.SelectedIndex = Config.Download.Comp.UiCompNameSolution;
@@ -72,22 +70,22 @@ public partial class PageSetupGameManage
         CheckDownloadAutoInstallDependencies.Checked = Config.Download.Comp.AutoInstallDependencies;
         CheckDownloadClipboard.Checked = Config.Download.Comp.ReadClipboard;
 
-        // Minecraft 更新提示
+        // Minecraft 鏇存柊鎻愮ず
         CheckUpdateRelease.Checked = Config.Tool.ReleaseNotification;
         CheckUpdateSnapshot.Checked = Config.Tool.SnapshotNotification;
 
-        // 辅助设置
+        // 杈呭姪璁剧疆
         CheckHelpLauncherLanguage.Checked = Config.Tool.AutoChangeLanguage;
     }
 
-    // 初始化
+    // 鍒濆鍖?
     public void Reset()
     {
         try
         {
             Config.Download.Reset();
             Config.Tool.Reset();
-            ModBase.Log("[Setup] 已初始化其他页设置");
+            ModBase.Log("[Setup] 宸插垵濮嬪寲鍏朵粬椤佃缃?);
             HintService.Hint(Lang.Text("Setup.GameManage.Initialized"), HintType.Success, false);
         }
         catch (Exception ex)
@@ -102,7 +100,7 @@ public partial class PageSetupGameManage
         Reload();
     }
 
-    // 将控件改变路由到设置改变
+    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
     private void CheckBoxChange(object senderRaw, bool user)
     {
         var sender = (MyCheckBox)senderRaw;
@@ -127,7 +125,7 @@ public partial class PageSetupGameManage
     private static void SetByTag(string tag, object value)
         => ConfigService.TrySetValue(tag, value);
 
-    // 滑动条
+    // 婊戝姩鏉?
     private void SliderLoad()
     {
         SliderDownloadThread.getHintText = new Func<object, object>(v => (int)v + 1);

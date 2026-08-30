@@ -1,9 +1,7 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageInstanceScreenshot"
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageInstanceScreenshot"
     PanScroll="{Binding ElementName=PanBack}" Grid.IsSharedSizeScope="True">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <Grid>
@@ -23,7 +21,6 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,0,9" HorizontalAlignment="Center"
                                Text="{DynamicResource Instance.Screenshot.Empty.Title}" FontSize="19"
-                               UseLayoutRounding="True"
                                Foreground="{DynamicResource ColorBrush3}" />
                     <Rectangle Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Height="2"
                                Fill="{DynamicResource ColorBrush3}" />
@@ -48,7 +45,7 @@
                                         HorizontalAlignment="Left" x:Name="BtnOpenFolder" ColorType="Highlight" />
                     </Grid>
                 </local:MyCard>
-                <WrapPanel Margin="8,0,8,25" Name="PanList" HorizontalAlignment="Center" Orientation="Horizontal">
+                <WrapPanel Margin="8,0,8,25" x:Name="PanList" HorizontalAlignment="Center" Orientation="Horizontal">
                     <!--<local:MyCard Height="220" Width="120" Margin="7" Tag="Path">
             <Grid>
                 <Grid.RowDefinitions>

@@ -37,10 +37,10 @@ public partial class PageSetupLog
 
     private void PageOtherLog_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
         LoadList();
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (IsLoaded)
             return;
     }

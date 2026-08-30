@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Humanizer;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
@@ -17,10 +15,10 @@ namespace PCL;
 
 public partial class PageInstanceSavesInfo : IRefreshable
 {
-    /// <summary>无状态服务，线程安全，所有实例可共享。</summary>
+    /// <summary>鏃犵姸鎬佹湇鍔★紝绾跨▼瀹夊叏锛屾墍鏈夊疄渚嬪彲鍏变韩銆?/summary>
     private static readonly SaveManager SaveManager = new();
 
-    /// <summary>防并发冲突</summary>
+    /// <summary>闃插苟鍙戝啿绐?/summary>
     private static readonly SemaphoreSlim WriteLock = new(1, 1);
 
     private CancellationTokenSource? _cts;
@@ -37,7 +35,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
 
     void IRefreshable.Refresh() => Refresh();
     public void Refresh() => RefreshInfoAsync().ContinueWith(
-        t => LogWrapper.Warn(t.Exception, "Saves", "刷新存档信息异常"), //only 兜底
+        t => LogWrapper.Warn(t.Exception, "Saves", "鍒锋柊瀛樻。淇℃伅寮傚父"), //only 鍏滃簳
         CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
 
     private async Task RefreshInfoAsync()

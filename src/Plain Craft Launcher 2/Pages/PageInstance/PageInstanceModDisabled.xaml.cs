@@ -25,7 +25,7 @@ public partial class PageInstanceModDisabled
     private void BtnVersion_Click(object sender, EventArgs e)
     {
         ModMain.frmMain.PageChange(FormMain.PageType
-            .Launch); // 在实例选择页面选定实例的时候只会返回一层，因此如果不先锚定 Launch，在选择实例后会回退到实例设置的这个页面
+            .Launch); // 鍦ㄥ疄渚嬮€夋嫨椤甸潰閫夊畾瀹炰緥鐨勬椂鍊欏彧浼氳繑鍥炰竴灞傦紝鍥犳濡傛灉涓嶅厛閿氬畾 Launch锛屽湪閫夋嫨瀹炰緥鍚庝細鍥為€€鍒板疄渚嬭缃殑杩欎釜椤甸潰
         ModMain.frmMain.PageChange(FormMain.PageType.InstanceSelect);
     }
 

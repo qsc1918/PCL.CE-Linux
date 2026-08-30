@@ -4,9 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 
@@ -24,10 +22,10 @@ public partial class PageSetupLauncherLanguage
 
     private void PageSetupLauncherLanguage_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (_isLoaded)
             return;
         _isLoaded = true;
@@ -58,7 +56,7 @@ public partial class PageSetupLauncherLanguage
             Config.Preference.Localization.LanguageConfig.SetDefaultValue();
             Config.Preference.Localization.FormatCultureConfig.SetDefaultValue();
             LocalizationService.ApplyFromConfig();
-            ModBase.Log("[Setup] 已初始化启动器-语言页设置");
+            ModBase.Log("[Setup] 宸插垵濮嬪寲鍚姩鍣?璇█椤佃缃?);
             HintService.Hint(Lang.Text("Setup.Language.Reset.Success"), HintType.Success, false);
             Reload();
         }
@@ -66,7 +64,7 @@ public partial class PageSetupLauncherLanguage
         {
             ModBase.Log(
                 ex,
-                "初始化启动器-语言页设置失败",
+                "鍒濆鍖栧惎鍔ㄥ櫒-璇█椤佃缃け璐?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Setup.Error.OperationFailed"));
         }

@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 
@@ -14,7 +12,7 @@ namespace PCL;
 public partial class PageInstanceLeft : IRefreshable
 {
     /// <summary>
-    ///     当前显示设置的 MC 实例。
+    ///     褰撳墠鏄剧ず璁剧疆鐨?MC 瀹炰緥銆?
     /// </summary>
     public static McInstance McInstance = null;
 
@@ -48,7 +46,7 @@ public partial class PageInstanceLeft : IRefreshable
                 : Visibility.Visible;
         }
 
-        // 功能隐藏
+        // 鍔熻兘闅愯棌
         if (!PageSetupUI.HiddenForceShow)
         {
             var disableCount = 0;
@@ -102,7 +100,7 @@ public partial class PageInstanceLeft : IRefreshable
             : Visibility.Visible;
     }
 
-    private void RefreshButton_Click(object sender, EventArgs e) // 由边栏按钮匿名调用
+    private void RefreshButton_Click(object sender, EventArgs e) // 鐢辫竟鏍忔寜閽尶鍚嶈皟鐢?
     {
         Refresh((FormMain.PageSubType)ModBase.Val(((MyIconButton)sender).Tag));
     }
@@ -188,15 +186,15 @@ public partial class PageInstanceLeft : IRefreshable
         }
     }
 
-    #region 页面切换
+    #region 椤甸潰鍒囨崲
 
     /// <summary>
-    ///     当前页面的编号。从 0 开始计算。
+    ///     褰撳墠椤甸潰鐨勭紪鍙枫€備粠 0 寮€濮嬭绠椼€?
     /// </summary>
     public FormMain.PageSubType pageID = FormMain.PageSubType.Default;
 
     /// <summary>
-    ///     勾选事件改变页面。
+    ///     鍕鹃€変簨浠舵敼鍙橀〉闈€?
     /// </summary>
     private void PageCheck(object sender, ModBase.RouteEventArgs e)
     {
@@ -285,13 +283,13 @@ public partial class PageInstanceLeft : IRefreshable
 
             default:
             {
-                throw new Exception("未知的实例设置子页面种类：" + (int)id);
+                throw new Exception("鏈煡鐨勫疄渚嬭缃瓙椤甸潰绉嶇被锛? + (int)id);
             }
         }
     }
 
     /// <summary>
-    ///     切换现有页面。
+    ///     鍒囨崲鐜版湁椤甸潰銆?
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -307,7 +305,7 @@ public partial class PageInstanceLeft : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "切换分页面失败（ID " + (int)id + "）",
+                "鍒囨崲鍒嗛〉闈㈠け璐ワ紙ID " + (int)id + "锛?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Error.OperationFailed"));
         }
@@ -319,7 +317,7 @@ public partial class PageInstanceLeft : IRefreshable
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 停止主页面的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 鍋滄涓婚〉闈㈢殑鍙抽〉闈㈠垏鎹㈠姩鐢伙紝闃叉瀹冧笌鏈姩鐢讳竴璧疯Е鍙戝娆?PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -334,7 +332,7 @@ public partial class PageInstanceLeft : IRefreshable
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 延迟触发页面通用动画，以使得在 Loaded 事件中加载的控件得以处理
+                // 寤惰繜瑙﹀彂椤甸潰閫氱敤鍔ㄧ敾锛屼互浣垮緱鍦?Loaded 浜嬩欢涓姞杞界殑鎺т欢寰椾互澶勭悊
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)

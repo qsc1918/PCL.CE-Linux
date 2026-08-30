@@ -43,11 +43,11 @@ public partial class PageComp
                     showQuickDownload));
             }
             // 页码
-            CardPages.Visibility =
+            CardPages.IsVisible =
                 storage.results.Count > 40 || storage.curseForgeOffset < storage.curseForgeTotal ||
                 storage.modrinthOffset < storage.modrinthTotal
-                    ? Visibility.Visible
-                    : Visibility.Collapsed;
+                    ? true
+                    : false;
             LabPage.Text = Lang.Number(page + 1, "N0");
             BtnPageFirst.IsEnabled = page > 1;
             BtnPageFirst.Opacity = page > 1 ? 1d : 0.2d;
@@ -62,11 +62,11 @@ public partial class PageComp
             // 错误信息
             if (storage.errorMessage is null)
             {
-                HintError.Visibility = Visibility.Collapsed;
+                HintError.IsVisible = false;
             }
             else
             {
-                HintError.Visibility = Visibility.Visible;
+                HintError.IsVisible = true;
                 HintError.Text = storage.errorMessage;
             }
 
@@ -203,8 +203,8 @@ public partial class PageComp
             if (field == value)
                 return;
             field = value;
-            BtnSearchInstallModPack.Visibility =
-                value == ModComp.CompType.ModPack ? Visibility.Visible : Visibility.Collapsed;
+            BtnSearchInstallModPack.IsVisible =
+                value == ModComp.CompType.ModPack ? true : false;
             loader.name = Lang.Text("Download.Comp.List.Source.ResourceFetch", TypeName);
             PanSearchBox.HintText = ModComp.GetCompSearchName(value);
             Load.Text = ModComp.GetCompLoadingName(value);
@@ -293,21 +293,21 @@ public partial class PageComp
         // 根据页面类型控制加载器选择的显示
         if (PageType == ModComp.CompType.Shader)
         {
-            LabLoader.Visibility = Visibility.Visible;
-            ComboSearchLoader.Visibility = Visibility.Collapsed;
-            ComboSearchShaderLoader.Visibility = Visibility.Visible;
+            LabLoader.IsVisible = true;
+            ComboSearchLoader.IsVisible = false;
+            ComboSearchShaderLoader.IsVisible = true;
         }
         else if (PageType == ModComp.CompType.Mod || PageType == ModComp.CompType.ModPack)
         {
-            LabLoader.Visibility = Visibility.Visible;
-            ComboSearchLoader.Visibility = Visibility.Visible;
-            ComboSearchShaderLoader.Visibility = Visibility.Collapsed;
+            LabLoader.IsVisible = true;
+            ComboSearchLoader.IsVisible = true;
+            ComboSearchShaderLoader.IsVisible = false;
         }
         else
         {
-            LabLoader.Visibility = Visibility.Collapsed;
-            ComboSearchLoader.Visibility = Visibility.Collapsed;
-            ComboSearchShaderLoader.Visibility = Visibility.Collapsed;
+            LabLoader.IsVisible = false;
+            ComboSearchLoader.IsVisible = false;
+            ComboSearchShaderLoader.IsVisible = false;
         }
     }
 

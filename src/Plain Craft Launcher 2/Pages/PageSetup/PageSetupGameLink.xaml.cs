@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
@@ -32,10 +30,10 @@ public partial class PageSetupGameLink
 
     private void PageSetupLink_Loaded(object sender, RoutedEventArgs e)
     {
-        // 重复加载部分
+        // 閲嶅鍔犺浇閮ㄥ垎
         PanBack.ScrollToHome();
 
-        // 非重复加载部分
+        // 闈為噸澶嶅姞杞介儴鍒?
         if (isLoaded)
             return;
         isLoaded = true;
@@ -57,7 +55,7 @@ public partial class PageSetupGameLink
         CheckEnableIPv6.Checked = Config.Link.EnableIPv6;
         CheckEnableCliOutput.Checked = Config.Link.EnableCliOutput;
 
-        // TextRelays.Text = "正在获取信息..."
+        // TextRelays.Text = "姝ｅ湪鑾峰彇淇℃伅..."
         // Do While Not (PageLinkLobby.LobbyAnnouncementLoader.State = LoadState.Finished OrElse PageLinkLobby.LobbyAnnouncementLoader.State = LoadState.Failed)
         // Thread.Sleep(500)
         // Loop
@@ -66,27 +64,27 @@ public partial class PageSetupGameLink
         // For Each Relay In ETRelay.RelayList
         // Select Case Relay.Type
         // Case ETRelayType.Community
-        // TextRelays.Text += "[社区] "
+        // TextRelays.Text += "[绀惧尯] "
         // Case ETRelayType.Selfhosted
-        // TextRelays.Text += "[自有] "
+        // TextRelays.Text += "[鑷湁] "
         // Case Else 'ETRelayType.Custom
-        // TextRelays.Text += "[自定义] "
+        // TextRelays.Text += "[鑷畾涔塢 "
         // End Select
-        // TextRelays.Text += Relay.Name & "，"
+        // TextRelays.Text += Relay.Name & "锛?
         // Next
-        // TextRelays.Text = TextRelays.Text.BeforeLast("，")
+        // TextRelays.Text = TextRelays.Text.BeforeLast("锛?)
         // Else
-        // TextRelays.Text = "暂无，你可能需要手动添加中继服务器"
+        // TextRelays.Text = "鏆傛棤锛屼綘鍙兘闇€瑕佹墜鍔ㄦ坊鍔犱腑缁ф湇鍔″櫒"
         // End If
     }
 
-    // 初始化
+    // 鍒濆鍖?
     public void Reset()
     {
         try
         {
             Config.Link.Reset();
-            ModBase.Log("[Setup] 已初始化联机页设置");
+            ModBase.Log("[Setup] 宸插垵濮嬪寲鑱旀満椤佃缃?);
             HintService.Hint(Lang.Text("Setup.GameLink.Initialized"), HintType.Success, false);
             Reload();
         }
@@ -102,7 +100,7 @@ public partial class PageSetupGameLink
         Reload();
     }
 
-    // 将控件改变路由到设置改变
+    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
     private void TextBoxChange(object senderRaw, TextChangedEventArgs e)
     {
         var sender = (MyTextBox)senderRaw;
@@ -144,7 +142,7 @@ public partial class PageSetupGameLink
             }
     }
 
-    // 网络测试
+    // 缃戠粶娴嬭瘯
     private void BtnNetTest_Click(object sender, MouseButtonEventArgs e)
     {
         try
@@ -172,7 +170,7 @@ public partial class PageSetupGameLink
         catch (Exception ex)
         {
             ModBase.Log(ex,
-                "[Link] 获取网络测试结果失败",
+                "[Link] 鑾峰彇缃戠粶娴嬭瘯缁撴灉澶辫触",
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Setup.GameLink.Error.NetworkTestFailed"));
             BtnNetTest.IsEnabled = true;

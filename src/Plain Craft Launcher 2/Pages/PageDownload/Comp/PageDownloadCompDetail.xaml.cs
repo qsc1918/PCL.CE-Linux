@@ -54,12 +54,12 @@ public partial class PageDownloadCompDetail
 
         // 决定按钮显示
         BtnIntroWeb.Text = _project.FromCurseForge ? "CurseForge" : "Modrinth";
-        BtnIntroWiki.Visibility = Lang.IsChineseMainland && _project.WikiId != 0
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-        BtnTranslate.Visibility = Lang.IsChineseMainland
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        BtnIntroWiki.IsVisible = Lang.IsChineseMainland && _project.WikiId != 0
+            ? true
+            : false;
+        BtnTranslate.IsVisible = Lang.IsChineseMainland
+            ? true
+            : false;
         RefreshFavoriteButton();
 
         ModAnimation.AniControlEnabled -= 1;
@@ -838,12 +838,12 @@ public partial class PageDownloadCompDetail
 
         if (instanceFilters.Count < 2)
         {
-            CardFilter.Visibility = Visibility.Collapsed;
+            CardFilter.IsVisible = false;
             _instanceFilter = null;
         }
         else
         {
-            CardFilter.Visibility = Visibility.Visible;
+            CardFilter.IsVisible = true;
             // 插入标签
             if (_pageType == ModComp.CompType.Mod)
             {

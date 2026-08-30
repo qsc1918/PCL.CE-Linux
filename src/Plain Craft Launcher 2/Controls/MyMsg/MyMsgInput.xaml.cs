@@ -28,7 +28,7 @@ public partial class MyMsgInput
             myConverter = converter;
             LabTitle.Text = converter.Title;
             LabText.Text = converter.Text;
-            PanText.Visibility = string.IsNullOrEmpty(converter.Text) ? Visibility.Collapsed : Visibility.Visible;
+            PanText.IsVisible = string.IsNullOrEmpty(converter.Text) ? false : true;
             TextArea.Text = (string)converter.Content;
             TextArea.HintText = converter.HintText;
             TextArea.ValidateRules = converter.ValidateRules;
@@ -67,7 +67,7 @@ public partial class MyMsgInput
     private void ConfigureSecondaryButton(string text)
     {
         Btn2.Text = text;
-        Btn2.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+        Btn2.IsVisible = string.IsNullOrEmpty(text) ? false : true;
     }
 
     private void Load(object sender, EventArgs e)

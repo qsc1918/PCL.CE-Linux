@@ -3,9 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 
@@ -14,11 +12,11 @@ namespace PCL;
 public partial class PageSetupLeft
 {
     private bool isLoad;
-    private bool isPageSwitched; // 如果在 Loaded 前切换到其他页面，会导致触发 Loaded 时再次切换一次
+    private bool isPageSwitched; // 濡傛灉鍦?Loaded 鍓嶅垏鎹㈠埌鍏朵粬椤甸潰锛屼細瀵艰嚧瑙﹀彂 Loaded 鏃跺啀娆″垏鎹竴娆?
 
     private void PageSetupLeft_Loaded(object sender, RoutedEventArgs e)
     {
-        // 是否处于隐藏的子页面
+        // 鏄惁澶勪簬闅愯棌鐨勫瓙椤甸潰
         var isHiddenPage = false;
         var hide = Config.Preference.Hide;
 
@@ -35,13 +33,13 @@ public partial class PageSetupLeft
         if (ItemLog.Checked && hide.SetupLog) isHiddenPage = true;
         if (PageSetupUI.HiddenForceShow)
             isHiddenPage = false;
-        // 若页面错误，或尚未加载，则继续
+        // 鑻ラ〉闈㈤敊璇紝鎴栧皻鏈姞杞斤紝鍒欑户缁?
         if (isLoad && !isHiddenPage)
             return;
         isLoad = true;
-        // 刷新子页面隐藏情况
+        // 鍒锋柊瀛愰〉闈㈤殣钘忔儏鍐?
         PageSetupUI.HiddenRefresh();
-        // 选择第一个未被禁用的子页面
+        // 閫夋嫨绗竴涓湭琚鐢ㄧ殑瀛愰〉闈?
         if (isPageSwitched)
             return;
         var hideCfg = Config.Preference.Hide;
@@ -179,7 +177,7 @@ public partial class PageSetupLeft
         });
     }
 
-    public void Refresh(object sender, EventArgs e) // 由边栏按钮匿名调用
+    public void Refresh(object sender, EventArgs e) // 鐢辫竟鏍忔寜閽尶鍚嶈皟鐢?
     {
         switch (ModBase.Val(((MyIconButton)sender).Tag))
         {
@@ -200,17 +198,17 @@ public partial class PageSetupLeft
         HintService.Hint(Lang.Text("Setup.Left.Refreshing"), log: false);
     }
 
-    #region 页面切换
+    #region 椤甸潰鍒囨崲
 
     /// <summary>
-    ///     当前页面的编号。从左往右从 0 开始计算。
+    ///     褰撳墠椤甸潰鐨勭紪鍙枫€備粠宸﹀線鍙充粠 0 寮€濮嬭绠椼€?
     /// </summary>
     public FormMain.PageSubType pageID;
 
     public PageSetupLeft()
     {
         InitializeComponent();
-        // 选择第一个未被禁用的子页面
+        // 閫夋嫨绗竴涓湭琚鐢ㄧ殑瀛愰〉闈?
         var hideCfg = Config.Preference.Hide;
         if (!hideCfg.SetupLaunch)
             pageID = FormMain.PageSubType.SetupLaunch;
@@ -242,19 +240,19 @@ public partial class PageSetupLeft
     }
 
     /// <summary>
-    ///     勾选事件改变页面。
+    ///     鍕鹃€変簨浠舵敼鍙橀〉闈€?
     /// </summary>
     private void PageCheck(object senderRaw, ModBase.RouteEventArgs e)
     {
         var sender = (MyListItem)senderRaw;
-        // 尚未初始化控件属性时，sender.Tag 为 Nothing，会跳过切换，且由于 PageID 默认为 0 而切换到第一个页面
-        // 若使用 IsLoaded，则会导致模拟点击不被执行（模拟点击切换页面时，控件的 IsLoaded 为 False）
+        // 灏氭湭鍒濆鍖栨帶浠跺睘鎬ф椂锛宻ender.Tag 涓?Nothing锛屼細璺宠繃鍒囨崲锛屼笖鐢变簬 PageID 榛樿涓?0 鑰屽垏鎹㈠埌绗竴涓〉闈?
+        // 鑻ヤ娇鐢?IsLoaded锛屽垯浼氬鑷存ā鎷熺偣鍑讳笉琚墽琛岋紙妯℃嫙鐐瑰嚮鍒囨崲椤甸潰鏃讹紝鎺т欢鐨?IsLoaded 涓?False锛?
         if (sender.Tag is not null)
             PageChange((FormMain.PageSubType)ModBase.Val(sender.Tag));
     }
 
     /// <summary>
-    ///     获取当前导航指定的右页面。
+    ///     鑾峰彇褰撳墠瀵艰埅鎸囧畾鐨勫彸椤甸潰銆?
     /// </summary>
     public object PageGet(FormMain.PageSubType? id = null)
     {
@@ -330,13 +328,13 @@ public partial class PageSetupLeft
 
             default:
             {
-                throw new Exception("未知的设置子页面种类：" + (int)id);
+                throw new Exception("鏈煡鐨勮缃瓙椤甸潰绉嶇被锛? + (int)id);
             }
         }
     }
 
     /// <summary>
-    ///     切换现有页面。
+    ///     鍒囨崲鐜版湁椤甸潰銆?
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -353,7 +351,7 @@ public partial class PageSetupLeft
         {
             ModBase.Log(
                 ex,
-                $"切换分页面失败（ID {(int)id}）",
+                $"鍒囨崲鍒嗛〉闈㈠け璐ワ紙ID {(int)id}锛?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Setup.Error.OperationFailed"));
         }
@@ -365,7 +363,7 @@ public partial class PageSetupLeft
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 停止主页面的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 鍋滄涓婚〉闈㈢殑鍙抽〉闈㈠垏鎹㈠姩鐢伙紝闃叉瀹冧笌鏈姩鐢讳竴璧疯Е鍙戝娆?PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -380,7 +378,7 @@ public partial class PageSetupLeft
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 延迟触发页面通用动画，以使得在 Loaded 事件中加载的控件得以处理
+                // 寤惰繜瑙﹀彂椤甸潰閫氱敤鍔ㄧ敾锛屼互浣垮緱鍦?Loaded 浜嬩欢涓姞杞界殑鎺т欢寰椾互澶勭悊
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)
