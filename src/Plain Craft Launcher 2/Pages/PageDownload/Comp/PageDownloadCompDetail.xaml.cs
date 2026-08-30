@@ -3,8 +3,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using FluentValidation;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
@@ -15,7 +21,7 @@ using PCL.Core.Utils;
 using PCL.Core.Utils.Validate;
 using PCL.Network;
 using PCL.Network.Loaders;
-using Control = System.Windows.Forms.Control;
+using Control = Avalonia.Forms.Control;
 
 namespace PCL;
 
@@ -261,9 +267,9 @@ public partial class PageDownloadCompDetail
         // 获取点击项关联的文件对象
         var file = sender switch
         {
-            FrameworkElement Element when Element.Tag is ModComp.CompFile CompFile => CompFile,
-            FrameworkElement Element when Element.Parent is FrameworkElement Parent && Parent.Tag is ModComp.CompFile CompFile => CompFile,
-            FrameworkElement Element when Element.Parent is FrameworkElement Parent && Parent.Parent is FrameworkElement GrandParent && GrandParent.Tag is ModComp.CompFile CompFile => CompFile,
+            Control Element when Element.Tag is ModComp.CompFile CompFile => CompFile,
+            Control Element when Element.Parent is Control Parent && Parent.Tag is ModComp.CompFile CompFile => CompFile,
+            Control Element when Element.Parent is Control Parent && Parent.Parent is Control GrandParent && GrandParent.Tag is ModComp.CompFile CompFile => CompFile,
             _ => null
         };
 
@@ -593,7 +599,7 @@ public partial class PageDownloadCompDetail
 
     private void BtnFavorites_Click(object sender, EventArgs e)
     {
-        ModComp.CompFavorites.ShowMenu(_project, (UIElement)sender, RefreshFavoriteButton);
+        ModComp.CompFavorites.ShowMenu(_project, (Control)sender, RefreshFavoriteButton);
     }
 
     private void BtnIntroLinkCopy_Click(object sender, EventArgs e)
@@ -904,8 +910,8 @@ public partial class PageDownloadCompDetail
                 {
                     var targetGroup = GetGroupedVersionName(_targetInstance, groupedDrop, groupedOld);
                     var children = _pageType == ModComp.CompType.Mod
-                        ? PanInstanceFilter.Children.Cast<UIElement>().Skip(1)
-                        : PanInstanceFilter.Children.Cast<UIElement>();
+                        ? PanInstanceFilter.Children.Cast<Control>().Skip(1)
+                        : PanInstanceFilter.Children.Cast<Control>();
                     foreach (MyRadioButton button in (IEnumerable)children)
                     {
                         if ((button.Text ?? "") != (targetGroup ?? ""))
@@ -923,8 +929,8 @@ public partial class PageDownloadCompDetail
                     if (targetFile is not null)
                     {
                         var children = _pageType == ModComp.CompType.Mod
-                            ? PanInstanceFilter.Children.Cast<UIElement>().Skip(1)
-                            : PanInstanceFilter.Children.Cast<UIElement>();
+                            ? PanInstanceFilter.Children.Cast<Control>().Skip(1)
+                            : PanInstanceFilter.Children.Cast<Control>();
                         foreach (MyRadioButton button in (IEnumerable)children)
                         {
                             if ((button.Text ?? "") != (_targetLoader.ToString() ?? ""))

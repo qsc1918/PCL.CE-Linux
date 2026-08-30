@@ -1,7 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 
 using PCL.Core.App.Localization;
 namespace PCL;
@@ -10,7 +16,7 @@ public class MyComboBox : ComboBox
 {
     public delegate void TextChangedEventHandler(object sender, TextChangedEventArgs e);
 
-    public static readonly DependencyProperty HintTextProperty = DependencyProperty.Register("HintText", typeof(string),
+    public static readonly AvaloniaProperty HintTextProperty = AvaloniaProperty.Register("HintText", typeof(string),
         typeof(MyComboBox), new PropertyMetadata("", (d, e) =>
         {
             var c = (MyComboBox)d;
@@ -226,7 +232,7 @@ public class MyComboBox : ComboBox
     }
 
     // 用于 ItemsSource 的自定义容器
-    protected override DependencyObject GetContainerForItemOverride()
+    protected override AvaloniaObject GetContainerForItemOverride()
     {
         return new MyComboBoxItem();
     }

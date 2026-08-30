@@ -1,7 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
 using Microsoft.VisualBasic;
 using PCL.Core.App;
 using PCL.Core.Utils;
@@ -363,7 +369,7 @@ public partial class MyLocalCompItem
         {
             case 0:
             {
-                if (ColumnExtend.ActualWidth < 0.5d)
+                if (ColumnExtend.Bounds.Width < 0.5d)
                     newCompressLevel = LabSubtitle.Visibility == Visibility.Collapsed ? 2 : 1;
                 else
                     return;
@@ -372,7 +378,7 @@ public partial class MyLocalCompItem
             }
             case 1:
             {
-                if (ColumnSubtitle.ActualWidth < 0.5d)
+                if (ColumnSubtitle.Bounds.Width < 0.5d)
                     newCompressLevel = 2;
                 else if (!LabSubtitle.IsTextTrimmed())
                     newCompressLevel = 0;
@@ -710,7 +716,7 @@ public partial class MyLocalCompItem
                     if (Checked)
                     {
                         // 由无变有
-                        var delta = 32d - RectCheck.ActualHeight;
+                        var delta = 32d - RectCheck.Bounds.Height;
                         anim.Add(ModAnimation.AaHeight(RectCheck, delta * 0.4d, 200,
                             ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
                         anim.Add(ModAnimation.AaHeight(RectCheck, delta * 0.6d, 300,
@@ -726,7 +732,7 @@ public partial class MyLocalCompItem
                     else
                     {
                         // 由有变无
-                        anim.Add(ModAnimation.AaHeight(RectCheck, -RectCheck.ActualHeight, 120,
+                        anim.Add(ModAnimation.AaHeight(RectCheck, -RectCheck.Bounds.Height, 120,
                             ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)));
                         anim.Add(ModAnimation.AaOpacity(RectCheck, -RectCheck.Opacity, 70, 40));
                         RectCheck.VerticalAlignment = VerticalAlignment.Center;
@@ -812,7 +818,7 @@ public partial class MyLocalCompItem
 
     // 按钮
     public Action<MyLocalCompItem, EventArgs> buttonHandler;
-    public FrameworkElement buttonStack;
+    public Control buttonStack;
     public IEnumerable<MyIconButton> Buttons
     {
         get => field;
@@ -834,7 +840,7 @@ public partial class MyLocalCompItem
                 Opacity = 0d,
                 Margin = new Thickness(0d, 0d, 5d, 0d),
                 SnapsToDevicePixels = false,
-                Orientation = (Orientation)System.Windows.Forms.Orientation.Horizontal,
+                Orientation = (Orientation)Avalonia.Forms.Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
                 UseLayoutRounding = false

@@ -1,5 +1,9 @@
-﻿using System.Security.Authentication;
-using System.Windows;
+using System.Security.Authentication;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App.Localization;
 
 namespace PCL;

@@ -2,9 +2,15 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using PCL.Core.Utils;
 using PCL.Core.IO.Net.Http;
 
@@ -179,8 +185,8 @@ public class MyImage : Image
         set => SetValue(EnableCacheProperty, value);
     }
 
-    public new static readonly DependencyProperty EnableCacheProperty =
-        DependencyProperty.Register("EnableCache", typeof(bool), typeof(MyImage), new PropertyMetadata(true));
+    public new static readonly AvaloniaProperty EnableCacheProperty =
+        AvaloniaProperty.Register("EnableCache", typeof(bool), typeof(MyImage), new PropertyMetadata(true));
 
     /// <summary>
     ///     与 Image 的 Source 类似。
@@ -203,7 +209,7 @@ public class MyImage : Image
         }
     } = "";
 
-    public new static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(string),
+    public new static readonly AvaloniaProperty SourceProperty = AvaloniaProperty.Register("Source", typeof(string),
         typeof(MyImage), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyImage)sender).Source = e.NewValue.ToString();
@@ -223,8 +229,8 @@ public class MyImage : Image
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
-    private static readonly DependencyProperty CornerRadiusProperty =
-        DependencyProperty.Register(
+    private static readonly AvaloniaProperty CornerRadiusProperty =
+        AvaloniaProperty.Register(
             "CornerRadius",
             typeof(CornerRadius),
             typeof(MyImage),
@@ -233,7 +239,7 @@ public class MyImage : Image
                 OnCornerRadiusChanged)
         );
 
-    private static void OnCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnCornerRadiusChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         ((MyImage)d).UpdateClip();
     }

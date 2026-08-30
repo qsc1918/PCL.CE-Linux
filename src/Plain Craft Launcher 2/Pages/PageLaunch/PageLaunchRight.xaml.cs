@@ -1,10 +1,16 @@
-﻿using System.IO;
+using System.IO;
 using System.Globalization;
 using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.Logging;
 using PCL.Core.UI;
@@ -487,7 +493,7 @@ public partial class PageLaunchRight : IRefreshable
                 content =
                     $"<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:sys=\"clr-namespace:System;assembly=System.Runtime\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:local=\"clr-namespace:PCL;assembly=Plain Craft Launcher 2\">{content}</StackPanel>";
                 ModBase.Log($"[Page] 实例化：加载主页 UI 开始，最终内容长度：{content.Count()}");
-                PanCustom.Children.Add((UIElement)ModBase.GetObjectFromXML(content, out var sanitizeResult));
+                PanCustom.Children.Add((Control)ModBase.GetObjectFromXML(content, out var sanitizeResult));
                 _ShowSanitizeHints(sanitizeResult);
                 _ApplyHomepageLivePatchesFromFile();
             }
@@ -766,7 +772,7 @@ public partial class PageLaunchRight : IRefreshable
             _ApplyHomepageLivePatchToElement(element, patch);
     }
 
-    private void _ApplyHomepageLivePatchToElement(FrameworkElement element, JsonObject patch)
+    private void _ApplyHomepageLivePatchToElement(Control element, JsonObject patch)
     {
         _SetPropertyIfPresent(element, patch, "text", "Text");
         _SetPropertyIfPresent(element, patch, "title", "Title");
@@ -788,13 +794,13 @@ public partial class PageLaunchRight : IRefreshable
             _ReplacePanelChildren(panel, childrenXaml);
     }
 
-    private static void _SetPropertyIfPresent(FrameworkElement element, JsonObject patch, string jsonName, string propertyName)
+    private static void _SetPropertyIfPresent(Control element, JsonObject patch, string jsonName, string propertyName)
     {
         if (patch.TryGetPropertyValue(jsonName, out var value))
             _TrySetElementProperty(element, propertyName, value?.ToString() ?? "");
     }
 
-    private static bool _TrySetElementProperty(FrameworkElement element, string propertyName, string value)
+    private static bool _TrySetElementProperty(Control element, string propertyName, string value)
     {
         if (!_homepageLiveAllowedProperties.TryGetValue(propertyName, out var allowedPropertyName))
         {
@@ -853,16 +859,16 @@ public partial class PageLaunchRight : IRefreshable
 
         if (ModBase.GetObjectFromXML(wrapped) is not Panel parsedPanel) return;
 
-        var children = parsedPanel.Children.OfType<UIElement>().ToList();
+        var children = parsedPanel.Children.OfType<Control>().ToList();
         parsedPanel.Children.Clear();
         panel.Children.Clear();
         foreach (var child in children)
             panel.Children.Add(child);
     }
 
-    private static IEnumerable<FrameworkElement> _FindElementsByTag(DependencyObject root, string tag)
+    private static IEnumerable<Control> _FindElementsByTag(AvaloniaObject root, string tag)
     {
-        if (root is FrameworkElement element &&
+        if (root is Control element &&
             string.Equals(element.Tag?.ToString(), tag, StringComparison.OrdinalIgnoreCase))
             yield return element;
 

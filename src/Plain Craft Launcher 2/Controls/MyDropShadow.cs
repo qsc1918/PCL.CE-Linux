@@ -1,21 +1,27 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace PCL;
 
 public class MyDropShadow : Decorator
 {
-    public static readonly DependencyProperty ColorProperty = DependencyProperty.Register("Color", typeof(Color),
+    public static readonly AvaloniaProperty ColorProperty = AvaloniaProperty.Register("Color", typeof(Color),
         typeof(MyDropShadow),
         new FrameworkPropertyMetadata(Color.FromArgb(0x71, 0x0, 0x0, 0x0),
             FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes));
 
-    public static readonly DependencyProperty ShadowRadiusProperty = DependencyProperty.Register("ShadowRadius",
+    public static readonly AvaloniaProperty ShadowRadiusProperty = AvaloniaProperty.Register("ShadowRadius",
         typeof(double), typeof(MyDropShadow),
         new FrameworkPropertyMetadata(5d, FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes));
 
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius",
+    public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register("CornerRadius",
         typeof(CornerRadius), typeof(MyDropShadow),
         new FrameworkPropertyMetadata(new CornerRadius(), FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes),
         IsCornerRadiusValid);
@@ -211,7 +217,7 @@ public class MyDropShadow : Decorator
         }
     }
 
-    private static void ClearBrushes(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    private static void ClearBrushes(AvaloniaObject o, AvaloniaPropertyChangedEventArgs e)
     {
         ((MyDropShadow)o)._brushes = null;
     }

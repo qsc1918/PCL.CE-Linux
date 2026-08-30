@@ -1,9 +1,15 @@
-﻿using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.IO;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App;
 using SearchOption = System.IO.SearchOption;
@@ -260,7 +266,7 @@ public partial class PageInstanceScreenshot : IRefreshable
             foreach (var i in PanList.Children)
                 if (((MyCard)i).Tag.Equals(path))
                 {
-                    PanList.Children.Remove((UIElement)i);
+                    PanList.Children.Remove((Control)i);
                     break;
                 }
 

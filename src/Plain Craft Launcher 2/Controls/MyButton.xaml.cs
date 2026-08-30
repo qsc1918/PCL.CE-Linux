@@ -1,8 +1,12 @@
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Markup;
+using Avalonia.Media;
 
 namespace PCL;
 
@@ -22,14 +26,14 @@ public partial class MyButton
     private const int animationColorIn = 100;
     private const int animationColorOut = 200;
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyButton), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyButton)sender).LabText.Text = (string)e.NewValue;
         }));
 
     // 属性穿透
-    public new static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding",
+    public new static readonly AvaloniaProperty PaddingProperty = AvaloniaProperty.Register("Padding",
         typeof(Thickness), typeof(MyButton), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyButton)sender).PanFore.Padding = (Thickness)e.NewValue;

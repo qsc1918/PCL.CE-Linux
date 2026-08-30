@@ -1,9 +1,15 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Markup;
+using Avalonia.Media;
+using Avalonia.Shapes;
 
 namespace PCL;
 
@@ -27,13 +33,13 @@ public partial class MyIconTextButton
     private const int animationTimeOfMouseIn = 100; // 鼠标指向动画长度
     private const int animationTimeOfMouseOut = 150; // 鼠标移出动画长度
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyIconTextButton), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyIconTextButton)sender).LabText.Text = (string)e.NewValue;
         }));
 
-    public static readonly DependencyProperty ColorTypeProperty = DependencyProperty.Register("ColorType",
+    public static readonly AvaloniaProperty ColorTypeProperty = AvaloniaProperty.Register("ColorType",
         typeof(ColorState), typeof(MyIconTextButton), new PropertyMetadata(ColorState.Black));
 
     private bool _hasLegacyLogo;

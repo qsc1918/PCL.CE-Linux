@@ -1,4 +1,8 @@
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.UI;
 
 namespace PCL;
@@ -44,7 +48,7 @@ public static class HintService
             ModMain.frmMain!.PanHint.HorizontalAlignment = HorizontalAlignment.Right;
             ModMain.frmMain.PanHint.VerticalAlignment = VerticalAlignment.Bottom;
 
-            var extraHeight = ModMain.frmMain.PanExtraButtons.ActualHeight;
+            var extraHeight = ModMain.frmMain.PanExtraButtons.Bounds.Height;
             ModMain.frmMain.PanHint.Margin = new Thickness(0, 0, 0, extraHeight > 0 ? extraHeight + 20 : 20);
 
             if (!HintWaiting.Any())

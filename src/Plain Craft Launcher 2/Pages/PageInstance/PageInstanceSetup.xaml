@@ -1,5 +1,5 @@
 <local:MyPageRight
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:PCL"
     xmlns:val="https://ce.pclc.cc/core/utils/validate"
@@ -147,7 +147,7 @@
                             Value="13"
                             Margin="0,0,12,0" />
                     </Grid>
-                    <Grid x:Name="PanRamDisplay" Margin="0,11,2,0" SnapsToDevicePixels="True">
+                    <Grid x:Name="PanRamDisplay" Margin="0,11,2,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="ColumnRamUsed" Width="4.7*" />
                             <ColumnDefinition x:Name="ColumnRamGame" Width="2.5*" />

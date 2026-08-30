@@ -1,6 +1,12 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using PCL.Network;
 using PCL.Core.App.Localization;
 
@@ -144,7 +150,7 @@ public partial class PageSpeedLeft
 
                             card.RowDefinitions.Clear();
                             card.Children.Clear();
-                            card.Children.Add((UIElement)ModBase.GetObjectFromXML(
+                            card.Children.Add((Control)ModBase.GetObjectFromXML(
                                 "<Path xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Stretch=\"Uniform\" Tag=\"Failed\" Data=\"F1 M2.5,0 L0,2.5 7.5,10 0,17.5 2.5,20 10,12.5 17.5,20 20,17.5 12.5,10 20,2.5 17.5,0 10,7.5 2.5,0Z\" Height=\"15\" Width=\"15\" HorizontalAlignment=\"Center\" Grid.Column=\"0\" Grid.Row=\"0\" Fill=\"{DynamicResource ColorBrush3}\" Margin=\"0,1,0,0\" VerticalAlignment=\"Top\"/>"));
                             var tb = (TextBlock)ModBase.GetObjectFromXML(
                                 "<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\" HorizontalAlignment=\"Left\" ToolTip=\"" + Lang.Text("Speed.Error.ClickToCopy") + "\" Grid.Column=\"1\" Grid.Row=\"0\" Margin=\"0,0,0,5\" />");
@@ -194,11 +200,11 @@ public partial class PageSpeedLeft
                                         {
                                             case ModBase.LoadState.Waiting:
                                             {
-                                                if ((string)((FrameworkElement)card.Children[row * 2]).Tag != "Waiting")
+                                                if ((string)((Control)card.Children[row * 2]).Tag != "Waiting")
                                                 {
                                                     card.Children.RemoveAt(row * 2);
                                                     card.Children.Insert(row * 2,
-                                                        (UIElement)ModBase.GetObjectFromXML(
+                                                        (Control)ModBase.GetObjectFromXML(
                                                             "<Path xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:local=\"clr-namespace:PCL;assembly=Plain Craft Launcher 2\" Stretch=\"Uniform\" Tag=\"Waiting\" Data=\"F1 M5,0 a5,5 360 1 0 0,0.0001 m15,0 a5,5 360 1 0 0,0.0001 m15,0 a5,5 360 1 0 0,0.0001 Z\" Width=\"18\" HorizontalAlignment=\"Center\" Grid.Column=\"0\" Grid.Row=\"" +
                                                             row +
                                                             "\" Fill=\"{DynamicResource ColorBrush3}\" Margin=\"0,7,0,0\" VerticalAlignment=\"Top\" Height=\"6\"/>"));
@@ -208,11 +214,11 @@ public partial class PageSpeedLeft
                                             }
                                             case ModBase.LoadState.Loading:
                                             {
-                                                if ((string)((FrameworkElement)card.Children[row * 2]).Tag != "Loading")
+                                                if ((string)((Control)card.Children[row * 2]).Tag != "Loading")
                                                 {
                                                     card.Children.RemoveAt(row * 2);
                                                     card.Children.Insert(row * 2,
-                                                        (UIElement)ModBase.GetObjectFromXML(
+                                                        (Control)ModBase.GetObjectFromXML(
                                                             $"<TextBlock xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:local=\"clr-namespace:PCL;assembly=Plain Craft Launcher 2\" Text=\"{Lang.Number(SubTask.Progress, "P0")}\" Tag=\"Loading\" HorizontalAlignment=\"Center\" Grid.Column=\"0\" Grid.Row=\"{row}\" Foreground=\"{{DynamicResource ColorBrush3}}\"/>"));
                                                 }
                                                 else
@@ -225,11 +231,11 @@ public partial class PageSpeedLeft
                                             }
                                             case ModBase.LoadState.Finished:
                                             {
-                                                if ((string)((FrameworkElement)card.Children[row * 2]).Tag != "Finished")
+                                                if ((string)((Control)card.Children[row * 2]).Tag != "Finished")
                                                 {
                                                     card.Children.RemoveAt(row * 2);
                                                     card.Children.Insert(row * 2,
-                                                        (UIElement)ModBase.GetObjectFromXML(
+                                                        (Control)ModBase.GetObjectFromXML(
                                                             $"<Path xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:local=\"clr-namespace:PCL;assembly=Plain Craft Launcher 2\" Stretch=\"Uniform\" Tag=\"Finished\" Data=\"F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z\" Height=\"16\" Width=\"15\" HorizontalAlignment=\"Center\" Grid.Column=\"0\" Grid.Row=\"{row}\" Fill=\"{{DynamicResource ColorBrush3}}\" Margin=\"0,3,0,0\" VerticalAlignment=\"Top\"/>"));
                                                 }
 

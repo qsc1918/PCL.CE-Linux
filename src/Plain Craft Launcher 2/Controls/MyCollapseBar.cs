@@ -1,8 +1,14 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Shapes;
 
 namespace PCL;
 
@@ -12,8 +18,8 @@ namespace PCL;
 /// </summary>
 public class MyCollapseBar : StackPanel
 {
-    public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register(nameof(Title), typeof(string), typeof(MyCollapseBar),
+    public static readonly AvaloniaProperty TitleProperty =
+        AvaloniaProperty.Register(nameof(Title), typeof(string), typeof(MyCollapseBar),
             new PropertyMetadata("", (d, e) => ((MyCollapseBar)d)._titleBlock.Text = (string)e.NewValue));
 
     private const double HeaderHeight = 30d;
@@ -167,7 +173,7 @@ public class MyCollapseBar : StackPanel
         if (_parentCardState is not null)
             return;
 
-        var current = Parent as FrameworkElement;
+        var current = Parent as Control;
         while (current is not null)
         {
             if (current is MyCard card)
@@ -176,7 +182,7 @@ public class MyCollapseBar : StackPanel
                 card.UseAnimation = false;
                 return;
             }
-            current = current.Parent as FrameworkElement;
+            current = current.Parent as Control;
         }
     }
 

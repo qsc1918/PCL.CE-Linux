@@ -1,9 +1,15 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Threading;
+using System.Text;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Media;
+using Avalonia.Threading;
 using PCL.Core.UI.Controls;
 using PCL.Core.Utils;
 
@@ -19,8 +25,8 @@ internal static class ModStyle
         public delegate void TimerTickDelegate(TimerRun sender);
 
         // 定义依赖属性
-        public static readonly DependencyProperty UpdateIntervalProperty =
-            DependencyProperty.Register(nameof(UpdateInterval), typeof(TimeSpan), typeof(TimerRun),
+        public static readonly AvaloniaProperty UpdateIntervalProperty =
+            AvaloniaProperty.Register(nameof(UpdateInterval), typeof(TimeSpan), typeof(TimerRun),
                 new PropertyMetadata(TimeSpan.FromSeconds(1d)));
 
         private object _isDisposed = false;
@@ -63,7 +69,7 @@ internal static class ModStyle
         }
 
         // 属性变化处理
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
             if (ReferenceEquals(e.Property, UpdateIntervalProperty) && _timer is not null)

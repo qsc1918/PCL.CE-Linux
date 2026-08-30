@@ -1,12 +1,19 @@
 using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Markup;
+using Avalonia.Media;
+using Avalonia.Shapes;
 using PCL.Core.UI.Controls.SvgIcon;
 
 namespace PCL;
@@ -217,10 +224,10 @@ public partial class MyListItem : IMyRadio
     }
 
     // 按钮
-    public FrameworkElement buttonStack;
+    public Control buttonStack;
 
     // 图标
-    public FrameworkElement pathLogo;
+    public Control pathLogo;
 
     // 勾选条
     public Border rectCheck;
@@ -436,8 +443,8 @@ public partial class MyListItem : IMyRadio
         set => SetValue(TitleProperty, value.Replace("\r", "").Replace("\n", ""));
     }
 
-    public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register("Title", typeof(string), typeof(MyListItem));
+    public static readonly AvaloniaProperty TitleProperty =
+        AvaloniaProperty.Register("Title", typeof(string), typeof(MyListItem));
 
     // 字号
     public double FontSize
@@ -446,8 +453,8 @@ public partial class MyListItem : IMyRadio
         set => SetValue(FontSizeProperty, value);
     }
 
-    public static readonly DependencyProperty FontSizeProperty =
-        DependencyProperty.Register("FontSize", typeof(double), typeof(MyListItem), new PropertyMetadata(14d));
+    public static readonly AvaloniaProperty FontSizeProperty =
+        AvaloniaProperty.Register("FontSize", typeof(double), typeof(MyListItem), new PropertyMetadata(14d));
 
     // 信息
     public string Info
@@ -462,7 +469,7 @@ public partial class MyListItem : IMyRadio
         }
     }
 
-    public static readonly DependencyProperty InfoProperty = DependencyProperty.Register("Info", typeof(string),
+    public static readonly AvaloniaProperty InfoProperty = AvaloniaProperty.Register("Info", typeof(string),
         typeof(MyListItem), new PropertyMetadata("", OnInfoChanged));
 
     public MyListItem()
@@ -481,7 +488,7 @@ public partial class MyListItem : IMyRadio
         Loaded += MyListItem_Loaded;
     }
 
-    private static void OnInfoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnInfoChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var control = (MyListItem)d;
         var value = e.NewValue as string;
@@ -501,7 +508,7 @@ public partial class MyListItem : IMyRadio
         }
     }
 
-    public static readonly DependencyProperty LogoProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty LogoProperty = AvaloniaProperty.Register(
         nameof(Logo),
         typeof(string),
         typeof(MyListItem),
@@ -518,19 +525,19 @@ public partial class MyListItem : IMyRadio
         }
     }
 
-    public static readonly DependencyProperty SvgIconProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty SvgIconProperty = AvaloniaProperty.Register(
         nameof(SvgIcon),
         typeof(string),
         typeof(MyListItem),
         new PropertyMetadata("", OnSvgIconChanged));
 
-    private static void OnLogoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnLogoChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var control = (MyListItem)d;
         control.UpdateLogo(e.NewValue as string);
     }
 
-    private static void OnSvgIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSvgIconChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var control = (MyListItem)d;
         control.UpdateLogo(control.Logo);
@@ -639,7 +646,7 @@ public partial class MyListItem : IMyRadio
                     if (isLogoDown)
                     {
                         isLogoDown = false;
-                        LogoClick?.Invoke(((FrameworkElement)sender).Tag, e);
+                        LogoClick?.Invoke(((Control)sender).Tag, e);
                     }
                 };
             }
@@ -825,7 +832,7 @@ public partial class MyListItem : IMyRadio
                 // 收集控件列表与选中个数
                 foreach (var ControlRaw in ((Panel)Parent).Children)
                 {
-                    var control = MyVirtualizingElement.TryInit((FrameworkElement)ControlRaw);
+                    var control = MyVirtualizingElement.TryInit((Control)ControlRaw);
                     if (control is MyListItem listItem && listItem.Type == CheckType.RadioBox)
                     {
                         radioboxList.Add(listItem);
@@ -978,7 +985,7 @@ public partial class MyListItem : IMyRadio
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register("Foreground",
+    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register("Foreground",
         typeof(Brush), typeof(MyListItem), new PropertyMetadata(ThemeManager.AppResources["ColorBrush1"]));
 
     // 菜单与按钮绑定
@@ -1008,7 +1015,7 @@ public partial class MyListItem : IMyRadio
         {
             var r = LogoCornerRadius;
             double radius = Math.Max(Math.Max(r.TopLeft, r.TopRight), Math.Max(r.BottomLeft, r.BottomRight));
-            c.Clip = new RectangleGeometry(new Rect(0, 0, c.ActualWidth, c.ActualHeight), radius, radius);
+            c.Clip = new RectangleGeometry(new Rect(0, 0, c.Bounds.Width, c.Bounds.Height), radius, radius);
         }
     }
 
@@ -1055,7 +1062,7 @@ public partial class MyListItem : IMyRadio
         if (e.Handled)
             return;
         // 触发自定义事件
-        var dependencyObject = (DependencyObject)sender;
+        var dependencyObject = (AvaloniaObject)sender;
         if (CustomEventService.GetEventType(dependencyObject) != EventType.None)
         {
             ModMain.RaiseCustomEvent(this);

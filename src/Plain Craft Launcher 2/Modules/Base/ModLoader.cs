@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.VisualBasic.CompilerServices;
 using PCL.Core.App;
 using PCL.Core.Utils;
 using System.Collections;
 using System.IO;
-using System.Windows.Shell;
+// [port] Avalonia.Shell removed (WindowChrome/Taskbar)
 using PCL.Network;
 using PCL.Network.Loaders;
 

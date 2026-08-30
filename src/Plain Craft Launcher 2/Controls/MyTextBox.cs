@@ -1,8 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Collections.ObjectModel;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
 using FluentValidation;
 
 using PCL.Core.App.Localization;
@@ -12,21 +18,21 @@ public class MyTextBox : TextBox
 {
     public delegate void ValidateChangedEventHandler(object sender, EventArgs e);
 
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius",
+    public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register("CornerRadius",
         typeof(CornerRadius), typeof(MyTextBox), new PropertyMetadata(new CornerRadius(3d)));
 
-    public static readonly DependencyProperty ValidateResultProperty = DependencyProperty.Register("ValidateResult",
+    public static readonly AvaloniaProperty ValidateResultProperty = AvaloniaProperty.Register("ValidateResult",
         typeof(string), typeof(MyTextBox),
         new PropertyMetadata("",
             (d, e) => d.SetValue(IsValidatedPropertyKey,
                 string.IsNullOrEmpty((string)e.NewValue))));
 
     private static readonly DependencyPropertyKey IsValidatedPropertyKey =
-        DependencyProperty.RegisterReadOnly("IsValidated", typeof(bool), typeof(MyTextBox), new PropertyMetadata(true));
+        AvaloniaProperty.RegisterReadOnly("IsValidated", typeof(bool), typeof(MyTextBox), new PropertyMetadata(true));
 
-    public static readonly DependencyProperty IsValidatedProperty = IsValidatedPropertyKey.DependencyProperty;
+    public static readonly AvaloniaProperty IsValidatedProperty = IsValidatedPropertyKey.AvaloniaProperty;
 
-    public static readonly DependencyProperty HintTextProperty = DependencyProperty.Register("HintText", typeof(string),
+    public static readonly AvaloniaProperty HintTextProperty = AvaloniaProperty.Register("HintText", typeof(string),
         typeof(MyTextBox), new PropertyMetadata("", (t, e) =>
         {
             var textBox = (MyTextBox)t;

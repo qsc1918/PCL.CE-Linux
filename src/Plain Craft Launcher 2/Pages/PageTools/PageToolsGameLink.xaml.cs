@@ -1,7 +1,11 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.Link;
 using PCL.Core.Link.EasyTier;
@@ -146,7 +150,7 @@ public partial class PageToolsGameLink
             LabFinishId.Text = LobbyService.CurrentLobbyCode;
             StackPlayerList.Children.Clear();
             foreach (var player in LobbyService.Players)
-                StackPlayerList.Children.Add((UIElement)PlayerInfoItem(player, PlayerInfoClick));
+                StackPlayerList.Children.Add((Control)PlayerInfoItem(player, PlayerInfoClick));
         });
     }
 
@@ -202,7 +206,7 @@ public partial class PageToolsGameLink
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems is not null)
                         foreach (PlayerProfile player in e.NewItems)
-                            StackPlayerList.Children.Add((UIElement)PlayerInfoItem(player, PlayerInfoClick));
+                            StackPlayerList.Children.Add((Control)PlayerInfoItem(player, PlayerInfoClick));
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems is not null)
@@ -217,7 +221,7 @@ public partial class PageToolsGameLink
                 default:
                     StackPlayerList.Children.Clear();
                     foreach (var player in LobbyService.Players)
-                        StackPlayerList.Children.Add((UIElement)PlayerInfoItem(player, PlayerInfoClick));
+                        StackPlayerList.Children.Add((Control)PlayerInfoItem(player, PlayerInfoClick));
                     break;
             }
 
@@ -935,7 +939,7 @@ public partial class PageToolsGameLink
 
     private void CardResized(object sender, SizeChangedEventArgs sizeChangedEventArgs)
     {
-        RectProgressClip.Rect = new Rect(0d, 0d, CardLoad.ActualWidth, 12d);
+        RectProgressClip.Rect = new Rect(0d, 0d, CardLoad.Bounds.Width, 12d);
     }
 
     #endregion

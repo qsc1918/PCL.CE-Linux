@@ -1,10 +1,16 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using System.Collections;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Markup;
+using Avalonia.Media;
+using Avalonia.Shapes;
 using PCL.Core.App;
 using PCL.Core.UI.Theme;
 
@@ -32,7 +38,7 @@ public partial class MyRadioButton
     private const int animationTimeOfMouseOut = 150; // 鼠标移出动画长度
     private const int animationTimeOfCheck = 120; // 勾选状态变更动画长度
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyRadioButton), new PropertyMetadata((sender, e) =>
         {
             if (sender is MyRadioButton rb && rb.LabText is not null) rb.LabText.Text = (string)e.NewValue;

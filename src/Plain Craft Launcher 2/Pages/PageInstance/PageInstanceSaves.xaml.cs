@@ -1,10 +1,16 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.Threading;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
@@ -496,7 +502,7 @@ public partial class PageInstanceSaves : IRefreshable
             body.Items.Add(item);
         }
 
-        body.PlacementTarget = (UIElement)sender;
+        body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
         body.IsOpen = true;
     }

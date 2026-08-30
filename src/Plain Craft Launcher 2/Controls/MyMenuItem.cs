@@ -1,8 +1,15 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
+using Avalonia.Shapes;
 using PCL.Core.App;
 using PCL.Core.UI.Controls.SvgIcon;
 
@@ -15,7 +22,7 @@ public class MyMenuItem : MenuItem
     private const int AnimationTimeIn = 100;
     private const int AnimationTimeOut = 200;
 
-    public static readonly DependencyProperty SvgIconProperty = DependencyProperty.Register(
+    public static readonly AvaloniaProperty SvgIconProperty = AvaloniaProperty.Register(
         nameof(SvgIcon),
         typeof(string),
         typeof(MyMenuItem),
@@ -42,7 +49,7 @@ public class MyMenuItem : MenuItem
         set => SetValue(SvgIconProperty, value);
     }
 
-    private static void OnSvgIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSvgIconChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         if (d is MyMenuItem { IsLoaded: true } item)
             item.UpdateTemplateIcon();

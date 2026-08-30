@@ -1,8 +1,14 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Markup;
+using Avalonia.Media;
 
 namespace PCL;
 
@@ -22,7 +28,7 @@ public partial class MyCheckBox
     private const int animationTimeOfMouseOut = 200;
 
     // 在使用 XAML 设置 Checked 属性时，不会触发 Checked_Set 方法，所以需要在这里手动触发 UI 改变
-    public static readonly DependencyProperty CheckedProperty = DependencyProperty.Register("Checked", typeof(bool?),
+    public static readonly AvaloniaProperty CheckedProperty = AvaloniaProperty.Register("Checked", typeof(bool?),
         typeof(MyCheckBox), new PropertyMetadata(false, (d, e) =>
         {
             var obj = (MyCheckBox)d;
@@ -32,10 +38,10 @@ public partial class MyCheckBox
     /// <summary>
     ///     是否为三态复选框。
     /// </summary>
-    public static readonly DependencyProperty IsThreeStateProperty =
-        DependencyProperty.Register("IsThreeState", typeof(bool), typeof(MyCheckBox), new PropertyMetadata(false));
+    public static readonly AvaloniaProperty IsThreeStateProperty =
+        AvaloniaProperty.Register("IsThreeState", typeof(bool), typeof(MyCheckBox), new PropertyMetadata(false));
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyCheckBox), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyCheckBox)sender).LabText.Text = (string)e.NewValue;

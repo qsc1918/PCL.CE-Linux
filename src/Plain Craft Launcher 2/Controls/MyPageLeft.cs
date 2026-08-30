@@ -1,20 +1,26 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace PCL;
 
 public class MyPageLeft : Grid
 {
-    public static DependencyProperty AnimatedControlProperty =
-        DependencyProperty.Register("AnimatedControl", typeof(FrameworkElement), typeof(MyPageLeft));
+    public static AvaloniaProperty AnimatedControlProperty =
+        AvaloniaProperty.Register("AnimatedControl", typeof(Control), typeof(MyPageLeft));
 
     private readonly int uuid = ModBase.GetUuid();
 
     private bool _animatedControlNullWarned;
 
     // 执行逐个进入动画的控件
-    public FrameworkElement AnimatedControl
+    public Control AnimatedControl
     {
         get
         {
@@ -25,7 +31,7 @@ public class MyPageLeft : Grid
                 ModBase.Log($"[MyPageLeft] 获取到 AnimatedControl(来自 {Name}) 的值为 null", ModBase.LogLevel.Debug);
             }
 
-            return (FrameworkElement)res;
+            return (Control)res;
         }
         set => SetValue(AnimatedControlProperty, value);
     }
@@ -132,14 +138,14 @@ public class MyPageLeft : Grid
     }
 
     // 遍历获取所有需要生成动画的控件
-    private List<FrameworkElement> GetAllAnimControls(bool ignoreInvisibility = false)
+    private List<Control> GetAllAnimControls(bool ignoreInvisibility = false)
     {
-        var allControls = new List<FrameworkElement>();
+        var allControls = new List<Control>();
         GetAllAnimControls(AnimatedControl, ref allControls, ignoreInvisibility);
         return allControls;
     }
 
-    private void GetAllAnimControls(FrameworkElement element, ref List<FrameworkElement> allControls,
+    private void GetAllAnimControls(Control element, ref List<Control> allControls,
         bool ignoreInvisibility)
     {
         if (!ignoreInvisibility && element.Visibility == Visibility.Collapsed)
@@ -149,10 +155,10 @@ public class MyPageLeft : Grid
         else if (element is MyListItem)
             allControls.Add(element);
         else if (element is ContentControl)
-            GetAllAnimControls((FrameworkElement)((ContentControl)element).Content, ref allControls,
+            GetAllAnimControls((Control)((ContentControl)element).Content, ref allControls,
                 ignoreInvisibility);
         else if (element is Panel)
-            foreach (FrameworkElement Element2 in ((Panel)element).Children)
+            foreach (Control Element2 in ((Panel)element).Children)
                 GetAllAnimControls(Element2, ref allControls, ignoreInvisibility);
         else
             allControls.Add(element);

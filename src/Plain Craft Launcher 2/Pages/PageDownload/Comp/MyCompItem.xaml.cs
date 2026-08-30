@@ -1,7 +1,13 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
 
 namespace PCL;
 
@@ -169,7 +175,7 @@ public partial class MyCompItem
         if (IsTextTrimmed(LabInfo))
         {
             ToolTipInfo.Content = LabInfo.Text;
-            ToolTipInfo.Width = LabInfo.ActualWidth + 25d;
+            ToolTipInfo.Width = LabInfo.Bounds.Width + 25d;
             LabInfo.ToolTip = ToolTipInfo;
         }
         else
@@ -184,7 +190,7 @@ public partial class MyCompItem
             textBlock.FontStretch);
         var formattedText = new FormattedText(textBlock.Text, Thread.CurrentThread.CurrentCulture,
             textBlock.FlowDirection, typeface, textBlock.FontSize, textBlock.Foreground, ModBase.dpi);
-        return formattedText.Width > textBlock.ActualWidth;
+        return formattedText.Width > textBlock.Bounds.Width;
     }
 
     // Tag
@@ -273,7 +279,7 @@ public partial class MyCompItem
         if (PanButtons.Opacity > 0d && Tag is ModComp.CompProject)
         {
             var project = (ModComp.CompProject)Tag;
-            ModComp.CompFavorites.ShowMenu(project, (UIElement)sender, () => RefreshFavoriteStatus());
+            ModComp.CompFavorites.ShowMenu(project, (Control)sender, () => RefreshFavoriteStatus());
         }
     }
 
@@ -418,7 +424,7 @@ public partial class MyCompItem
     }
 
     // 判断点击是否落在某个操作按钮（收藏 / 下载）上
-    private bool _IsClickOnActionButton(FrameworkElement button, Point clickPosition)
+    private bool _IsClickOnActionButton(Control button, Point clickPosition)
     {
         if (button is null || button.Visibility != Visibility.Visible) return false;
         var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this), button.RenderSize);

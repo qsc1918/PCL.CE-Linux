@@ -1,7 +1,11 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
-using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Input;
 using FluentValidation;
 using fNbt;
 using PCL.Core.Link.McPing;
@@ -52,7 +56,7 @@ public partial class PageInstanceServer : MyPageRight
         PingAllServers();
     }
 
-    private void PageInstanceServer_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void PageInstanceServer_IsVisibleChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (!IsVisible)
             if (_cts is not null)
@@ -66,7 +70,7 @@ public partial class PageInstanceServer : MyPageRight
     private async void RemoveServerEvent(object sender, EventArgs e)
     {
         // Get server index
-        var index = PanServers.Children.IndexOf((UIElement)sender);
+        var index = PanServers.Children.IndexOf((Control)sender);
         if (index < 0)
         {
             HintService.Hint(Lang.Text("Instance.Server.IndexNotFound"), HintType.Error);
@@ -101,7 +105,7 @@ public partial class PageInstanceServer : MyPageRight
         if (serverList.Count == 0) RefreshTip();
 
         // Remove UI element
-        PanServers.Children.Remove((UIElement)sender);
+        PanServers.Children.Remove((Control)sender);
 
         // Success message
         HintService.Hint(Lang.Text("Instance.Server.Removed"), HintType.Success);
@@ -120,7 +124,7 @@ public partial class PageInstanceServer : MyPageRight
         }
 
         // Get server index
-        var index = PanServers.Children.IndexOf((UIElement)sender);
+        var index = PanServers.Children.IndexOf((Control)sender);
         if (index < 0 || index >= nbtData.Count)
         {
             HintService.Hint(Lang.Text("Instance.Server.IndexNotFound"), HintType.Error);

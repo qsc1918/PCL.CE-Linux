@@ -1,56 +1,60 @@
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 
 namespace PCL
 {
     public static class CustomEventService
     {
-        public static readonly DependencyProperty EventsProperty =
-            DependencyProperty.RegisterAttached(
+        public static readonly AvaloniaProperty EventsProperty =
+            AvaloniaProperty.RegisterAttached(
                 "Events",
                 typeof(CustomEventCollection),
                 typeof(CustomEventService),
                 new PropertyMetadata(null));
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static void SetEvents(DependencyObject d, CustomEventCollection value) =>
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static void SetEvents(AvaloniaObject d, CustomEventCollection value) =>
             d.SetValue(EventsProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static CustomEventCollection GetEvents(DependencyObject d)
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static CustomEventCollection GetEvents(AvaloniaObject d)
         {
             if (d.GetValue(EventsProperty) is null)
                 d.SetValue(EventsProperty, new CustomEventCollection());
             return (CustomEventCollection)d.GetValue(EventsProperty);
         }
 
-        public static readonly DependencyProperty EventTypeProperty =
-            DependencyProperty.RegisterAttached(
+        public static readonly AvaloniaProperty EventTypeProperty =
+            AvaloniaProperty.RegisterAttached(
                 "EventType",
                 typeof(EventType),
                 typeof(CustomEventService),
                 new PropertyMetadata(EventType.None));
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static void SetEventType(DependencyObject d, EventType value) =>
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static void SetEventType(AvaloniaObject d, EventType value) =>
             d.SetValue(EventTypeProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static EventType GetEventType(DependencyObject d) =>
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static EventType GetEventType(AvaloniaObject d) =>
             (EventType)d.GetValue(EventTypeProperty);
 
-        public static readonly DependencyProperty EventDataProperty =
-            DependencyProperty.RegisterAttached(
+        public static readonly AvaloniaProperty EventDataProperty =
+            AvaloniaProperty.RegisterAttached(
                 "EventData",
                 typeof(string),
                 typeof(CustomEventService),
                 new PropertyMetadata(null));
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static void SetEventData(DependencyObject d, string value) =>
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static void SetEventData(AvaloniaObject d, string value) =>
             d.SetValue(EventDataProperty, value);
 
-        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-        public static string GetEventData(DependencyObject d) =>
+        [AttachedPropertyBrowsableForType(typeof(AvaloniaObject))]
+        public static string GetEventData(AvaloniaObject d) =>
             (string)d.GetValue(EventDataProperty);
     }
 }

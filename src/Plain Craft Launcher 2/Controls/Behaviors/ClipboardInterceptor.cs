@@ -1,9 +1,15 @@
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using Clipboard = System.Windows.Forms.Clipboard;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Clipboard = Avalonia.Forms.Clipboard;
 
 // Author: uye (owner of the MaaAssistantArknights team)
 // Original Source: MaaAssistantArknights project - https://github.com/MaaAssistantArknights/MaaAssistantArknights
@@ -25,25 +31,25 @@ namespace PCL.Controls.Behaviors;
 
 public sealed class ClipboardInterceptor
 {
-    public static readonly DependencyProperty EnableSafeClipboardProperty =
-        DependencyProperty.RegisterAttached("EnableSafeClipboard", typeof(bool), typeof(ClipboardInterceptor),
+    public static readonly AvaloniaProperty EnableSafeClipboardProperty =
+        AvaloniaProperty.RegisterAttached("EnableSafeClipboard", typeof(bool), typeof(ClipboardInterceptor),
             new PropertyMetadata(false, OnEnableSafeClipboardChanged));
 
     private ClipboardInterceptor()
     {
     }
 
-    public static void SetEnableSafeClipboard(DependencyObject element, bool value)
+    public static void SetEnableSafeClipboard(AvaloniaObject element, bool value)
     {
         element.SetValue(EnableSafeClipboardProperty, value);
     }
 
-    public static bool GetEnableSafeClipboard(DependencyObject element)
+    public static bool GetEnableSafeClipboard(AvaloniaObject element)
     {
         return (bool)element.GetValue(EnableSafeClipboardProperty);
     }
 
-    private static void OnEnableSafeClipboardChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnEnableSafeClipboardChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         if (!(bool)e.NewValue)
             return;

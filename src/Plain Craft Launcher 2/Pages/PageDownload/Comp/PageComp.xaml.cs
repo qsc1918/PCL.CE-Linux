@@ -1,7 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Markup;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Markup;
 using PCL.Core.App.Localization;
 
 namespace PCL;
@@ -158,8 +164,8 @@ public partial class PageComp
     /// </summary>
     public ItemCollection SearchTags => ComboSearchTag.Items;
 
-    public static readonly DependencyProperty SupportCurseForgeProperty =
-        DependencyProperty.Register("SupportCurseForge", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
+    public static readonly AvaloniaProperty SupportCurseForgeProperty =
+        AvaloniaProperty.Register("SupportCurseForge", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
 
     public bool SupportCurseForge
     {
@@ -167,8 +173,8 @@ public partial class PageComp
         set => SetValue(SupportCurseForgeProperty, value);
     }
 
-    public static readonly DependencyProperty SupportModrinthProperty =
-        DependencyProperty.Register("SupportModrinth", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
+    public static readonly AvaloniaProperty SupportModrinthProperty =
+        AvaloniaProperty.Register("SupportModrinth", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
 
     public bool SupportModrinth
     {
@@ -305,7 +311,7 @@ public partial class PageComp
         }
     }
 
-    private void PageComp_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void PageComp_IsVisibleChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         // 当页面变为可见时刷新收藏按钮状态
         if (IsVisible) RefreshAllFavoriteStatus();
@@ -329,8 +335,8 @@ public partial class PageComp
 
         request.searchText = PanSearchBox.Text;
         request.gameVersion = gameVersion;
-        var selectedTag = (ComboSearchTag.SelectedItem as FrameworkElement)?.Tag?.ToString();
-        var loaderTag = (ComboSearchShaderLoader.SelectedItem as FrameworkElement)?.Tag?.ToString();
+        var selectedTag = (ComboSearchTag.SelectedItem as Control)?.Tag?.ToString();
+        var loaderTag = (ComboSearchShaderLoader.SelectedItem as Control)?.Tag?.ToString();
 
         request.tag = PageType == ModComp.CompType.Shader
             ? string.IsNullOrEmpty(loaderTag)

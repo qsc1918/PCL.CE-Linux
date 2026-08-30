@@ -1,9 +1,15 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
 using PCL.Core.Utils.Exts;
@@ -14,7 +20,7 @@ public partial class FontSelector
 {
     public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
 
-    public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip),
+    public static readonly AvaloniaProperty TooltipProperty = AvaloniaProperty.Register(nameof(Tooltip),
         typeof(string), typeof(FontSelector), new PropertyMetadata(null, OnTooltipChanged));
 
     private bool _isInitializing;
@@ -78,7 +84,7 @@ public partial class FontSelector
         set => ComboFont.IsEnabled = value;
     }
 
-    private static void OnTooltipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnTooltipChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         if (d is FontSelector control) control.ComboFont.ToolTip = e.NewValue;
     }

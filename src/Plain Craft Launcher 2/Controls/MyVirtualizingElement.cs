@@ -1,9 +1,15 @@
-using System.Windows;
-using System.Windows.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 
 namespace PCL;
 
-public class MyVirtualizingElement<T> : FrameworkElement where T : FrameworkElement
+public class MyVirtualizingElement<T> : Control where T : Control
 {
     private readonly Func<T> _initializer;
 
@@ -39,11 +45,11 @@ public class MyVirtualizingElement<T> : FrameworkElement where T : FrameworkElem
 }
 
 // 非泛型形式
-public class MyVirtualizingElement : FrameworkElement
+public class MyVirtualizingElement : Control
 {
-    private readonly Func<FrameworkElement> _initializer;
+    private readonly Func<Control> _initializer;
 
-    public MyVirtualizingElement(Func<FrameworkElement> initializer)
+    public MyVirtualizingElement(Func<Control> initializer)
     {
         _initializer = initializer;
         this.EnableLazyLoad(() => Init());
@@ -52,7 +58,7 @@ public class MyVirtualizingElement : FrameworkElement
     /// <summary>
     ///     实例化此控件。
     /// </summary>
-    public FrameworkElement Init()
+    public Control Init()
     {
         var element = _initializer();
         if (Parent is not null)
@@ -73,12 +79,12 @@ public class MyVirtualizingElement : FrameworkElement
     ///     如果该控件没有实例化，则会立即实例化。
     ///     如果类型错误，则返回原值。
     /// </summary>
-    public static FrameworkElement TryInit(FrameworkElement element)
+    public static Control TryInit(Control element)
     {
         if (typeof(MyVirtualizingElement<>).IsInstanceOfGenericType(element))
         {
             var method = element.GetType().GetMethod("Init", Type.EmptyTypes);
-            return (FrameworkElement)method.Invoke(element, null);
+            return (Control)method.Invoke(element, null);
         }
         return element is MyVirtualizingElement ? ((MyVirtualizingElement)element).Init() : element;
     }

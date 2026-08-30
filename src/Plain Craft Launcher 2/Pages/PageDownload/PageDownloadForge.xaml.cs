@@ -1,8 +1,14 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Collections;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
 using PCL.Core.App.Localization;
 
 namespace PCL;
@@ -89,7 +95,7 @@ public partial class PageDownloadForge
         if (newState != MyLoading.MyLoadingState.Stop)
             return;
 
-        var card = (MyCard)((FrameworkElement)sender.Parent).Parent;
+        var card = (MyCard)((Control)sender.Parent).Parent;
         var loader = (ModLoader.LoaderTask<string, List<ModDownload.DlForgeVersionEntry>>)sender.State;
         // 载入列表
         ((StackPanel)card.SwapControl).Children.Clear();

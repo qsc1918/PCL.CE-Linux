@@ -1,20 +1,26 @@
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace PCL;
 
 public class AnimatedBackgroundGrid : Grid
 {
-    public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register("BackgroundBrush",
+    public static readonly AvaloniaProperty BackgroundBrushProperty = AvaloniaProperty.Register("BackgroundBrush",
         typeof(SolidColorBrush), typeof(AnimatedBackgroundGrid),
         new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)), _BackgroundBrushChanged));
 
-    private readonly DependencyProperty _animatableBrushProperty;
+    private readonly AvaloniaProperty _animatableBrushProperty;
 
     public readonly int uuid = ModBase.GetUuid();
 
-    public AnimatedBackgroundGrid(DependencyProperty brushDp)
+    public AnimatedBackgroundGrid(AvaloniaProperty brushDp)
     {
         _animatableBrushProperty = brushDp;
         Loaded += (_, _) => Init();
@@ -24,7 +30,7 @@ public class AnimatedBackgroundGrid : Grid
     {
     }
 
-    protected virtual FrameworkElement AnimatableElement => this;
+    protected virtual Control AnimatableElement => this;
 
     protected virtual SolidColorBrush AnimatableBrush
     {
@@ -44,7 +50,7 @@ public class AnimatedBackgroundGrid : Grid
         set => SetValue(BackgroundBrushProperty, value);
     }
 
-    private static void _BackgroundBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void _BackgroundBrushChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var grid = (AnimatedBackgroundGrid)d;
         var brush = (SolidColorBrush)e.NewValue;

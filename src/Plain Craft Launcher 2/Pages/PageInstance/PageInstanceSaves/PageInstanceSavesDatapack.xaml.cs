@@ -1,10 +1,16 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.Threading;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App;
 using PCL.Core.UI;
@@ -953,7 +959,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             body.Items.Add(item);
         }
 
-        body.PlacementTarget = (UIElement)sender;
+        body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
         body.IsOpen = true;
     }
@@ -1521,7 +1527,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     {
         var selected = ModLocalComp.compResourceListLoader.output
             .Where(m => selectedDatapacks.Contains(m.RawPath) && m.Comp is not null).Select(i => i.Comp).ToList();
-        ModComp.CompFavorites.ShowMenu(selected, (UIElement)sender);
+        ModComp.CompFavorites.ShowMenu(selected, (Control)sender);
     }
 
     // 分享

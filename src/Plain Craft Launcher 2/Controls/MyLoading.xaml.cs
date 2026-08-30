@@ -1,7 +1,11 @@
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Input;
+using Avalonia.Media;
 using static PCL.MyLoading;
 using PCL.Core.App.Localization;
 
@@ -31,8 +35,8 @@ public partial class MyLoading
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly DependencyProperty ForegroundProperty =
-        DependencyProperty.Register("Foreground", typeof(SolidColorBrush), typeof(MyLoading));
+    public static readonly AvaloniaProperty ForegroundProperty =
+        AvaloniaProperty.Register("Foreground", typeof(SolidColorBrush), typeof(MyLoading));
 
     public MyLoading()
     {
@@ -75,8 +79,8 @@ public partial class MyLoading
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly DependencyProperty TextProperty =
-        DependencyProperty.Register("Text", typeof(string), typeof(MyLoading),
+    public static readonly AvaloniaProperty TextProperty =
+        AvaloniaProperty.Register("Text", typeof(string), typeof(MyLoading),
             new PropertyMetadata("", (d, e) => ((MyLoading)d).RefreshText()));
 
     public string TextError
@@ -85,8 +89,8 @@ public partial class MyLoading
         set => SetValue(TextErrorProperty, value);
     }
 
-    public static readonly DependencyProperty TextErrorProperty =
-        DependencyProperty.Register("TextError", typeof(string), typeof(MyLoading),
+    public static readonly AvaloniaProperty TextErrorProperty =
+        AvaloniaProperty.Register("TextError", typeof(string), typeof(MyLoading),
             new PropertyMetadata("", (d, e) => ((MyLoading)d).RefreshText()));
 
     /// <summary>

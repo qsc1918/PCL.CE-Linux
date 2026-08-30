@@ -1,8 +1,12 @@
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls.Documents;
+using Avalonia.Input;
+using Avalonia.Markup;
+using Avalonia.Media;
 
 namespace PCL;
 
@@ -16,7 +20,7 @@ public partial class MyExtraTextButton
     private const int animationColorIn = 120;
     private const int animationColorOut = 150;
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyExtraTextButton), new PropertyMetadata((sender, e) =>
         {
             ((MyExtraTextButton)sender)?.LabText.Text = (string)e.NewValue;

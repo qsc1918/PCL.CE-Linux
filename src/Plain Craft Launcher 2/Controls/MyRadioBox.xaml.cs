@@ -1,9 +1,15 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Shapes;
+using System.Collections;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Controls.Documents;
+using Avalonia.Markup;
+using Avalonia.Shapes;
 
 using PCL.Core.App.Localization;
 namespace PCL;
@@ -23,14 +29,14 @@ public partial class MyRadioBox : IMyRadio
     private const int animationTimeOfCheck = 150; // 勾选状态变更动画长度
 
     // 在使用 XAML 设置 Checked 属性时，不会触发 Checked_Set 方法，所以需要在这里手动触发 UI 改变
-    public static readonly DependencyProperty CheckedProperty = DependencyProperty.Register("Checked", typeof(bool),
+    public static readonly AvaloniaProperty CheckedProperty = AvaloniaProperty.Register("Checked", typeof(bool),
         typeof(MyRadioBox), new PropertyMetadata(false, (dRaw, e) =>
         {
             var d = (MyRadioBox)dRaw;
             if (!d.IsLoaded) d.SyncUI();
         }));
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string),
+    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyRadioBox), new PropertyMetadata((sender, e) =>
         {
             if (sender is not null) ((MyRadioBox)sender).LabText.Text = (string)e.NewValue;

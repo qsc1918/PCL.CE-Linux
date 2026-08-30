@@ -1,13 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+// [port] Avalonia.Interop removed
+using Avalonia.Media;
+using Avalonia.Threading;
 using FluentValidation;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
@@ -696,8 +702,8 @@ public static class ModMain
             // 计算躲避移动
             Vector direction;
             double distance;
-            var buttonWidth = frmLaunchLeft.BtnLaunch.ActualWidth / 2d;
-            var buttonHeight = frmLaunchLeft.BtnLaunch.ActualHeight / 2d;
+            var buttonWidth = frmLaunchLeft.BtnLaunch.Bounds.Width / 2d;
+            var buttonHeight = frmLaunchLeft.BtnLaunch.Bounds.Height / 2d;
             var vec = (Vector)(frmMain.lastMouseArg.GetPosition(frmLaunchLeft.BtnLaunch) -
                                new Vector(buttonWidth, buttonHeight));
             var dir = new Vector(vec.X, vec.Y);
@@ -711,7 +717,7 @@ public static class ModMain
             if (aprilIdieCount >= 64 * 5)
             {
                 var safeDist = (Vector)(frmMain.lastMouseArg.GetPosition(frmMain.PanMain) -
-                                        new Vector(buttonWidth, frmMain.PanMain.ActualHeight - buttonHeight * 3d));
+                                        new Vector(buttonWidth, frmMain.PanMain.Bounds.Height - buttonHeight * 3d));
                 var back = new Vector(frmLaunchLeft.AprilPosTrans.X, frmLaunchLeft.AprilPosTrans.Y);
                 if (safeDist.Length > 250d && back.Length > 0.4d)
                 {
@@ -725,38 +731,38 @@ public static class ModMain
             var relative = frmLaunchLeft.BtnLaunch.TranslatePoint(new Point(0d, 0d), frmMain.PanForm);
             if (relative.X < -buttonWidth * 2d)
             {
-                frmLaunchLeft.AprilPosTrans.X += frmMain.PanForm.ActualWidth + buttonWidth * 2d; // 离开左边界
+                frmLaunchLeft.AprilPosTrans.X += frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开左边界
                 aprilSpeed.X -= 80d;
                 if (relative.Y < 0d)
                     frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
-                else if (relative.Y > frmMain.PanForm.ActualHeight - buttonHeight * 2d)
+                else if (relative.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
                     frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
             }
-            else if (relative.X > frmMain.PanForm.ActualWidth)
+            else if (relative.X > frmMain.PanForm.Bounds.Width)
             {
-                frmLaunchLeft.AprilPosTrans.X -= frmMain.PanForm.ActualWidth + buttonWidth * 2d; // 离开右边界
+                frmLaunchLeft.AprilPosTrans.X -= frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开右边界
                 aprilSpeed.X += 80d;
                 if (relative.Y < 0d)
                     frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
-                else if (relative.Y > frmMain.PanForm.ActualHeight - buttonHeight * 2d)
+                else if (relative.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
                     frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
             }
             else if (relative.Y < -buttonHeight * 2d)
             {
-                frmLaunchLeft.AprilPosTrans.Y += frmMain.PanForm.ActualHeight + buttonHeight * 2d; // 离开上边界
+                frmLaunchLeft.AprilPosTrans.Y += frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开上边界
                 aprilSpeed.Y -= 25d;
                 if (relative.X < 0d)
                     frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
-                else if (relative.X > frmMain.PanForm.ActualWidth - buttonWidth * 2d)
+                else if (relative.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
                     frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
             }
-            else if (relative.Y > frmMain.PanForm.ActualHeight)
+            else if (relative.Y > frmMain.PanForm.Bounds.Height)
             {
-                frmLaunchLeft.AprilPosTrans.Y -= frmMain.PanForm.ActualHeight + buttonHeight * 2d; // 离开下边界
+                frmLaunchLeft.AprilPosTrans.Y -= frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开下边界
                 aprilSpeed.Y += 25d;
                 if (relative.X < 0d)
                     frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
-                else if (relative.X > frmMain.PanForm.ActualWidth - buttonWidth * 2d)
+                else if (relative.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
                     frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
             }
 
@@ -1070,7 +1076,7 @@ public static class ModMain
 
     #endregion
     
-    public static void RaiseCustomEvent(DependencyObject control)
+    public static void RaiseCustomEvent(AvaloniaObject control)
     {
         // 收集事件列表
         var events = CustomEventService.GetEvents(control).ToList();
