@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 // 该部分源码来自或修改于 https://github.com/OrgEleCho/EleCho.WpfSuite
 // 项目: EleCho.WpfSuite
@@ -13,11 +17,11 @@ using System.Windows.Media;
 namespace PCL.Core.UI
 {
     /// <summary>
-    /// Used for rendering the background content of a UIElement. By adding a <see cref="BlurEffect"/> to this element, you can achieve a blurred background effect.
+    /// Used for rendering the background content of a Control. By adding a <see cref="BlurEffect"/> to this element, you can achieve a blurred background effect.
     /// </summary>
-    public class BackgroundPresenter : FrameworkElement
+    public class BackgroundPresenter : Control
     {
-        private static readonly FieldInfo _DrawingContentOfUIElement = typeof(UIElement)
+        private static readonly FieldInfo _DrawingContentOfUIElement = typeof(Control)
             .GetField("_drawingContent", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
         private static readonly FieldInfo _ContentOfDrawingVisual = typeof(DrawingVisual)
@@ -26,22 +30,22 @@ namespace PCL.Core.UI
         private static readonly FieldInfo _OffsetOfVisual = typeof(Visual)
             .GetField("_offset", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
-        private static readonly Func<UIElement, DrawingContext> _RenderOpenMethod = (Func<UIElement, DrawingContext>)typeof(UIElement)
+        private static readonly Func<Control, DrawingContext> _RenderOpenMethod = (Func<Control, DrawingContext>)typeof(Control)
             .GetMethod("RenderOpen", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .CreateDelegate(typeof(Func<UIElement, DrawingContext>));
+            .CreateDelegate(typeof(Func<Control, DrawingContext>));
 
-        private static readonly Action<UIElement, DrawingContext> _OnRenderMethod = (Action<UIElement, DrawingContext>)typeof(UIElement)
+        private static readonly Action<Control, DrawingContext> _OnRenderMethod = (Action<Control, DrawingContext>)typeof(Control)
             .GetMethod("OnRender", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .CreateDelegate(typeof(Action<UIElement, DrawingContext>));
+            .CreateDelegate(typeof(Action<Control, DrawingContext>));
 
         private static readonly GetContentBoundsDelegate _MethodGetContentBounds = (GetContentBoundsDelegate)typeof(VisualBrush)
             .GetMethod("GetContentBounds", BindingFlags.Instance | BindingFlags.NonPublic)!
             .CreateDelegate(typeof(GetContentBoundsDelegate));
 
         private delegate void GetContentBoundsDelegate(VisualBrush visualBrush, out Rect bounds);
-        private readonly Stack<UIElement> _parentStack = new();
+        private readonly Stack<Control> _parentStack = new();
 
-        public static void ForceRender(UIElement target)
+        public static void ForceRender(Control target)
         {
             using var drawingContext = _RenderOpenMethod(target);
 
@@ -72,14 +76,14 @@ namespace PCL.Core.UI
         }
 
         /// <inheritdoc/>
-        protected override void OnVisualParentChanged(DependencyObject oldParentObject)
+        protected override void OnVisualParentChanged(AvaloniaObject oldParentObject)
         {
-            if (oldParentObject is UIElement oldParent)
+            if (oldParentObject is Control oldParent)
             {
                 oldParent.LayoutUpdated -= ParentLayoutUpdated;
             }
 
-            if (Parent is UIElement newParent)
+            if (Parent is Control newParent)
             {
                 newParent.LayoutUpdated += ParentLayoutUpdated;
             }
@@ -95,14 +99,14 @@ namespace PCL.Core.UI
         }
 
         internal static void DrawBackground(
-            DrawingContext drawingContext, UIElement self,
-            Stack<UIElement> parentStackStorage,
+            DrawingContext drawingContext, Control self,
+            Stack<Control> parentStackStorage,
             int maxDepth,
             bool throwExceptionIfParentArranging)
         {
             var selfInDesignMode = DesignerProperties.GetIsInDesignMode(self);
 
-            var parent = VisualTreeHelper.GetParent(self) as UIElement;
+            var parent = VisualTreeHelper.GetParent(self) as Control;
             while (
                 parent is not null &&
                 parentStackStorage.Count < maxDepth)
@@ -139,7 +143,7 @@ namespace PCL.Core.UI
                 }
 
                 parentStackStorage.Push(parent);
-                parent = VisualTreeHelper.GetParent(parent) as UIElement;
+                parent = VisualTreeHelper.GetParent(parent) as Control;
             }
 
             var selfRect = new Rect(0, 0, self.RenderSize.Width, self.RenderSize.Height);
@@ -167,7 +171,7 @@ namespace PCL.Core.UI
                 var childCount = VisualTreeHelper.GetChildrenCount(currentParent);
                 for (var i = 0; i < childCount; i++)
                 {
-                    if (VisualTreeHelper.GetChild(currentParent, i) is not UIElement child)
+                    if (VisualTreeHelper.GetChild(currentParent, i) is not Control child)
                     {
                         continue;
                     }
@@ -194,13 +198,13 @@ namespace PCL.Core.UI
         }
 
         /// <summary>
-        /// Draw background of the specified UIElement.
+        /// Draw background of the specified Control.
         /// </summary>
         /// <param name="drawingContext"></param>
         /// <param name="self"></param>
-        public static void DrawBackground(DrawingContext drawingContext, UIElement self)
+        public static void DrawBackground(DrawingContext drawingContext, Control self)
         {
-            var parentStack = new Stack<UIElement>();
+            var parentStack = new Stack<Control>();
             DrawBackground(drawingContext, self, parentStack, int.MaxValue, true);
         }
 
@@ -222,7 +226,7 @@ namespace PCL.Core.UI
         /// <summary>
         /// Dependency property for <see cref="MaxDepth"/>.
         /// </summary>
-        public static readonly DependencyProperty MaxDepthProperty =
-            DependencyProperty.Register("MaxDepth", typeof(int), typeof(BackgroundPresenter), new FrameworkPropertyMetadata(16));
+        public static readonly AvaloniaProperty MaxDepthProperty =
+            AvaloniaProperty.Register("MaxDepth", typeof(int), typeof(BackgroundPresenter), new FrameworkPropertyMetadata(16));
     }
 }

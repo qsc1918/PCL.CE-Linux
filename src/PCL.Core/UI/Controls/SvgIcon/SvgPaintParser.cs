@@ -1,14 +1,15 @@
 using System;
 using System.Globalization;
-using System.Windows.Media;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace PCL.Core.UI.Controls.SvgIcon;
 
+// [port] WPF BrushConverter → Avalonia Color.Parse（支持 #hex 与命名颜色）。
+
 internal static class SvgPaintParser
 {
-    private static readonly BrushConverter _BrushConverter = new();
-
-    public static Brush? ParseBrush(string? value, Brush currentColorBrush)
+    public static IBrush? ParseBrush(string? value, IBrush currentColorBrush)
     {
         if (string.IsNullOrWhiteSpace(value))
             return null;
@@ -25,7 +26,7 @@ internal static class SvgPaintParser
 
         try
         {
-            return _BrushConverter.ConvertFromInvariantString(normalized) as Brush;
+            return new ImmutableSolidColorBrush(Color.Parse(normalized));
         }
         catch
         {
@@ -33,7 +34,7 @@ internal static class SvgPaintParser
         }
     }
 
-    private static bool _TryParseRgbFunction(string value, out Brush brush)
+    private static bool _TryParseRgbFunction(string value, out IBrush brush)
     {
         brush = null!;
 
@@ -59,7 +60,7 @@ internal static class SvgPaintParser
         if (r is null || g is null || b is null)
             return false;
 
-        brush = new SolidColorBrush(Color.FromArgb(a, r.Value, g.Value, b.Value));
+        brush = new ImmutableSolidColorBrush(Color.FromArgb(a, r.Value, g.Value, b.Value));
         return true;
     }
 

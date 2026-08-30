@@ -1,4 +1,8 @@
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 
 namespace PCL.Core.UI.Animation.ValueProcessor;
 

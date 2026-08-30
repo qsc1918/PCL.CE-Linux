@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Media;
 using PCL.Core.UI.Animation.Core;
 
 namespace PCL.Core.UI;
@@ -66,9 +67,10 @@ public struct NScaleTransform :
 
         return;
 
+        // [port] Avalonia ScaleTransform 无 CenterX/CenterY，中心点记为 (0,0)
         Vector4 GetVector(ScaleTransform st)
         {
-            return new Vector4((float)st.ScaleX, (float)st.ScaleY, (float)st.CenterX, (float)st.CenterY);
+            return new Vector4((float)st.ScaleX, (float)st.ScaleY, 0f, 0f);
         }
     }
     
@@ -111,8 +113,17 @@ public struct NScaleTransform :
 
     #region 隐式转换
 
-    public static implicit operator ScaleTransform(NScaleTransform st) =>
-        new(st.ScaleX, st.ScaleY, st.CenterX, st.CenterY);
+    // [port] Avalonia ScaleTransform 无中心点概念 → 以 MatrixTransform 显式构造“绕中心缩放”矩阵：
+    // p' = (p − c)·S + c ⇔ M = [sx 0; 0 sy; cx−sx·cx, cy−sy·cy]（行向量约定，平移在 M31/M32）
+    public static implicit operator MatrixTransform(NScaleTransform st)
+    {
+        var sx = st.ScaleX;
+        var sy = st.ScaleY;
+        var cx = st.CenterX;
+        var cy = st.CenterY;
+        var m = new Matrix(sx, 0, 0, sy, cx - sx * cx, cy - sy * cy);
+        return new MatrixTransform { Matrix = m };
+    }
 
     public static implicit operator NScaleTransform(ScaleTransform st) => new(st);
 

@@ -3,7 +3,11 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.Logging;
 
 namespace PCL.Core.UI.Controls.SvgIcon;
@@ -41,17 +45,17 @@ public static class SvgIconLoader
     {
         try
         {
+            // [port] WPF pack:// URI + Application.GetResourceStream → Avalonia avares:// + AssetLoader.Open
             var uri = new Uri(
-                $"pack://application:,,,/{_AssemblyName};component/UI/Assets/IconPacks/{key.Pack}/{key.Name}.svg",
+                $"avares://{_AssemblyName}/UI/Assets/IconPacks/{key.Pack}/{key.Name}.svg",
                 UriKind.Absolute);
-            var info = Application.GetResourceStream(uri);
-            if (info is null)
+            if (!Avalonia.Platform.AssetLoader.Exists(uri))
             {
                 _LogDebug($"缺少 SVG 图标资源：{key} ({uri})");
                 return null;
             }
 
-            using var stream = info.Stream;
+            using var stream = Avalonia.Platform.AssetLoader.Open(uri);
             using var reader = new StreamReader(stream, Encoding.UTF8, true);
             var svg = reader.ReadToEnd();
             return SvgIconParser.Parse(svg);

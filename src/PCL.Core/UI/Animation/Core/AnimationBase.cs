@@ -1,12 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.UI.Animation.Animatable;
 
 namespace PCL.Core.UI.Animation.Core;
 
-public abstract class AnimationBase : DependencyObject, IAnimation
+public abstract class AnimationBase : AvaloniaObject, IAnimation
 {
     public string Name { get; set; } = string.Empty;
     private volatile int _status = (int)AnimationStatus.NotStarted;

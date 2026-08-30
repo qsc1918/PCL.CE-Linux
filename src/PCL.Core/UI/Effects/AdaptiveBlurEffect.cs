@@ -2,9 +2,13 @@ using System;
 using System.Buffers;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Media;
 
 namespace PCL.Core.UI.Effects;
 // ReSharper disable UnusedMember.Local, UnusedParameter.Local
@@ -79,31 +83,31 @@ public sealed class AdaptiveBlurEffect : ShaderEffect
     }
 
     // Dependency Properties
-    public static readonly DependencyProperty InputProperty = 
+    public static readonly AvaloniaProperty InputProperty = 
         ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(AdaptiveBlurEffect), 0);
 
-    public static readonly DependencyProperty RadiusProperty = 
-        DependencyProperty.Register(nameof(Radius), typeof(double), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty RadiusProperty = 
+        AvaloniaProperty.Register(nameof(Radius), typeof(double), typeof(AdaptiveBlurEffect), 
             new UIPropertyMetadata(16.0, PixelShaderConstantCallback(0)), _ValidateRadius);
 
-    public static readonly DependencyProperty SamplingRateProperty = 
-        DependencyProperty.Register(nameof(SamplingRate), typeof(double), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty SamplingRateProperty = 
+        AvaloniaProperty.Register(nameof(SamplingRate), typeof(double), typeof(AdaptiveBlurEffect), 
             new UIPropertyMetadata(1.0, PixelShaderConstantCallback(1)), _ValidateSamplingRate);
 
-    public static readonly DependencyProperty QualityBiasProperty = 
-        DependencyProperty.Register("QualityBias", typeof(double), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty QualityBiasProperty = 
+        AvaloniaProperty.Register("QualityBias", typeof(double), typeof(AdaptiveBlurEffect), 
             new UIPropertyMetadata(0.0, PixelShaderConstantCallback(2)));
 
-    public static readonly DependencyProperty TextureSizeProperty = 
-        DependencyProperty.Register("TextureSize", typeof(Point), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty TextureSizeProperty = 
+        AvaloniaProperty.Register("TextureSize", typeof(Point), typeof(AdaptiveBlurEffect), 
             new UIPropertyMetadata(new Point(1920, 1080), PixelShaderConstantCallback(3)));
 
-    public static readonly DependencyProperty RenderingBiasProperty = 
-        DependencyProperty.Register(nameof(RenderingBias), typeof(RenderingBias), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty RenderingBiasProperty = 
+        AvaloniaProperty.Register(nameof(RenderingBias), typeof(RenderingBias), typeof(AdaptiveBlurEffect), 
             new PropertyMetadata(RenderingBias.Performance, OnRenderingBiasChanged));
 
-    public static readonly DependencyProperty KernelTypeProperty = 
-        DependencyProperty.Register(nameof(KernelType), typeof(KernelType), typeof(AdaptiveBlurEffect), 
+    public static readonly AvaloniaProperty KernelTypeProperty = 
+        AvaloniaProperty.Register(nameof(KernelType), typeof(KernelType), typeof(AdaptiveBlurEffect), 
             new PropertyMetadata(KernelType.Gaussian));
 
     public Brush Input
@@ -120,7 +124,7 @@ public sealed class AdaptiveBlurEffect : ShaderEffect
     private static bool _ValidateSamplingRate(object value) => 
         value is >= 0.1 and <= 1.0;
 
-    private static void OnRenderingBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnRenderingBiasChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         if (d is AdaptiveBlurEffect effect)
         {

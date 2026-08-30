@@ -93,12 +93,13 @@ public class LabColor
     }
 
     /// <summary>
-    /// Create a <see cref="LabColor"/> instance from <see cref="System.Windows.Media.Color"/>.
+    /// Create a <see cref="LabColor"/> instance from <see cref="Avalonia.Media.Color"/>.
+    /// [port] WPF Color.ScR/ScG/ScB/ScA → sRGB 字节分量的浮点表达（R/255）。
     /// </summary>
-    public static LabColor FromWpfColor(System.Windows.Media.Color color)
-        => FromRgb(color.ScR, color.ScG, color.ScB, color.ScA);
+    public static LabColor FromWpfColor(Avalonia.Media.Color color)
+        => FromRgb((double)color.R / 255.0, (double)color.G / 255.0, (double)color.B / 255.0, (double)color.A / 255.0);
 
-    public static implicit operator LabColor(System.Windows.Media.Color color) => FromWpfColor(color);
+    public static implicit operator LabColor(Avalonia.Media.Color color) => FromWpfColor(color);
 
     /// <summary>
     /// ScRGB 映射模式.
@@ -159,15 +160,15 @@ public class LabColor
     } = default;
 
     /// <summary>
-    /// Convert to <see cref="System.Windows.Media.Color"/>.
+    /// Convert to <see cref="Avalonia.Media.Color"/>.
     /// </summary>
-    public System.Windows.Media.Color ToWpfColor()
+    public Avalonia.Media.Color ToWpfColor()
     {
         var (a, r, g, b) = ScRgb;
-        return System.Windows.Media.Color.FromScRgb(a, r, g, b);
+        return ScRgbCompat.FromScRgb(a, r, g, b);
     }
 
-    public static implicit operator System.Windows.Media.Color(LabColor lab) => lab.ToWpfColor();
+    public static implicit operator Avalonia.Media.Color(LabColor lab) => lab.ToWpfColor();
 
     /// <summary>
     /// Convert to <see cref="CatColorResource"/>.

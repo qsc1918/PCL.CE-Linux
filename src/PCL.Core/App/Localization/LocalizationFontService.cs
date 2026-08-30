@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using PCL.Core.App.IoC;
 
 namespace PCL.Core.App.Localization;

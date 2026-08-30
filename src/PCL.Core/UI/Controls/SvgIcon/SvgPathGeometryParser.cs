@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace PCL.Core.UI.Controls.SvgIcon;
 
@@ -229,7 +233,7 @@ internal static class SvgPathGeometryParser
             while (_HasNumber())
             {
                 var y = _ReadNumber();
-                _AddLine(_current with { Y = relative ? _current.Y + y : y });
+                _AddLine(new Point(_current.X, relative ? _current.Y + y : y));
             }
 
             _SetLastCommand('V');
@@ -244,7 +248,7 @@ internal static class SvgPathGeometryParser
                 var end = _ReadPoint(relative);
                 _EnsureFigure();
 
-                _figure!.Segments.Add(new BezierSegment(control1, control2, end, true));
+                _figure!.Segments.Add(new BezierSegment { Point1 = control1, Point2 = control2, Point3 = end, IsStroked = true });
                 _current = end;
                 _lastCubicControl = control2;
                 _lastQuadraticControl = null;
@@ -263,7 +267,7 @@ internal static class SvgPathGeometryParser
                 var end = _ReadPoint(relative);
 
                 _EnsureFigure();
-                _figure!.Segments.Add(new BezierSegment(control1, control2, end, true));
+                _figure!.Segments.Add(new BezierSegment { Point1 = control1, Point2 = control2, Point3 = end, IsStroked = true });
                 _current = end;
                 _lastCubicControl = control2;
                 _lastQuadraticControl = null;
@@ -279,7 +283,7 @@ internal static class SvgPathGeometryParser
                 var end = _ReadPoint(relative);
                 _EnsureFigure();
 
-                _figure!.Segments.Add(new QuadraticBezierSegment(control, end, true));
+                _figure!.Segments.Add(new QuadraticBezierSegment { Point1 = control, Point2 = end, IsStroked = true });
                 _current = end;
                 _lastQuadraticControl = control;
                 _lastCubicControl = null;
@@ -297,7 +301,7 @@ internal static class SvgPathGeometryParser
                 var end = _ReadPoint(relative);
                 _EnsureFigure();
 
-                _figure!.Segments.Add(new QuadraticBezierSegment(control, end, true));
+                _figure!.Segments.Add(new QuadraticBezierSegment { Point1 = control, Point2 = end, IsStroked = true });
                 _current = end;
                 _lastQuadraticControl = control;
                 _lastCubicControl = null;
@@ -318,15 +322,9 @@ internal static class SvgPathGeometryParser
 
                 _EnsureFigure();
                 if (rx <= 0D || ry <= 0D)
-                    _figure!.Segments.Add(new LineSegment(end, true));
+                    _figure!.Segments.Add(new LineSegment { Point = end, IsStroked = true });
                 else
-                    _figure!.Segments.Add(new ArcSegment(
-                        end,
-                        new Size(rx, ry),
-                        rotation,
-                        isLargeArc,
-                        isClockwise ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-                        true));
+                    _figure!.Segments.Add(new ArcSegment { Point = end, Size = new Size(rx, ry), RotationAngle = rotation, IsLargeArc = isLargeArc, SweepDirection = isClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise, IsStroked = true });;
 
                 _current = end;
                 _lastCubicControl = null;
@@ -374,7 +372,7 @@ internal static class SvgPathGeometryParser
         private void _AddLine(Point point)
         {
             _EnsureFigure();
-            _figure!.Segments.Add(new LineSegment(point, true));
+            _figure!.Segments.Add(new LineSegment { Point = point, IsStroked = true });
             _current = point;
             _lastCubicControl = null;
             _lastQuadraticControl = null;

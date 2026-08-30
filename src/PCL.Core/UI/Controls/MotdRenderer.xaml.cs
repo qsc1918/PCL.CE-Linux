@@ -5,12 +5,18 @@ namespace PCL.Core.UI.Controls;
 
 using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
 using System.Linq;
-using System.Windows.Media.Imaging;
+using Avalonia.Media.Imaging;
 
 public partial class MotdRenderer {
     // Default Color for originalColorMap: #808080
@@ -191,8 +197,8 @@ public partial class MotdRenderer {
         var fontFamily = new FontFamily(string.IsNullOrWhiteSpace(font)
             ? "./Resources/#PCL English, Segoe UI, Microsoft YaHei UI"
             : font);
-        var canvasWidth = MotdCanvas.ActualWidth > 0 ? MotdCanvas.ActualWidth : 300; // Prevent zero width
-        var canvasHeight = MotdCanvas.ActualHeight > 0 ? MotdCanvas.ActualHeight : 34; // Prevent zero height
+        var canvasWidth = MotdCanvas.Bounds.Width > 0 ? MotdCanvas.Bounds.Width : 300; // Prevent zero width
+        var canvasHeight = MotdCanvas.Bounds.Height > 0 ? MotdCanvas.Bounds.Height : 34; // Prevent zero height
         double y = 10;
 
         // Split multi-line MOTD

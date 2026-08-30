@@ -6,7 +6,11 @@ using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App.IoC;
 using PCL.Core.IO;
 
@@ -131,9 +135,9 @@ public sealed partial class RpcService
             void ActivateMainWindow()
             {
                 var app = Lifecycle.CurrentApplication;
-                app.Dispatcher.BeginInvoke(() =>
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                 {
-                    var window = app.MainWindow!;
+                    var window = app.MainWindow()!;
                     if (window.WindowState == WindowState.Minimized) window.WindowState = WindowState.Normal;
                     if (!window.Topmost)
                     {

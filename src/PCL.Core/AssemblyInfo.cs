@@ -1,5 +1,7 @@
 using System.Runtime.CompilerServices;
-using System.Windows.Markup;
+using Avalonia.Metadata;
+
+// [port] WPF XmlnsDefinition → Avalonia.Metadata.XmlnsDefinition（Avalonia 12 同样提供 XmlnsPrefix）。
 
 [assembly: XmlnsDefinition("https://ce.pclc.cc/core/ui/animation", "PCL.Core.UI.Animation")]
 [assembly: XmlnsDefinition("https://ce.pclc.cc/core/ui/animation", "PCL.Core.UI.Animation.Core")]

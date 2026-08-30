@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
 using PCL.Core.App.Configuration;
 using PCL.Core.App.IoC;
 
@@ -280,10 +284,27 @@ public sealed partial class LocalizationService
 
     private static ResourceDictionary _LoadLanguageDictionary(string languageCode)
     {
-        return new ResourceDictionary
+        // [port] WPF ResourceDictionary.Source → Avalonia 无运行时 Source 加载；
+        // 语言资源为纯键值 XAML，直接以 XML 解析构建 ResourceDictionary（键名与文案与上游一致）。
+        var uri = new Uri($"avares://PCL.Core/App/Localization/Languages/{languageCode}.xaml", UriKind.Absolute);
+        var dictionary = new ResourceDictionary();
+        using (var stream = Avalonia.Platform.AssetLoader.Open(uri))
+        using (var reader = System.Xml.XmlReader.Create(stream, new System.Xml.XmlReaderSettings
         {
-            Source = new Uri($"{AssemblyResourcePrefix}{languageCode}.xaml", UriKind.Relative)
-        };
+            DtdProcessing = System.Xml.DtdProcessing.Prohibit,
+            XmlResolver = null
+        }))
+        {
+            var document = System.Xml.Linq.XDocument.Load(reader);
+            var root = document.Root ?? throw new FormatException($"语言资源缺少根节点: {languageCode}");
+            foreach (var element in root.Elements())
+            {
+                var key = element.Attribute(System.Xml.Linq.XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value;
+                if (string.IsNullOrEmpty(key)) continue;
+                dictionary[key] = element.Value;
+            }
+        }
+        return dictionary;
     }
 
     private static string _NormalizeConfigValue(string? value)

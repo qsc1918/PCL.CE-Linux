@@ -1,7 +1,9 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using PCL.Core.UI.Animation;
 using PCL.Core.UI.Animation.Animatable;
 using PCL.Core.UI.Animation.Core;
@@ -9,93 +11,90 @@ using PCL.Core.UI.Animation.Easings;
 
 namespace PCL.Core.UI.Controls.SvgIcon;
 
-public class SvgIcon : FrameworkElement
+// [port] WPF DependencyProperty/FrameworkPropertyMetadata → Avalonia StyledProperty；
+// FrameworkPropertyMetadataOptions.AffectsMeasure/Render → Layoutable.AffectsMeasure / Visual.AffectsRender；
+// RenderSize → Bounds.Size；DrawingContext.PushTransform(Transform) → PushTransform(Matrix)；
+// Freezable 冻结逻辑 → 检测不可变画刷（IImmutableSolidColorBrush）并替换为可变实例。
+
+public class SvgIcon : Control
 {
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-        nameof(Icon),
-        typeof(string),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            _OnIconChanged));
+    public static readonly StyledProperty<string> IconProperty =
+        AvaloniaProperty.Register<SvgIcon, string>(
+            nameof(Icon),
+            string.Empty);
 
-    public static readonly DependencyProperty DefaultPackProperty = DependencyProperty.Register(
-        nameof(DefaultPack),
-        typeof(string),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(
-            SvgIconLoader.DefaultIconPack,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            _OnIconChanged));
+    public static readonly StyledProperty<string> DefaultPackProperty =
+        AvaloniaProperty.Register<SvgIcon, string>(
+            nameof(DefaultPack),
+            SvgIconLoader.DefaultIconPack);
 
-    public static readonly DependencyProperty IconBrushProperty = DependencyProperty.Register(
-        nameof(IconBrush),
-        typeof(Brush),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(
-            SystemColors.ControlTextBrush,
-            FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly StyledProperty<IBrush?> IconBrushProperty =
+        AvaloniaProperty.Register<SvgIcon, IBrush?>(
+            nameof(IconBrush),
+            Brushes.Black);
 
-    public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-        nameof(StrokeThickness),
-        typeof(double),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(
+    public static readonly StyledProperty<double> StrokeThicknessProperty =
+        AvaloniaProperty.Register<SvgIcon, double>(
+            nameof(StrokeThickness),
             2D,
-            FrameworkPropertyMetadataOptions.AffectsRender),
-        value => value is double number && !double.IsNaN(number) && number >= 0D);
+            validate: value => !double.IsNaN(value) && value >= 0D);
 
-    public static readonly DependencyProperty UseOriginalColorProperty = DependencyProperty.Register(
-        nameof(UseOriginalColor),
-        typeof(bool),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly StyledProperty<bool> UseOriginalColorProperty =
+        AvaloniaProperty.Register<SvgIcon, bool>(
+            nameof(UseOriginalColor),
+            false);
 
-    public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(
-        nameof(Stretch),
-        typeof(Stretch),
-        typeof(SvgIcon),
-        new FrameworkPropertyMetadata(
-            Stretch.Uniform,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly StyledProperty<Stretch> StretchProperty =
+        AvaloniaProperty.Register<SvgIcon, Stretch>(
+            nameof(Stretch),
+            Stretch.Uniform);
+
+    static SvgIcon()
+    {
+        AffectsMeasure<SvgIcon>(IconProperty, DefaultPackProperty, StretchProperty);
+        AffectsRender<SvgIcon>(IconProperty, DefaultPackProperty, IconBrushProperty,
+            StrokeThicknessProperty, UseOriginalColorProperty, StretchProperty);
+
+        IconProperty.Changed.AddClassHandler<SvgIcon>((icon, _) => icon._ResetModel());
+        DefaultPackProperty.Changed.AddClassHandler<SvgIcon>((icon, _) => icon._ResetModel());
+    }
 
     private SvgIconModel? _model;
     private bool _modelLoaded;
 
     public string Icon
     {
-        get => (string)GetValue(IconProperty);
+        get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);
     }
 
     public string DefaultPack
     {
-        get => (string)GetValue(DefaultPackProperty);
+        get => GetValue(DefaultPackProperty);
         set => SetValue(DefaultPackProperty, value);
     }
 
-    public Brush IconBrush
+    public IBrush? IconBrush
     {
-        get => (Brush)GetValue(IconBrushProperty);
+        get => GetValue(IconBrushProperty);
         set => SetValue(IconBrushProperty, value);
     }
 
     public double StrokeThickness
     {
-        get => (double)GetValue(StrokeThicknessProperty);
+        get => GetValue(StrokeThicknessProperty);
         set => SetValue(StrokeThicknessProperty, value);
     }
 
     public bool UseOriginalColor
     {
-        get => (bool)GetValue(UseOriginalColorProperty);
+        get => GetValue(UseOriginalColorProperty);
         set => SetValue(UseOriginalColorProperty, value);
     }
 
     public Stretch Stretch
     {
-        get => (Stretch)GetValue(StretchProperty);
+        get => GetValue(StretchProperty);
         set => SetValue(StretchProperty, value);
     }
 
@@ -115,7 +114,7 @@ public class SvgIcon : FrameworkElement
             Easing = easing ?? CubicEaseOut.Shared
         };
 
-        return animation.RunFireAndForget(new WpfAnimatable(this, IconBrushProperty));
+        return animation.RunFireAndForget(new AvaloniaAnimatable(this, IconBrushProperty));
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -137,32 +136,29 @@ public class SvgIcon : FrameworkElement
         return availableSize;
     }
 
-    protected override void OnRender(DrawingContext drawingContext)
+    public override void Render(DrawingContext drawingContext)
     {
-        base.OnRender(drawingContext);
+        base.Render(drawingContext);
 
         var model = _GetModel();
-        if (model is null || model.Elements.Count == 0 || RenderSize.Width <= 0D || RenderSize.Height <= 0D)
+        var renderSize = Bounds.Size;
+        if (model is null || model.Elements.Count == 0 || renderSize.Width <= 0D || renderSize.Height <= 0D)
             return;
 
-        var target = _CalculateTargetRect(new Size(model.Width, model.Height), RenderSize, Stretch);
+        var target = _CalculateTargetRect(new Size(model.Width, model.Height), renderSize, Stretch);
         if (target.Width <= 0D || target.Height <= 0D)
             return;
 
         var scaleX = target.Width / model.Width;
         var scaleY = target.Height / model.Height;
 
-        drawingContext.PushTransform(new TranslateTransform(target.X, target.Y));
-        drawingContext.PushTransform(new ScaleTransform(scaleX, scaleY));
-        drawingContext.PushTransform(new TranslateTransform(-model.MinX, -model.MinY));
+        using var _1 = drawingContext.PushTransform(Matrix.CreateTranslation(target.X, target.Y));
+        using var _2 = drawingContext.PushTransform(Matrix.CreateScale(scaleX, scaleY));
+        using var _3 = drawingContext.PushTransform(Matrix.CreateTranslation(-model.MinX, -model.MinY));
 
         var options = new SvgIconPaintOptions(IconBrush, StrokeThickness, UseOriginalColor);
         foreach (var element in model.Elements)
             element.Draw(drawingContext, options);
-
-        drawingContext.Pop();
-        drawingContext.Pop();
-        drawingContext.Pop();
     }
 
     private SvgIconModel? _GetModel()
@@ -175,21 +171,26 @@ public class SvgIcon : FrameworkElement
         return _model;
     }
 
-    private static void _OnIconChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+    private void _ResetModel()
+    {
+        _model = null;
+        _modelLoaded = false;
+    }
+
+    private static void _OnIconChanged(AvaloniaObject dependencyObject, AvaloniaPropertyChangedEventArgs args)
     {
         var icon = (SvgIcon)dependencyObject;
-        icon._model = null;
-        icon._modelLoaded = false;
+        icon._ResetModel();
     }
 
     private void _EnsureAnimatableIconBrush()
     {
-        if (IconBrush is SolidColorBrush { IsFrozen: false })
+        if (IconBrush is SolidColorBrush)
             return;
 
         IconBrush = IconBrush switch
         {
-            SolidColorBrush solidColorBrush => new SolidColorBrush(solidColorBrush.Color),
+            IImmutableSolidColorBrush immutable => new SolidColorBrush(immutable.Color, immutable.Opacity),
             _ => new SolidColorBrush(Colors.Black)
         };
     }

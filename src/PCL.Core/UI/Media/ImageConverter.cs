@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Windows.Media.Imaging;
+using Avalonia.Media.Imaging;
 
 namespace PCL.Core.UI.Media;
 

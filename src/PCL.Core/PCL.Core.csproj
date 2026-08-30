@@ -38,6 +38,7 @@
         <PackageReference Include="Wacton.Unicolour" Version="8.0.0" />
         <!-- 语言和系统特性 -->
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
         <PackageReference Include="System.Management" Version="10.0.9" />
         <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.9" />
         <PackageReference Include="PlainToolkit.CngProtectedData" Version="2.1.0" />
@@ -74,8 +75,22 @@
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;**\*.g.cs;SourceGenerators\**" />
-        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**" />
+        <!-- 移植脚手架：WPF 专属/暂缓文件先排除，随后逐批移入（详见 docs/PORTING-MAPPING.md） -->
+        <Compile Remove="Utils\WinRT\**" />
+        <Compile Remove="UI\Effects\**" />
+        <Compile Remove="UI\Animation\Core\RunAnimation.cs" />
+        <Compile Remove="UI\Controls\BlurBorder.cs" />
+        <Compile Remove="UI\Controls\MotdRenderer.xaml.cs" />
+        <Compile Remove="UI\Controls\Tooltip.cs" />
+        <Compile Remove="UI\BackgroundPresenter.cs" />
+        <Compile Remove="UI\Media\ImageConverter.cs" />
+        <Compile Remove="UI\SystemDialogs.cs" />
+        <Compile Remove="UI\ToastNotification.cs" />
+        <Compile Remove="UI\Theme\SystemThemeHelper.cs" />
+        <Compile Remove="Utils\OS\DragHelper.cs" />
+        <Compile Remove="Utils\Exts\LanguageSpecificStringDictionaryExtensions.cs" />
+        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;**\*.g.cs;SourceGenerators\**;Utils\WinRT\**;UI\Effects\**;UI\Animation\Core\RunAnimation.cs;UI\Controls\BlurBorder.cs;UI\Controls\MotdRenderer.xaml.cs;UI\Controls\Tooltip.cs;UI\BackgroundPresenter.cs;UI\Media\ImageConverter.cs;UI\ToastNotification.cs;Utils\OS\DragHelper.cs;Utils\Exts\LanguageSpecificStringDictionaryExtensions.cs" />
+        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**;UI\Controls\MotdRenderer.xaml" />
         <AvaloniaResource Include="UI\Assets\**\*" />
     </ItemGroup>
     <!-- 项目自定义源生成器 -->

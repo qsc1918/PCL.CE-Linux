@@ -1,9 +1,11 @@
-using System.Windows.Media;
+using Avalonia;
 using PCL.Core.UI.Animation.Animatable;
 using PCL.Core.UI.Animation.Core;
 using PCL.Core.UI.Animation.ValueProcessor;
 
 namespace PCL.Core.UI.Animation;
+
+// [port] WPF Matrix.OffsetX/OffsetY → Avalonia Matrix.M31/M32（平移分量命名差异）。
 
 public class MatrixFromToAnimation : FromToAnimationBase<Matrix>
 {
