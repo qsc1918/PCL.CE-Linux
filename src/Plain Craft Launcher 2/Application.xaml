@@ -3,31 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PCL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:behaviors="clr-namespace:PCL.Controls.Behaviors"
              xmlns:controls="clr-namespace:PCL.Core.UI.Controls;assembly=PCL.Core"
              xmlns:cvt="clr-namespace:PCL.Core.UI.Converters;assembly=PCL.Core"
-             xmlns:localization="clr-namespace:PCL.Core.App.Localization;assembly=PCL.Core"
-             ShutdownMode="OnExplicitShutdown">
+             xmlns:localization="clr-namespace:PCL.Core.App.Localization;assembly=PCL.Core">
+    <!-- [port] 结构调整：WPF 把样式放在 Application.Resources 里隐式生效；Avalonia 必须放在 Application.Styles。
+         资源（画刷/转换器/字体）保留在 Application.Resources，样式全部移入 Application.Styles。
+         [port] 移除：ShutdownMode（改在 Application.xaml.cs 设置）、Markdown.xaml 合并（暂缓移植）、KernelType/BlurBorder（WPF 着色器模糊，按用户指示跳过特效）。
+         [port] 移除：MyWindow 窗口模板样式（WPF WindowChrome 方案 → Avalonia ExtendClientArea 方案，见 FormMain 移植）。 -->
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Markdown.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <sys:Double x:Key="BlurRadius">0.0</sys:Double>
             <sys:Double x:Key="BlurSamplingRate">0.7</sys:Double>
-            <KernelType x:Key="BlurType">Gaussian</KernelType>
 
             <!-- Converter -->
             <local:AdditionConverter x:Key="AdditionConverter" />
             <local:MultiplicationConverter x:Key="MultiplicationConverter" />
             <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
             <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <x:Static x:Key="BooleanToVisibilityConverter" Member="Avalonia.Controls.BooleanConverters.True" />
             <cvt:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <localization:LocalizationFormatConverter x:Key="LocalizationFormatConverter" />
 
             <!--字体-->
-            <FontFamily x:Key="LaunchFontFamily">Resources/#PCL English, Microsoft YaHei UI, Segoe UI</FontFamily>
+            <FontFamily x:Key="LaunchFontFamily">avares://PCL/Resources/Font.ttf#PCL English, Microsoft YaHei UI, Segoe UI</FontFamily>
 
             <!-- 颜色表 -->
             <SolidColorBrush x:Key="ColorBrush1">#343d4a</SolidColorBrush>
@@ -85,584 +83,385 @@
             <SolidColorBrush x:Key="ColorBrushInfoDark">#ffffff</SolidColorBrush>
             <SolidColorBrush x:Key="ColorBrushInfo">#000000</SolidColorBrush>
             <SolidColorBrush x:Key="ColorBrushDebug">#95a5a6</SolidColorBrush>
-
-            <!-- Window -->
-            <Style TargetType="{x:Type Window}" x:Key="MyWindow">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Window}">
-                            <AdornerDecorator>
-                                <ContentPresenter />
-                            </AdornerDecorator>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- Label -->
-            <Style TargetType="Label">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="Padding" Value="0" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Label">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    Margin="{TemplateBinding Padding}"
-                                    RecognizesAccessKey="False"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="local:MyTextButton">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="Padding" Value="0" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Label">
-                            <Border Background="{TemplateBinding Background}">
-                                <TextBlock
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    Margin="{TemplateBinding Padding}"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    Text="{TemplateBinding Content}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- TextBlock -->
-            <Style TargetType="TextBlock">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
-            </Style>
-            <Style TargetType="TextBlock" x:Key="BasedOnTextBlock">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
-            </Style>
-
-            <!-- ScrollViewer -->
-            <Style x:Key="MyThumb" TargetType="Thumb">
-                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Thumb">
-                            <Border Background="{DynamicResource ColorBrushSemiTransparent}">
-                                <Border Background="{TemplateBinding Foreground}" CornerRadius="3" Margin="2" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="local:MyScrollBar">
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="MinWidth" Value="8" />
-                <Setter Property="Width" Value="8" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ScrollBar">
-                            <Border CornerRadius="2">
-                                <Track x:Name="PART_Track" IsDirectionReversed="true"
-                                       IsEnabled="{TemplateBinding IsMouseOver}">
-                                    <Track.Resources>
-                                        <sys:Double
-                                            x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">
-                                            100
-                                        </sys:Double>
-                                    </Track.Resources>
-                                    <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0" />
-                                    </Track.DecreaseRepeatButton>
-                                    <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0" />
-                                    </Track.IncreaseRepeatButton> <!-- 不能删，删了点击 Thumb 以外的部分就不能翻页了 -->
-                                    <Track.Thumb>
-                                        <Thumb Style="{DynamicResource MyThumb}"
-                                               Foreground="{TemplateBinding Foreground}" />
-                                    </Track.Thumb>
-                                </Track>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="local:MyScrollViewer">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="CanContentScroll" Value="False" />
-                <Setter Property="PanningMode" Value="VerticalOnly" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ScrollViewer">
-                            <Grid>
-                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                        CanHorizontallyScroll="False" CanVerticallyScroll="False"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                        Content="{TemplateBinding Content}" Grid.Column="0"
-                                                        Margin="{TemplateBinding Padding}" Grid.Row="0" />
-                                <local:MyScrollBar x:Name="PART_VerticalScrollBar"
-                                                   AutomationProperties.AutomationId="VerticalScrollBar"
-                                                   Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}"
-                                                   Minimum="0" Grid.Row="0"
-                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   ViewportSize="{TemplateBinding ViewportHeight}"
-                                                   Foreground="{TemplateBinding Foreground}"
-                                                   Background="{TemplateBinding Background}"
-                                                   HorizontalAlignment="Right" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="local:PageComp" BasedOn="{StaticResource {x:Type local:MyScrollViewer}}" />
-            <Style TargetType="ScrollViewer" x:Key="ScrollViewerFullMargin">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="CanContentScroll" Value="False" />
-                <Setter Property="PanningMode" Value="VerticalOnly" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ScrollViewer">
-                            <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  Margin="{TemplateBinding Padding}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                        CanHorizontallyScroll="False" CanVerticallyScroll="False"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                        Content="{TemplateBinding Content}" />
-                                <local:MyScrollBar Margin="2,1,1,1" x:Name="PART_VerticalScrollBar"
-                                                   AutomationProperties.AutomationId="VerticalScrollBar"
-                                                   Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}"
-                                                   Minimum="0" Grid.Row="0"
-                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   ViewportSize="{TemplateBinding ViewportHeight}"
-                                                   Foreground="{TemplateBinding Foreground}"
-                                                   Background="{TemplateBinding Background}" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="ScrollViewer" x:Key="ScrollViewerNoMargin">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="CanContentScroll" Value="False" />
-                <Setter Property="PanningMode" Value="VerticalOnly" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ScrollViewer">
-                            <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  Margin="{TemplateBinding Padding}" Cursor="Arrow">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                        CanHorizontallyScroll="False" CanVerticallyScroll="False"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                        Content="{TemplateBinding Content}"
-                                                        Cursor="{TemplateBinding Cursor}" />
-                                <local:MyScrollBar x:Name="PART_VerticalScrollBar"
-                                                   AutomationProperties.AutomationId="VerticalScrollBar"
-                                                   Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}"
-                                                   Minimum="0" Grid.Row="0"
-                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   ViewportSize="{TemplateBinding ViewportHeight}"
-                                                   Foreground="{TemplateBinding Foreground}"
-                                                   Background="{TemplateBinding Background}" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- TextBox -->
-            <Style TargetType="local:MyTextBox">
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="SelectionBrush" Value="{DynamicResource ColorBrush3}" />
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-                <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="IsUndoEnabled" Value="True" />
-                <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="AllowDrop" Value="True" />
-                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-                <Setter Property="UndoLimit" Value="15" />
-                <Setter Property="MaxLength" Value="1000" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushBg0}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="local:MyTextBox">
-                            <Grid ToolTip="{TemplateBinding ToolTip}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition MinHeight="28" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Border x:Name="border" BorderThickness="{TemplateBinding BorderThickness}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        Background="{TemplateBinding Background}"
-                                        CornerRadius="{TemplateBinding CornerRadius}">
-                                    <ScrollViewer x:Name="PART_ContentHost"
-                                                  Style="{DynamicResource ScrollViewerNoMargin}"
-                                                  RenderOptions.ClearTypeHint="Enabled" BorderThickness="0"
-                                                  Margin="5,0,0,0" Cursor="IBeam" />
-                                    <!-- 由于未知原因，TextView 会有 2,0 的 Margin -->
-                                </Border>
-                                <Border Margin="{TemplateBinding Padding}" IsHitTestVisible="False"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        BorderThickness="0">
-                                    <TextBlock x:Name="labHint" Foreground="{StaticResource ColorBrushGray4}"
-                                               Margin="7,0,0,0" Padding="{TemplateBinding BorderThickness}"
-                                               FontSize="{TemplateBinding FontSize}"
-                                               FontFamily="{DynamicResource LaunchFontFamily}" />
-                                </Border>
-                                <TextBlock Grid.Row="1" x:Name="labWrong" Height="0"
-                                           Foreground="{TemplateBinding BorderBrush}" Padding="0,4,0,0"
-                                           Margin="0,0,0,-3" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="behaviors:ClipboardInterceptor.EnableSafeClipboard" Value="True" />
-            </Style>
-            <Style TargetType="PasswordBox">
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="VerticalContentAlignment" Value="Top" />
-                <Setter Property="SelectionBrush" Value="{DynamicResource ColorBrush3}" />
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-                <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushBg0}" />
-                <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="PasswordBox">
-                            <Border x:Name="border" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}"
-                                    Background="{TemplateBinding Background}" Padding="0"
-                                    CornerRadius="3">
-                                <local:MyScrollViewer x:Name="PART_ContentHost" Margin="4.5,4.5,0,4.5"
-                                                      HorizontalScrollBarVisibility="Hidden"
-                                                      RenderOptions.ClearTypeHint="Enabled" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Trigger.Setters>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushGray5}" />
-                                        <Setter Property="Background" Value="{DynamicResource ColorBrushGray6}" />
-                                    </Trigger.Setters>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.Setters>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource ColorBrush4}" />
-                                        <Setter Property="Background" Value="{DynamicResource ColorBrush7}" />
-                                    </Trigger.Setters>
-                                </Trigger>
-                                <Trigger Property="IsFocused" Value="True">
-                                    <Trigger.Setters>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource ColorBrush3}" />
-                                        <Setter Property="Background" Value="{DynamicResource ColorBrush7}" />
-                                    </Trigger.Setters>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- ComboBox -->
-            <DataTemplate x:Key="ComboBoxItemTemplateWithDelete">
-                <local:MyListItem Title="{Binding}" FontSize="13" MaxHeight="26" IsScaleAnimationEnabled="False"
-                                  Margin="-3,0,0,0">
-                    <local:MyListItem.Buttons>
-                        <x:Array Type="local:MyIconButton">
-                            <local:MyIconButton Height="20" Width="20" VerticalAlignment="Center" Tag="{Binding}"
-                                                Click="_MyIconButtonClick"
-                                                SvgIcon="lucide/x" />
-                        </x:Array>
-                    </local:MyListItem.Buttons>
-                </local:MyListItem>
-            </DataTemplate>
-            <Style TargetType="local:MyComboBox">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrushBg0}" />
-                <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="MaxDropDownHeight" Value="160" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ComboBox">
-                            <Grid>
-                                <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3"
-                                        BorderThickness="1" BorderBrush="{TemplateBinding Foreground}" />
-                                <ToggleButton Margin="0,0,1.5,0" Foreground="{TemplateBinding Foreground}"
-                                              IsTabStop="False" Focusable="False"
-                                              IsChecked="{Binding IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                                              ClickMode="Press" />
-                                <ContentPresenter x:Name="PART_Content" Margin="8.5,0,21.5,0" IsHitTestVisible="False"
-                                                  VerticalAlignment="Center"
-                                                  Content="{TemplateBinding SelectionBoxItem}"
-                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
-                                <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
-                                       AllowsTransparency="True"
-                                       IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                       Placement="Bottom" PopupAnimation="Fade">
-                                    <Grid x:Name="PanPopup">
-                                        <Border Background="{DynamicResource ColorBrushWhite}" CornerRadius="3" />
-                                        <Border x:Name="dropDownBorder" CornerRadius="3"
-                                                BorderBrush="{TemplateBinding Foreground}" BorderThickness="1"
-                                                Width="{TemplateBinding Width}"
-                                                MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                            <local:MyScrollViewer x:Name="DropDownScrollViewer"
-                                                                  Style="{DynamicResource ScrollViewerFullMargin}"
-                                                                  VerticalScrollBarVisibility="Auto">
-                                                <ItemsPresenter x:Name="ItemsPresenter"
-                                                                KeyboardNavigation.DirectionalNavigation="Contained" />
-                                            </local:MyScrollViewer>
-                                        </Border>
-                                    </Grid>
-                                </Popup>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="HasItems" Value="false">
-                                    <Setter Property="Height" TargetName="dropDownBorder" Value="26" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsEditable" Value="True">
-                        <Setter Property="IsTabStop" Value="False" />
-                        <Setter Property="ItemTemplate" Value="{DynamicResource ComboBoxItemTemplateWithDelete}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ComboBox">
-                                    <Grid>
-                                        <Border x:Name="border" Background="{TemplateBinding Background}"
-                                                CornerRadius="3" BorderThickness="1"
-                                                BorderBrush="{TemplateBinding Foreground}" />
-                                        <ToggleButton Margin="0,0,1.5,0" Foreground="{TemplateBinding Foreground}"
-                                                      IsTabStop="False" Focusable="False"
-                                                      IsChecked="{Binding IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                                                      ClickMode="Press" />
-                                        <local:MyTextBox x:Name="PART_EditableTextBox" BorderThickness="0"
-                                                         Margin="1.5,0,21.5,0" Padding="0" Background="{x:Null}" />
-                                        <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
-                                               AllowsTransparency="True"
-                                               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                               Placement="Bottom" PopupAnimation="Fade">
-                                            <Grid x:Name="PanPopup">
-                                                <Border Background="{DynamicResource ColorBrushWhite}" CornerRadius="3" />
-                                                <Border x:Name="dropDownBorder"
-                                                        CornerRadius="3" BorderBrush="{TemplateBinding Foreground}"
-                                                        BorderThickness="1" Width="{TemplateBinding Width}"
-                                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                                    <local:MyScrollViewer x:Name="DropDownScrollViewer"
-                                                                          Style="{DynamicResource ScrollViewerFullMargin}"
-                                                                          VerticalScrollBarVisibility="Auto">
-                                                        <ItemsPresenter x:Name="ItemsPresenter"
-                                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
-                                                    </local:MyScrollViewer>
-                                                </Border>
-                                            </Grid>
-                                        </Popup>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="HasItems" Value="false">
-                                            <Setter Property="Height" TargetName="dropDownBorder" Value="26" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="ToggleButton">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ToggleButton">
-                            <Border Background="{DynamicResource ColorBrushSemiTransparent}">
-                                <Path x:Name="path" Width="15" RenderTransformOrigin="0.3,0.5"
-                                      HorizontalAlignment="Right" Data="M1,1L4.5,4.5L8,1" StrokeThickness="1.5"
-                                      Stroke="{TemplateBinding Foreground}" VerticalAlignment="Center">
-                                    <Path.RenderTransform>
-                                        <RotateTransform />
-                                    </Path.RenderTransform>
-                                </Path>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard Storyboard.TargetName="path"
-                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
-                                                <DoubleAnimation To="180" Duration="0:0:0.2">
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CircleEase EasingMode="EaseOut" />
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard Storyboard.TargetName="path"
-                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
-                                                <DoubleAnimation To="0" Duration="0:0:0.2">
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CircleEase EasingMode="EaseOut" />
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="ComboBoxItem" x:Key="MyComboBoxItem">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="ToolTipService.Placement" Value="Relative" />
-                <Setter Property="ToolTipService.VerticalOffset" Value="-2" />
-                <Setter Property="ToolTipService.HorizontalOffset" Value="200" />
-                <Setter Property="ToolTipService.InitialShowDelay" Value="150" />
-                <Setter Property="ToolTipService.BetweenShowDelay" Value="150" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Background" Value="{DynamicResource ColorBrushTransparent}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ComboBoxItem">
-                            <Border x:Name="ItemBorder" Padding="6,4"
-                                    Background="{TemplateBinding Background}">
-                                <ContentPresenter />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="ComboBoxItem">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ComboBoxItem">
-                            <Border x:Name="ItemBorder"
-                                    Background="{TemplateBinding Background}">
-                                <ContentPresenter />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- ContextMenu -->
-            <Style TargetType="ContextMenu">
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="Grid.IsSharedSizeScope" Value="True" />
-                <Setter Property="Focusable" Value="False" />
-                <Setter Property="HasDropShadow" Value="False" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ContextMenu">
-                            <Border BorderBrush="{DynamicResource ColorBrush1}" BorderThickness="1" CornerRadius="3"
-                                    Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4">
-                                <Border.Effect>
-                                    <DropShadowEffect Opacity="0.4" BlurRadius="4" ShadowDepth="2" />
-                                </Border.Effect>
-                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"
-                                            Margin="0.5" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <!-- MenuItem -->
-            <Style TargetType="local:MyMenuItem">
-                <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="MenuItem">
-                            <Border Name="PanBack" Padding="{TemplateBinding Padding}"
-                                    Background="{TemplateBinding Background}" Height="26">
-                                <Grid UseLayoutRounding="False">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
-                                        <ColumnDefinition />
-                                        <!--  <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
-                                    <ColumnDefinition Width="13"/>  -->
-                                    </Grid.ColumnDefinitions>
-                                    <Path Name="Icon" VerticalAlignment="Center" Stretch="Uniform" Margin="8,0"
-                                          Fill="{TemplateBinding Foreground}" Height="12" Width="15" />
-                                    <TextBlock Name="HeaderHost" Grid.Column="1" Text="{TemplateBinding Header}"
-                                               Foreground="{TemplateBinding Foreground}" Margin="0,0,40,0"
-                                               VerticalAlignment="Center" Height="16" />
-                                    <!--  <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="5,2,0,2" DockPanel.Dock="Right" /> -->
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="Icon" Value="{x:Null}">
-                                    <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <!-- Calendar -->
-            <Style TargetType="Calendar">
-                <Setter Property="Background" Value="{DynamicResource ColorBrush8}" />
-            </Style>
-            <!-- BlurBorder -->
-            <Style TargetType="controls:BlurBorder">
-                <Setter Property="BlurRadius" Value="{DynamicResource BlurRadius}" />
-                <Setter Property="BlurSamplingRate" Value="{DynamicResource BlurSamplingRate}" />
-                <Setter Property="BlurKernelType" Value="{DynamicResource BlurType}" />
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
+    <Application.Styles>
+        <!-- [port] WPF 隐式样式 → Avalonia 选择器样式；OverridesDefaultStyle/SnapsToDevicePixels 为 WPF 专属已移除 -->
+
+        <!-- Label -->
+        <Style Selector="Label">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="local:MyTextButton">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}">
+                        <TextBlock
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            Foreground="{TemplateBinding Foreground}"
+                            Text="{TemplateBinding Content}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!-- TextBlock -->
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
+        </Style>
+        <Style Selector="TextBlock.BasedOnTextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
+        </Style>
+        <!-- [port] WPF x:Key 隐式查找 {x:Type TextBlock} 的 BasedOn 用法 → Avalonia 键控样式 -->
+        <Style Selector="TextBlock" x:Key="BasedOnTextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
+        </Style>
+
+        <!-- 滚动条（MyScrollBar / MyScrollViewer / PageComp 的基础） -->
+        <!-- [port] WPF Track/RepeatButton 模板 → Avalonia ScrollBar 模板结构（Track 概念不同）；
+             视觉保持：细滚动条(8px) + 半透明滑块 + CornerRadius 3 -->
+        <Style x:Key="MyThumb" Selector="Thumb">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{DynamicResource ColorBrushSemiTransparent}">
+                        <Border Background="{TemplateBinding Foreground}" CornerRadius="3" Margin="2" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="local:MyScrollBar">
+            <Setter Property="MinWidth" Value="8" />
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border CornerRadius="2" Background="{TemplateBinding Background}">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True"
+                               Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value}" ViewportSize="{TemplateBinding ViewportSize}">
+                            <Track.DecreaseButton>
+                                <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" />
+                            </Track.DecreaseButton>
+                            <Track.IncreaseButton>
+                                <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" />
+                            </Track.IncreaseButton><!-- 不能删，删了点击 Thumb 以外的部分就不能翻页了 -->
+                            <Track.Thumb>
+                                <Thumb Style="{DynamicResource MyThumb}"
+                                       Foreground="{TemplateBinding Foreground}" />
+                            </Track.Thumb>
+                        </Track>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="local:MyScrollViewer">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid>
+                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                Margin="{TemplateBinding Padding}" />
+                        <local:MyScrollBar x:Name="PART_VerticalScrollBar"
+                                           Grid.Column="1" HorizontalAlignment="Right"
+                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
+                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Background="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="is:local:PageComp" />
+        <Style Selector="ScrollViewer" x:Key="ScrollViewerFullMargin">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid Margin="{TemplateBinding Padding}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <local:MyScrollBar Margin="2,1,1,1" x:Name="PART_VerticalScrollBar"
+                                           AutomationProperties.AutomationId="VerticalScrollBar"
+                                           Grid.Column="1"
+                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
+                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Background="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="ScrollViewer" x:Key="ScrollViewerNoMargin">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid Margin="{TemplateBinding Padding}" Cursor="Arrow">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                Cursor="{TemplateBinding Cursor}" />
+                        <local:MyScrollBar x:Name="PART_VerticalScrollBar"
+                                           AutomationProperties.AutomationId="VerticalScrollBar"
+                                           Grid.Column="1"
+                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
+                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Background="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!-- 文本框（MyTextBox） -->
+        <Style Selector="local:MyTextBox">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource ColorBrush3}" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="MaxLength" Value="1000" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushBg0}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid ToolTip="{TemplateBinding ToolTip}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition MinHeight="28" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Border x:Name="border" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <ScrollViewer x:Name="PART_ScrollViewer"
+                                          Style="{DynamicResource ScrollViewerNoMargin}"
+                                          Margin="5,0,0,0" Cursor="IBeam" />
+                        </Border>
+                        <Border Margin="{TemplateBinding Padding}" IsHitTestVisible="False"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                BorderThickness="0">
+                            <TextBlock x:Name="labHint" Foreground="{StaticResource ColorBrushGray4}"
+                                       Margin="7,0,0,0" Padding="{TemplateBinding BorderThickness}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{DynamicResource LaunchFontFamily}" />
+                        </Border>
+                        <TextBlock Grid.Row="1" x:Name="labWrong" Height="0"
+                                   Foreground="{TemplateBinding BorderBrush}" Padding="0,4,0,0"
+                                   Margin="0,0,0,-3" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+            <!-- [port] behaviors:ClipboardInterceptor.EnableSafeClipboard 暂缓（WinForms 剪贴板依赖） -->
+        </Style>
+        <!-- 密码框（视觉与 MyTextBox 对齐） -->
+        <Style Selector="PasswordBox">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource ColorBrush3}" />
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushBg0}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="border" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}" Padding="0"
+                            CornerRadius="3">
+                        <TextPresenter x:Name="PART_TextPresenter" Margin="4.5,4.5,0,4.5"
+                                       Text="{TemplateBinding Text}"
+                                       PasswordChar="{TemplateBinding PasswordChar}"
+                                       RevealPassword="{TemplateBinding RevealPassword}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:disabled">
+                <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushGray5}" />
+                <Setter Property="Background" Value="{DynamicResource ColorBrushGray6}" />
+            </Style>
+            <Style Selector="^:pointerover /template/ Border#border">
+                <Setter Property="BorderBrush" Value="{DynamicResource ColorBrush4}" />
+                <Setter Property="Background" Value="{DynamicResource ColorBrush7}" />
+            </Style>
+            <Style Selector="^:focus /template/ Border#border">
+                <Setter Property="BorderBrush" Value="{DynamicResource ColorBrush3}" />
+                <Setter Property="Background" Value="{DynamicResource ColorBrush7}" />
+            </Style>
+        </Style>
+
+        <!-- ComboBox -->
+        <DataTemplate x:Key="ComboBoxItemTemplateWithDelete">
+            <local:MyListItem Title="{Binding}" FontSize="13" MaxHeight="26" IsScaleAnimationEnabled="False"
+                              Margin="-3,0,0,0">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="local:MyIconButton">
+                        <local:MyIconButton Height="20" Width="20" VerticalAlignment="Center" Tag="{Binding}"
+                                            Click="_MyIconButtonClick"
+                                            SvgIcon="lucide/x" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+        </DataTemplate>
+        <Style Selector="local:MyComboBox">
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrushBg0}" />
+            <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="MaxDropDownHeight" Value="160" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid>
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3"
+                                BorderThickness="1" BorderBrush="{TemplateBinding Foreground}" />
+                        <ToggleButton Margin="0,0,1.5,0" Foreground="{TemplateBinding Foreground}"
+                                      IsTabStop="False" Focusable="False"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press" />
+                        <ContentPresenter x:Name="PART_ContentPresenter" Margin="8.5,0,21.5,0" IsHitTestVisible="False"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
+                        <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
+                               PlacementMode="Bottom"
+                               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid x:Name="PanPopup">
+                                <Border Background="{DynamicResource ColorBrushWhite}" CornerRadius="3" />
+                                <Border x:Name="dropDownBorder" CornerRadius="3"
+                                        BorderBrush="{TemplateBinding Foreground}" BorderThickness="1"
+                                        Width="{TemplateBinding Width}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <local:MyScrollViewer x:Name="DropDownScrollViewer"
+                                                          Style="{DynamicResource ScrollViewerFullMargin}"
+                                                          VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter x:Name="ItemsPresenter"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </local:MyScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+            <!-- [port] WPF IsEditable 触发样式变体：Avalonia ComboBox 无 IsEditable 编辑模板，
+                 MyComboBox 的可编辑行为由控件内部处理；此处保留非编辑模板 -->
+        </Style>
+        <Style Selector="ToggleButton">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{DynamicResource ColorBrushSemiTransparent}">
+                        <Path x:Name="arrow" Width="15" RenderTransformOrigin="0.3,0.5"
+                              HorizontalAlignment="Right" Data="M1,1L4.5,4.5L8,1" StrokeThickness="1.5"
+                              Stroke="{TemplateBinding Foreground}" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <!-- [port] WPF Storyboard（IsChecked 旋转箭头）→ Avalonia 伪类 + TransformOperationsTransition -->
+            <Style Selector="^ /template/ Path#arrow">
+                <Setter Property="RenderTransform" Value="rotate(0deg)" />
+                <Setter Property="Transitions">
+                    <Transitions>
+                        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CircleEaseOut" />
+                    </Transitions>
+                </Setter>
+            </Style>
+            <Style Selector="^:checked /template/ Path#arrow">
+                <Setter Property="RenderTransform" Value="rotate(180deg)" />
+            </Style>
+        </Style>
+        <Style Selector="ComboBoxItem" x:Key="MyComboBoxItem">
+            <Setter Property="Background" Value="{DynamicResource ColorBrushTransparent}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="ItemBorder" Padding="6,4"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="ItemBorder"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!-- ContextMenu -->
+        <Style Selector="ContextMenu">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border BorderBrush="{DynamicResource ColorBrush1}" BorderThickness="1" CornerRadius="3"
+                            Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4"
+                            BoxShadow="0 2 4 0, #66000000">
+                        <ItemsPresenter x:Name="PART_ItemsPresenter" Margin="0.5" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <!-- MenuItem -->
+        <Style Selector="local:MyMenuItem">
+            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PanBack" Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}" Height="26">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Path Name="Icon" VerticalAlignment="Center" Stretch="Uniform" Margin="8,0"
+                                  Fill="{TemplateBinding Foreground}" Height="12" Width="15" />
+                            <TextBlock Name="HeaderHost" Grid.Column="1" Text="{TemplateBinding Header}"
+                                       Foreground="{TemplateBinding Foreground}" Margin="0,0,40,0"
+                                       VerticalAlignment="Center" Height="16" />
+                        </Grid>
+                    </Border>
+                    <!-- [port] WPF Icon 为空时隐藏的 Trigger：Avalonia 无空值选择器；
+                         Path 无 Data 时本身不渲染，视觉等价，故省略 -->
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <!-- Calendar -->
+        <Style Selector="Calendar">
+            <Setter Property="Background" Value="{DynamicResource ColorBrush8}" />
+        </Style>
+    </Application.Styles>
 </Application>

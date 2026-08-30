@@ -65,4 +65,75 @@
 | 根目录整合包自动识别 | 添加文件夹时若 mods≥3 且 versions≤3 且有可加装实例且隔离目录无 mods → 自动关闭单版本隔离（PageSelectLeft.xaml.cs L401-469） |
 | 安装进度与错误 | `Minecraft.Download.Stage.*`（80 条阶段文案）、`Minecraft.Download.Modpack.*`（47 条）、`Minecraft.Download.Error.*`（37 条） |
 
+### P0-4 版本管理（实例列表与游戏文件夹管理）
+- **入口**：启动页"选择实例"按钮（`Launch.Home.SelectInstance`）→ 实例选择页（PageSelectLeft/Right）；启动页左栏
+- **涉及文件**：`Pages\PageSelectLeft.xaml.cs`（全量读毕）、`Pages\PageSelectRight.xaml(.cs)`、`Modules\Minecraft\ModFolder.cs`、`Modules\Minecraft\ModInstanceList.cs`、`Modules\Minecraft\McInstance.cs`、`Modules\Minecraft\McInstanceCardType.cs`
+- **平台依赖**：无
+
+| 子功能 | 说明与证据 |
+| --- | --- |
+| 游戏文件夹列表与切换 | `PageSelectLeft.McFolderListUI`（L47-292）：单选列表 + 选中即切换（`States.Game.SelectedFolder`）；下载中禁止切换/添加（L346-349、L727-731） |
+| 新建 .minecraft | `Create_Click`（L483）：创建目录结构 + 生成 launcher_profiles.json（`ModFolder.McFolderLauncherProfilesJsonCreate`） |
+| 添加现有文件夹 | `Add_Click`（L342）：目录选择器 + 权限检查 + 子目录自动探测（versions 下探）+ 显示名输入 + 重复检测 |
+| 导入整合包入口 | 左栏"导入整合包"项 → `ModModpack.ModpackInstall()`（L250-262） |
+| 文件夹重命名/恢复默认名 | `Rename_Click` / `Restore_Click`（L329/L669），官方默认文件夹也可改名（Types.RenamedOriginal） |
+| 文件夹排序 | 右键上移/下移（L294-318）+ 拖拽排序（`Item_MouseMove/DragEnter/DragOver/DragLeave/Drop`，L741-900） |
+| 打开/刷新文件夹 | `Open_Click`（资源管理器）/ `Refresh_Click`（清实例缓存 `PCL.ini InstanceCache` 后强制重载） |
+| 从列表移除（可选清理） | `Remove_Click`（L505）：可选删除 PCL.ini 与各版本 PCL 配置目录，或保留 |
+| 删除文件夹 | `Delete_Click`（L576）：两次警告确认（第二次为红色警告），唯一文件夹时变为"清空"（保留空目录） |
+| 实例列表加载与分类 | `ModInstanceList.mcInstanceListLoader`（加载/分类/排序/缓存 4 个 region）；卡片类型 `McInstanceCardType`：收藏(Star)/常规/API/原版类(OriginalLike)/低使用(Rubbish)/愚人节(Fool)/隐藏(Hidden)/错误(Error) |
+| 实例卡片信息 | 图标/名称/描述/是否可加装 Mod/启动次数（`Instance.Overall.Info.LaunchCount.*`）、整合包信息（`Instance.Overall.Info.ModpackVersion`） |
+| 实例搜索与隐藏实例 | `Select.Instance.Search.*`（搜索框提示/无结果）；F11 在实例选择页切换显示隐藏实例（FormMain.xaml.cs L748） |
+| 实例选择记忆 | `States.Game.SelectedInstance` → 写入所选文件夹 `PCL.ini` 的 `Version` 键（ModSetup.LaunchInstanceSelect L172-176） |
+| 版本描述标签 | `Select.Instance.Description.*`：正式版/预发布版/快照/实验性快照/需继承/无权限/旧版/愚人节等 14 种状态描述 |
+
+### P0-5 实例管理（实例总览/设置/操作）
+- **入口**：实例选择页实例卡片"实例设置"→ 实例设置页（PageInstanceLeft，副页面 PageType.InstanceSetup）
+- **涉及文件**：`Pages\PageInstance\PageInstanceOverall.xaml(.cs)`、`PageInstanceSetup.xaml(.cs)`、`PageInstanceInstall.xaml(.cs)`、`PageInstanceLeft.xaml(.cs)`、`Modules\Minecraft\McInstance.cs`
+- **平台依赖**：无
+
+| 子功能 | 说明与证据 |
+| --- | --- |
+| 实例总览信息卡 | 信息卡（加载动画 + 实例信息/整合包版本/启动次数），PageInstanceOverall.xaml L13-16 |
+| 个性化：图标 | 内置图标集（Anvil/GrassBlock/Fabric/NeoForgeFox/Quilt 等 14 种，`Instance.Overall.Icon.*`）+ 自定义图片文件选择（Icon.SelectFile.*） |
+| 个性化：重命名/描述/收藏/分类 | `BtnDisplayRename/BtnDisplayDesc/BtnDisplayStar` + 分类选择（Regular/Modable/LessUsed/AprilFools/Hidden，`Instance.Overall.Category.*`） |
+| 快捷方式 | 版本文件夹/存档文件夹/mods 文件夹三个直达按钮（PageInstanceOverall.xaml L88-103） |
+| 导出启动脚本 | `BtnManageScript`（生成 .bat —— **Windows 专属**，详见 P0-10） |
+| 测试游戏 | `BtnManageTest`（启动当前实例验证可用性） |
+| 修复文件 | `BtnManageCheck`（RepairFiles：校验并修复实例文件，`Instance.Overall.Repair.*` 含进度/取消/失败详情/可关闭校验提示） |
+| 重置实例 | `BtnManageRestore`（`Instance.Overall.Reset.*`：确认弹窗；Quilt 实例不支持 Reset.QuiltUnsupported） |
+| 补丁核心 | `BtnManagePatch`（PatchCore：选择补丁文件修改核心，`Instance.Overall.Patch.*`） |
+| 删除实例 | `BtnManageDelete`（回收站/永久两种，隔离实例单独提示 `Delete.ConfirmMessageIsolated`） |
+| 实例设置页 | PageInstanceSetup：内存（含跟随全局）/Java 选择/版本隔离/游戏窗口标题/左下角版本信息/服务器自动进入/高级（JVM 参数/游戏参数/类路径头/资产验证/预启动指令/渲染器/调试 Log4j2/全局代理/忽略 Java 兼容性/禁用文件校验）（`Instance.Setup.*` 全套键 + `Config.Instance`/`Config.InstanceAuth` 各项） |
+| 实例安装页（改装/继承） | PageInstanceInstall：为现有实例修改/重装加载器、原版版本继承选择（`Select.Instance.Description.NeedInherit`、`Instance.Install.Action.StartModify/StartReset`） |
+| 分区设置初始化 | 设置左栏每个分组带"初始化/刷新"小按钮（PageSetupLeft.xaml L16/L25/L37/L55/L72/L90/L108/L126/L130/L134/L148），重置对应分区设置（`Setup.Left.Reset.*`） |
+
+### P0-6 内存管理
+- **入口**：设置 → 启动 → 游戏内存卡片；实例设置 → 内存
+- **涉及文件**：`Pages\PageSetup\PageSetupLaunch.xaml(.cs)`（RamType）、`Pages\PageInstance\PageInstanceSetup.xaml(.cs)`（RamType）、`Modules\Base\ModSetup.cs`（LaunchRamType/VersionRamType）、`PCL.Core\App\Config.cs`（Launch.MemoryAllocationMode/CustomMemorySize、Instance.MemorySolution/CustomMemorySize）、`PCL.Core\Utils\OS\SystemInfo.cs`/`HardwareInfo.cs`
+- **平台依赖**：读取系统物理内存（SystemInfo，Linux 可用 /proc/meminfo 替代）
+
+| 子功能 | 说明与证据 |
+| --- | --- |
+| 内存分配模式（自动/自定义） | `Config.Launch.MemoryAllocationMode`（LaunchRamType），自动按系统内存比例（`Setup.Launch.Memory.Auto(.ToolTip)`） |
+| 自定义内存大小 | `Config.Launch.CustomMemorySize` + 滑条；显示可用内存（`Memory.AvailableSuffix`）与已用/总内存（`Memory.UsedTotal`） |
+| 危险警告 | 32 位 Java 内存上限警告（`Memory.Warning.Java32Bit`）、分配过大警告（`Memory.Warning.TooMuch`） |
+| 固定堆大小 | `Config.Launch.LockMemory`（LaunchAdvanceLockMemory）：-Xms=-Xmx，利于 ZGC（配置注释引 issue #3282） |
+| 版本级内存覆盖 | `Config.Instance.MemorySolution/CustomMemorySize`（ArgConfig，含"跟随全局"），PageInstanceSetup.RamType（ModSetup.VersionRamType L654） |
+| 游戏内存占用显示 | 启动后 `Instance.Setup.Memory.Used`（版本级显示） |
+
+### P0-7 实例隔离（版本隔离）
+- **入口**：设置 → 启动 → 版本隔离策略；实例设置 → 版本隔离
+- **涉及文件**：`PCL.Core\App\Config.cs`（Launch.IndieSolutionV2、Instance.IndieV1/IndieV2）、`Pages\PageSetup\PageSetupLaunch.xaml(.cs)`、`Pages\PageInstance\PageInstanceSetup.xaml(.cs)`、`Modules\Minecraft\McInstance.cs`（PathIndie/PathInstance）
+- **平台依赖**：无
+
+| 子功能 | 说明与证据 |
+| --- | --- |
+| 全局隔离策略 V2 | `Config.Launch.IndieSolutionV2`（LaunchArgumentIndieV2）：全部隔离 / 仅非正式版 / 仅模组化实例 / 自定义（`Setup.Launch.Options.InstanceIsolation.All/NonRelease/ModdedOnly(+ToolTip)/DefaultPolicyHint`） |
+| 版本级隔离覆盖 | `Config.Instance.IndieV1`（int，-1 跟随）/`IndieV2`（bool）+ "跟随全局"选项（`Instance.Setup.FollowGlobal`） |
+| 隔离目录语义 | 隔离开启时 saves/config/mods/resourcepacks 等落在 `versions\<版本>\`（`McInstance.PathInstance`），否则落在游戏根目录（`McInstance.PathIndie`）；启动参数占位符 `{version_indie}/{verindie}` 输出隔离目录（ModMain.ArgumentReplace L934） |
+| 安装时隔离警告 | `Download.Install.InstanceIsolation.Warning.*`（P0-1） |
+| 添加文件夹自动调整 | 根目录整合包自动关闭单版本隔离（PageSelectLeft.AddFolder，P0-3） |
+| 旧版 V1 兼容 | `VersionArgumentIndie`（int）保留旧三态（关闭/仅隔离/全部?），与 V2 并存迁移 |
+
 <!-- 待续 -->

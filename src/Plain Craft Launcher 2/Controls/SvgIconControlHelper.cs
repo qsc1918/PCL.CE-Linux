@@ -4,7 +4,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using Avalonia.Shapes;
+using Avalonia.Controls.Shapes;
 using PCL.Core.UI;
 using PCL.Core.UI.Controls.SvgIcon;
 
