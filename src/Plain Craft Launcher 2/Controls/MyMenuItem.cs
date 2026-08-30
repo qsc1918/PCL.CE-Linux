@@ -3,15 +3,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
-using Avalonia.Controls.Shapes;
-using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App;
 using PCL.Core.UI.Controls.SvgIcon;
 
