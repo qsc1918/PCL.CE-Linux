@@ -1,6 +1,7 @@
-# 移植进度（PORTING-STATUS）
+# 移植进度（PORTING-STATUS）— 夜班结束快照（约 01:20，电脑自动关机前）
 
-> 随时更新。上游基线：D:\a\j\PCL-CE（verbatim 副本已提交 git 根提交 6a525ab）。
+> 上游基线：D:\a\j\PCL-CE（verbatim 副本已提交 git 根提交 6a525ab）。
+> **明日恢复点：见文末"当前状态/明日恢复点"。**
 
 ## 已完成
 
@@ -69,6 +70,32 @@
 
 ## 关键环境事实
 - pwsh 工具实际按 GBK 读 .ps1 文件 → 脚本必须纯 ASCII 或带 BOM
+- 上游源文件编码混杂（GBK/UTF-8）：改文件前先严格 UTF-8 校验，GBK 用 Encoding.GetEncoding(936) 读（tools/repair-gbk.ps1 有完整实现）
 - dotnet 10 SDK 在 Windows 主机可用；Avalonia 12.0.4 已在 nuget 缓存
-- Avalonia 12 关键差异（实测）：无 Visibility 枚举（用 IsVisible bool）、无 ContentPropertyAttribute（→ [Content] 标注在属性上）、ReadLocalValue→已移除（用 IsSet）、Matrix 三行制 M31/M32、BezierSegment 等只有无参 ctor、IAsyncDataTransfer（TryGetFilesAsync 扩展）、Clipboard 全面重写、Application 无 FrameworkInitializationCompleted/MainWindow 事件属性、FormattedText 六参构造、Dispatcher.InvokeAsync(Action) 返回 DispatcherOperation（Func<Task> 重载直接返回 Task）
+- Avalonia 12 关键差异（实测）：无 Visibility 枚举（用 IsVisible bool）、无 ContentPropertyAttribute（→ [Content] 标注在属性上）、无 RichTextBlock（用 SelectableTextBlock + Inlines + LineBreak）、ReadLocalValue→已移除（用 IsSet）、Matrix 三行制 M31/M32、BezierSegment 等只有无参 ctor、IAsyncDataTransfer（TryGetFilesAsync 扩展）、IDataObject 移除、Clipboard 全面重写、Application 无 FrameworkInitializationCompleted 事件（用桌面生命周期 Startup）/无 MainWindow 属性（经 IClassicDesktopStyleApplicationLifetime）、FormattedText 六参构造、Dispatcher.InvokeAsync(Action) 返回 DispatcherOperation（Func<Task> 重载直接返回 Task）、ItemsControl 容器方法改名（CreateContainerForItemOverride(item,index,recycleKey) / NeedsContainerOverride(item,index,out recycleKey)）、OnApplyTemplate(TemplateAppliedEventArgs)、OnRender→Render
+
+## 当前状态（夜班结束，2026-08-31 约 01:20，commit a5b5a12）
+
+### 大事记
+1. **PCL.Core 编译全绿**（commit cbd9538）。
+2. 主工程 C#：868 → 2 → **csc 主阶段通过**，构建推进到 XAML 编译波，暴露约 11280 个错误（含大量级联）。
+3. **重大事故与修复**：上游源文件编码混杂，早期脚本按 UTF-8 读写损坏 26 个 PageInstance/PageSetup 文件（中文乱码+引号破坏）。tools/repair-gbk.ps1（严格 UTF-8 校验自动判码 + git 基线恢复 + 重套规则）已全部修复。
+4. 子代理通道夜间瘫痪（连续秒挂），改单人小批量推进 + 频繁提交。FormMain/下载页分片中断前已交付大部分成果。
+5. FEATURES.md 功能盘点完成（57KB，164 条，P0 十章 108 条细分）。
+
+### 明日恢复点（按序）
+1. 首轮构建看错误面。预计大头：`Path` 二义性（转换脚本给含 `using System.Windows.Controls;` 的文件注入了 `using Avalonia.Controls.Shapes;`，与 `using System.IO;` 冲突）——脚本化：对相关文件加 `using Path = Avalonia.Controls.Shapes.Path;` 别名并去重 using；Controls\AnimatedBackgroundGrid.cs 等夜班小代理半成品（PropertyMetadata、Dispatcher.BeginInvoke 残留）；Application.xaml.cs（ToolTipService 不可访问、Tooltip.Enable 缺失——PCL.Core Tooltip.cs 被排除、Path 歧义）；零散 SetResourceReference（Avalonia 无此 API）。
+2. C# 全绿后进入 **XAML 编译波**：91 个 XAML 中约 60 个只做过机械转换，需按 Application.xaml 范本人工选择器化。注意 PageLogRight.xaml 的 RichTextBox 已换 SelectableTextBlock。
+3. 全绿后：WSL 无头冒烟（PCL_SMOKE_LAUNCH=1）→ 自包含发布 → 用户 VM 实测。
+4. 向用户集中提问：B 类偏差确认 + C 类降级确认 + FEATURES.md P1/P2/P3 优先级确认 + PCL.Neo.Core/PCL.Neo.UI 是否删除。
+
+### 已知未移植/降级清单（代码中 [port] 标注）
+- 联机、音乐、视频背景、换皮肤、崩溃分析、Markdown 公告、工具页（用户指定暂缓）
+- HLSL 模糊特效族（AdaptiveBlur/BlurBorder→Border/Tooltip）——Avalonia 无自定义像素着色器
+- TaskbarItemInfo 已删除；SplashScreen → 空实现 shim（src\Plain Craft Launcher 2\SplashScreen.cs）
+- 工具页字段 dynamic? 擦除（ModMain.frmToolsLeft 等，运行期恒 null）；PageToolsTest 的 {hint}/{cave} 占位替换为空文本
+- ModBase.GetObjectFromXML 的 XAML 安全检查：上游用 System.Xaml XamlXmlReader，转换后走 Avalonia.Markup.XamlReader.Load——需运行期验证
+
+### git 提交链
+6a525ab(基线) → cbd9538(Core 绿) → 7052b07 → d0ee128 → 3ee37e1 → f894814 → 0f0a3b8 → 3d08af5 → a5b5a12(最新)
 - 分段构造参数版不存在：new LineSegment { Point = x, IsStroked = true }
