@@ -1,10 +1,10 @@
 <local:MyScrollViewer x:Class="PCL.PageComp"
                       xmlns="https://github.com/avaloniaui"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     
+                     
                       xmlns:local="clr-namespace:PCL"
-                      mc:Ignorable="d"
+                     
                       DataContext="{Binding RelativeSource={RelativeSource Self}}"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
     <local:MyScrollViewer.Resources>
@@ -12,7 +12,7 @@
     </local:MyScrollViewer.Resources>
     <StackPanel Orientation="Vertical" Margin="25">
         <StackPanel x:Name="PanAlways">
-            <local:MySearchBox x:Name="PanSearchBox" Margin="0,0,0,15" SearchButtonVisibility="Visible" HintText="{DynamicResource Download.Comp.Search.Hint}" />
+            <local:MySearchBox x:Name="PanSearchBox" Margin="0,0,0,15" SearchButtonIsVisible="True" HintText="{DynamicResource Download.Comp.Search.Hint}" />
             <local:MyCard Margin="0,0,0,15">
                 <Grid Margin="7" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -90,7 +90,7 @@
                         <local:MyComboBoxItem Content="{DynamicResource Common.Installation.Fabric}" Tag="4" />
                         <local:MyComboBoxItem Content="{DynamicResource Common.Installation.Quilt}" Tag="5" />
                     </local:MyComboBox>
-                    <local:MyComboBox x:Name="ComboSearchShaderLoader" Visibility="Collapsed" Grid.Row="2"
+                    <local:MyComboBox x:Name="ComboSearchShaderLoader" IsVisible="False" Grid.Row="2"
                                       Grid.Column="3" MaxDropDownHeight="320">
                         <local:MyComboBoxItem Content="{DynamicResource Download.Comp.Filter.Loader.AnyShader}" Tag=""
                                               IsSelected="True" />
@@ -108,7 +108,7 @@
                                             Margin="3,0,0,0" />
                         <local:MyIconButton x:Name="BtnSearchInstallModPack"
                                             SvgIcon="lucide/download"
-                                            Visibility="Collapsed"
+                                            IsVisible="False"
                                             ToolTip="{DynamicResource Download.Comp.Filter.InstallModpack.ToolTip}"
                                             LogoScale="0.9"
                                             ToolTipService.HorizontalOffset="-55" ToolTipService.VerticalOffset="5" />

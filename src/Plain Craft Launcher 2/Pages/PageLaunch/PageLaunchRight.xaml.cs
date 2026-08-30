@@ -39,11 +39,12 @@ public partial class PageLaunchRight : IRefreshable
     {
         PanBack.ScrollToHome();
         PanScroll = PanBack; // 不知道为啥不能在 XAML 设置
-        PanLog.Visibility = ModBase.modeDebug ? Visibility.Visible : Visibility.Collapsed;
+        // [port] Visibility.Visible/Collapsed → IsVisible true/false
+        PanLog.IsVisible = ModBase.modeDebug ? true : false;
         // 社区版提示
-        PanHint.Visibility = States.Hint.CEMessage
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        PanHint.IsVisible = States.Hint.CEMessage
+            ? true
+            : false;
         LabHint1.Text = Lang.Text("Launch.Right.CommunityHint.Message");
         LabHint2.Text = Lang.Text("Launch.Right.CommunityHint.HidePrompt");
         _EnsureHomepageLiveWatcher();
@@ -332,8 +333,9 @@ public partial class PageLaunchRight : IRefreshable
     {
         try
         {
-            var uri = new Uri($"pack://application:,,,/Plain Craft Launcher 2;component/Resources/hints/{langCode}.txt", UriKind.Absolute);
-            using var stream = Application.GetResourceStream(uri)?.Stream;
+            // [port] WPF pack://application:,,,/Assembly;component/... + Application.GetResourceStream
+            // → Avalonia avares:// 资源加载（PCL.Core App.Basics.GetResourceStream）
+            using var stream = Basics.GetResourceStream($"Resources/hints/{langCode}.txt");
             if (stream is null) return null;
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd()
@@ -555,7 +557,8 @@ public partial class PageLaunchRight : IRefreshable
         ["title"] = "Title",
         ["info"] = "Info",
         ["tooltip"] = "ToolTip",
-        ["visibility"] = "Visibility",
+        // [port] WPF 无 Visibility 属性：live-patch 的 "visibility" → Avalonia IsVisible (bool)
+        ["visibility"] = "IsVisible",
         ["isEnabled"] = "IsEnabled",
         ["opacity"] = "Opacity"
     };
@@ -779,7 +782,7 @@ public partial class PageLaunchRight : IRefreshable
         _SetPropertyIfPresent(element, patch, "info", "Info");
         _SetPropertyIfPresent(element, patch, "tooltip", "ToolTip");
         _SetPropertyIfPresent(element, patch, "toolTip", "ToolTip");
-        _SetPropertyIfPresent(element, patch, "visibility", "Visibility");
+        _SetPropertyIfPresent(element, patch, "visibility", "IsVisible");
         _SetPropertyIfPresent(element, patch, "isEnabled", "IsEnabled");
         _SetPropertyIfPresent(element, patch, "opacity", "Opacity");
 
@@ -827,12 +830,7 @@ public partial class PageLaunchRight : IRefreshable
                 convertedValue = intValue;
             else if (propertyType == typeof(double) && double.TryParse(trimmedValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue))
                 convertedValue = doubleValue;
-            else if (propertyType == typeof(Visibility))
-            {
-                if (!Enum.TryParse(trimmedValue, true, out Visibility visibilityValue))
-                    return false;
-                convertedValue = visibilityValue;
-            }
+            // [port] WPF Visibility 枚举 → Avalonia IsVisible(bool)：由上面的 typeof(bool) 分支处理
             else if (propertyType.IsEnum && Enum.TryParse(propertyType, trimmedValue, true, out var enumValue))
                 convertedValue = enumValue;
             else

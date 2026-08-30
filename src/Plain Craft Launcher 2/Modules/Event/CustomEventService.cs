@@ -9,11 +9,7 @@ namespace PCL
     public static class CustomEventService
     {
         public static readonly AvaloniaProperty EventsProperty =
-            AvaloniaProperty.RegisterAttached(
-                "Events",
-                typeof(CustomEventCollection),
-                typeof(CustomEventService),
-                new PropertyMetadata(null));
+            AvaloniaProperty.RegisterAttached<AvaloniaObject, CustomEventCollection>("Events", typeof(CustomEventService));
 
         public static void SetEvents(AvaloniaObject d, CustomEventCollection value) =>
             d.SetValue(EventsProperty, value);
@@ -26,11 +22,7 @@ namespace PCL
         }
 
         public static readonly AvaloniaProperty EventTypeProperty =
-            AvaloniaProperty.RegisterAttached(
-                "EventType",
-                typeof(EventType),
-                typeof(CustomEventService),
-                new PropertyMetadata(EventType.None));
+            AvaloniaProperty.RegisterAttached<AvaloniaObject, EventType>("EventType", typeof(CustomEventService));
 
         public static void SetEventType(AvaloniaObject d, EventType value) =>
             d.SetValue(EventTypeProperty, value);
@@ -39,11 +31,7 @@ namespace PCL
             (EventType)d.GetValue(EventTypeProperty);
 
         public static readonly AvaloniaProperty EventDataProperty =
-            AvaloniaProperty.RegisterAttached(
-                "EventData",
-                typeof(string),
-                typeof(CustomEventService),
-                new PropertyMetadata(null));
+            AvaloniaProperty.RegisterAttached<AvaloniaObject, string>("EventData", typeof(CustomEventService));
 
         public static void SetEventData(AvaloniaObject d, string value) =>
             d.SetValue(EventDataProperty, value);

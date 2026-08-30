@@ -15,10 +15,10 @@ namespace PCL;
 
 public partial class PageInstanceSavesInfo : IRefreshable
 {
-    /// <summary>鏃犵姸鎬佹湇鍔★紝绾跨▼瀹夊叏锛屾墍鏈夊疄渚嬪彲鍏变韩銆?/summary>
+    /// <summary>閺冪姷濮搁幀浣规箛閸斺槄绱濈痪璺ㄢ柤鐎瑰鍙忛敍灞惧閺堝鐤勬笟瀣讲閸忓彉闊╅妴?/summary>
     private static readonly SaveManager SaveManager = new();
 
-    /// <summary>闃插苟鍙戝啿绐?/summary>
+    /// <summary>闂冩彃鑻熼崣鎴濆暱缁?/summary>
     private static readonly SemaphoreSlim WriteLock = new(1, 1);
 
     private CancellationTokenSource? _cts;
@@ -35,7 +35,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
 
     void IRefreshable.Refresh() => Refresh();
     public void Refresh() => RefreshInfoAsync().ContinueWith(
-        t => LogWrapper.Warn(t.Exception, "Saves", "鍒锋柊瀛樻。淇℃伅寮傚父"), //only 鍏滃簳
+        t => LogWrapper.Warn(t.Exception, "Saves", "閸掗攱鏌婄€涙ɑ銆傛穱鈩冧紖瀵倸鐖?), //only 閸忔粌绨?
         CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
 
     private async Task RefreshInfoAsync()
@@ -50,15 +50,15 @@ public partial class PageInstanceSavesInfo : IRefreshable
             ClearInfoTable();
             PanSettingsList.Children.Clear();
             PanSettingsList.RowDefinitions.Clear();
-            Hintversion1_9.Visibility = Visibility.Collapsed;
-            Hintversion1_8.Visibility = Visibility.Collapsed;
-            Hintversion1_3.Visibility = Visibility.Collapsed;
-            PanSettings.Visibility = Visibility.Collapsed;
+            Hintversion1_9.Visibility = false;
+            Hintversion1_8.Visibility = false;
+            Hintversion1_3.Visibility = false;
+            PanSettings.Visibility = false;
 
             var save = await SaveManager.LoadSaveAsync(PageInstanceSavesLeft.currentSave, ct);
 
             ModMain.frmInstanceSavesLeft.ItemDatapack.Visibility =
-                save.VersionId is null or < DataVersionBoundaries._17w47a ? Visibility.Collapsed : Visibility.Visible;
+                save.VersionId is null or < DataVersionBoundaries._17w47a ? false : true;
 
             if (save.VersionName is null)
             {
@@ -96,7 +96,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
             if (save.Difficulty.HasValue)
                 BuildDifficultySetting(save.IsHardcore, save.IsDifficultyLocked, (int)save.Difficulty.Value);
 
-            PanContent.Visibility = Visibility.Visible;
+            PanContent.Visibility = true;
         }
         catch (OperationCanceledException) { }
         catch (Exception ex)
@@ -106,19 +106,19 @@ public partial class PageInstanceSavesInfo : IRefreshable
                 Lang.Text("Instance.Saves.Info.Error.LoadFailed"),
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Info.Error.LoadFailed"));
-            PanContent.Visibility = Visibility.Collapsed;
-            PanSettings.Visibility = Visibility.Collapsed;
+            PanContent.Visibility = false;
+            PanSettings.Visibility = false;
             PanSettingsList.Children.Clear();
             PanSettingsList.RowDefinitions.Clear();
-            Hintversion1_9.Visibility = Visibility.Collapsed;
-            Hintversion1_8.Visibility = Visibility.Collapsed;
-            Hintversion1_3.Visibility = Visibility.Collapsed;
+            Hintversion1_9.Visibility = false;
+            Hintversion1_8.Visibility = false;
+            Hintversion1_3.Visibility = false;
         }
     }
 
     private void BuildAllowCommandsSetting(bool allowCommands)
     {
-        PanSettings.Visibility = Visibility.Visible;
+        PanSettings.Visibility = true;
         var folder = PageInstanceSavesLeft.currentSave;
 
         var combo = new MyComboBox
@@ -166,7 +166,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
 
     private void BuildDifficultySetting(bool isHardcore, bool isLocked, int difficultyValue)
     {
-        PanSettings.Visibility = Visibility.Visible;
+        PanSettings.Visibility = true;
         var folder = PageInstanceSavesLeft.currentSave;
 
         var combo = new MyComboBox
@@ -187,7 +187,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
             ToolTip = Lang.Text("Instance.Saves.Info.LockDifficulty.ToolTip"),
             VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10d, 0d, 0d, 0d),
             Checked = isLocked,
-            Visibility = isHardcore ? Visibility.Collapsed : Visibility.Visible,
+            Visibility = isHardcore ? false : true,
         };
 
         var panel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Left };
@@ -243,7 +243,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
     private static void ShowHint(MyHint hint, string langKey)
     {
         hint.Text = Lang.Text(langKey);
-        hint.Visibility = Visibility.Visible;
+        hint.Visibility = true;
     }
 
     private void ClearInfoTable()

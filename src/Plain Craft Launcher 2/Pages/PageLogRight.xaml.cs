@@ -5,7 +5,6 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Documents;
-using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
@@ -75,8 +74,8 @@ public partial class PageLogRight
             return;
         }
 
-        PanAllBack.Visibility = Visibility.Visible;
-        CardOperation.Visibility = Visibility.Visible;
+        PanAllBack.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
+        CardOperation.IsVisible = true; // [port] Visibility.Visible → IsVisible=true
         BtnOperationKill.IsEnabled = !ModMain.frmLogLeft.currentLog.gameProcess.HasExited;
         BtnOperationExportStackDump.IsEnabled = !ModMain.frmLogLeft.currentLog.gameProcess.HasExited &&
                                                 !string.IsNullOrWhiteSpace(ModMain.frmLogLeft.currentLog.jStackPath);

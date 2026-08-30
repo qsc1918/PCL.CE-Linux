@@ -31,28 +31,28 @@ public partial class PageSetupUI
 
     private void PageSetupUI_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
         ModAnimation.AniControlEnabled += 1;
-        Reload(); // #4826锛屽湪姣忔杩涘叆椤甸潰鏃堕兘鍒锋柊涓€涓?
+        Reload(); // #4826閿涘苯婀В蹇旑偧鏉╂稑鍙嗘い鐢告桨閺冨爼鍏橀崚閿嬫煀娑撯偓娑?
         ModAnimation.AniControlEnabled -= 1;
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoaded)
             return;
         isLoaded = true;
 
         SliderLoad();
 
-        PanLauncherHide.Visibility = Visibility.Visible;
+        PanLauncherHide.IsVisible = true;
     }
 
     public void Reload()
     {
         try
         {
-            // 鍚姩鍣?
+            // 閸氼垰濮╅崳?
             SliderLauncherOpacity.Value = Config.Preference.Theme.WindowOpacity;
             CheckLauncherLogo.Checked = Config.Preference.ShowStartupLogo;
             ComboDarkMode.SelectedIndex = (int)Config.Preference.Theme.ColorMode;
@@ -60,7 +60,7 @@ public partial class PageSetupUI
             ComboLightColor.SelectedIndex = (int)Config.Preference.Theme.LightColor;
             CheckShowLaunchingHint.Checked = Config.Preference.ShowLaunchingHint;
 
-            // 瀛椾綋璁剧疆
+            // 鐎涙ぞ缍嬬拋鍓х枂
             ComboUiFont.SelectedFontTag = Config.Preference.Font;
             ComboUiMotdFont.SelectedFontTag = Config.Preference.MotdFont;
 
@@ -68,10 +68,10 @@ public partial class PageSetupUI
             SliderBlurValue.Value = Config.Preference.Blur.Radius;
             SliderBlurSamplingRate.Value = Config.Preference.Blur.SamplingRate;
             ComboBlurType.SelectedIndex = Config.Preference.Blur.KernelType;
-            PanBlurValue.Visibility = CheckBlur.Checked == true ? Visibility.Visible : Visibility.Collapsed;
+            PanBlurValue.IsVisible = CheckBlur.Checked == true ? true : false;
             CheckLockWindowSize.Checked = Config.Preference.LockWindowSize;
 
-            // 鑳屾櫙鍥剧墖
+            // 閼冲本娅欓崶鍓у
             SliderBackgroundOpacity.Value = Config.Preference.Background.WallpaperOpacity;
             SliderBackgroundBlur.Value = Config.Preference.Background.WallpaperBlurRadius;
             ComboBackgroundSuit.SelectedIndex = Config.Preference.Background.WallpaperSuitMode;
@@ -84,16 +84,16 @@ public partial class PageSetupUI
 
             BackgroundRefresh(false, false);
 
-            // 鏍囬鏍?
+            // 閺嶅洭顣介弽?
             ((MyRadioBox)FindName("RadioLogoType" + (int)Config.Preference.WindowTitleType))
                 .Checked = true;
-            CheckLogoLeft.Visibility = RadioLogoType0.Checked ? Visibility.Visible : Visibility.Collapsed;
-            PanLogoText.Visibility = RadioLogoType2.Checked ? Visibility.Visible : Visibility.Collapsed;
-            PanLogoChange.Visibility = RadioLogoType3.Checked ? Visibility.Visible : Visibility.Collapsed;
+            CheckLogoLeft.IsVisible = RadioLogoType0.Checked ? true : false;
+            PanLogoText.IsVisible = RadioLogoType2.Checked ? true : false;
+            PanLogoChange.IsVisible = RadioLogoType3.Checked ? true : false;
             TextLogoText.Text = Config.Preference.WindowTitleCustomText;
             CheckLogoLeft.Checked = Config.Preference.TopBarLeftAlign;
 
-            // 鑳屾櫙闊充箰
+            // 閼冲本娅欓棅鍏呯
             CheckMusicRandom.Checked = Config.Preference.Music.ShufflePlayback;
             CheckMusicAuto.Checked = Config.Preference.Music.StartOnStartup;
             CheckMusicStop.Checked = Config.Preference.Music.StopInGame;
@@ -102,7 +102,7 @@ public partial class PageSetupUI
             SliderMusicVolume.Value = Config.Preference.Music.Volume;
             MusicRefreshUI();
 
-            // 涓婚〉
+            // 娑撳銆?
             try
             {
                 ComboCustomPreset.SelectedIndex = Config.Preference.Homepage.SelectedPreset;
@@ -116,16 +116,16 @@ public partial class PageSetupUI
             TextCustomNet.Text = Config.Preference.Homepage.CustomUrl;
             ModSetup.UiCustomType(Config.Preference.Homepage.Type);
 
-            // 鍔熻兘闅愯棌
-            // 鑾峰彇閰嶇疆缁勫紩鐢?
+            // 閸旂喕鍏橀梾鎰
+            // 閼惧嘲褰囬柊宥囩枂缂佸嫬绱╅悽?
             var uiHidden = Config.Preference.Hide;
 
-            // 涓婚〉闈?
+            // 娑撳銆夐棃?
             CheckHiddenPageDownload.Checked = uiHidden.PageDownload;
             CheckHiddenPageSetup.Checked = uiHidden.PageSetup;
             CheckHiddenPageTools.Checked = uiHidden.PageTools;
 
-            // 瀛愰〉闈?璁剧疆
+            // 鐎涙劙銆夐棃?鐠佸墽鐤?
             CheckHiddenSetupLaunch.Checked = uiHidden.SetupLaunch;
             CheckHiddenSetupUI.Checked = uiHidden.SetupUi;
             CheckHiddenSetupLauncherLanguage.Checked = uiHidden.SetupLauncherLanguage;
@@ -138,11 +138,11 @@ public partial class PageSetupUI
             CheckHiddenSetupFeedback.Checked = uiHidden.SetupFeedback;
             CheckHiddenSetupLog.Checked = uiHidden.SetupLog;
 
-            // 瀛愰〉闈?宸ュ叿
+            // 鐎涙劙銆夐棃?瀹搞儱鍙?
             CheckHiddenToolsGameLink.Checked = uiHidden.ToolsGameLink;
             CheckHiddenToolsTest.Checked = uiHidden.ToolsTest;
 
-            // 瀛愰〉闈?瀹炰緥璁剧疆
+            // 鐎涙劙銆夐棃?鐎圭偘绶ョ拋鍓х枂
             CheckHiddenVersionEdit.Checked = uiHidden.InstanceEdit;
             CheckHiddenVersionExport.Checked = uiHidden.InstanceExport;
             CheckHiddenVersionSave.Checked = uiHidden.InstanceSave;
@@ -153,7 +153,7 @@ public partial class PageSetupUI
             CheckHiddenVersionSchematic.Checked = uiHidden.InstanceSchematic;
             CheckHiddenVersionServer.Checked = uiHidden.InstanceServer;
 
-            // 鐗瑰畾鍔熻兘
+            // 閻楃懓鐣鹃崝鐔诲厴
             CheckHiddenFunctionSelect.Checked = uiHidden.FunctionSelect;
             CheckHiddenFunctionModUpdate.Checked = uiHidden.FunctionModUpdate;
             CheckHiddenFunctionHidden.Checked = uiHidden.FunctionHidden;
@@ -177,13 +177,13 @@ public partial class PageSetupUI
         }
     }
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     public void Reset()
     {
         try
         {
             Config.Preference.Reset();
-            ModBase.Log("[Setup] 宸插垵濮嬪寲涓€у寲璁剧疆锛?);
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣娑擃亝鈧冨鐠佸墽鐤嗛敍?);
             HintService.Hint(Lang.Text("Setup.Ui.Initialized"), HintType.Success, false);
         }
         catch (Exception ex)
@@ -198,7 +198,7 @@ public partial class PageSetupUI
         Reload();
     }
 
-    // 灏嗘帶浠舵敼鍙樿矾鐢卞埌璁剧疆鏀瑰彉
+    // 鐏忓棙甯舵禒鑸垫暭閸欐鐭鹃悽鍗炲煂鐠佸墽鐤嗛弨鐟板綁
     private void SliderChange(object senderRaw, bool user)
     {
         var sender = (MySlider)senderRaw;
@@ -250,13 +250,13 @@ public partial class PageSetupUI
         if (ModAnimation.AniControlEnabled == 0) Config.Preference.MotdFont = ComboUiMotdFont.SelectedFontTag;
     }
 
-    // 鑳屾櫙鍥剧墖
-    private void BtnUIBgOpen_Click(object sender, MouseButtonEventArgs e)
+    // 閼冲本娅欓崶鍓у
+    private void BtnUIBgOpen_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenExplorer(ModBase.exePath + @"PCL\Pictures\");
     }
 
-    private void BtnBackgroundRefresh_Click(object sender, MouseButtonEventArgs e)
+    private void BtnBackgroundRefresh_Click(object sender, PointerReleasedEventArgs e)
     {
         BackgroundRefresh(true, true);
     }
@@ -267,27 +267,27 @@ public partial class PageSetupUI
             return;
         if (show)
         {
-            PanBackgroundOpacity.Visibility = Visibility.Visible;
-            PanBackgroundBlur.Visibility = Visibility.Visible;
-            PanBackgroundSuit.Visibility = Visibility.Visible;
-            BtnBackgroundClear.Visibility = Visibility.Visible;
-            CheckAutoPauseVideo.Visibility = Visibility.Visible;
+            PanBackgroundOpacity.Visibility = true;
+            PanBackgroundBlur.Visibility = true;
+            PanBackgroundSuit.Visibility = true;
+            BtnBackgroundClear.Visibility = true;
+            CheckAutoPauseVideo.Visibility = true;
             CardBackground.Title = Lang.Text("Setup.Ui.Background.TitleWithCount", count);
         }
         else
         {
-            PanBackgroundOpacity.Visibility = Visibility.Collapsed;
-            PanBackgroundBlur.Visibility = Visibility.Collapsed;
-            PanBackgroundSuit.Visibility = Visibility.Collapsed;
-            BtnBackgroundClear.Visibility = Visibility.Collapsed;
-            CheckAutoPauseVideo.Visibility = Visibility.Collapsed;
+            PanBackgroundOpacity.Visibility = false;
+            PanBackgroundBlur.Visibility = false;
+            PanBackgroundSuit.Visibility = false;
+            BtnBackgroundClear.Visibility = false;
+            CheckAutoPauseVideo.Visibility = false;
             CardBackground.Title = Lang.Text("Setup.Ui.Background.TitleDefault");
         }
 
         CardBackground.TriggerForceResize();
     }
 
-    private void BtnBackgroundClear_Click(object sender, MouseButtonEventArgs e)
+    private void BtnBackgroundClear_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModMain.MyMsgBox(Lang.Text("Setup.Ui.Background.Clear.Confirm.Message"),
                 Lang.Text("Common.Dialog.Warning"), button2: Lang.Text("Common.Action.Cancel"),
@@ -300,22 +300,22 @@ public partial class PageSetupUI
     }
 
     /// <summary>
-    ///     鍒锋柊鑳屾櫙鍥剧墖鍙婅缃〉 UI銆?
+    ///     閸掗攱鏌婇懗灞炬珯閸ュ墽澧栭崣濠咁啎缂冾噣銆?UI閵?
     /// </summary>
-    /// <param name="isHint">鏄惁鏄剧ず鍒锋柊鎻愮ず銆?/param>
-    /// <param name="refresh">鏄惁鍒锋柊鍥剧墖鏄剧ず銆?/param>
+    /// <param name="isHint">閺勵垰鎯侀弰鍓с仛閸掗攱鏌婇幓鎰仛閵?/param>
+    /// <param name="refresh">閺勵垰鎯侀崚閿嬫煀閸ュ墽澧栭弰鍓с仛閵?/param>
     public static void BackgroundRefresh(bool isHint, bool refresh)
     {
         try
         {
-            // 鑾峰彇鍙敤鐨勫浘鐗囨枃浠?
+            // 閼惧嘲褰囬崣顖滄暏閻ㄥ嫬娴橀悧鍥ㄦ瀮娴?
             Directory.CreateDirectory(ModBase.exePath + @"PCL\Pictures\");
             var pic = ModBase.EnumerateFiles(ModBase.exePath + @"PCL\Pictures\").Where(file =>
                     !(file.Extension.Equals(".ini", StringComparison.OrdinalIgnoreCase) ||
                       file.Extension.Equals(".db", StringComparison.OrdinalIgnoreCase))).Select(file => file.FullName)
                 .ToList();
 
-            // 瑙嗛鍔犺浇寮傚父澶勭悊
+            // 鐟欏棝顣堕崝鐘烘祰瀵倸鐖舵径鍕倞
 
             EventHandler<ExceptionRoutedEventArgs> videoHandler = (sender, e) =>
             {
@@ -328,16 +328,16 @@ public partial class PageSetupUI
                     if (videoEx.Message.Contains("0xC00D109B"))
                         ModBase.Log(
                             $"""
-                             鍒锋柊鑳屾櫙鍐呭澶辫触锛岃瑙嗛鏂囦欢鍙兘骞堕潪 H.264锛圓VC锛夋牸寮忋€?
-                             浣犲彲浠ュ皾璇曚娇鐢ㄨ棰戣浆鐮佸伐鍏锋墦寮€瑙嗛鏂囦欢骞惰瀹氱洰鏍囨牸寮忎负 H.264锛圓VC锛夛紝鐒跺悗杞爜璇ヨ棰戙€?
-                             鏂囦欢锛歿videoAddress}
+                             閸掗攱鏌婇懗灞炬珯閸愬懎顔愭径杈Е閿涘矁顕氱憴鍡涱暥閺傚洣娆㈤崣顖濆厴楠炲爼娼?H.264閿涘湏VC閿涘鐗稿蹇嬧偓?
+                             娴ｇ姴褰叉禒銉ョ毦鐠囨洑濞囬悽銊潒妫版垼娴嗛惍浣镐紣閸忛攱澧﹀鈧憴鍡涱暥閺傚洣娆㈤獮鎯邦啎鐎规氨娲伴弽鍥ㄧ壐瀵繋璐?H.264閿涘湏VC閿涘绱濋悞璺烘倵鏉烆剛鐖滅拠銉潒妫版垯鈧?
+                             閺傚洣娆㈤敍姝縱ideoAddress}
                              """,
                             ModBase.LogLevel.Msgbox,
                             userSummary: Lang.Text("Setup.Ui.Error.BackgroundVideoUnsupported"));
                     else
                         ModBase.Log(
                             videoEx,
-                            $"鍒锋柊鑳屾櫙鍐呭澶辫触锛坽videoAddress}锛?,
+                            $"閸掗攱鏌婇懗灞炬珯閸愬懎顔愭径杈Е閿涘澖videoAddress}閿?,
                             ModBase.LogLevel.Msgbox,
                             userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
                 }
@@ -349,19 +349,19 @@ public partial class PageSetupUI
             ModVideoBack.ForcePlayChanged += ModVideoBack.OnForcePlayChanged;
             if (!Config.Preference.Background.AutoPauseVideo)
                 ModVideoBack.ForcePlay = true;
-            // 鍔犺浇
+            // 閸旂姾娴?
             if (pic.Count == 0)
             {
                 if (refresh)
                 {
-                    if (ModMain.frmMain.ImgBack.Visibility == Visibility.Collapsed)
+                    if (ModMain.frmMain.ImgBack.IsVisible == false)
                     {
                         if (isHint)
                             HintService.Hint(Lang.Text("Setup.Ui.Background.NoAvailableContent"), HintType.Error);
                     }
                     else
                     {
-                        ModMain.frmMain.ImgBack.Visibility = Visibility.Collapsed;
+                        ModMain.frmMain.ImgBack.IsVisible = false;
                         if (isHint)
                             HintService.Hint(Lang.Text("Setup.Ui.Background.Cleared"), HintType.Success);
                     }
@@ -379,10 +379,10 @@ public partial class PageSetupUI
                     {
                         ModMain.frmMain.ImgBack.Background = null;
                         ModVideoBack.VideoStop();
-                        ModBase.Log("[UI] 鍔犺浇鑳屾櫙鍐呭锛? + address);
+                        ModBase.Log("[UI] 閸旂姾娴囬懗灞炬珯閸愬懎顔愰敍? + address);
                         ModMain.frmMain.ImgBack.Background = new MyBitmap(address);
                         _ = Config.Preference.Background.WallpaperSuitMode;
-                        ModMain.frmMain.ImgBack.Visibility = Visibility.Visible;
+                        ModMain.frmMain.ImgBack.Visibility = true;
                         if (isHint)
                                 HintService.Hint(Lang.Text("Setup.Ui.Background.Refresh.Success", ModBase.GetFileNameFromPath(address)), HintType.Success,
                                 false);
@@ -392,10 +392,10 @@ public partial class PageSetupUI
                         try
                         {
                             ModMain.frmMain.VideoBack.MediaFailed += videoHandler;
-                            ModBase.Log(ex, "[UI] 鍔犺浇鑳屾櫙鍥剧墖澶辫触" + address);
+                            ModBase.Log(ex, "[UI] 閸旂姾娴囬懗灞炬珯閸ュ墽澧栨径杈Е" + address);
                             if (ModBase.modeDebug)
                                 HintService.Hint(Lang.Text("Setup.Ui.Background.ImageLoadFailed", address));
-                            ModMain.frmMain.ImgBack.Visibility = Visibility.Visible;
+                            ModMain.frmMain.ImgBack.Visibility = true;
                             ModMain.frmMain.VideoBack.Source = new Uri(address, UriKind.Absolute);
                             ModVideoBack.VideoPlay();
                             if (isHint)
@@ -404,7 +404,7 @@ public partial class PageSetupUI
                         }
                         catch (Exception playEx)
                         {
-                            ModBase.Log(playEx, "鎾斁鑳屾櫙鍐呭鏃跺嚭鐜版湭鐭ラ敊璇細");
+                            ModBase.Log(playEx, "閹绢厽鏂侀懗灞炬珯閸愬懎顔愰弮璺哄毉閻滅増婀惌銉╂晩鐠囶垽绱?);
                         }
                     }
                 }
@@ -418,14 +418,14 @@ public partial class PageSetupUI
         {
             ModBase.Log(
                 ex,
-                "鍒锋柊鑳屾櫙鍐呭鏃跺嚭鐜版湭鐭ラ敊璇?,
+                "閸掗攱鏌婇懗灞炬珯閸愬懎顔愰弮璺哄毉閻滅増婀惌銉╂晩鐠?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
         }
     }
 
-    // 椤堕儴鏍?
-    private void BtnLogoChange_Click(object sender, MouseButtonEventArgs e)
+    // 妞ゅ爼鍎撮弽?
+    private void BtnLogoChange_Click(object sender, PointerReleasedEventArgs e)
     {
         var fileName = SystemDialogs.SelectFile(
             Lang.Text("Setup.Ui.ImageFile.Filter"),
@@ -434,27 +434,27 @@ public partial class PageSetupUI
             return;
         try
         {
-            // 鎷疯礉鏂囦欢
+            // 閹风柉绀夐弬鍥︽
             File.Delete(ModBase.exePath + @"PCL\Logo.png");
             ModBase.CopyFile(fileName, ModBase.exePath + @"PCL\Logo.png");
-            // 璁剧疆褰撳墠鏄剧ず
-            ModMain.frmMain.ImageTitleLogo.Source = null; // 闃叉鍥犱负 Source 灞炴€у墠鍚庣殑鍊肩浉鍚岃€屼笉鏇存柊 (#5628)
+            // 鐠佸墽鐤嗚ぐ鎾冲閺勫墽銇?
+            ModMain.frmMain.ImageTitleLogo.Source = null; // 闂冨弶顒涢崶鐘辫礋 Source 鐏炵偞鈧冨閸氬海娈戦崐鑲╂祲閸氬矁鈧奔绗夐弴瀛樻煀 (#5628)
             ModMain.frmMain.ImageTitleLogo.Source = ModBase.exePath + @"PCL\Logo.png";
         }
         catch (Exception ex)
         {
-            if (ex.Message.Contains("鍙傛暟鏃犳晥"))
+            if (ex.Message.Contains("閸欏倹鏆熼弮鐘虫櫏"))
                 ModBase.Log(
                     """
-                    鏀瑰彉鏍囬鏍忓浘鐗囧け璐ワ紝璇ュ浘鐗囨枃浠跺彲鑳藉苟闈炴爣鍑嗘牸寮忋€?
-                    浣犲彲浠ュ皾璇曚娇鐢ㄧ敾鍥炬墦寮€璇ユ枃浠跺苟閲嶆柊淇濆瓨锛岃繖浼氳鍥剧墖鍙樹负鏍囧噯鏍煎紡銆?
+                    閺€鐟板綁閺嶅洭顣介弽蹇撴禈閻楀洤銇戠拹銉礉鐠囥儱娴橀悧鍥ㄦ瀮娴犺泛褰查懗钘夎嫙闂堢偞鐖ｉ崙鍡樼壐瀵繈鈧?
+                    娴ｇ姴褰叉禒銉ョ毦鐠囨洑濞囬悽銊ф暰閸ョ偓澧﹀鈧拠銉︽瀮娴犺泛鑻熼柌宥嗘煀娣囨繂鐡ㄩ敍宀冪箹娴兼俺顔€閸ュ墽澧栭崣妯硅礋閺嶅洤鍣弽鐓庣础閵?
                     """,
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Setup.Ui.Error.TitleImageInvalidFormat"));
             else
                 ModBase.Log(
                     ex,
-                    "璁剧疆鏍囬鏍忓浘鐗囧け璐?,
+                    "鐠佸墽鐤嗛弽鍥暯閺嶅繐娴橀悧鍥с亼鐠?,
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
             ModMain.frmMain.ImageTitleLogo.Source = null;
@@ -467,28 +467,28 @@ public partial class PageSetupUI
             return;
         Refresh: ;
 
-        // 宸叉湁鍥剧墖鍒欎笉鍐嶉€夋嫨
+        // 瀹稿弶婀侀崶鍓у閸掓瑤绗夐崘宥夆偓澶嬪
         if (File.Exists(ModBase.exePath + @"PCL\Logo.png"))
         {
             try
             {
-                ModMain.frmMain.ImageTitleLogo.Source = null; // 闃叉鍥犱负 Source 灞炴€у墠鍚庣殑鍊肩浉鍚岃€屼笉鏇存柊 (#5628)
+                ModMain.frmMain.ImageTitleLogo.Source = null; // 闂冨弶顒涢崶鐘辫礋 Source 鐏炵偞鈧冨閸氬海娈戦崐鑲╂祲閸氬矁鈧奔绗夐弴瀛樻煀 (#5628)
                 ModMain.frmMain.ImageTitleLogo.Source = ModBase.exePath + @"PCL\Logo.png";
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("鍙傛暟鏃犳晥"))
+                if (ex.Message.Contains("閸欏倹鏆熼弮鐘虫櫏"))
                     ModBase.Log(
                         """
-                        璋冩暣鏍囬鏍忓浘鐗囧け璐ワ紝璇ュ浘鐗囨枃浠跺彲鑳藉苟闈炴爣鍑嗘牸寮忋€?
-                        浣犲彲浠ュ皾璇曚娇鐢ㄧ敾鍥炬墦寮€璇ユ枃浠跺苟閲嶆柊淇濆瓨锛岃繖浼氳鍥剧墖鍙樹负鏍囧噯鏍煎紡銆?
+                        鐠嬪啯鏆ｉ弽鍥暯閺嶅繐娴橀悧鍥с亼鐠愩儻绱濈拠銉ユ禈閻楀洦鏋冩禒璺哄讲閼宠棄鑻熼棃鐐寸垼閸戝棙鐗稿蹇嬧偓?
+                        娴ｇ姴褰叉禒銉ョ毦鐠囨洑濞囬悽銊ф暰閸ョ偓澧﹀鈧拠銉︽瀮娴犺泛鑻熼柌宥嗘煀娣囨繂鐡ㄩ敍宀冪箹娴兼俺顔€閸ュ墽澧栭崣妯硅礋閺嶅洤鍣弽鐓庣础閵?
                         """,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Setup.Ui.Error.TitleImageResizeInvalidFormat"));
                 else
                     ModBase.Log(
                         ex,
-                        "璋冩暣鏍囬鏍忓浘鐗囧け璐?,
+                        "鐠嬪啯鏆ｉ弽鍥暯閺嶅繐娴橀悧鍥с亼鐠?,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
                 ModMain.frmMain.ImageTitleLogo.Source = null;
@@ -501,7 +501,7 @@ public partial class PageSetupUI
                 {
                     ModBase.Log(
                         exx,
-                        "娓呯悊閿欒鐨勬爣棰樻爮鍥剧墖澶辫触",
+                        "濞撳懐鎮婇柨娆掝嚖閻ㄥ嫭鐖ｆ０妯荤埉閸ュ墽澧栨径杈Е",
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
                 }
@@ -510,7 +510,7 @@ public partial class PageSetupUI
             return;
         }
 
-        // 娌℃湁鍥剧墖鍒欒姹傞€夋嫨
+        // 濞屸剝婀侀崶鍓у閸掓瑨顩﹀Ч鍌炩偓澶嬪
         var fileName = SystemDialogs.SelectFile(Lang.Text("Setup.Ui.ImageFile.Filter"), Lang.Text("Setup.Ui.ImageFile.SelectTitle"));
         if (string.IsNullOrEmpty(fileName))
         {
@@ -521,7 +521,7 @@ public partial class PageSetupUI
         {
             try
             {
-                // 鎷疯礉鏂囦欢
+                // 閹风柉绀夐弬鍥︽
                 File.Delete(ModBase.exePath + @"PCL\Logo.png");
                 ModBase.CopyFile(fileName, ModBase.exePath + @"PCL\Logo.png");
                 goto Refresh;
@@ -530,14 +530,14 @@ public partial class PageSetupUI
             {
                 ModBase.Log(
                     ex,
-                    "澶嶅埗鏍囬鏍忓浘鐗囧け璐?,
+                    "婢跺秴鍩楅弽鍥暯閺嶅繐娴橀悧鍥с亼鐠?,
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
             }
         }
     }
 
-    private void BtnLogoDelete_Click(object sender, MouseButtonEventArgs e)
+    private void BtnLogoDelete_Click(object sender, PointerReleasedEventArgs e)
     {
         try
         {
@@ -549,19 +549,19 @@ public partial class PageSetupUI
         {
             ModBase.Log(
                 ex,
-                "娓呯┖鏍囬鏍忓浘鐗囧け璐?,
+                "濞撳懐鈹栭弽鍥暯閺嶅繐娴橀悧鍥с亼鐠?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
         }
     }
 
-    // 鑳屾櫙闊充箰
-    private void BtnMusicOpen_Click(object sender, MouseButtonEventArgs e)
+    // 閼冲本娅欓棅鍏呯
+    private void BtnMusicOpen_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenExplorer(ModBase.exePath + @"PCL\Musics\");
     }
 
-    private void BtnMusicRefresh_Click(object sender, MouseButtonEventArgs e)
+    private void BtnMusicRefresh_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMusic.MusicRefreshPlay(true);
     }
@@ -572,23 +572,23 @@ public partial class PageSetupUI
             return;
         if (ModMusic.musicAllList.Any())
         {
-            PanMusicVolume.Visibility = Visibility.Visible;
-            PanMusicDetail.Visibility = Visibility.Visible;
-            BtnMusicClear.Visibility = Visibility.Visible;
+            PanMusicVolume.Visibility = true;
+            PanMusicDetail.Visibility = true;
+            BtnMusicClear.Visibility = true;
             CardMusic.Title = Lang.Text("Setup.Ui.Music.TitleWithCount", ModBase.EnumerateFiles(ModBase.exePath + @"PCL\Musics\").Count());
         }
         else
         {
-            PanMusicVolume.Visibility = Visibility.Collapsed;
-            PanMusicDetail.Visibility = Visibility.Collapsed;
-            BtnMusicClear.Visibility = Visibility.Collapsed;
+            PanMusicVolume.Visibility = false;
+            PanMusicDetail.Visibility = false;
+            BtnMusicClear.Visibility = false;
             CardMusic.Title = Lang.Text("Setup.Ui.Music.Title");
         }
 
         CardMusic.TriggerForceResize();
     }
 
-    private void BtnMusicClear_Click(object sender, MouseButtonEventArgs e)
+    private void BtnMusicClear_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModMain.MyMsgBox(Lang.Text("Setup.Ui.Music.Clear.Confirm.Message"),
                 Lang.Text("Common.Dialog.Warning"), button2: Lang.Text("Common.Action.Cancel"),
@@ -596,12 +596,12 @@ public partial class PageSetupUI
             ModBase.RunInThread(() =>
             {
                 HintService.Hint(Lang.Text("Setup.Ui.Music.Deleting"));
-                // 鍋滄鎾斁闊充箰
+                // 閸嬫粍顒涢幘顓熸杹闂婂厖绠?
                 ModMusic.musicNAudio = null;
                 ModMusic.musicWaitingList = new List<string>();
                 ModMusic.musicAllList = new List<string>();
                 Thread.Sleep(200);
-                // 鍒犻櫎鏂囦欢
+                // 閸掔娀娅庨弬鍥︽
                 try
                 {
                     ModBase.DeleteDirectory(ModBase.exePath + @"PCL\Musics");
@@ -612,7 +612,7 @@ public partial class PageSetupUI
                 {
                     ModBase.Log(
                         ex,
-                        "鍒犻櫎鑳屾櫙闊充箰澶辫触",
+                        "閸掔娀娅庨懗灞炬珯闂婂厖绠版径杈Е",
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
                 }
@@ -626,7 +626,7 @@ public partial class PageSetupUI
                 {
                     ModBase.Log(
                         ex,
-                        "閲嶅缓鑳屾櫙闊充箰鏂囦欢澶瑰け璐?,
+                        "闁插秴缂撻懗灞炬珯闂婂厖绠伴弬鍥︽婢剁懓銇戠拹?,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
                 }
@@ -650,20 +650,20 @@ public partial class PageSetupUI
             CheckMusicStart.Checked = false;
     }
 
-    // 涓婚〉
+    // 娑撳銆?
 
-    private void BtnCustomRefresh_Click(object sender, MouseButtonEventArgs e)
+    private void BtnCustomRefresh_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMain.frmLaunchRight.ForceRefresh();
         HintService.Hint(Lang.Text("Setup.Ui.Homepage.Refresh.Success"), HintType.Success);
     }
 
-    private void BtnCustomTutorial_Click(object sender, MouseButtonEventArgs e)
+    private void BtnCustomTutorial_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenWebsite("https://docs.pclc.cc/ce/customization/xaml-format");
     }
 
-    // 涓婚
+    // 娑撳顣?
     private void ThemeColor_Change(object senderRaw, SelectionChangedEventArgs e)
     {
         var sender = (MyComboBox)senderRaw;
@@ -671,13 +671,13 @@ public partial class PageSetupUI
         ThemeManager.ThemeRefresh();
     }
 
-    // 璧炲姪
-    private void BtnLauncherDonate_Click(object sender, MouseButtonEventArgs e)
+    // 鐠х偛濮?
+    private void BtnLauncherDonate_Click(object sender, PointerReleasedEventArgs e)
     {
         ModBase.OpenWebsite("https://afdian.com/a/LTCat");
     }
 
-    // 婊戝姩鏉?
+    // 濠婃垵濮╅弶?
     private void SliderLoad()
     {
         SliderMusicVolume.getHintText = new Func<object, object>(v =>
@@ -703,10 +703,10 @@ public partial class PageSetupUI
         CheckMusicStop_Change();
     }
 
-    #region 鍔熻兘闅愯棌
+    #region 閸旂喕鍏橀梾鎰
 
     /// <summary>
-    ///     鏄惁寮哄埗鏄剧ず琚鐢ㄧ殑鍔熻兘銆?
+    ///     閺勵垰鎯佸鍝勫煑閺勫墽銇氱悮顐ゎ洣閻劎娈戦崝鐔诲厴閵?
     /// </summary>
     public static bool HiddenForceShow
     {
@@ -719,7 +719,7 @@ public partial class PageSetupUI
     }
 
     /// <summary>
-    ///     鏇存柊鍔熻兘闅愯棌甯︽潵鐨勬樉绀哄彉鍖栥€?
+    ///     閺囧瓨鏌婇崝鐔诲厴闂呮劘妫岀敮锔芥降閻ㄥ嫭妯夌粈鍝勫綁閸栨牓鈧?
     /// </summary>
     public static void HiddenRefresh()
     {
@@ -727,67 +727,67 @@ public partial class PageSetupUI
             return;
         try
         {
-            // 鑾峰彇閰嶇疆缁勫紩鐢ㄤ互缂╃煭浠ｇ爜
+            // 閼惧嘲褰囬柊宥囩枂缂佸嫬绱╅悽銊や簰缂傗晝鐓禒锝囩垳
             var conf = Config.Preference.Hide;
 
-            // 椤堕儴鏍忥細涓嬭浇銆佽缃€佸伐鍏?
+            // 妞ゅ爼鍎撮弽蹇ョ窗娑撳娴囬妴浣筋啎缂冾喓鈧礁浼愰崗?
             var isAllTitleHidden = !HiddenForceShow && conf.PageDownload && conf.PageSetup && conf.PageTools;
 
             if (isAllTitleHidden)
             {
-                ModMain.frmMain.PanTitleSelect.Visibility = Visibility.Collapsed;
+                ModMain.frmMain.PanTitleSelect.IsVisible = false;
             }
             else
             {
-                ModMain.frmMain.PanTitleSelect.Visibility = Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect1.Visibility = !HiddenForceShow && conf.PageDownload
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect2.Visibility =
-                    !HiddenForceShow && conf.PageSetup ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect3.Visibility =
-                    !HiddenForceShow && conf.PageTools ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmMain.PanTitleSelect.IsVisible = true;
+                ModMain.frmMain.BtnTitleSelect1.IsVisible = !HiddenForceShow && conf.PageDownload
+                    ? false
+                    : true;
+                ModMain.frmMain.BtnTitleSelect2.IsVisible =
+                    !HiddenForceShow && conf.PageSetup ? false : true;
+                ModMain.frmMain.BtnTitleSelect3.IsVisible =
+                    !HiddenForceShow && conf.PageTools ? false : true;
             }
 
-            // 鍔熻兘闅愯棌璁剧疆鍗＄墖
+            // 閸旂喕鍏橀梾鎰鐠佸墽鐤嗛崡锛勫
             if (ModMain.frmSetupUI is not null)
             {
-                ModMain.frmSetupUI.CardSwitch.Visibility = !HiddenForceShow && conf.FunctionHidden
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
+                ModMain.frmSetupUI.CardSwitch.IsVisible = !HiddenForceShow && conf.FunctionHidden
+                    ? false
+                    : true;
                 ModMain.frmSetupUI.CardSwitch.Title = HiddenForceShow ? Lang.Text("Setup.Ui.FeatureHide.TitleTemporarilyDisabled") : Lang.Text("Setup.Ui.FeatureHide.Title");
             }
 
-            // 璁剧疆瀛愰〉闈?(FrmSetupLeft)
+            // 鐠佸墽鐤嗙€涙劙銆夐棃?(FrmSetupLeft)
             if (ModMain.frmSetupLeft is not null)
             {
-                ModMain.frmSetupLeft.ItemLaunch.Visibility =
-                    !HiddenForceShow && conf.SetupLaunch ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemUI.Visibility =
-                    !HiddenForceShow && conf.SetupUi ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemLauncherLanguage.Visibility = !HiddenForceShow && conf.SetupLauncherLanguage
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemGameManage.Visibility = !HiddenForceShow && conf.SetupGameManage
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemLauncherMisc.Visibility = !HiddenForceShow && conf.SetupLauncherMisc
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemJava.Visibility =
-                    !HiddenForceShow && conf.SetupJava ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemUpdate.Visibility =
-                    !HiddenForceShow && conf.SetupUpdate ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemGameLink.Visibility = !HiddenForceShow && conf.SetupGameLink
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemAbout.Visibility =
-                    !HiddenForceShow && conf.SetupAbout ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemFeedback.Visibility = !HiddenForceShow && conf.SetupFeedback
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmSetupLeft.ItemLog.Visibility =
-                    !HiddenForceShow && conf.SetupLog ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmSetupLeft.ItemLaunch.IsVisible =
+                    !HiddenForceShow && conf.SetupLaunch ? false : true;
+                ModMain.frmSetupLeft.ItemUI.IsVisible =
+                    !HiddenForceShow && conf.SetupUi ? false : true;
+                ModMain.frmSetupLeft.ItemLauncherLanguage.IsVisible = !HiddenForceShow && conf.SetupLauncherLanguage
+                    ? false
+                    : true;
+                ModMain.frmSetupLeft.ItemGameManage.IsVisible = !HiddenForceShow && conf.SetupGameManage
+                    ? false
+                    : true;
+                ModMain.frmSetupLeft.ItemLauncherMisc.IsVisible = !HiddenForceShow && conf.SetupLauncherMisc
+                    ? false
+                    : true;
+                ModMain.frmSetupLeft.ItemJava.IsVisible =
+                    !HiddenForceShow && conf.SetupJava ? false : true;
+                ModMain.frmSetupLeft.ItemUpdate.IsVisible =
+                    !HiddenForceShow && conf.SetupUpdate ? false : true;
+                ModMain.frmSetupLeft.ItemGameLink.IsVisible = !HiddenForceShow && conf.SetupGameLink
+                    ? false
+                    : true;
+                ModMain.frmSetupLeft.ItemAbout.IsVisible =
+                    !HiddenForceShow && conf.SetupAbout ? false : true;
+                ModMain.frmSetupLeft.ItemFeedback.IsVisible = !HiddenForceShow && conf.SetupFeedback
+                    ? false
+                    : true;
+                ModMain.frmSetupLeft.ItemLog.IsVisible =
+                    !HiddenForceShow && conf.SetupLog ? false : true;
 
                 var categories = new[]
                 {
@@ -802,12 +802,12 @@ public partial class PageSetupUI
                 foreach (var category in categories)
                 {
                     var isVisible = category.Item2 || HiddenForceShow;
-                    category.Item1.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+                    category.Item1.IsVisible = isVisible ? true : false;
                     if (isVisible)
                         category.Item1.Opacity = 0.6d;
                 }
 
-                // 缁熻璁剧疆椤靛彲鐢ㄩ」鏁伴噺
+                // 缂佺喕顓哥拋鍓х枂妞ら潧褰查悽銊┿€嶉弫浼村櫤
                 var setupCount = 0;
                 if (!conf.SetupLaunch)
                     setupCount += 1;
@@ -831,39 +831,39 @@ public partial class PageSetupUI
                     setupCount += 1;
                 if (!conf.SetupLog)
                     setupCount += 1;
-                ModMain.frmSetupLeft.PanItem.Visibility =
-                    setupCount < 2 && !HiddenForceShow ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmSetupLeft.PanItem.IsVisible =
+                    setupCount < 2 && !HiddenForceShow ? false : true;
             }
 
-            // 宸ュ叿瀛愰〉闈?(FrmToolsLeft)
+            // 瀹搞儱鍙跨€涙劙銆夐棃?(FrmToolsLeft)
             if (ModMain.frmToolsLeft is not null)
             {
-                ModMain.frmToolsLeft.ItemGameLink.Visibility = !HiddenForceShow && conf.ToolsGameLink
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmToolsLeft.ItemTest.Visibility =
-                    !HiddenForceShow && conf.ToolsTest ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmToolsLeft.ItemGameLink.IsVisible = !HiddenForceShow && conf.ToolsGameLink
+                    ? false
+                    : true;
+                ModMain.frmToolsLeft.ItemTest.IsVisible =
+                    !HiddenForceShow && conf.ToolsTest ? false : true;
                 
-                // 澶勭悊鍒嗙被鏍囬
+                // 婢跺嫮鎮婇崚鍡欒閺嶅洭顣?
                 var isGameLinkVisible = (!HiddenForceShow && !conf.ToolsGameLink) || HiddenForceShow;
-                ModMain.frmToolsLeft.TextGameLinkCategory.Visibility = isGameLinkVisible ? Visibility.Visible : Visibility.Collapsed;
+                ModMain.frmToolsLeft.TextGameLinkCategory.IsVisible = isGameLinkVisible ? true : false;
                 if (isGameLinkVisible) ModMain.frmToolsLeft.TextGameLinkCategory.Opacity = 0.6;
 
                 var isToolsVisible = (!HiddenForceShow && !conf.ToolsTest) || HiddenForceShow;
-                ModMain.frmToolsLeft.TextToolsCategory.Visibility = isToolsVisible ? Visibility.Visible : Visibility.Collapsed;
+                ModMain.frmToolsLeft.TextToolsCategory.IsVisible = isToolsVisible ? true : false;
                 if (isToolsVisible) ModMain.frmToolsLeft.TextToolsCategory.Opacity = 0.6;
                 
-                // 缁熻宸ュ叿椤靛彲鐢ㄩ」鏁伴噺
+                // 缂佺喕顓稿銉ュ徔妞ら潧褰查悽銊┿€嶉弫浼村櫤
                 var toolsCount = 0;
                 if (!conf.ToolsGameLink)
                     toolsCount += 1;
                 if (!conf.ToolsTest)
                     toolsCount += 1;
-                ModMain.frmToolsLeft.PanItem.Visibility =
-                    toolsCount < 2 && !HiddenForceShow ? Visibility.Collapsed : Visibility.Visible;
+                ModMain.frmToolsLeft.PanItem.IsVisible =
+                    toolsCount < 2 && !HiddenForceShow ? false : true;
             }
 
-            // 鍏朵粬鍏ュ彛鍒锋柊
+            // 閸忔湹绮崗銉ュ經閸掗攱鏌?
             if (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSelect)
                 ModMain.frmSelectRight.BtnEmptyDownload_Loaded();
             if (ModMain.frmMain.pageCurrent == FormMain.PageType.Launch)
@@ -877,13 +877,13 @@ public partial class PageSetupUI
         {
             ModBase.Log(
                 ex,
-                "鍒锋柊鍔熻兘闅愯棌椤圭洰澶辫触",
+                "閸掗攱鏌婇崝鐔诲厴闂呮劘妫屾い鍦窗婢惰精瑙?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
         }
     }
 
-    // ================= 璁剧疆椤甸潰鍗忓悓 =================
+    // ================= 鐠佸墽鐤嗘い鐢告桨閸楀繐鎮?=================
     private void HiddenSetupMain()
     {
         var isChecked = (bool)CheckHiddenPageSetup.Checked;
@@ -900,11 +900,11 @@ public partial class PageSetupUI
         CheckHiddenSetupLog.Checked = isChecked;
     }
 
-    // ================= 璁剧疆椤甸潰鍗忓悓 =================
+    // ================= 鐠佸墽鐤嗘い鐢告桨閸楀繐鎮?=================
     private void HiddenSetupMain(object sender, bool user)
     {
         if (!user)
-            return; // 浠呭鐞嗙敤鎴风偣鍑伙紝闃叉姝诲惊鐜?
+            return; // 娴犲懎顦╅悶鍡欐暏閹撮鍋ｉ崙浼欑礉闂冨弶顒涘璇叉儕閻?
         var isChecked = (bool)CheckHiddenPageSetup.Checked;
         CheckHiddenSetupLaunch.Checked = isChecked;
         CheckHiddenSetupUI.Checked = isChecked;
@@ -924,14 +924,14 @@ public partial class PageSetupUI
         if (!user)
             return;
         var conf = Config.Preference.Hide;
-        // 鍒ゆ柇鏄惁鍏ㄩ儴鍕鹃€?
+        // 閸掋倖鏌囬弰顖氭儊閸忋劑鍎撮崟楣冣偓?
         var allChecked = conf.SetupLaunch && conf.SetupUi && conf.SetupLauncherLanguage && conf.SetupJava &&
                          conf.SetupUpdate && conf.SetupGameLink && conf.SetupAbout && conf.SetupFeedback &&
                          conf.SetupLog && conf.SetupLauncherMisc && conf.SetupGameManage;
         CheckHiddenPageSetup.Checked = allChecked;
     }
 
-    // ================= 宸ュ叿椤甸潰鍗忓悓 =================
+    // ================= 瀹搞儱鍙挎い鐢告桨閸楀繐鎮?=================
     private void HiddenToolsMain(object sender, bool user)
     {
         if (!user)
@@ -950,7 +950,7 @@ public partial class PageSetupUI
         CheckHiddenPageTools.Checked = allChecked;
     }
 
-    // 璀﹀憡鎻愮ず
+    // 鐠€锕€鎲￠幓鎰仛
     private void HiddenHint(object sender, bool user)
     {
         if (ModAnimation.AniControlEnabled == 0 && sender is MyCheckBox checkBox && checkBox.Checked == true)

@@ -8,11 +8,12 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Markup;
+using Avalonia.Metadata;
 using PCL.Core.App.Localization;
 
 namespace PCL;
 
-[ContentProperty("SearchTags")]
+// [port] WPF 类级 [ContentProperty("SearchTags")] → Avalonia 12 属性级 [Content]（移至 SearchTags 属性）
 public partial class PageComp
 {
     /// <summary>

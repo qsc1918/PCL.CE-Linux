@@ -82,7 +82,7 @@
                     </Grid>
                 </StackPanel>
             </local:MyCard>
-            <local:MyCard Margin="10" Title="{DynamicResource Setup.GameLink.NetworkTest.Title}" Visibility="Collapsed">
+            <local:MyCard Margin="10" Title="{DynamicResource Setup.GameLink.NetworkTest.Title}" IsVisible="False">
                 <StackPanel Margin="25,40,25,15" Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>

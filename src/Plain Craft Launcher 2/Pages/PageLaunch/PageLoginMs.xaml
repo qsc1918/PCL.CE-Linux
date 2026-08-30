@@ -1,10 +1,8 @@
+<!-- [port] 移除 WPF 设计期属性：xmlns:mc/xmlns:d/mc:Ignorable/d:DesignWidth（Avalonia 无设计期 XAML 支持） -->
 <StackPanel x:Class="PCL.PageLoginMs" Tag="False" Orientation="Vertical"
             xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:local="clr-namespace:PCL"
-            mc:Ignorable="d" d:DesignWidth="302.4">
+            xmlns:local="clr-namespace:PCL">
     <Grid x:Name="PanEmpty" Margin="0,10,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />

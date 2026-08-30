@@ -1,9 +1,9 @@
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageDownloadInstall">
+    xmlns:local="clr-namespace:PCL"
+   
+    x:Class="PCL.PageDownloadInstall">
     <Grid>
         <Grid Name="PanAllBack">
             <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -14,7 +14,7 @@
                             <TranslateTransform />
                         </StackPanel.RenderTransform>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" x:Name="PanSelect" Visibility="Collapsed" Opacity="0"
+                    <StackPanel Grid.Row="1" x:Name="PanSelect" IsVisible="False" Opacity="0"
                                 IsHitTestVisible="False" Margin="0,0,0,45">
                         <StackPanel.RenderTransform>
                             <TranslateTransform X="40" />
@@ -57,7 +57,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgForge" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Anvil.png" />
+                                       Source="avares://PCL/images/Blocks/Anvil.png" />
                                 <TextBlock x:Name="LabForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -84,7 +84,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgCleanroom" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Cleanroom.png" />
+                                       Source="avares://PCL/images/Blocks/Cleanroom.png" />
                                 <TextBlock x:Name="LabCleanroom" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -111,7 +111,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgNeoForge" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/NeoForge.png" />
+                                       Source="avares://PCL/images/Blocks/NeoForge.png" />
                                 <TextBlock x:Name="LabNeoForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -138,7 +138,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -165,7 +165,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -192,7 +192,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabricApi" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -219,7 +219,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabricApi" Margin="0,0,7,0"
                                        Height="18" RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -246,7 +246,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLabyMod" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/LabyMod.png" />
+                                       Source="avares://PCL/images/Blocks/LabyMod.png" />
                                 <TextBlock x:Name="LabLabyMod" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -275,7 +275,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFine" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/GrassPath.png" />
+                                       Source="avares://PCL/images/Blocks/GrassPath.png" />
                                 <TextBlock x:Name="LabOptiFine" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -302,7 +302,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFabric" Margin="0,0,7,0" Height="18"
                                        RenderOptions.BitmapScalingMode="HighQuality"
-                                       Source="pack://application:,,,/images/Blocks/OptiFabric.png" />
+                                       Source="avares://PCL/images/Blocks/OptiFabric.png" />
                                 <TextBlock x:Name="LabOptiFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -329,7 +329,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLiteLoader" Margin="-1,0,6,0" Height="20"
                                        RenderOptions.BitmapScalingMode="Linear"
-                                       Source="pack://application:,,,/images/Blocks/Egg.png" />
+                                       Source="avares://PCL/images/Blocks/Egg.png" />
                                 <TextBlock x:Name="LabLiteLoader" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -354,17 +354,17 @@
                       x:Name="PanLoad" UseAnimation="False">
             <local:MyLoading Margin="20,20,20,17" x:Name="LoadMinecraft" HorizontalAlignment="Center"
                              VerticalAlignment="Center" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadOptiFine" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadForge" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadNeoForge" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadCleanroom" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadLiteLoader" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadFabric" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadLegacyFabric" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadFabricApi" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadLegacyFabricApi" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadLabyMod" HasAnimation="False" />
-            <local:MyLoading Visibility="Collapsed" x:Name="LoadOptiFabric" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadOptiFine" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadForge" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadNeoForge" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadCleanroom" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadLiteLoader" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadFabric" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadLegacyFabric" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadFabricApi" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadLegacyFabricApi" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadLabyMod" HasAnimation="False" />
+            <local:MyLoading IsVisible="False" x:Name="LoadOptiFabric" HasAnimation="False" />
         </local:MyCard>
     </Grid>
 </local:MyPageRight>

@@ -1,9 +1,8 @@
+<!-- [port] 移除设计期命名空间 mc/d 与 mc:Ignorable（Avalonia 无设计期 XAML 支持） -->
 <local:MyPageRight
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="PCL.PageLogRight">
+    xmlns:local="clr-namespace:PCL" x:Class="PCL.PageLogRight">
     <Grid>
         <Grid x:Name="PanAllBack">
             <local:MyCard Margin="16,16,16,100" x:Name="PanLogCard">
@@ -36,7 +35,8 @@
             </StackPanel>
         </local:MyCard>-->
 
-        <local:MyCard x:Name="CardOperation" Visibility="Visible" Opacity="0"
+        <!-- [port] WPF RichTextBox/VirtualizingPanel 附加属性在 Avalonia 无对应（无 FlowDocument/RichTextBox）。日志文档模型为跨页面共享子系统，需单独决策，暂保留原有生命周期（见移植报告）。 -->
+        <local:MyCard x:Name="CardOperation" IsVisible="True" Opacity="0"
                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,15,0,10" UseAnimation="False"
                       HasMouseAnimation="True">
             <StackPanel Margin="0,6,0,6">

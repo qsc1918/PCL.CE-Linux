@@ -13,7 +13,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
 {
     public static string currentSave;
 
-    // 鍒濆鍖?
+    // 閸掓繂顫愰崠?
     private bool isLoad;
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -23,16 +23,16 @@ public partial class PageInstanceSavesLeft : IRefreshable
         isLoad = true;
     }
 
-    private void BtnOpenFolder_Click(object sender, MouseButtonEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
     {
         e.Handled = true;
         ModBase.OpenExplorer($@"{currentSave}\");
     }
 
-    #region 榫欑尗鐗?椤甸潰绠＄悊
+    #region 姒瑧灏楅悧?妞ょ敻娼扮粻锛勬倞
 
     /// <summary>
-    ///     褰撳墠椤甸潰鐨勭紪鍙枫€備粠 0 寮€濮嬭绠椼€?
+    ///     瑜版挸澧犳い鐢告桨閻ㄥ嫮绱崣鏋偓鍌欑矤 0 瀵偓婵顓哥粻妞尖偓?
     /// </summary>
     public FormMain.PageSubType pageID = FormMain.PageSubType.Default;
 
@@ -46,7 +46,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
     }
 
     /// <summary>
-    ///     鍕鹃€変簨浠舵敼鍙橀〉闈€?
+    ///     閸曢箖鈧绨ㄦ禒鑸垫暭閸欐﹢銆夐棃顫偓?
     /// </summary>
     private void PageCheck(object sender, ModBase.RouteEventArgs e)
     {
@@ -81,7 +81,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
     }
 
     /// <summary>
-    ///     鍒囨崲鐜版湁椤甸潰銆?
+    ///     閸掑洦宕查悳鐗堟箒妞ょ敻娼伴妴?
     /// </summary>
     public void PageChange(FormMain.PageSubType id)
     {
@@ -109,7 +109,7 @@ public partial class PageInstanceSavesLeft : IRefreshable
 
     private static void PageChangeRun(MyPageRight target)
     {
-        ModAnimation.AniStop("FrmMain PageChangeRight"); // 鍋滄涓婚〉闈㈢殑鍙抽〉闈㈠垏鎹㈠姩鐢伙紝闃叉瀹冧笌鏈姩鐢讳竴璧疯Е鍙戝娆?PageOnEnter
+        ModAnimation.AniStop("FrmMain PageChangeRight"); // 閸嬫粍顒涙稉濠氥€夐棃銏㈡畱閸欐娊銆夐棃銏犲瀼閹广垹濮╅悽浼欑礉闂冨弶顒涚€瑰啩绗岄張顒€濮╅悽璁崇鐠х柉袝閸欐垵顦垮▎?PageOnEnter
         if (target.Parent is not null)
             target.SetValue(ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
@@ -124,14 +124,14 @@ public partial class PageInstanceSavesLeft : IRefreshable
             }, 130),
             ModAnimation.AaCode(() =>
             {
-                // 寤惰繜瑙﹀彂椤甸潰閫氱敤鍔ㄧ敾锛屼互浣垮緱鍦?Loaded 浜嬩欢涓姞杞界殑鎺т欢寰椾互澶勭悊
+                // 瀵ゆ儼绻滅憴锕€褰傛い鐢告桨闁氨鏁ら崝銊ф暰閿涘奔浜掓担鍨繁閸?Loaded 娴滃娆㈡稉顓炲鏉炵晫娈戦幒褌娆㈠妞句簰婢跺嫮鎮?
                 ModMain.frmMain.pageRight.Opacity = 1d;
                 ModMain.frmMain.pageRight.PageOnEnter();
             }, 30, true)
         }, "PageLeft PageChange");
     }
 
-    public void RefreshButton_Click(object sender, EventArgs e) // 鐢辫竟鏍忔寜閽尶鍚嶈皟鐢?
+    public void RefreshButton_Click(object sender, EventArgs e) // 閻㈣精绔熼弽蹇斿瘻闁筋喖灏堕崥宥堢殶閻?
     {
         Refresh((FormMain.PageSubType)ModBase.Val(((MyIconButton)sender).Tag));
     }

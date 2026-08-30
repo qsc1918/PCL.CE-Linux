@@ -54,21 +54,21 @@ public partial class PageInstanceScreenshot : IRefreshable
 
     private void PageSetupLaunch_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
         screenshotPath = PageInstanceLeft.McInstance.PathIndie + @"screenshots\";
         if (!Directory.Exists(screenshotPath))
             Directory.CreateDirectory(screenshotPath);
         Dispatcher.BeginInvoke(new Func<Task>(ReloadAsync));
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoad)
             return;
         isLoad = true;
     }
 
     /// <summary>
-    ///     纭繚褰撳墠椤甸潰涓婄殑淇℃伅宸叉纭樉绀恒€?
+    ///     绾喕绻氳ぐ鎾冲妞ょ敻娼版稉濠勬畱娣団剝浼呭鍙夘劀绾喗妯夌粈鎭掆偓?
     /// </summary>
     public async Task ReloadAsync()
     {
@@ -82,13 +82,13 @@ public partial class PageInstanceScreenshot : IRefreshable
     {
         if (fileList.Count.Equals(0))
         {
-            PanNoPic.Visibility = Visibility.Visible;
-            PanContent.Visibility = Visibility.Collapsed;
+            PanNoPic.IsVisible = true;
+            PanContent.IsVisible = false;
         }
         else
         {
-            PanNoPic.Visibility = Visibility.Collapsed;
-            PanContent.Visibility = Visibility.Visible;
+            PanNoPic.IsVisible = false;
+            PanContent.IsVisible = true;
         }
     }
     
@@ -96,7 +96,7 @@ public partial class PageInstanceScreenshot : IRefreshable
     
     private async Task LoadFileListAsync()
     {
-        ModBase.Log("[Screenshot] 鍒锋柊鎴浘鏂囦欢");
+        ModBase.Log("[Screenshot] 閸掗攱鏌婇幋顏勬禈閺傚洣娆?);
         fileList.Clear();
         if (Directory.Exists(screenshotPath))
         {
@@ -107,9 +107,9 @@ public partial class PageInstanceScreenshot : IRefreshable
         }
         PanList.Children.Clear();
         RefreshTip();
-        //FileList = FileList.Where(e => !e.ContainsF(@"\debug\")).ToList(); // 鎺掗櫎璧勬簮鍖呰皟璇曡緭鍑?
+        //FileList = FileList.Where(e => !e.ContainsF(@"\debug\")).ToList(); // 閹烘帡娅庣挧鍕爱閸栧懓鐨熺拠鏇＄翻閸?
         //FileList.Sort((a, b) => new FileInfo(a).CreationTime > new FileInfo(b).CreationTime);
-        ModBase.Log("[Screenshot] 鍏卞彂鐜?" + fileList.Count + " 涓埅鍥炬枃浠?);
+        ModBase.Log("[Screenshot] 閸忓崬褰傞悳?" + fileList.Count + " 娑擃亝鍩呴崶鐐瀮娴?);
         if (fileList.Count == 0)
             return;
         await ListAppendAsync(20, 0);
@@ -148,16 +148,16 @@ public partial class PageInstanceScreenshot : IRefreshable
             try
             {
                 if (!File.Exists(i))
-                    continue; // 鏂囦欢鍦ㄥ姞杞介€斾腑娑堝け浜?
+                    continue; // 閺傚洣娆㈤崷銊ュ鏉炰粙鈧柧鑵戝☉鍫濄亼娴?
                 if (File.GetAttributes(i).HasFlag(FileAttributes.Hidden))
-                    continue; // 闅愯棌鏂囦欢
+                    continue; // 闂呮劘妫岄弬鍥︽
                 if (new FileInfo(i).Length == 0L)
-                    continue; // 绌烘枃浠?
+                    continue; // 缁岀儤鏋冩禒?
                 var myCard = new MyCard
                 {
                     Margin = new Thickness(7),
                     Tag = i,
-                    ToolTip = i.Replace(screenshotPath, "") // 閫傞厤楂樻竻鎴浘妯＄粍
+                    ToolTip = i.Replace(screenshotPath, "") // 闁倿鍘ゆ妯荤閹搭亜娴樺Ο锛勭矋
                 };
                 var grid = new Grid();
                 myCard.Children.Add(grid);
@@ -166,7 +166,7 @@ public partial class PageInstanceScreenshot : IRefreshable
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(120d) });
                 grid.RowDefinitions.Add(new RowDefinition());
 
-                // 鍥剧墖
+                // 閸ュ墽澧?
                 var image = new Image();
                 image.Source = await Task.Run(() =>
                 {
@@ -185,7 +185,7 @@ public partial class PageInstanceScreenshot : IRefreshable
 
                     return bitmapImage;
                 });
-                image.Stretch = Stretch.Uniform; // 浣垮浘鐗囪嚜閫傚簲鎺т欢澶у皬
+                image.Stretch = Stretch.Uniform; // 娴ｅ灝娴橀悧鍥殰闁倸绨查幒褌娆㈡径褍鐨?
                 image.Cursor = Cursors.Hand;
                 image.MouseLeftButtonDown += (sender, e) =>
                 {
@@ -201,11 +201,11 @@ public partial class PageInstanceScreenshot : IRefreshable
                             ModBase.LogLevel.Hint,
                             userSummary: Lang.Text("Instance.Screenshot.OpenFailed"));
                     }
-                }; // 浣跨敤绯荤粺榛樿绋嬪簭鎵撳紑
+                }; // 娴ｈ法鏁ょ化鑽ょ埠姒涙顓荤粙瀣碍閹垫挸绱?
                 Grid.SetRow(image, 1);
                 grid.Children.Add(image);
 
-                // 鎸夐挳
+                // 閹稿鎸?
                 var stackPanel = new StackPanel();
                 stackPanel.Orientation = Orientation.Horizontal;
                 stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
@@ -249,7 +249,7 @@ public partial class PageInstanceScreenshot : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"[Screenshot] 鍒涘缓 {i} 鎴浘棰勮澶辫触锛屽浘鍍忓彲鑳芥崯鍧?);
+                ModBase.Log(ex, $"[Screenshot] 閸掓稑缂?{i} 閹搭亜娴樻０鍕潔婢惰精瑙﹂敍灞芥禈閸嶅繐褰查懗鑺ュ疮閸?);
             }
         }
 
@@ -271,7 +271,7 @@ public partial class PageInstanceScreenshot : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鏈兘鎵惧埌瀵瑰簲 UI");
+            ModBase.Log(ex, "閺堫亣鍏橀幍鎯у煂鐎电懓绨?UI");
         }
     }
 
@@ -314,7 +314,7 @@ public partial class PageInstanceScreenshot : IRefreshable
             while (tryTime <= 5)
                 try
                 {
-                    ModBase.Log("[Screenshot] 灏濊瘯澶嶅埗" + imagePath + "鍒板壀璐存澘");
+                    ModBase.Log("[Screenshot] 鐏忔繆鐦径宥呭煑" + imagePath + "閸掓澘澹€鐠愬瓨婢?);
                     Clipboard.SetImage(new BitmapImage(new Uri(imagePath)));
                     HintService.Hint(Lang.Text("Instance.Screenshot.CopiedToClipboard"));
                     tryTime = 6;
@@ -323,7 +323,7 @@ public partial class PageInstanceScreenshot : IRefreshable
                 catch (Exception ex)
                 {
                     tryTime += 1;
-                    ModBase.Log(ex, $"[Screenshot]绗?{tryTime} 娆″鍒跺皾璇曞け璐?);
+                    ModBase.Log(ex, $"[Screenshot]缁?{tryTime} 濞嗏€愁槻閸掕泛鐨剧拠鏇炪亼鐠?);
                 }
 
             HintService.Hint(Lang.Text("Instance.Screenshot.CopyFailed"), HintType.Error);
@@ -334,7 +334,7 @@ public partial class PageInstanceScreenshot : IRefreshable
         }
     }
 
-    private void BtnOpenFolder_Click(object sender, MouseButtonEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
     {
         if (!Directory.Exists(screenshotPath))
             Directory.CreateDirectory(screenshotPath);

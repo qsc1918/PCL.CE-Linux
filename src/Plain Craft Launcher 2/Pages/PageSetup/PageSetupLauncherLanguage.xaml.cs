@@ -22,10 +22,10 @@ public partial class PageSetupLauncherLanguage
 
     private void PageSetupLauncherLanguage_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (_isLoaded)
             return;
         _isLoaded = true;
@@ -56,7 +56,7 @@ public partial class PageSetupLauncherLanguage
             Config.Preference.Localization.LanguageConfig.SetDefaultValue();
             Config.Preference.Localization.FormatCultureConfig.SetDefaultValue();
             LocalizationService.ApplyFromConfig();
-            ModBase.Log("[Setup] 宸插垵濮嬪寲鍚姩鍣?璇█椤佃缃?);
+            ModBase.Log("[Setup] 瀹告彃鍨垫慨瀣閸氼垰濮╅崳?鐠囶叀鈻堟い浣冾啎缂?);
             HintService.Hint(Lang.Text("Setup.Language.Reset.Success"), HintType.Success, false);
             Reload();
         }
@@ -64,7 +64,7 @@ public partial class PageSetupLauncherLanguage
         {
             ModBase.Log(
                 ex,
-                "鍒濆鍖栧惎鍔ㄥ櫒-璇█椤佃缃け璐?,
+                "閸掓繂顫愰崠鏍ф儙閸斻劌娅?鐠囶叀鈻堟い浣冾啎缂冾喖銇戠拹?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Setup.Error.OperationFailed"));
         }

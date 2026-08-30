@@ -27,7 +27,7 @@ public partial class MyCompItem
         // 判断当前颜色
         string stateNew;
         int time;
-        if (IsMouseOver)
+        if (IsPointerOver)
         {
             if (isMouseDown)
             {
@@ -54,7 +54,7 @@ public partial class MyCompItem
         {
             // 有动画
             var ani = new List<ModAnimation.AniData>();
-            if (IsMouseOver)
+            if (IsPointerOver)
             {
                 if (PanButtons is not null && _HasActionButtons)
                     ani.Add(ModAnimation.AaOpacity(PanButtons, 1d - PanButtons.Opacity, (int)Math.Round(time * 0.35d),
@@ -155,22 +155,22 @@ public partial class MyCompItem
     {
         InitializeComponent();
         Click += (sender, e) => MyCompItem_Click((MyCompItem)sender, e);
-        PreviewMouseLeftButtonUp += Button_MouseUp;
-        PreviewMouseLeftButtonDown += Button_MouseDown;
-        MouseLeave += Button_MouseLeave;
-        PreviewMouseLeftButtonUp += Button_MouseLeave;
-        MouseEnter += RefreshColor;
-        MouseLeave += RefreshColor;
-        MouseLeftButtonDown += RefreshColor;
-        MouseLeftButtonUp += RefreshColor;
+        PointerReleased += Button_MouseUp;
+        PointerPressed += Button_MouseDown;
+        PointerExited += Button_MouseLeave;
+        PointerReleased += Button_MouseLeave;
+        PointerEntered += RefreshColor;
+        PointerExited += RefreshColor;
+        PointerPressed += RefreshColor;
+        PointerReleased += RefreshColor;
         // Handles
-        LabInfo.MouseEnter += LabInfo_MouseEnter;
+        LabInfo.PointerEntered += LabInfo_MouseEnter;
         BtnDelete.Click += BtnDelete_Click;
         BtnDownload.Click += _BtnDownload_Click;
     }
 
     // 指向时扩展描述
-    private void LabInfo_MouseEnter(object sender, MouseEventArgs e)
+    private void LabInfo_MouseEnter(object sender, PointerEventArgs e)
     {
         if (IsTextTrimmed(LabInfo))
         {
@@ -189,7 +189,7 @@ public partial class MyCompItem
         var typeface = new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight,
             textBlock.FontStretch);
         var formattedText = new FormattedText(textBlock.Text, Thread.CurrentThread.CurrentCulture,
-            textBlock.FlowDirection, typeface, textBlock.FontSize, textBlock.Foreground, ModBase.dpi);
+            FlowDirection.LeftToRight, typeface, textBlock.FontSize, textBlock.Foreground);
         return formattedText.Width > textBlock.Bounds.Width;
     }
 
@@ -208,7 +208,6 @@ public partial class MyCompItem
                     Padding = new Thickness(3d, 1d, 3d, 1d),
                     CornerRadius = new CornerRadius(3d),
                     Margin = new Thickness(0d, 0d, 3d, 0d),
-                    SnapsToDevicePixels = true,
                     UseLayoutRounding = false
                 };
                 var tagTextBlock = new TextBlock
@@ -272,7 +271,7 @@ public partial class MyCompItem
     // 触发点击事件
     public event ClickEventHandler? Click;
 
-    public delegate void ClickEventHandler(object sender, MouseButtonEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerEventArgs e);
 
     private void BtnDelete_Click(object sender, EventArgs e)
     {
@@ -384,14 +383,14 @@ public partial class MyCompItem
     private bool isMouseDown;
 
     // 触发点击事件
-    private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Button_MouseUp(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;
         Click?.Invoke(sender, e);
     }
 
-    private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
         if (!CanInteraction)
             return;
@@ -411,11 +410,11 @@ public partial class MyCompItem
         var isClickOnLabInfo = false;
         if (LabInfo.IsVisible == true)
         {
-            var labInfoBounds = new Rect(LabInfo.TranslatePoint(new Point(0d, 0d), this), LabInfo.RenderSize);
+            var labInfoBounds = new Rect(LabInfo.TranslatePoint(new Point(0d, 0d), this), LabInfo.Bounds.Size);
             isClickOnLabInfo = labInfoBounds.Contains(clickPosition);
         }
 
-        if (IsMouseDirectlyOver || isClickOnLabInfo) isMouseDown = true;
+        if (IsPointerOver || isClickOnLabInfo) isMouseDown = true;
     }
 
     private void Button_MouseLeave(object sender, object e)
@@ -427,7 +426,7 @@ public partial class MyCompItem
     private bool _IsClickOnActionButton(Control button, Point clickPosition)
     {
         if (button is null || button.IsVisible != true) return false;
-        var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this), button.RenderSize);
+        var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this), button.Bounds.Size);
         return bounds.Contains(clickPosition);
     }
 
@@ -450,12 +449,14 @@ public partial class MyCompItem
                     RenderTransform = new ScaleTransform(0.8d, 0.8d),
                     RenderTransformOrigin = new Point(0.5d, 0.5d),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
-                    SnapsToDevicePixels = true,
                     IsHitTestVisible = false,
                     Opacity = 0d
                 };
-                rect.SetResourceReference(Border.BackgroundProperty, "ColorBrush7");
-                rect.SetResourceReference(Border.BorderBrushProperty, "ColorBrush6");
+                // [port] WPF SetResourceReference → Avalonia 手动解析动态资源（无 SetResourceReference 方法）
+                rect.SetValue(Border.BackgroundProperty,
+                    this.TryGetResource("ColorBrush7", null, out var bgRes) ? (IBrush)bgRes : null);
+                rect.SetValue(Border.BorderBrushProperty,
+                    this.TryGetResource("ColorBrush6", null, out var bbRes) ? (IBrush)bbRes : null);
                 SetColumnSpan(rect, 999);
                 SetRowSpan(rect, 999);
                 Children.Insert(0, rect);

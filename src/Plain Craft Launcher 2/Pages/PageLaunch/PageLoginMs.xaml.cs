@@ -26,7 +26,8 @@ public partial class PageLoginMs
     private void BtnLogin_Click(object sender, EventArgs e)
     {
         BtnLogin.IsEnabled = false;
-        BtnBack.Visibility = Visibility.Collapsed;
+        // [port] Visibility.Collapsed → IsVisible=false
+        BtnBack.IsVisible = false;
         BtnLogin.Text = Lang.Number(0d, "P0");
         ModBase.RunInNewThread(() =>
         {
@@ -86,7 +87,8 @@ public partial class PageLoginMs
                 ModBase.RunInUi(() =>
                 {
                     BtnLogin.IsEnabled = true;
-                    BtnBack.Visibility = Visibility.Visible;
+                    // [port] Visibility.Visible → IsVisible=true
+                    BtnBack.IsVisible = true;
                     BtnLogin.Text = Lang.Text("Launch.Account.Login");
                 });
             }

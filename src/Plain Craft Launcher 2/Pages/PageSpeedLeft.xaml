@@ -1,16 +1,15 @@
+<!-- [port] 移除设计期命名空间 mc/d、mc:Ignorable 与 d:DesignHeight（Avalonia 无设计期 XAML 支持） -->
 <local:MyPageLeft x:Class="PCL.PageSpeedLeft"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:local="clr-namespace:PCL"
-                  mc:Ignorable="d"
-                  d:DesignHeight="450" Width="200" HorizontalAlignment="Left">
+                  Width="200" HorizontalAlignment="Left">
     <Grid.Resources>
         <ResourceDictionary>
-            <Style TargetType="TextBlock" x:Key="Split">
+            <!-- [port] WPF TargetType="{x:Type TextBlock}" → Avalonia Selector="TextBlock"；
+                 SnapsToDevicePixels 为 WPF 专属，Avalonia 无此概念，已删除 -->
+            <Style Selector="TextBlock" x:Key="Split">
                 <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="Height" Value="2" />
                 <Setter Property="Margin" Value="25,7" />
                 <Setter Property="Background">

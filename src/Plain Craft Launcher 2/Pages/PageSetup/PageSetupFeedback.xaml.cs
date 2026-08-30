@@ -53,9 +53,9 @@ public partial class PageSetupFeedback
     private void PageOtherFeedback_Loaded(object sender, RoutedEventArgs e)
     {
         PageLoaderInit(Load, PanLoad, PanContent, PanInfo, Loader, _ => RefreshList());
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (_isLoaded)
             return;
         _isLoaded = true;
@@ -69,7 +69,7 @@ public partial class PageSetupFeedback
             {
                 Retries = 3,
                 UseBrowserUserAgent = true
-            }) as JsonArray; // 鑾峰彇杩戞湡 200 鏉℃暟鎹氨澶熶簡
+            }) as JsonArray; // 閼惧嘲褰囨潻鎴炴埂 200 閺夆剝鏆熼幑顔兼皑婢剁喍绨?
         if (list is null)
             throw new Exception(Lang.Text("Setup.Feedback.LoadFailed"));
         var res = new List<Feedback>();
@@ -139,7 +139,7 @@ public partial class PageSetupFeedback
 
     private void SetPanelVisibility(StackPanel panel, MyCard card)
     {
-        card.Visibility = panel.Children.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        card.IsVisible = panel.Children.Count == 0 ? false : true;
     }
 
     public void RefreshList()
@@ -175,7 +175,7 @@ public partial class PageSetupFeedback
         SetPanelVisibility(PanListDuplicate, PanContentDuplicate);
     }
 
-    private void Feedback_Click(object sender, MouseButtonEventArgs e)
+    private void Feedback_Click(object sender, PointerReleasedEventArgs e)
     {
         PageSetupLeft.TryFeedback();
     }

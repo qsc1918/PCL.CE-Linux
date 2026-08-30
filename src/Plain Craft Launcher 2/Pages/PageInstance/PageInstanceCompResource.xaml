@@ -12,7 +12,7 @@
                     <local:MyCard Margin="0,0,0,15" x:Name="PanManage">
                         <WrapPanel Margin="15,8,0,15">
                             <local:MyButton x:Name="BtnManageBack" MinWidth="110" Text="{DynamicResource Instance.Resource.BackToParent}" Padding="13,7"
-                                            Margin="0,7,15,0" HorizontalAlignment="Left" Visibility="Collapsed" />
+                                            Margin="0,7,15,0" HorizontalAlignment="Left" IsVisible="False" />
                             <local:MyButton x:Name="BtnManageOpen" MinWidth="110" Text="{DynamicResource Common.Action.OpenFolder}" Padding="13,7"
                                             Margin="0,7,15,0" HorizontalAlignment="Left" ColorType="Highlight" />
 
@@ -27,7 +27,7 @@
                             <local:MyButton x:Name="BtnManageCheck" MinWidth="110" Text="{DynamicResource Instance.Resource.CheckMods}" Padding="13,7"
                                             Margin="0,7,15,0" HorizontalAlignment="Left"
                                             ToolTip="{DynamicResource Instance.Resource.CheckMods.ToolTip}"
-                                            Visibility="Collapsed" />
+                                            IsVisible="False" />
                         </WrapPanel>
                     </local:MyCard>
                     <local:MyCard x:Name="PanListBack" VerticalAlignment="Top" Opacity="0" Margin="0,0,0,14" Title=" "
@@ -66,7 +66,7 @@
                                Text="{DynamicResource Instance.Resource.Empty.Description}" TextWrapping="Wrap" />
                     <WrapPanel Margin="10,20,10,5" HorizontalAlignment="Center" Orientation="Horizontal">
                         <local:MyButton Height="35" x:Name="BtnHintBack" MinWidth="130" Text="{DynamicResource Instance.Resource.BackToParent}" Margin="5,0"
-                                        Padding="12,0" Visibility="Collapsed" />
+                                        Padding="12,0" IsVisible="False" />
                         <local:MyButton Height="35" x:Name="BtnHintInstall" MinWidth="130" Text="{DynamicResource Instance.Resource.InstallFromFiles}" Margin="5,0"
                                         Padding="12,0" ColorType="Highlight" />
                         <local:MyButton Height="35" x:Name="BtnHintDownload" MinWidth="130" Text="{DynamicResource Instance.Resource.DownloadNew}" Margin="5,0"
@@ -77,7 +77,7 @@
                 </StackPanel>
             </local:MyCard>
             <local:MyCard HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40"
-                          x:Name="PanSchematicEmpty" Visibility="Collapsed">
+                          x:Name="PanSchematicEmpty" IsVisible="False">
                 <StackPanel Margin="20,17">
                     <TextBlock Margin="0,0,0,9" HorizontalAlignment="Center" Text="{DynamicResource Instance.Resource.Schematic.Unavailable.Title}" FontSize="19"
                                Foreground="{DynamicResource ColorBrush3}" />
@@ -99,7 +99,7 @@
             <local:MyLoading Text="{DynamicResource Instance.Resource.Loading}" Margin="20,20,20,17" x:Name="Load" HorizontalAlignment="Center"
                              VerticalAlignment="Center" />
         </local:MyCard>
-        <local:MyCard x:Name="CardSelect" Visibility="Collapsed" Opacity="0"
+        <local:MyCard x:Name="CardSelect" IsVisible="False" Opacity="0"
                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="25,25,25,0" UseAnimation="False">
             <local:MyCard.RenderTransform>
                 <TranslateTransform x:Name="TransSelect" Y="-10" />

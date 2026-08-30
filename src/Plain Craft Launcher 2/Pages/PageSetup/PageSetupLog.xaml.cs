@@ -37,10 +37,10 @@ public partial class PageSetupLog
 
     private void PageOtherLog_Loaded(object sender, RoutedEventArgs e)
     {
-        // 閲嶅鍔犺浇閮ㄥ垎
+        // 闁插秴顦查崝鐘烘祰闁劌鍨?
         PanBack.ScrollToHome();
         LoadList();
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (IsLoaded)
             return;
     }
@@ -135,12 +135,12 @@ public partial class PageSetupLog
         }
     }
 
-    private void ButtonOpenDir_OnClick(object sender, MouseButtonEventArgs e)
+    private void ButtonOpenDir_OnClick(object sender, PointerReleasedEventArgs e)
     {
         Basics.OpenPath(LogDirectory);
     }
 
-    private void ButtonClean_OnClick(object sender, MouseButtonEventArgs e)
+    private void ButtonClean_OnClick(object sender, PointerReleasedEventArgs e)
     {
         var r = ModMain.MyMsgBox(Lang.Text("Setup.Log.Clear.Confirm.Message"), Lang.Text("Setup.Log.Clear.Confirm.Title"), Lang.Text("Common.Action.Confirm"), Lang.Text("Common.Action.Cancel"), isWarn: true);
         if (r != 1)
@@ -153,12 +153,12 @@ public partial class PageSetupLog
         LoadList();
     }
 
-    private void ButtonExportAll_OnClick(object sender, MouseButtonEventArgs e)
+    private void ButtonExportAll_OnClick(object sender, PointerReleasedEventArgs e)
     {
         ExportLog(Directory.GetFiles(LogDirectory));
     }
 
-    private void ButtonExport_OnClick(object sender, MouseButtonEventArgs e)
+    private void ButtonExport_OnClick(object sender, PointerReleasedEventArgs e)
     {
         var pendingLogs = Array.FindAll(Directory.GetFiles(LogDirectory),
             s => s.IsMatch(RegexPatterns.LastPendingLogPath));

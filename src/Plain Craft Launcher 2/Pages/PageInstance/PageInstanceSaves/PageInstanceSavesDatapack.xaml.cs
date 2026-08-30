@@ -22,11 +22,11 @@ namespace PCL;
 
 public partial class PageInstanceSavesDatapack : IRefreshable
 {
-    #region 鏁版嵁鍖呬俊鎭紦瀛?
+    #region 閺佺増宓侀崠鍛繆閹垳绱︾€?
 
     private readonly Dictionary<string, (DateTime CreationTime, long Length)> datapackFileInfoCache = new();
 
-    // 鑾峰彇鏁版嵁鍖呬俊鎭紙甯︾紦瀛橈級
+    // 閼惧嘲褰囬弫鐗堝祦閸栧懍淇婇幁顖ょ礄鐢妇绱︾€涙﹫绱?
     private (DateTime CreationTime, long Length) GetDatapackFileInfo(string path)
     {
         (DateTime CreationTime, long Length) cacheItem;
@@ -41,12 +41,12 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鑾峰彇鏁版嵁鍖呬俊鎭け璐? " + path);
+            ModBase.Log(ex, "閼惧嘲褰囬弫鐗堝祦閸栧懍淇婇幁顖氥亼鐠? " + path);
             return (DateTime.MinValue, 0L);
         }
     }
 
-    // 椤甸潰鍏抽棴鏃舵竻鐞嗙紦瀛?
+    // 妞ょ敻娼伴崗鎶芥４閺冭埖绔婚悶鍡欑处鐎?
     private void Page_Unloaded(object sender, RoutedEventArgs e)
     {
         datapackFileInfoCache.Clear();
@@ -54,7 +54,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 鍒濆鍖?
+    #region 閸掓繂顫愰崠?
 
     private readonly MyLocalCompItem.SwipeSelect currentSwipSelect;
 
@@ -118,19 +118,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ChangeAllSelected(false);
         ModAnimation.AniControlEnabled -= 1;
 
-        // 闈為噸澶嶅姞杞介儴鍒?
+        // 闂堢偤鍣告径宥呭鏉炰粙鍎撮崚?
         if (isLoad)
             return;
         isLoad = true;
 
         ModMain.frmMain.KeyDown += FrmMain_KeyDown;
-        // 璋冩暣鎸夐挳杈硅窛锛堣繖鐜╂剰鍎挎病娉曚粠 XAML 鏀癸級
+        // 鐠嬪啯鏆ｉ幐澶愭尦鏉堢绐涢敍鍫ｇ箹閻溾晜鍓伴崕鎸庣梾濞夋洑绮?XAML 閺€鐧哥礆
         foreach (MyRadioButton Btn in PanFilter.Children)
             Btn.LabText.Margin = new Thickness(-2, 0d, 8d, 0d);
     }
 
     /// <summary>
-    ///     鍒锋柊鏁版嵁鍖呭垪琛ㄣ€?
+    ///     閸掗攱鏌婇弫鐗堝祦閸栧懎鍨悰銊ｂ偓?
     /// </summary>
     public void ReloadDatapackFileList(bool forceReload = false)
     {
@@ -138,7 +138,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 ? ModLoader.LoaderFolderRunType.ForceRun
                 : ModLoader.LoaderFolderRunType.RunOnUpdated))
         {
-            ModBase.Log("[System] 宸插埛鏂版暟鎹寘鍒楄〃");
+            ModBase.Log("[System] 瀹告彃鍩涢弬鐗堟殶閹诡喖瀵橀崚妤勩€?);
             datapackFileInfoCache.Clear();
 
             ModBase.RunInUi(() =>
@@ -150,7 +150,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
     }
 
-    // 寮哄埗鍒锋柊
+    // 瀵搫鍩楅崚閿嬫煀
     private void RefreshSelf()
     {
         Refresh();
@@ -164,7 +164,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     public void Refresh()
     {
         ModMain.frmInstanceSavesDatapack.ReloadDatapackFileList(true);
-        ModBase.Log("[Datapack] 鍒锋柊鏁版嵁鍖呭垪琛?);
+        ModBase.Log("[Datapack] 閸掗攱鏌婇弫鐗堝祦閸栧懎鍨悰?);
     }
 
     private void LoaderInit()
@@ -173,7 +173,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             _ => LoadUIFromLoaderOutput(), () => ModComp.CompType.DataPack, false);
     }
 
-    private void Load_Click(object sender, MouseButtonEventArgs e)
+    private void Load_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModLocalComp.compResourceListLoader.State == ModBase.LoadState.Failed)
             LoaderRun(ModLoader.LoaderFolderRunType.ForceRun);
@@ -188,49 +188,49 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region UI 鍖?
+    #region UI 閸?
 
     /// <summary>
-    ///     宸插姞杞界殑鏁版嵁鍖?UI 缂撳瓨銆侹ey 涓烘暟鎹寘鐨?RawPath銆?
+    ///     瀹告彃濮炴潪鐣屾畱閺佺増宓侀崠?UI 缂傛挸鐡ㄩ妴渚筫y 娑撶儤鏆熼幑顔煎瘶閻?RawPath閵?
     /// </summary>
     public Dictionary<string, MyLocalCompItem> datapackItems = new();
 
     /// <summary>
-    ///     灏嗗姞杞藉櫒缁撴灉鐨勬暟鎹寘鍒楄〃鍔犺浇涓?UI銆?
+    ///     鐏忓棗濮炴潪钘夋珤缂佹挻鐏夐惃鍕殶閹诡喖瀵橀崚妤勩€冮崝鐘烘祰娑?UI閵?
     /// </summary>
     private void LoadUIFromLoaderOutput()
     {
         try
         {
-            // 鍒ゆ柇搴旇鏄剧ず鍝竴涓〉闈?
+            // 閸掋倖鏌囨惔鏃囶嚉閺勫墽銇氶崫顏冪娑擃亪銆夐棃?
             if (ModLocalComp.compResourceListLoader.output.Any())
             {
-                PanBack.Visibility = Visibility.Visible;
-                PanEmpty.Visibility = Visibility.Collapsed;
+                PanBack.IsVisible = true;
+                PanEmpty.IsVisible = false;
             }
             else
             {
-                // 鏍规嵁缁勪欢绫诲瀷璁剧疆 PanEmpty 鐨勬枃鏈唴瀹?
+                // 閺嶈宓佺紒鍕缁鐎风拋鍓х枂 PanEmpty 閻ㄥ嫭鏋冮張顒€鍞寸€?
                 TxtEmptyTitle.Text = Lang.Text("Instance.Resource.Datapack.Empty.Title");
                 TxtEmptyDescription.Text = Lang.Text("Instance.Resource.Datapack.Empty.Description");
 
-                PanEmpty.Visibility = Visibility.Visible;
-                PanBack.Visibility = Visibility.Collapsed;
+                PanEmpty.IsVisible = true;
+                PanBack.IsVisible = false;
                 return;
             }
 
-            // 淇敼缂撳瓨
+            // 娣囶喗鏁肩紓鎾崇摠
             datapackItems.Clear();
             var itemsToShow = ModLocalComp.compResourceListLoader.output.ToList();
 
             foreach (var DatapackEntity in itemsToShow)
                 datapackItems[DatapackEntity.RawPath] = BuildLocalCompItem(DatapackEntity);
 
-            // 鏄剧ず缁撴灉
+            // 閺勫墽銇氱紒鎾寸亯
             ModBase.RunInUi(() =>
             {
                 Filter = FilterType.All;
-                SearchBox.Text = ""; // 杩欎細瑙﹀彂缁撴灉鍒锋柊锛屾墍浠ラ渶瑕佸湪 DatapackItems 鏇存柊涔嬪悗
+                SearchBox.Text = ""; // 鏉╂瑤绱扮憴锕€褰傜紒鎾寸亯閸掗攱鏌婇敍灞惧娴犮儵娓剁憰浣告躬 DatapackItems 閺囧瓨鏌婃稊瀣倵
                 RefreshUI();
                 SetSortMethod(SortMethod.CompName);
             });
@@ -239,7 +239,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鍔犺浇鏁版嵁鍖呭垪琛?UI 澶辫触",
+                "閸旂姾娴囬弫鐗堝祦閸栧懎鍨悰?UI 婢惰精瑙?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
@@ -266,24 +266,24 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         catch (Exception ex)
         {
             ModAnimation.AniControlEnabled -= 1;
-            ModBase.Log(ex, $"鍒涘缓 UI 椤瑰け璐ワ細{entry.RawPath}");
+            ModBase.Log(ex, $"閸掓稑缂?UI 妞ょ懓銇戠拹銉窗{entry.RawPath}");
             throw;
         }
     }
 
     private void BuildLocalCompItemBtnHandler(MyLocalCompItem sender, EventArgs e)
     {
-        // 鐐瑰嚮浜嬩欢
+        // 閻愮懓鍤禍瀣╂
         sender.Changed += (ss, e) => CheckChanged((MyLocalCompItem)ss, e);
 
-        // 鏂囦欢椤圭殑鐐瑰嚮浜嬩欢锛氬垏鎹㈤€変腑鐘舵€?
+        // 閺傚洣娆㈡い鍦畱閻愮懓鍤禍瀣╂閿涙艾鍨忛幑銏も偓澶夎厬閻樿埖鈧?
         sender.Click += (ss, e) =>
         {
             var s = (MyLocalCompItem)ss;
             s.Checked = !s.Checked;
         };
 
-        // 鍥炬爣鎸夐挳
+        // 閸ョ偓鐖ｉ幐澶愭尦
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
         btnOpen.ToolTip = Lang.Text("Instance.Saves.OpenFileLocation");
         ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
@@ -333,7 +333,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     鍒锋柊鏁翠釜 UI銆?
+    ///     閸掗攱鏌婇弫缈犻嚋 UI閵?
     /// </summary>
     public void RefreshUI()
     {
@@ -342,18 +342,18 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         var showingDatapacks = (IsSearching ? searchResult : datapackItems.Values.Select(i => i.Entry))
             .Where(m => CanPassFilter(m)).ToList();
 
-        // 瀵规樉绀虹殑鏁版嵁鍖呰繘琛屾帓搴?
+        // 鐎佃妯夌粈铏规畱閺佺増宓侀崠鍛扮箻鐞涘本甯撴惔?
         if (showingDatapacks.Any())
         {
             var sortMethod = GetSortMethod(currentSortMethod);
             showingDatapacks.Sort((a, b) => sortMethod(a, b));
         }
 
-        // 閲嶆柊鍒楀嚭鍒楄〃
+        // 闁插秵鏌婇崚妤€鍤崚妤勩€?
         ModAnimation.AniControlEnabled += 1;
         if (showingDatapacks.Any())
         {
-            PanList.Visibility = Visibility.Visible;
+            PanList.Visibility = true;
             PanList.Children.Clear();
             foreach (var TargetDatapack in showingDatapacks)
             {
@@ -361,20 +361,20 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     continue;
                 var item = datapackItems[TargetDatapack.RawPath];
 
-                // 纭繚鍏冪礌娌℃湁鐖跺鍣紝閬垮厤閲嶅娣诲姞寮傚父
+                // 绾喕绻氶崗鍐濞屸剝婀侀悥璺侯啇閸ｎ煉绱濋柆鍨帳闁插秴顦插ǎ璇插瀵倸鐖?
                 if (item.Parent is not null) ((Panel)item.Parent).Children.Remove(item);
 
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabTitle.Text, item.LabTitle,
                     ThemeService.IsDarkMode);
                 ModStyle.MinecraftFormatter.SetColorfulTextLab(item.LabInfo.Text, item.LabInfo,
                     ThemeService.IsDarkMode);
-                item.Checked = selectedDatapacks.Contains(TargetDatapack.RawPath); // 鏇存柊閫変腑鐘舵€?
+                item.Checked = selectedDatapacks.Contains(TargetDatapack.RawPath); // 閺囧瓨鏌婇柅澶夎厬閻樿埖鈧?
                 PanList.Children.Add(item);
             }
         }
         else
         {
-            PanList.Visibility = Visibility.Collapsed;
+            PanList.Visibility = false;
         }
 
         ModAnimation.AniControlEnabled -= 1;
@@ -385,17 +385,17 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     鍒锋柊椤舵爮鍜屽簳鏍忔樉绀恒€?
+    ///     閸掗攱鏌婃い鑸电埉閸滃苯绨抽弽蹇旀▔缁€鎭掆偓?
     /// </summary>
     public void RefreshBars()
     {
         Dispatcher.BeginInvoke(new Func<Task>(async () =>
         {
             // -----------------
-            // 椤堕儴鏍?
+            // 妞ゅ爼鍎撮弽?
             // -----------------
 
-            // 璁℃暟
+            // 鐠佲剝鏆?
             var anyCount = 0;
             var enabledCount = 0;
             var disabledCount = 0;
@@ -413,36 +413,36 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     if (item.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable) unavalialeCount += 1;
                 }
             });
-            // 鏄剧ず
+            // 閺勫墽銇?
             BtnFilterAll.Text = IsSearching ? Lang.Text("Instance.Resource.Filter.SearchResult") : Lang.Text("Instance.Resource.Filter.AllWithCount", anyCount);
             BtnFilterCanUpdate.Text = Lang.Text("Instance.Resource.Filter.UpdatableWithCount", updateCount);
             BtnFilterCanUpdate.Visibility = Filter == FilterType.CanUpdate || updateCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? true
+                : false;
             BtnFilterEnabled.Text = Lang.Text("Instance.Resource.Filter.EnabledWithCount", enabledCount);
             BtnFilterEnabled.Visibility = Filter == FilterType.Enabled || (enabledCount > 0 && enabledCount < anyCount)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? true
+                : false;
             BtnFilterDisabled.Text = Lang.Text("Instance.Resource.Filter.DisabledWithCount", disabledCount);
             BtnFilterDisabled.Visibility = Filter == FilterType.Disabled || disabledCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? true
+                : false;
             BtnFilterError.Text = Lang.Text("Instance.Resource.Filter.ErrorWithCount", unavalialeCount);
             BtnFilterError.Visibility = Filter == FilterType.Unavailable || unavalialeCount > 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? true
+                : false;
 
             // -----------------
-            // 搴曢儴鏍?
+            // 鎼存洟鍎撮弽?
             // -----------------
 
-            // 璁℃暟
+            // 鐠佲剝鏆?
             var newCount = selectedDatapacks.Count;
             var selected = newCount > 0;
             if (selected)
                 LabSelect.Text = Lang.Text("Instance.Resource.SelectedCount", newCount);
 
-            // 鎸夐挳鍙敤鎬?
+            // 閹稿鎸抽崣顖滄暏閹?
             if (selected)
             {
                 var hasUpdate = false;
@@ -451,7 +451,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 var canFavoriteAndShare = true;
 
 
-                // 妫€鏌ユ槸鍚︽墍鏈夐€変腑鐨勬暟鎹寘閮芥湁鏈夋晥鐨勯」鐩俊鎭?
+                // 濡偓閺屻儲妲搁崥锔藉閺堝鈧鑵戦惃鍕殶閹诡喖瀵橀柈鑺ユ箒閺堝鏅ラ惃鍕€嶉惄顔讳繆閹?
                 await Task.Run(() =>
                 {
                     foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
@@ -474,13 +474,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 BtnSelectShare.IsEnabled = canFavoriteAndShare;
             }
 
-            // 鏇存柊鏄剧ず鐘舵€?
+            // 閺囧瓨鏌婇弰鍓с仛閻樿埖鈧?
             if (ModAnimation.AniControlEnabled == 0)
             {
                 PanListBack.Margin = new Thickness(0d, 0d, 0d, selected ? 95 : 15);
                 if (selected)
                 {
-                    // 浠呭湪鏁伴噺澧炲姞鏃舵挱鏀惧嚭鐜?璺宠穬鍔ㄧ敾
+                    // 娴犲懎婀弫浼村櫤婢х偛濮為弮鑸垫尡閺€鎯у毉閻?鐠哄疇绌崝銊ф暰
                     if (bottomBarShownCount >= newCount)
                     {
                         bottomBarShownCount = newCount;
@@ -488,8 +488,8 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
 
                     bottomBarShownCount = newCount;
-                    // 鍑虹幇/璺宠穬鍔ㄧ敾
-                    CardSelect.Visibility = Visibility.Visible;
+                    // 閸戣櫣骞?鐠哄疇绌崝銊ф暰
+                    CardSelect.Visibility = true;
                     ModAnimation.AniStart(
                         new[]
                         {
@@ -504,18 +504,18 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 }
                 else
                 {
-                    // 涓嶉噸澶嶆挱鏀鹃殣钘忓姩鐢?
+                    // 娑撳秹鍣告径宥嗘尡閺€楣冩閽樺繐濮╅悽?
                     if (bottomBarShownCount == 0)
                         return;
                     bottomBarShownCount = 0;
-                    // 闅愯棌鍔ㄧ敾
+                    // 闂呮劘妫岄崝銊ф暰
                     ModAnimation.AniStart(
                         new[]
                         {
                             ModAnimation.AaOpacity(CardSelect, -CardSelect.Opacity, 90),
                             ModAnimation.AaTranslateY(CardSelect, -10 - TransSelect.Y, 90,
                                 ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
-                            ModAnimation.AaCode(() => CardSelect.Visibility = Visibility.Collapsed, after: true)
+                            ModAnimation.AaCode(() => CardSelect.Visibility = false, after: true)
                         }, "Datapack Sidebar");
                 }
             }
@@ -525,13 +525,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 bottomBarShownCount = newCount;
                 if (selected)
                 {
-                    CardSelect.Visibility = Visibility.Visible;
+                    CardSelect.Visibility = true;
                     CardSelect.Opacity = 1d;
                     TransSelect.Y = -25;
                 }
                 else
                 {
-                    CardSelect.Visibility = Visibility.Collapsed;
+                    CardSelect.Visibility = false;
                     CardSelect.Opacity = 0d;
                     TransSelect.Y = -10;
                 }
@@ -543,10 +543,10 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 绠＄悊
+    #region 缁狅紕鎮?
 
     /// <summary>
-    ///     鎵撳紑 datapacks 鏂囦欢澶广€?
+    ///     閹垫挸绱?datapacks 閺傚洣娆㈡径骞库偓?
     /// </summary>
     private void BtnManageOpen_Click(object sender, EventArgs e)
     {
@@ -560,24 +560,24 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鎵撳紑 datapacks 鏂囦欢澶瑰け璐?,
+                "閹垫挸绱?datapacks 閺傚洣娆㈡径鐟般亼鐠?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     鍏ㄩ€夈€?
+    ///     閸忋劑鈧鈧?
     /// </summary>
-    private void BtnManageSelectAll_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageSelectAll_Click(object sender, PointerReleasedEventArgs e)
     {
         ChangeAllSelected(selectedDatapacks.Count < PanList.Children.Count);
     }
 
     /// <summary>
-    ///     瀹夎鏁版嵁鍖呫€?
+    ///     鐎瑰顥婇弫鐗堝祦閸栧懌鈧?
     /// </summary>
-    private void BtnManageInstall_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageInstall_Click(object sender, PointerReleasedEventArgs e)
     {
         var fileList = SystemDialogs.SelectFiles(
             Lang.Text("Instance.Saves.Datapack.Install.FileDialog.Filter"),
@@ -589,7 +589,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     瀹夎鏁版嵁鍖呮枃浠躲€?
+    ///     鐎瑰顥婇弫鐗堝祦閸栧懏鏋冩禒韬测偓?
     /// </summary>
     public static void InstallDatapackFiles(IEnumerable<string> filePathList)
     {
@@ -598,23 +598,23 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
         var extension = filePathList.First().AfterLast(".").ToLower();
 
-        // 妫€鏌ユ枃浠舵墿灞曞悕
+        // 濡偓閺屻儲鏋冩禒鑸靛⒖鐏炴洖鎮?
         if (extension != "zip")
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.UnsupportedFormat", extension, Lang.Text("Download.Comp.Type.DataPack"), "zip"), HintType.Error);
             return;
         }
 
-        // 妫€鏌ュ洖鏀剁珯
+        // 濡偓閺屻儱娲栭弨鍓佺彲
         if (filePathList.First().Contains(@":\$RECYCLE.BIN\"))
         {
             HintService.Hint(Lang.Text("Instance.Resource.Install.RestoreFromRecycleBin"), HintType.Error);
             return;
         }
 
-        ModBase.Log($"[System] 鏂囦欢涓?{extension} 鏍煎紡锛屽皾璇曚綔涓烘暟鎹寘瀹夎");
+        ModBase.Log($"[System] 閺傚洣娆㈡稉?{extension} 閺嶇厧绱￠敍灞界毦鐠囨洑缍旀稉鐑樻殶閹诡喖瀵樼€瑰顥?);
 
-        // 纭瀹夎
+        // 绾喛顓荤€瑰顥?
         if (!(ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup &&
               ModMain.frmMain.PageCurrentSub == FormMain.PageSubType.VersionSavesDatapack))
             if (ModMain.MyMsgBox(Lang.Text("Instance.Saves.Datapack.Install.Message"),
@@ -622,7 +622,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     Lang.Text("Common.Action.Cancel")) != 1)
                 return;
 
-        // 鎵ц瀹夎
+        // 閹笛嗩攽鐎瑰顥?
         try
         {
             var datapackFolder = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
@@ -645,7 +645,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             else
                 HintService.Hint(Lang.Text("Instance.Resource.Install.SuccessMultiple", filePathList.Count(), Lang.Text("Download.Comp.Type.DataPack")), HintType.Success);
 
-            // 鍒锋柊鍒楄〃
+            // 閸掗攱鏌婇崚妤勩€?
             if (ModMain.frmMain.pageCurrent == FormMain.PageType.InstanceSetup &&
                 ModMain.frmMain.PageCurrentSub == FormMain.PageSubType.VersionSavesDatapack)
                 if (ModMain.frmInstanceSavesDatapack is not null)
@@ -656,28 +656,28 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "澶嶅埗鏁版嵁鍖呮枃浠跺け璐?,
+                "婢跺秴鍩楅弫鐗堝祦閸栧懏鏋冩禒璺恒亼鐠?,
                 ModBase.LogLevel.Msgbox,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
     /// <summary>
-    ///     涓嬭浇鏁版嵁鍖呫€?
+    ///     娑撳娴囬弫鐗堝祦閸栧懌鈧?
     /// </summary>
-    private void BtnManageDownload_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageDownload_Click(object sender, PointerReleasedEventArgs e)
     {
         var datapackPath = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
         Directory.CreateDirectory(datapackPath);
         PageDownloadCompDetail.cachedFolder[ModComp.CompType.DataPack] = datapackPath;
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadDataPack);
-        PageComp.targetVersion = PageInstanceLeft.McInstance; // 灏嗗綋鍓嶅疄渚嬭缃负绛涢€夊櫒
+        PageComp.targetVersion = PageInstanceLeft.McInstance; // 鐏忓棗缍嬮崜宥呯杽娓氬顔曠純顔昏礋缁涙盯鈧娅?
     }
 
     /// <summary>
-    ///     瀵煎嚭淇℃伅銆?
+    ///     鐎电厧鍤穱鈩冧紖閵?
     /// </summary>
-    private void BtnManageInfoExport_Click(object sender, MouseButtonEventArgs e)
+    private void BtnManageInfoExport_Click(object sender, PointerReleasedEventArgs e)
     {
         var choice =
             ModMain.MyMsgBox(
@@ -698,7 +698,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "瀵煎嚭鏁版嵁鍖呬俊鎭け璐?,
+                    "鐎电厧鍤弫鐗堝祦閸栧懍淇婇幁顖氥亼鐠?,
                     ModBase.LogLevel.Msgbox,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -713,19 +713,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
                     exportContent.Add(DatapackEntity.FileName);
                 ExportText(exportContent.Join("\r\n"),
-                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "鐨勬暟鎹寘淇℃伅.txt");
+                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "閻ㄥ嫭鏆熼幑顔煎瘶娣団剝浼?txt");
                 break;
             }
 
             case 2: // CSV
             {
                 var exportContent = new List<string>();
-                exportContent.Add("鏂囦欢鍚?鏁版嵁鍖呭悕绉?鏁版嵁鍖呯増鏈?姝ょ増鏈洿鏂版椂闂?宸ョ▼ ID,鏂囦欢澶у皬锛堝瓧鑺傦級,鏂囦欢璺緞");
+                exportContent.Add("閺傚洣娆㈤崥?閺佺増宓侀崠鍛倳缁?閺佺増宓侀崠鍛閺?濮濄倗澧楅張顒佹纯閺傜増妞傞梻?瀹搞儳鈻?ID,閺傚洣娆㈡径褍鐨敍鍫濈摟閼哄偊绱?閺傚洣娆㈢捄顖氱窞");
                 foreach (var DatapackEntity in ModLocalComp.compResourceListLoader.output)
                     exportContent.Add(
                         $"{DatapackEntity.FileName},{DatapackEntity.Comp?.TranslatedName},{DatapackEntity.Version},{DatapackEntity.compFile?.ReleaseDate},{DatapackEntity.Comp?.Id},{GetDatapackFileInfo(DatapackEntity.path).Length},{DatapackEntity.path}");
                 ExportText(exportContent.Join("\r\n"),
-                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "鐨勬暟鎹寘淇℃伅.csv");
+                    ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave) + "閻ㄥ嫭鏆熼幑顔煎瘶娣団剝浼?csv");
                 break;
             }
         }
@@ -733,19 +733,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 閫夋嫨
+    #region 闁瀚?
 
     /// <summary>
-    ///     閫夋嫨鐨勬暟鎹寘鐨勮矾寰勩€?
+    ///     闁瀚ㄩ惃鍕殶閹诡喖瀵橀惃鍕熅瀵板嫨鈧?
     /// </summary>
     public HashSet<string> selectedDatapacks = new();
 
-    // 鍗曢」鍒囨崲閫夋嫨鐘舵€?
+    // 閸楁洟銆嶉崚鍥ㄥ床闁瀚ㄩ悩鑸碘偓?
     public void CheckChanged(MyLocalCompItem sender, ModBase.RouteEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
             return;
-        // 鏇存柊閫夋嫨浜嗙殑鍐呭
+        // 閺囧瓨鏌婇柅澶嬪娴滃棛娈戦崘鍛啇
         var selectedKey = sender.Entry.RawPath;
         if (sender.Checked)
             selectedDatapacks.Add(selectedKey);
@@ -754,7 +754,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         RefreshBars();
     }
 
-    // 鍒囨崲鎵€鏈夐」鐨勯€夋嫨鐘舵€?
+    // 閸掑洦宕查幍鈧張澶愩€嶉惃鍕偓澶嬪閻樿埖鈧?
     private void ChangeAllSelected(bool value)
     {
         ModAnimation.AniControlEnabled += 1;
@@ -789,7 +789,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     private void SearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        // Ctrl + A 浼氳鎼滅储妗嗘崟鑾凤紝瀵艰嚧鏃犳硶鍏ㄩ€夛紝鎵€浠ュ湪鎸変笅 Ctrl + A 鏃惰浆绉荤劍鐐逛互渚挎崟鑾?
+        // Ctrl + A 娴兼俺顫﹂幖婊呭偍濡楀棙宕熼懢鍑ょ礉鐎佃壈鍤ч弮鐘崇《閸忋劑鈧绱濋幍鈧禒銉ユ躬閹稿绗?Ctrl + A 閺冩儼娴嗙粔鑽ゅ妽閻愰€涗簰娓氭寧宕熼懢?
         if (SearchBox.Text.Any())
             return;
         if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
@@ -798,7 +798,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 绛涢€?
+    #region 缁涙盯鈧?
 
     public FilterType Filter
     {
@@ -852,7 +852,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     妫€鏌ヨ鏁版嵁鍖呴」鏄惁绗﹀悎褰撳墠绛涢€夌殑绫诲埆銆?
+    ///     濡偓閺屻儴顕氶弫鐗堝祦閸栧懘銆嶉弰顖氭儊缁楋箑鎮庤ぐ鎾冲缁涙盯鈧娈戠猾璇插焼閵?
     /// </summary>
     private bool CanPassFilter(ModLocalComp.LocalCompFile checkingDatapack)
     {
@@ -886,7 +886,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
     }
 
-    // 鐐瑰嚮绛涢€夐」瑙﹀彂鐨勬敼鍙?
+    // 閻愮懓鍤粵娑⑩偓澶愩€嶇憴锕€褰傞惃鍕暭閸?
     private void ChangeFilter(MyRadioButton sender, bool raiseByMouse)
     {
         Filter = (FilterType)Convert.ToInt32(sender.Tag);
@@ -896,7 +896,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 鎺掑簭
+    #region 閹烘帒绨?
 
     private SortMethod currentSortMethod = SortMethod.CompName;
 
@@ -972,19 +972,19 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 if (PanList is null || PanList.Children.Count < 2)
                     return;
 
-                // 灏嗗瓙鍏冪礌杞崲涓哄彲鎺掑簭鐨勫垪琛?
+                // 鐏忓棗鐡欓崗鍐鏉烆剚宕叉稉鍝勫讲閹烘帒绨惃鍕灙鐞?
                 var items = PanList.Children.OfType<MyLocalCompItem>().ToList();
                 var method = GetSortMethod(currentSortMethod);
 
-                // 鍒嗙鏈夋晥鍜屾棤鏁堥」锛堜繚鎸佸師濮嬬浉瀵归『搴忥級
+                // 閸掑棛顬囬張澶嬫櫏閸滃本妫ら弫鍫ャ€嶉敍鍫滅箽閹镐礁甯慨瀣祲鐎靛綊銆庢惔蹇ョ礆
                 var invalid = items.Where(i => i.Entry is null).ToList();
                 var valid = items.Except(invalid).ToList();
-                // 浠呭鏈夋晥椤硅繘琛屾帓搴?
+                // 娴犲懎顕張澶嬫櫏妞ょ绻樼悰灞惧笓鎼?
                 valid.Sort((x, y) => method(x.Entry, y.Entry));
-                // 鍚堝苟淇濇寔鏃犳晥椤圭殑鍘熷椤哄簭
+                // 閸氬牆鑻熸穱婵囧瘮閺冪姵鏅ユい鍦畱閸樼喎顫愭い鍝勭碍
                 items = valid.Concat(invalid).ToList();
 
-                // 鎵归噺鏇存柊UI鍏冪礌
+                // 閹靛綊鍣洪弴瀛樻煀UI閸忓啰绀?
                 PanList.Children.Clear();
                 items.ForEach(i => PanList.Children.Add(i));
             }
@@ -993,7 +993,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    "鎵ц鎺掑簭鏃跺嚭閿?,
+                    "閹笛嗩攽閹烘帒绨弮璺哄毉闁?,
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -1052,9 +1052,9 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 涓嬭竟鏍?
+    #region 娑撳绔熼弽?
 
-    // 鍚敤
+    // 閸氼垳鏁?
     private void BtnSelectEnable_Click(object sender, ModBase.RouteEventArgs e)
     {
         ToggleDatapacks(
@@ -1063,7 +1063,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ChangeAllSelected(false);
     }
 
-    // 绂佺敤
+    // 缁備胶鏁?
     private void BtnSelectDisable_Click(object sender, ModBase.RouteEventArgs e)
     {
         ToggleDatapacks(
@@ -1073,7 +1073,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     鍚敤/绂佺敤鏁版嵁鍖咃紙閫氳繃閲嶅懡鍚嶆枃浠跺す涓?.disabled锛?
+    ///     閸氼垳鏁?缁備胶鏁ら弫鐗堝祦閸栧拑绱欓柅姘崇箖闁插秴鎳￠崥宥嗘瀮娴犺泛銇欐稉?.disabled閿?
     /// </summary>
     private void ToggleDatapacks(IEnumerable<ModLocalComp.LocalCompFile> datapackList, bool isEnable)
     {
@@ -1084,15 +1084,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             string newPath = null;
 
             if (datapackEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine && !isEnable)
-                // 绂佺敤 - 娣诲姞 .disabled 鍚庣紑
+                // 缁備胶鏁?- 濞ｈ濮?.disabled 閸氬海绱?
                 newPath = datapackEntity.path + ".disabled";
             else if (datapackEntity.State == ModLocalComp.LocalCompFile.LocalFileStatus.Disabled && isEnable)
-                // 鍚敤 - 绉婚櫎 .disabled 鍚庣紑
+                // 閸氼垳鏁?- 缁夊娅?.disabled 閸氬海绱?
                 newPath = datapackEntity.RawPath;
             else
                 continue;
 
-            // 閲嶅懡鍚?
+            // 闁插秴鎳￠崥?
             try
             {
                 if (File.Exists(newPath))
@@ -1107,7 +1107,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"鏈壘鍒伴渶瑕侀噸鍛藉悕鐨勬暟鎹寘锛坽datapackEntity.path ?? "null"}锛?,
+                    $"閺堫亝澹橀崚浼存付鐟曚線鍣搁崨钘夋倳閻ㄥ嫭鏆熼幑顔煎瘶閿涘澖datapackEntity.path ?? "null"}閿?,
                     ModBase.LogLevel.Feedback,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
                 ReloadDatapackFileList(true);
@@ -1115,11 +1115,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             }
             catch (Exception ex)
             {
-                ModBase.Log(ex, $"閲嶅懡鍚嶆暟鎹寘澶辫触锛坽datapackEntity.path ?? "null"}锛?);
+                ModBase.Log(ex, $"闁插秴鎳￠崥宥嗘殶閹诡喖瀵樻径杈Е閿涘澖datapackEntity.path ?? "null"}閿?);
                 isSuccessful = false;
             }
 
-            // 鏇存敼 Loader 涓殑鍒楄〃
+            // 閺囧瓨鏁?Loader 娑擃厾娈戦崚妤勩€?
             var newDatapackEntity = new ModLocalComp.LocalCompFile(newPath);
             newDatapackEntity.FromJson(datapackEntity.ToJson());
             if (ModLocalComp.compResourceListLoader.output.Contains(datapackEntity))
@@ -1136,7 +1136,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 searchResult.Insert(indexOfResult, newDatapackEntity);
             }
 
-            // 鏇存敼 UI 涓殑鍒楄〃
+            // 閺囧瓨鏁?UI 娑擃厾娈戦崚妤勩€?
             try
             {
                 var newItem = BuildLocalCompItem(newDatapackEntity);
@@ -1152,7 +1152,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             {
                 ModBase.Log(
                     ex,
-                    $"鏇存柊 UI 鍒楄〃椤瑰け璐ワ細{datapackEntity.FileName}",
+                    $"閺囧瓨鏌?UI 閸掓銆冩い鐟般亼鐠愩儻绱皗datapackEntity.FileName}",
                     ModBase.LogLevel.Hint,
                     userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             }
@@ -1173,7 +1173,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 鏇存柊
+    // 閺囧瓨鏌?
     private void BtnSelectUpdate_Click(object sender, ModBase.RouteEventArgs e)
     {
         var updateList = ModLocalComp.compResourceListLoader.output
@@ -1185,7 +1185,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     }
 
     /// <summary>
-    ///     璁板綍姝ｅ湪杩涜鏁版嵁鍖呮洿鏂扮殑 datapacks 鏂囦欢澶硅矾寰勩€?
+    ///     鐠佹澘缍嶅锝呮躬鏉╂稖顢戦弫鐗堝祦閸栧懏娲块弬鎵畱 datapacks 閺傚洣娆㈡径纭呯熅瀵板嫨鈧?
     /// </summary>
     public static List<string> updatingVersions = new();
 
@@ -1220,7 +1220,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     public void UpdateResource(IEnumerable<ModLocalComp.LocalCompFile> datapackList)
     {
-        // 鏇存柊鍓嶈鍛?
+        // 閺囧瓨鏌婇崜宥堫劅閸?
         if (!States.Hint.FunctionDatapackUpdate || datapackList.Count() >= 15)
         {
             if (ModMain.MyMsgBox(
@@ -1233,8 +1233,8 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
         try
         {
-            // 鏋勯€犱笅杞戒俊鎭?
-            datapackList = datapackList.ToList(); // 闃叉鍒锋柊褰卞搷杩唬鍣?
+            // 閺嬪嫰鈧姳绗呮潪鎴掍繆閹?
+            datapackList = datapackList.ToList(); // 闂冨弶顒涢崚閿嬫煀瑜板崬鎼锋潻顓濆敩閸?
             var fileList = new List<DownloadFile>();
             var fileCopyList = new Dictionary<string, string>();
             var updateEntryList = new List<ModLocalComp.LocalCompFile>();
@@ -1251,11 +1251,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     !TryBuildDatapackUpdatePath(datapackRoot, safeFileName, out var realAddress))
                 {
                     skippedUnsafeFileCount++;
-                    ModBase.Log($"[DatapackUpdate] 宸茶烦杩囦笉瀹夊叏鐨勬暟鎹寘鏇存柊鏂囦欢鍚嶏細{file.FileName}", ModBase.LogLevel.Debug);
+                    ModBase.Log($"[DatapackUpdate] 瀹歌尪鐑︽潻鍥︾瑝鐎瑰鍙忛惃鍕殶閹诡喖瀵橀弴瀛樻煀閺傚洣娆㈤崥宥忕窗{file.FileName}", ModBase.LogLevel.Debug);
                     continue;
                 }
 
-                // 娣诲姞鍒颁笅杞藉垪琛?
+                // 濞ｈ濮為崚棰佺瑓鏉炶棄鍨悰?
                 fileList.Add(file.ToNetFile(tempAddress, ModComp.DownloadReason.Update,
                     file.RawGameVersions.FirstOrDefault()));
                 fileCopyList[tempAddress] = realAddress;
@@ -1269,7 +1269,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             if (!fileList.Any())
                 return;
 
-            // 鏋勯€犲姞杞藉櫒
+            // 閺嬪嫰鈧姴濮炴潪钘夋珤
             var installLoaders = new List<ModLoader.LoaderBase>();
             var finishedFileNames = new List<string>();
             installLoaders.Add(
@@ -1286,7 +1286,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                                 Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.path, UIOption.AllDialogs,
                                     RecycleOption.SendToRecycleBin);
                             else
-                                ModBase.Log($"[DatapackUpdate] 鏈壘鍒版洿鏂板墠鐨勬暟鎹寘鏂囦欢锛岃烦杩囧瀹冪殑鍒犻櫎锛歿Entry.path}",
+                                ModBase.Log($"[DatapackUpdate] 閺堫亝澹橀崚鐗堟纯閺傛澘澧犻惃鍕殶閹诡喖瀵橀弬鍥︽閿涘矁鐑︽潻鍥ь嚠鐎瑰啰娈戦崚鐘绘珟閿涙Entry.path}",
                                     ModBase.LogLevel.Debug);
 
                         foreach (var Entry in fileCopyList)
@@ -1295,7 +1295,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                             {
                                 Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(Entry.Value, UIOption.AllDialogs,
                                     RecycleOption.SendToRecycleBin);
-                                ModBase.Log($"[Datapack] 鏇存柊鍚庣殑鏁版嵁鍖呮枃浠跺凡瀛樺湪锛屽皢浼氭妸瀹冩斁鍏ュ洖鏀剁珯锛歿Entry.Value}", ModBase.LogLevel.Debug);
+                                ModBase.Log($"[Datapack] 閺囧瓨鏌婇崥搴ｆ畱閺佺増宓侀崠鍛瀮娴犺泛鍑＄€涙ê婀敍灞界殺娴兼碍濡哥€瑰啯鏂侀崗銉ユ礀閺€鍓佺彲閿涙Entry.Value}", ModBase.LogLevel.Debug);
                             }
 
                             if (Directory.Exists(ModBase.GetPathFromFullPath(Entry.Value)))
@@ -1305,17 +1305,17 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                             }
                             else
                             {
-                                ModBase.Log($"[Datapack] 鏇存柊鍚庣殑鐩爣鏂囦欢澶瑰凡琚垹闄わ細{Entry.Value}", ModBase.LogLevel.Debug);
+                                ModBase.Log($"[Datapack] 閺囧瓨鏌婇崥搴ｆ畱閻╊喗鐖ｉ弬鍥︽婢剁懓鍑＄悮顐㈠灩闂勩倧绱皗Entry.Value}", ModBase.LogLevel.Debug);
                             }
                         }
                     }
                     catch (OperationCanceledException ex)
                     {
-                        ModBase.Log(ex, "鏇挎崲鏃х増鏁版嵁鍖呮枃浠舵椂琚富鍔ㄥ彇娑?);
+                        ModBase.Log(ex, "閺囨寧宕查弮褏澧楅弫鐗堝祦閸栧懏鏋冩禒鑸垫鐞氼偂瀵岄崝銊ュ絿濞?);
                     }
                 }));
 
-            // 缁撴潫澶勭悊
+            // 缂佹挻娼径鍕倞
             var loader = new ModLoader.LoaderCombo<IEnumerable<ModLocalComp.LocalCompFile>>(
                 Lang.Text("Instance.Saves.Datapack.Update.Task.Title",
                     ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave)), installLoaders);
@@ -1331,7 +1331,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                         {
                             case 0:
                             {
-                                ModBase.Log("[DatapackUpdate] 娌℃湁鏁版嵁鍖呰鎴愬姛鏇存柊");
+                                ModBase.Log("[DatapackUpdate] 濞屸剝婀侀弫鐗堝祦閸栧懓顫﹂幋鎰閺囧瓨鏌?);
                                 break;
                             }
                             case 1:
@@ -1366,10 +1366,10 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
                 }
 
-                ModBase.Log($"[DatapackUpdate] 宸蹭粠姝ｅ湪杩涜鏁版嵁鍖呮洿鏂扮殑鏂囦欢澶瑰垪琛ㄧЩ闄わ細{pathDatapacks}");
+                ModBase.Log($"[DatapackUpdate] 瀹歌弓绮犲锝呮躬鏉╂稖顢戦弫鐗堝祦閸栧懏娲块弬鎵畱閺傚洣娆㈡径鐟板灙鐞涖劎些闂勩倧绱皗pathDatapacks}");
                 updatingVersions.Remove(pathDatapacks);
 
-                // 娓呯悊缂撳瓨
+                // 濞撳懐鎮婄紓鎾崇摠
                 ModBase.RunInNewThread(() =>
                 {
                     try
@@ -1380,13 +1380,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     }
                     catch (Exception ex)
                     {
-                        ModBase.Log(ex, "娓呯悊鏁版嵁鍖呮洿鏂扮紦瀛樺け璐?);
+                        ModBase.Log(ex, "濞撳懐鎮婇弫鐗堝祦閸栧懏娲块弬鎵处鐎涙ê銇戠拹?);
                     }
                 }, "Clean Datapack Update Cache", ThreadPriority.BelowNormal);
             };
 
-            // 鍚姩鍔犺浇鍣?
-            ModBase.Log($"[DatapackUpdate] 寮€濮嬫洿鏂?{datapackList.Count()} 涓暟鎹寘锛歿pathDatapacks}");
+            // 閸氼垰濮╅崝鐘烘祰閸?
+            ModBase.Log($"[DatapackUpdate] 瀵偓婵娲块弬?{datapackList.Count()} 娑擃亝鏆熼幑顔煎瘶閿涙pathDatapacks}");
             updatingVersions.Add(pathDatapacks);
             loader.Start();
             ModLoader.LoaderTaskbarAdd(loader);
@@ -1396,11 +1396,11 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鍒濆鍖栨暟鎹寘鏇存柊澶辫触");
+            ModBase.Log(ex, "閸掓繂顫愰崠鏍ㄦ殶閹诡喖瀵橀弴瀛樻煀婢惰精瑙?);
         }
     }
 
-    // 鍒犻櫎
+    // 閸掔娀娅?
     private void BtnSelectDelete_Click(object sender, ModBase.RouteEventArgs e)
     {
         DeleteDatapacks(ModLocalComp.compResourceListLoader.output.Where(m => selectedDatapacks.Contains(m.RawPath)));
@@ -1414,7 +1414,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             var isSuccessful = true;
             var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
-            // 纭闇€瑕佸垹闄ょ殑鏂囦欢
+            // 绾喛顓婚棁鈧憰浣稿灩闂勩倗娈戦弬鍥︽
             datapackList = datapackList.SelectMany(target =>
             {
                 if (target.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine)
@@ -1423,7 +1423,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 return new[] { target.path, target.RawPath };
             }).Distinct().Where(m => File.Exists(m)).Select(m => new ModLocalComp.LocalCompFile(m)).ToList();
 
-            // 瀹為檯鍒犻櫎鏂囦欢
+            // 鐎圭偤妾崚鐘绘珟閺傚洣娆?
             foreach (var DatapackEntity in datapackList)
             {
                 try
@@ -1436,7 +1436,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 }
                 catch (OperationCanceledException ex)
                 {
-                    ModBase.Log(ex, "鍒犻櫎鏁版嵁鍖呰涓诲姩鍙栨秷");
+                    ModBase.Log(ex, "閸掔娀娅庨弫鐗堝祦閸栧懓顫︽稉璇插З閸欐牗绉?);
                     ReloadDatapackFileList(true);
                     return;
                 }
@@ -1444,15 +1444,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                 {
                     ModBase.Log(
                         ex,
-                        $"鍒犻櫎鏁版嵁鍖呭け璐ワ紙{DatapackEntity.path}锛?,
+                        $"閸掔娀娅庨弫鐗堝祦閸栧懎銇戠拹銉礄{DatapackEntity.path}閿?,
                         ModBase.LogLevel.Msgbox,
                         userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
                     isSuccessful = false;
                 }
 
-                // 鍙栨秷閫変腑
+                // 閸欐牗绉烽柅澶夎厬
                 selectedDatapacks.Remove(DatapackEntity.RawPath);
-                // 鏇存敼 Loader 鍜?UI 涓殑鍒楄〃
+                // 閺囧瓨鏁?Loader 閸?UI 娑擃厾娈戦崚妤勩€?
                 ModLocalComp.compResourceListLoader.output.Remove(DatapackEntity);
                 searchResult?.Remove(DatapackEntity);
                 datapackItems.Remove(DatapackEntity.RawPath);
@@ -1497,14 +1497,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (OperationCanceledException ex)
         {
-            ModBase.Log(ex, "鍒犻櫎鏁版嵁鍖呰涓诲姩鍙栨秷");
+            ModBase.Log(ex, "閸掔娀娅庨弫鐗堝祦閸栧懓顫︽稉璇插З閸欐牗绉?);
             ReloadDatapackFileList(true);
         }
         catch (Exception ex)
         {
             ModBase.Log(
                 ex,
-                "鍒犻櫎鏁版嵁鍖呭嚭鐜版湭鐭ラ敊璇?,
+                "閸掔娀娅庨弫鐗堝祦閸栧懎鍤悳鐗堟弓閻儵鏁婄拠?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
             ReloadDatapackFileList(true);
@@ -1513,13 +1513,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         LoaderRun(ModLoader.LoaderFolderRunType.UpdateOnly);
     }
 
-    // 鍙栨秷閫夋嫨
+    // 閸欐牗绉烽柅澶嬪
     private void BtnSelectCancel_Click(object sender, ModBase.RouteEventArgs e)
     {
         ChangeAllSelected(false);
     }
 
-    // 鏀惰棌
+    // 閺€鎯版
     private void BtnSelectFavorites_Click(object sender, ModBase.RouteEventArgs e)
     {
         var selected = ModLocalComp.compResourceListLoader.output
@@ -1527,7 +1527,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         ModComp.CompFavorites.ShowMenu(selected, (Control)sender);
     }
 
-    // 鍒嗕韩
+    // 閸掑棔闊?
     private void BtnSelectShare_Click(object sender, ModBase.RouteEventArgs e)
     {
         var shareList = ModLocalComp.compResourceListLoader.output
@@ -1538,16 +1538,16 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 鍗曚釜璧勬簮椤?
+    #region 閸楁洑閲滅挧鍕爱妞?
 
-    // 璇︽儏
+    // 鐠囷附鍎?
     public void Info_Click(object sender, EventArgs e)
     {
         try
         {
             var datapackEntry = ((MyLocalCompItem)(sender is MyIconButton iconBtn ? iconBtn.Tag : sender)).Entry;
 
-            // 鍔犺浇澶辫触淇℃伅
+            // 閸旂姾娴囨径杈Е娣団剝浼?
             if (datapackEntry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable)
             {
                 ModMain.MyMsgBox(
@@ -1560,7 +1560,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
             if (datapackEntry.Comp is not null)
             {
-                // 璺宠浆鍒版暟鎹寘涓嬭浇椤甸潰
+                // 鐠哄疇娴嗛崚鐗堟殶閹诡喖瀵樻稉瀣祰妞ょ敻娼?
                 ModMain.frmMain.PageChange(new FormMain.PageStackData
                 {
                     page = FormMain.PageType.CompDetail,
@@ -1570,15 +1570,15 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             }
             else
             {
-                // 鑾峰彇淇℃伅
+                // 閼惧嘲褰囨穱鈩冧紖
                 var contentLines = new List<string>();
 
                 if (datapackEntry.Description is not null)
                     contentLines.Add(datapackEntry.Description + "\r\n");
                 if (datapackEntry.Authors is not null)
                     contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.Author") + datapackEntry.Authors);
-                contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.File") + datapackEntry.FileName + "锛? +
-                                 ModBase.GetString(GetDatapackFileInfo(datapackEntry.path).Length) + "锛?);
+                contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.File") + datapackEntry.FileName + "閿? +
+                                 ModBase.GetString(GetDatapackFileInfo(datapackEntry.path).Length) + "閿?);
                 if (datapackEntry.Version is not null)
                     contentLines.Add(Lang.Text("Instance.Saves.Datapack.Info.Version") + datapackEntry.Version);
 
@@ -1590,7 +1590,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                     contentLines.AddRange(debugInfo);
                 }
 
-                // 鏄剧ず璇︽儏淇℃伅
+                // 閺勫墽銇氱拠锔藉剰娣団剝浼?
                 if (datapackEntry.Url is null)
                     ModMain.MyMsgBox(contentLines.Join("\r\n"), datapackEntry.Name, Lang.Text("Instance.Resource.Item.Info.Return"));
                 else if (ModMain.MyMsgBox(contentLines.Join("\r\n"), datapackEntry.Name, Lang.Text("Instance.Resource.Item.Info.OpenWebsite"), Lang.Text("Instance.Resource.Item.Info.Return")) == 1)
@@ -1601,13 +1601,13 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鑾峰彇鏁版嵁鍖呰鎯呭け璐?,
+                "閼惧嘲褰囬弫鐗堝祦閸栧懓顕涢幆鍛亼鐠?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
-    // 鎵撳紑鏂囦欢鎵€鍦ㄧ殑浣嶇疆
+    // 閹垫挸绱戦弬鍥︽閹碘偓閸︺劎娈戞担宥囩枂
     public void Open_Click(MyIconButton sender, EventArgs e)
     {
         try
@@ -1619,27 +1619,27 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             ModBase.Log(
                 ex,
-                "鎵撳紑鏁版嵁鍖呮枃浠朵綅缃け璐?,
+                "閹垫挸绱戦弫鐗堝祦閸栧懏鏋冩禒鏈电秴缂冾喖銇戠拹?,
                 ModBase.LogLevel.Feedback,
                 userSummary: Lang.Text("Instance.Saves.Error.OperationFailed"));
         }
     }
 
-    // 鍒犻櫎
+    // 閸掔娀娅?
     public void Delete_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
         DeleteDatapacks(new[] { listItem.Entry });
     }
 
-    // 鍚敤
+    // 閸氼垳鏁?
     public void Enable_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
         ToggleDatapacks(new[] { listItem.Entry }, true);
     }
 
-    // 绂佺敤
+    // 缁備胶鏁?
     public void Disable_Click(MyIconButton sender, EventArgs e)
     {
         var listItem = (MyLocalCompItem)sender.Tag;
@@ -1648,7 +1648,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     #endregion
 
-    #region 鎼滅储
+    #region 閹兼粎鍌?
 
     public bool IsSearching => !string.IsNullOrWhiteSpace(SearchBox.Text);
     private List<ModLocalComp.LocalCompFile> searchResult;
@@ -1659,7 +1659,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         {
             if (IsSearching)
             {
-                // 鏋勯€犺姹?
+                // 閺嬪嫰鈧姾顕Ч?
                 var queryList = new List<ModBase.SearchEntry<ModLocalComp.LocalCompFile>>();
                 foreach (var Entry in ModLocalComp.compResourceListLoader.output)
                 {
@@ -1685,7 +1685,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
                         { item = Entry, searchSource = searchSource });
                 }
 
-                // 杩涜鎼滅储
+                // 鏉╂稖顢戦幖婊呭偍
                 searchResult = ModBase.Search(queryList, SearchBox.Text, ModBase.MaxLocalSearchDepth, 0.35d).Select(r => r.item).ToList();
             }
 
@@ -1693,7 +1693,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         }
         catch (Exception ex)
         {
-            ModBase.Log(ex, "鎼滅储杩囩▼涓彂鐢熷紓甯?);
+            ModBase.Log(ex, "閹兼粎鍌ㄦ潻鍥┾柤娑擃厼褰傞悽鐔风磽鐢?);
         }
     }
 

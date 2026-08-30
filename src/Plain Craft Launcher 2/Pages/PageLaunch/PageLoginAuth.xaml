@@ -1,10 +1,9 @@
+<!-- [port] 移除 WPF 设计期属性：xmlns:mc/xmlns:d/mc:Ignorable/d:DesignWidth（Avalonia 无设计期 XAML 支持） -->
 <Grid x:Class="PCL.PageLoginAuth" Tag="False"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:PCL"
-      mc:Ignorable="d" d:DesignWidth="317.6" Margin="0,0,0,-2">
+      Margin="0,0,0,-2">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="10" />
@@ -21,9 +20,10 @@
         <ColumnDefinition Width="50" />
         <ColumnDefinition />
     </Grid.ColumnDefinitions>
+    <!-- [port] Visibility="Hidden" → IsVisible="False" -->
     <TextBlock x:Name="TextServerName" Text="{DynamicResource Launch.Account.Auth.ServerLabel}" Grid.Row="0"
                Grid.Column="1" Margin="-40,0,0,0"
-               HorizontalAlignment="Center" Visibility="Hidden" />
+               HorizontalAlignment="Center" IsVisible="False" />
     <local:MyIconButton ToolTip="{DynamicResource Launch.Account.Auth.ChangeProfile}" Grid.Row="4" Height="14"
                         Opacity="0" x:Name="BtnEdit"
                         ToolTipService.Placement="Center" ToolTipService.VerticalOffset="32"
@@ -48,7 +48,7 @@
     <local:MyTextButton Margin="0,12,2,0" x:Name="BtnLink" Content="{DynamicResource Launch.Account.Auth.Register}"
                         Grid.Row="7" HorizontalAlignment="Right"
                         Grid.Column="1" Padding="20,0,0,0" HorizontalContentAlignment="Right" FontSize="13"
-                        VerticalContentAlignment="Center" Visibility="Collapsed" />
+                        VerticalContentAlignment="Center" IsVisible="False" />
     <local:MyButton x:Name="BtnBack" Grid.Row="9" Grid.Column="1" Width="50" Margin="-100,0,0,0" ColorType="Normal"
                     Text="{DynamicResource Launch.Account.Auth.Back}" HorizontalAlignment="Center" />
     <local:MyButton x:Name="BtnLogin" Grid.Row="9" Grid.Column="1" Width="50" Margin="20,0,0,0" ColorType="Highlight"

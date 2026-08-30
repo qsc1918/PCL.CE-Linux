@@ -79,7 +79,7 @@
                                           Tag="LaunchArgumentVisible" Grid.Column="1"
                                           SelectionChanged="ComboArgumentVisibie_SelectionChanged">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.Visibility.CloseImmediately}" />
-                            <local:MyComboBoxItem Content="" IsEnabled="False" Visibility="Collapsed" />
+                            <local:MyComboBoxItem Content="" IsEnabled="False" IsVisible="False" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.Visibility.HideAndCloseOnExit}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.Visibility.HideAndReopenOnExit}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.Visibility.Minimize}" />
@@ -115,7 +115,7 @@
                                 <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Custom}" ToolTip="{DynamicResource Setup.Launch.Options.WindowSize.CustomHeightBug.ToolTip}" />
                                 <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Maximized}" />
                             </local:MyComboBox>
-                            <local:MyTextBox Padding="0,0,5,0" Visibility="Collapsed" Grid.Column="1" Margin="50,0,0,0"
+                            <local:MyTextBox Padding="0,0,5,0" IsVisible="False" Grid.Column="1" Margin="50,0,0,0"
                                              x:Name="TextArgumentWindowWidth" Tag="LaunchArgumentWindowWidth"
                                              Width="60" HorizontalContentAlignment="Center" Text="854"
                                              ValidatedTextChanged="TextBoxChange">
@@ -123,9 +123,9 @@
                                     <val:IntValidator Min="1" Max="9999" />
                                 </local:MyTextBox.ValidateRules>
                             </local:MyTextBox>
-                            <TextBlock x:Name="LabArgumentWindowMiddle" Visibility="Collapsed" Grid.Column="2"
+                            <TextBlock x:Name="LabArgumentWindowMiddle" IsVisible="False" Grid.Column="2"
                                        Text=" × " VerticalAlignment="Center" FontSize="18" />
-                            <local:MyTextBox Padding="0,0,5,0" Visibility="Collapsed" Grid.Column="3" Width="60"
+                            <local:MyTextBox Padding="0,0,5,0" IsVisible="False" Grid.Column="3" Width="60"
                                              HorizontalContentAlignment="Center" x:Name="TextArgumentWindowHeight"
                                              Tag="LaunchArgumentWindowHeight" Text="480"
                                              ValidatedTextChanged="TextBoxChange"
@@ -162,9 +162,9 @@
             </local:MyCard>
             <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Setup.Launch.Memory.Title}">
                 <StackPanel Margin="25,40,25,15">
-                    <local:MyHint x:Name="LabRamWarn" Visibility="Visible"
+                    <local:MyHint x:Name="LabRamWarn" IsVisible="True"
                                   Text="{DynamicResource Setup.Launch.Memory.Warning.Java32Bit}" Theme="Yellow" Margin="0,0,0,12" />
-                    <local:MyHint x:Name="HintRamTooHigh" Visibility="Collapsed" Height="30" Theme="Yellow"
+                    <local:MyHint x:Name="HintRamTooHigh" IsVisible="False" Height="30" Theme="Yellow"
                                   Text="{DynamicResource Setup.Launch.Memory.Warning.TooMuch}" Margin="0,0,0,12"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                     <Grid Margin="0,0,0,3">
@@ -283,7 +283,7 @@
                                      TextChanged="TextAdvanceRun_TextChanged"
                                      ToolTip="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.ToolTip}" />
                     <local:MyCheckBox Grid.Row="7" Grid.Column="1" x:Name="CheckAdvanceRunWait"
-                                      Tag="LaunchAdvanceRunWait" Visibility="Collapsed"
+                                      Tag="LaunchAdvanceRunWait" IsVisible="False"
                                       Change="CheckBoxChange"
                                       Text="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.Wait}" Margin="0,8,0,7" />
                     <StackPanel Margin="0,12,0,4" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Left">

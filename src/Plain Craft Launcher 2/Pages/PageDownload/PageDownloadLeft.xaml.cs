@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Input;
@@ -191,7 +192,8 @@ public partial class PageDownloadLeft : IRefreshable
     }
 
     // 点击返回
-    private void ItemInstall_Click(object sender, MouseButtonEventArgs e)
+    // [port] Click 风格处理器：WPF 鼠标事件参数 → Avalonia PointerEventArgs
+    private void ItemInstall_Click(object sender, PointerEventArgs e)
     {
         if (!ItemInstall.Checked)
             return;

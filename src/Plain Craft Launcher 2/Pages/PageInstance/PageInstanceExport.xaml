@@ -5,7 +5,7 @@
     PanScroll="{Binding ElementName=PanBack}">
     <Grid x:Name="PanAllBack" AllowDrop="True">
         <Grid.Resources>
-            <Style TargetType="local:MyCheckBox">
+            <Style Selector="local:MyCheckBox">
                 <Setter Property="Height" Value="26" />
             </Style>
         </Grid.Resources>
@@ -87,7 +87,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsMod, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsMod, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <local:MyCheckBox>
                                 <local:MyCheckBox.Tag>
                                     <local:ExportOption
@@ -159,7 +159,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0" x:Name="PanOptionsResourcePacks"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsResourcePacks, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsResourcePacks, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <local:MyCheckBox x:Name="CheckOptionsShaderPacks">
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption
@@ -170,7 +170,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0" x:Name="PanOptionsShaderPacks"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsShaderPacks, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsShaderPacks, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <local:MyCheckBox>
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption
@@ -208,7 +208,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0" x:Name="PanOptionsSaves"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsSaves, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsSaves, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <local:MyCheckBox>
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption
@@ -226,7 +226,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0" x:Name="PanOptionsOtherFolders"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsOtherFolders, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsOtherFolders, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <local:MyCheckBox x:Name="CheckOptionsPcl">
                             <local:MyCheckBox.Tag>
                                 <local:ExportOption
@@ -236,7 +236,7 @@
                             </local:MyCheckBox.Tag>
                         </local:MyCheckBox>
                         <StackPanel Margin="30,0,0,0"
-                                    Visibility="{Binding Checked, ElementName=CheckOptionsPcl, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    IsVisible="{Binding Checked, ElementName=CheckOptionsPcl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <local:MyCheckBox x:Name="CheckOptionsPclCustom">
                                 <local:MyCheckBox.Tag>
                                     <local:ExportOption
@@ -254,7 +254,7 @@
                         <local:MyHint
                             Text="{DynamicResource Instance.Export.Advanced.BundleHint}"
                             Theme="Yellow" Margin="0,2,0,8"
-                            Visibility="{Binding Checked, ElementName=CheckAdvancedInclude, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            IsVisible="{Binding Checked, ElementName=CheckAdvancedInclude, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <local:MyCheckBox Text="{DynamicResource Instance.Export.Advanced.BundleFiles}"
                                           x:Name="CheckAdvancedInclude"
                                           Change="CheckAdvancedInclude_Change"

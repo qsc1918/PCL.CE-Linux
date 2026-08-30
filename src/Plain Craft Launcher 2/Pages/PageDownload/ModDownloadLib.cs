@@ -346,7 +346,7 @@ public static class ModDownloadLib
         var formattedVersion = McFormatter.FormatVersion(entry["id"].ToString()).Replace("_", " ");
         var newItem = new MyListItem
         {
-            Logo = logo, SnapsToDevicePixels = true, Title = formattedVersion, Height = 42d,
+            Logo = logo, Title = formattedVersion, Height = 42d, // [port] removed WPF-only SnapsToDevicePixels
             Type = MyListItem.CheckType.Clickable, Tag = entry
         };
         if (entry["lore"] is null)
@@ -1226,7 +1226,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.DisplayName,
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -1543,7 +1543,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.Inherit,
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -2480,7 +2480,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.VersionName,
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -2690,7 +2690,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = info.VersionName,
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = info,
@@ -2792,7 +2792,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = info.VersionName,
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = info,
@@ -3104,7 +3104,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry["version"].ToString().Replace("+build", ""),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -3138,7 +3138,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.DisplayName.Split("]")[1].Replace("Fabric API ", "").Replace(" build ", ".").Trim(),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -3156,7 +3156,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.DisplayName.ToLower().Replace("optifabric-", "").Replace(".jar", "").Trim().TrimStart('v'),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -3178,7 +3178,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry["version"].ToString(),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -3197,7 +3197,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry.DisplayName.Replace("Legacy Fabric API ", ""),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,
@@ -3462,7 +3462,7 @@ public static class ModDownloadLib
         var newItem = new MyListItem
         {
             Title = entry["version"] + " " + (entry["channel"].ToString().Contains("snapshot") ? Lang.Text("Download.Version.Type.Snapshot") : Lang.Text("Download.Version.Type.Stable")),
-            SnapsToDevicePixels = true,
+            // [port] removed WPF-only SnapsToDevicePixels
             Height = 42d,
             Type = MyListItem.CheckType.Clickable,
             Tag = entry,

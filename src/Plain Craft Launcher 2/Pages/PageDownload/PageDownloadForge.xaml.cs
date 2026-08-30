@@ -82,7 +82,7 @@ public partial class PageDownloadForge
     }
 
     // Forge 版本列表加载
-    public void Forge_Click(MyLoading sender, MouseButtonEventArgs e)
+    public void Forge_Click(MyLoading sender, PointerEventArgs e)
     {
         if (sender.State.LoadingState == MyLoading.MyLoadingState.Error)
             ((ModLoader.LoaderTask<string, List<ModDownload.DlForgeVersionEntry>>)sender.State).Start(

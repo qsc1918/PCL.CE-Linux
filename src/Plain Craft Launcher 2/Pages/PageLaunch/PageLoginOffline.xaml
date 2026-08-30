@@ -1,10 +1,9 @@
+<!-- [port] 移除 WPF 设计期属性：xmlns:mc/xmlns:d/mc:Ignorable/d:DesignWidth（Avalonia 无设计期 XAML 支持） -->
 <Grid x:Class="PCL.PageLoginOffline" Tag="False"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:PCL"
-      mc:Ignorable="d" d:DesignWidth="317.6" Margin="0,0,0,-2">
+      Margin="0,0,0,-2">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="10" />
@@ -46,9 +45,10 @@
                           VerticalAlignment="Center" Check="RadioUuid_Checked"
                           ToolTip="{DynamicResource Launch.Account.Offline.Uuid.Custom.ToolTip}" />
     </Grid>
+    <!-- [port] Visibility="Collapsed" → IsVisible="False" -->
     <TextBlock Text="UUID" Grid.Row="6" x:Name="TextUuidTitle" HorizontalAlignment="Center" VerticalAlignment="Center"
-               Visibility="Collapsed" />
-    <local:MyTextBox Grid.Row="6" Grid.Column="1" Height="28" Visibility="Collapsed" x:Name="TextUuid"
+               IsVisible="False" />
+    <local:MyTextBox Grid.Row="6" Grid.Column="1" Height="28" IsVisible="False" x:Name="TextUuid"
                      ToolTip="{DynamicResource Launch.Account.Offline.Uuid.Custom.Input.ToolTip}" />
     <local:MyButton x:Name="BtnBack" Grid.Row="9" Grid.Column="1" Width="50" Margin="-100,-40,0,40" ColorType="Normal"
                     Text="{DynamicResource Launch.Account.Offline.Back}" HorizontalAlignment="Center" />

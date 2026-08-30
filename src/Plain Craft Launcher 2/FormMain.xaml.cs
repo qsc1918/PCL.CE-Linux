@@ -31,9 +31,11 @@ namespace PCL;
 public partial class FormMain
 {
     // 愚人节鼠标位置
-    public MouseEventArgs lastMouseArg;
+    // [port] WPF MouseEventArgs → Avalonia PointerEventArgs（PointerMoved 事件参数）
+    public PointerEventArgs lastMouseArg;
 
-    private void FormMain_MouseMove(object sender, MouseEventArgs e)
+    // [port] WPF MouseMove → Avalonia PointerMoved；事件参数 MouseEventArgs → PointerEventArgs
+    private void FormMain_MouseMove(object? sender, PointerEventArgs e)
     {
         lastMouseArg = e;
     }
@@ -59,7 +61,10 @@ public partial class FormMain
 
     // 窗口加载
     private bool isWindowLoadFinished;
+    // [port] Win32 管理员拖拽助手（DragHelper 为 Windows-only；PCL.Core 已在 Linux 编译目标中排除）→ 仅 #if WINDOWS 保留
+#if WINDOWS
     private readonly DragHelper _helper = new();
+#endif
 
     public FormMain()
     {
@@ -103,6 +108,8 @@ public partial class FormMain
         HintWrapper.OnShow += HintService.HintWrapper_OnShow;
         // 加载 UI
         InitializeComponent();
+        // [port] XAML 上已移除 Activated 属性（Avalonia Window 的激活事件由 WindowBase.Activated 承载），改在此处重新接线
+        Activated += FormMain_Activated;
         Opacity = 0d;
         try
         {
@@ -121,6 +128,8 @@ public partial class FormMain
         }
 
         // 管理员权限下文件拖拽
+        // [port] Win32 管理员拖拽（SourceInitialized + WindowInteropHelper/HwndSource + DragHelper.AddHook/RemoveHook/DragDrop）→ 仅 #if WINDOWS 保留；Linux 目标暂缓
+#if WINDOWS
         if (ProcessInterop.IsAdmin())
         {
             ModBase.Log("[Start] PCL 当前正以管理员权限运行");
@@ -133,6 +142,7 @@ public partial class FormMain
             Closing += (_, _) => _helper.RemoveHook();
             _helper.DragDrop += (_, _) => FileDrag(_helper.DropFilePaths);
         }
+#endif
 
         if (ModMain.frmLaunchLeft.Parent is not null)
             ModMain.frmLaunchLeft.SetValue(ContentPresenter.ContentProperty, null);
@@ -159,7 +169,8 @@ public partial class FormMain
     {
         FormMain_SizeChanged();
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
-        ModBase.frmHandle = new WindowInteropHelper(this).Handle;
+        // [port] WPF WindowInteropHelper 句柄在 Avalonia 不可用（Win32），注释掉；ModBase.frmHandle 保持默认值
+        // ModBase.frmHandle = new WindowInteropHelper(this).Handle;
         // 读取设置
         PageSetupUI.BackgroundRefresh(false, true);
         ModMusic.MusicRefreshPlay(false, true);
@@ -203,8 +214,9 @@ public partial class FormMain
         // Left = (GetWPFSize(My.Computer.Screen.WorkingArea.Width) - Width) / 2
         isSizeSaveable = true;
         ShowWindowToTop();
-        var hwndSource = (HwndSource)PresentationSource.FromVisual(this);
-        hwndSource.AddHook(WndProc);
+        // [port] WPF HwndSource 钩子（PresentationSource.FromVisual/HwndSource.AddHook(WndProc)）在 Avalonia 不可用（Win32），注释掉；WndProc 亦在下方 #if WINDOWS 保留
+        // var hwndSource = (HwndSource)PresentationSource.FromVisual(this);
+        // hwndSource.AddHook(WndProc);
         ModAnimation.AniStart(new[]
         {
             ModAnimation.AaCode(() => ModAnimation.AniControlEnabled -= 1, 50),
@@ -373,6 +385,8 @@ public partial class FormMain
     private bool canResize = true;
 
     // 重写窗口边缘判定以使 DWM 自带的 resizer 行为看起来比较正常
+    // [port] WPF/Win32 WM_NCHITTEST 边缘判定 → Avalonia 使用系统窗口装饰与系统 resizer；该方法仅在 #if WINDOWS 下保留（DWM/WindowInterop/VisualTreeHelper.GetDpi 均为 Win32）
+#if WINDOWS
     private nint _SizeWndProc(nint hWnd, int msg, nint wParam, nint lParam, ref bool handled)
     {
         // 窗口活动常量
@@ -459,42 +473,17 @@ public partial class FormMain
         // 如果在 0-offset 范围内，返回 HTCLIENT 杀掉默认缩放
         return new nint(HTCLIENT);
     }
+#endif
 
-    protected override void OnSourceInitialized(EventArgs e)
-    {
-        // 硬件加速
-        if (Config.System.DisableHardwareAcceleration)
-        {
-            var hwndSource = PresentationSource.FromVisual(this) as HwndSource;
-            if (hwndSource is not null) hwndSource.CompositionTarget.RenderMode = RenderMode.SoftwareOnly;
-        }
-
-        base.OnSourceInitialized(e);
-
-        // 获取当前窗口句柄
-        var hwnd = new WindowInteropHelper(this).Handle;
-        var source = HwndSource.FromHwnd(hwnd);
-        if (source is not null)
-        {
-            // 渲染层允许 Alpha 通道通过
-            source.CompositionTarget.BackgroundColor = Colors.Transparent;
-            // 魔改窗口边缘判定
-            source.AddHook(_SizeWndProc);
-        }
-
-        // 设置 DWM 窗口框架
-        try
-        {
-            WindowInterop.ExtendFrameIntoClientArea(hwnd, -1);
-        }
-        catch (Exception ex)
-        {
-            LogWrapper.Error("DWM 窗口框架应用失败: " + ex.Message);
-        }
-    }
+    // [port] OnSourceInitialized 覆写在 Avalonia Window 上不存在（无 PresentationSource/HwndSource/WindowInteropHelper/CompositionTarget/RenderMode）。
+    //        本覆写里只剩 Win32 专属行为：硬件加速关闭（CompositionTarget.RenderMode）、DWM 扩展窗口框架（ExtendFrameIntoClientArea）、
+    //        WM_NCHITTEST 边缘钩子（AddHook(_SizeWndProc)——已移入上面 _SizeWndProc 的 #if WINDOWS 块）。
+    //        这些在 Linux 目标均为 Win32，暂缓移植（如需在 Avh 侧处理可在 Opened 事件中做无操作占位），故整体移除并在下方作废记录。
+    // protected override void OnSourceInitialized(EventArgs e) { ... WPF/HwndSource/Win32 ... }
 
     // 关闭
-    private void FormMain_Closing(object sender, CancelEventArgs e)
+    // [port] WPF CancelEventArgs → Avalonia WindowClosingEventArgs（Window.Closing 事件参数；该类型继承 CancelEventArgs，仍含 Cancel 属性，e.Cancel = true 有效）
+    private void FormMain_Closing(object? sender, WindowClosingEventArgs e)
     {
         EndProgram(true);
         e.Cancel = true;
@@ -529,10 +518,7 @@ public partial class FormMain
         // 关闭
         ModBase.RunInUiWait(() =>
         {
-            // 清理视频背景
-            VideoBack.Stop();
-            VideoBack.Source = null;
-            VideoBack.Close();
+            // [port] 清理视频背景（VideoBack.Stop/Source/Close，MediaElement）——视频背景暂缓移植，删除
             IsHitTestVisible = false;
             if (RenderTransform is null)
             {
@@ -561,7 +547,9 @@ public partial class FormMain
                     ModAnimation.AaCode(() =>
                     {
                         IsHitTestVisible = false;
-                        Visibility = Visibility.Collapsed;
+                        // [port] WPF Visibility.Collapsed → Avalonia IsVisible = false（无 Visibility 枚举）
+                        IsVisible = false;
+                        // [port] Avalonia Window 存在 ShowInTaskbar 属性（经查证非 WPF 专属），保留；Linux 平台效果可能有限
                         ShowInTaskbar = false;
                     }, 210),
                     ModAnimation.AaCode(() => EndProgramForce(force: false, isUpdating: isUpdating), 230)
@@ -613,11 +601,12 @@ public partial class FormMain
     }
 
     // 移动
-    private void FormDragMove(object sender, MouseButtonEventArgs e)
+    // [port] WPF MouseButtonEventArgs → Avalonia PointerPressedEventArgs；IsMouseDirectlyOver → IsPointerOver；DragMove() → Window.BeginMoveDrag(e)
+    private void FormDragMove(object? sender, PointerPressedEventArgs e)
     {
         // On Error Resume Next
-        if (((Grid)sender).IsMouseDirectlyOver)
-            DragMove();
+        if (((Grid)sender).IsPointerOver)
+            BeginMoveDrag(e);
     }
 
     // 改变大小
@@ -650,8 +639,7 @@ public partial class FormMain
             else
                 PanMain.Height = formHeight;
 
-            VideoBack.Width = formWidth;
-            VideoBack.Height = formHeight;
+            // [port] 视频背景（VideoBack.Width/Height）——视频背景暂缓移植，删除
         }
 
         if (WindowState == WindowState.Maximized)
@@ -695,8 +683,9 @@ public partial class FormMain
     // 按键事件
     private void FormMain_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.IsRepeat)
-            return;
+        // [port] Avalonia KeyEventArgs 无 IsRepeat；重复按键事件由平台自行发送，暂缓做重复过滤
+        // if (e.IsRepeat)
+        //     return;
         // 调用弹窗：回车选择第一个，Esc 选择最后一个
         if (PanMsg.Children.Count > 0)
         {
@@ -721,23 +710,23 @@ public partial class FormMain
                 var msg = PanMsg.Children[0];
                 Action? escapeAction = msg switch
                 {
-                    MyMsgInput input => input.Btn2.Visibility == Visibility.Visible
+                    MyMsgInput input => input.Btn2.IsVisible
                         ? () => input.Btn2_Click(sender, null)
                         : () => input.Btn1_Click(sender, null),
-                    MyMsgSelect select => select.Btn2.Visibility == Visibility.Visible
+                    MyMsgSelect select => select.Btn2.IsVisible
                         ? () => select.Btn2_Click(sender, null)
                         : () => select.Btn1_Click(sender, null),
-                    MyMsgText text => text.Btn3.Visibility == Visibility.Visible
+                    MyMsgText text => text.Btn3.IsVisible
                         ? () => text.Btn3_Click(sender, null)
-                        : text.Btn2.Visibility == Visibility.Visible
+                        : text.Btn2.IsVisible
                             ? () => text.Btn2_Click(sender, null)
                             : () => text.Btn1_Click(sender, null),
-                    MyMsgMarkdown markdown => markdown.Btn3.Visibility == Visibility.Visible
+                    MyMsgMarkdown markdown => markdown.Btn3.IsVisible
                         ? () => markdown.Btn3_Click(sender, null)
-                        : markdown.Btn2.Visibility == Visibility.Visible
+                        : markdown.Btn2.IsVisible
                             ? () => markdown.Btn2_Click(sender, null)
                             : () => markdown.Btn1_Click(sender, null),
-                    MyMsgLogin login => login.Btn3.Visibility == Visibility.Visible
+                    MyMsgLogin login => login.Btn3.IsVisible
                         ? () => login.Btn3_Click(sender, null)
                         : () => login.Btn1_Click(sender, null),
                     _ => null
@@ -791,16 +780,19 @@ public partial class FormMain
         }
 
         // 修复按下 Alt 后误认为弹出系统菜单导致的冻结
-        if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+        // [port] WPF KeyEventArgs.SystemKey → Avalonia KeyEventArgs.Key（Avalonia 无 SystemKey）
+        if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt)
             e.Handled = true;
     }
 
-    private void FormMain_MouseDown(object sender, MouseButtonEventArgs e)
+    // [port] WPF MouseButtonEventArgs/MouseButton.XButton1/2 → Avalonia PointerPressedEventArgs + PointerPointProperties.IsXButton1/2Pressed（侧键判定）
+    private void FormMain_MouseDown(object? sender, PointerPressedEventArgs e)
     {
         // 鼠标侧键返回上一级
         if (ModMain.frmMain!.PanMsg.Children.Count > 0 || ModMain.WaitingMyMsgBox.Any())
             return; // 弹窗中（#5513）
-        if (e.ChangedButton == MouseButton.XButton1 || e.ChangedButton == MouseButton.XButton2)
+        var props = e.GetCurrentPoint(this).Properties;
+        if (props.IsXButton1Pressed || props.IsXButton2Pressed)
             TriggerPageBack();
     }
 
@@ -817,10 +809,14 @@ public partial class FormMain
     }
 
     // 切回窗口
-    private void FormMain_Activated(object sender, EventArgs e)
+    // [port] XAML 上已移除 Activated 属性，改由构造函数中 `Activated += FormMain_Activated;` 重新接线（Avalonia WindowBase.Activated，EventHandler 签名 object?/EventArgs 兼容）
+    private void FormMain_Activated(object? sender, EventArgs e)
     {
         try
         {
+            // [port] 原 OnActivated 覆写（Avalonia Window 无该覆写）的逻辑：激活时若处于隐藏态则取消隐藏
+            if (Hidden)
+                Hidden = false;
             if (Config.Download.Comp.ReadClipboard)
                 ModComp.CompClipboard.GetClipboardResource();
             if (pageCurrent == PageType.InstanceSetup && PageCurrentSub == PageSubType.VersionMod)
@@ -1808,7 +1804,8 @@ public partial class FormMain
             else
             {
                 // 主页面 → 子页面，进入
-                PanTitleInner.Visibility = Visibility.Visible;
+                // [port] WPF Visibility.Visible/Collapsed → Avalonia IsVisible true/false（无 Visibility 枚举）
+                PanTitleInner.IsVisible = true;
                 PanTitleMain.IsHitTestVisible = false;
                 PanTitleInner.IsHitTestVisible = true;
                 PageNameRefresh(stack);
@@ -1821,7 +1818,7 @@ public partial class FormMain
                     ModAnimation.AaOpacity(PanTitleInner, 1d - PanTitleInner.Opacity, 150, 200),
                     ModAnimation.AaX(PanTitleInner, -PanTitleInner.Margin.Left, 350, 200,
                         new ModAnimation.AniEaseOutBack()),
-                    ModAnimation.AaCode(() => PanTitleMain.Visibility = Visibility.Collapsed, after: true)
+                    ModAnimation.AaCode(() => PanTitleMain.IsVisible = false, after: true)
                     }, "FrmMain Titlebar FirstLayer");
                 pageStack.Insert(0, pageCurrent);
             }
@@ -2008,7 +2005,7 @@ public partial class FormMain
         if (pageStack.Any())
         {
             // 子页面 → 主页面，退出
-            PanTitleMain.Visibility = Visibility.Visible;
+            PanTitleMain.IsVisible = true;
             PanTitleMain.IsHitTestVisible = true;
             PanTitleInner.IsHitTestVisible = false;
             ModAnimation.AniStart(
@@ -2020,7 +2017,7 @@ public partial class FormMain
                     ModAnimation.AaOpacity(PanTitleMain, 1d - PanTitleMain.Opacity, 150, 200),
                     ModAnimation.AaX(PanTitleMain, -PanTitleMain.Margin.Left, 350, 200,
                         new ModAnimation.AniEaseOutBack(ModAnimation.AniEasePower.Weak)),
-                    ModAnimation.AaCode(() => PanTitleInner.Visibility = Visibility.Collapsed, after: true)
+                    ModAnimation.AaCode(() => PanTitleInner.IsVisible = false, after: true)
                 }, "FrmMain Titlebar FirstLayer");
             pageStack.Clear();
         }
@@ -2236,7 +2233,7 @@ public partial class FormMain
     private bool BtnExtraBack_ShowCheck()
     {
         var realScroll = BtnExtraBack_GetRealChild();
-        return realScroll is not null && realScroll.Visibility == Visibility.Visible &&
+        return realScroll is not null && realScroll.IsVisible &&
                realScroll.VerticalOffset > Height + (BtnExtraBack.Show ? 0 : 700);
     }
 

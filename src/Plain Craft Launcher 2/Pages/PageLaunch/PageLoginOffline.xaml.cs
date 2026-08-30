@@ -30,13 +30,15 @@ public partial class PageLoginOffline
     {
         if (RadioUuidCustom.Checked)
         {
-            TextUuidTitle.Visibility = Visibility.Visible;
-            TextUuid.Visibility = Visibility.Visible;
+            // [port] Visibility.Visible → IsVisible=true
+            TextUuidTitle.IsVisible = true;
+            TextUuid.IsVisible = true;
         }
         else
         {
-            TextUuidTitle.Visibility = Visibility.Collapsed;
-            TextUuid.Visibility = Visibility.Collapsed;
+            // [port] Visibility.Collapsed → IsVisible=false
+            TextUuidTitle.IsVisible = false;
+            TextUuid.IsVisible = false;
         }
     }
 

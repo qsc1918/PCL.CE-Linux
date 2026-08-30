@@ -150,7 +150,7 @@ public partial class PageLoginAuth
         var serverUriInput = TextServer.Text;
         if (string.IsNullOrWhiteSpace(serverUriInput))
         {
-            TextServerName.Visibility = Visibility.Hidden;
+            TextServerName.IsVisible = false;
             return;
         }
 
@@ -173,12 +173,12 @@ public partial class PageLoginAuth
             if (serverUri is not null) TextServer.Text = serverUri;
             if (serverName is null)
             {
-                TextServerName.Visibility = Visibility.Hidden;
+                TextServerName.IsVisible = false;
             }
             else
             {
                 TextServerName.Text = Lang.Text("Launch.Account.Auth.ServerLabel", serverName);
-                TextServerName.Visibility = Visibility.Visible;
+                TextServerName.IsVisible = true;
             }
         });
     }
@@ -200,12 +200,13 @@ public partial class PageLoginAuth
     }
 
     // 切换注册按钮可见性
+    // [port] Visibility.Visible/Collapsed → IsVisible true/false
     private void ReloadRegisterButton()
     {
         var address = Config.InstanceAuth.AuthRegisterAddress.ToString();
-        BtnLink.Visibility = new HttpValidator().Validate(address).IsValid
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        BtnLink.IsVisible = new HttpValidator().Validate(address).IsValid
+            ? true
+            : false;
     }
 
     private void TextServer_TextChanged(object sender, TextChangedEventArgs e)
