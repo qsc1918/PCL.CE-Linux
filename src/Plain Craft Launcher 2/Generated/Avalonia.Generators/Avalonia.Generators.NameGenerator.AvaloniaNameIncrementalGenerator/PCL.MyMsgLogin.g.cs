@@ -9,6 +9,8 @@ namespace PCL
     partial class MyMsgLogin
     {
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.Core.UI.Controls.BlurBorder PanBorder;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanMain;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabTitle;
@@ -42,6 +44,7 @@ namespace PCL
             }
 
             var __thisNameScope__ = this.FindNameScope();
+            PanBorder = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.BlurBorder>("PanBorder");
             PanMain = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanMain");
             LabTitle = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabTitle");
             ShapeLine = __thisNameScope__?.Find<global::Avalonia.Controls.Shapes.Rectangle>("ShapeLine");

@@ -19,6 +19,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock ServerPlayer;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.Core.UI.Controls.MotdRenderer MotdRenderer;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock ServerMotD;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyIconButton BtnSetting;
@@ -43,6 +45,7 @@ namespace PCL
             ServerName = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ServerName");
             Signal = __thisNameScope__?.Find<global::Avalonia.Controls.Presenters.ContentPresenter>("Signal");
             ServerPlayer = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ServerPlayer");
+            MotdRenderer = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.MotdRenderer>("MotdRenderer");
             ServerMotD = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("ServerMotD");
             BtnSetting = __thisNameScope__?.Find<global::PCL.MyIconButton>("BtnSetting");
         }

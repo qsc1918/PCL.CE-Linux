@@ -17,6 +17,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyComboBox ComboUiFormatCulture;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.Core.UI.Controls.BlurBorder BannerInternationalization;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyIconTextButton BtnTranslateWebsite;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyIconTextButton BtnSubmitPullRequest;
@@ -40,6 +42,7 @@ namespace PCL
             PanMain = __thisNameScope__?.Find<global::Avalonia.Controls.StackPanel>("PanMain");
             ComboUiLanguage = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboUiLanguage");
             ComboUiFormatCulture = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboUiFormatCulture");
+            BannerInternationalization = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.BlurBorder>("BannerInternationalization");
             BtnTranslateWebsite = __thisNameScope__?.Find<global::PCL.MyIconTextButton>("BtnTranslateWebsite");
             BtnSubmitPullRequest = __thisNameScope__?.Find<global::PCL.MyIconTextButton>("BtnSubmitPullRequest");
         }
