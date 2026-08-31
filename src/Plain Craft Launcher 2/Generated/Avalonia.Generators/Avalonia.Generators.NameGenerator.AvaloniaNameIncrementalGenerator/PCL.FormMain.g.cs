@@ -87,6 +87,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyExtraButton BtnExtraMusic;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.Core.UI.Controls.BlurBorder PanMsgBackground;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanMsg;
 
         /// <summary>
@@ -143,6 +145,7 @@ namespace PCL
             BtnExtraShutdown = __thisNameScope__?.Find<global::PCL.MyExtraButton>("BtnExtraShutdown");
             BtnExtraLog = __thisNameScope__?.Find<global::PCL.MyExtraButton>("BtnExtraLog");
             BtnExtraMusic = __thisNameScope__?.Find<global::PCL.MyExtraButton>("BtnExtraMusic");
+            PanMsgBackground = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.BlurBorder>("PanMsgBackground");
             PanMsg = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanMsg");
         }
     }

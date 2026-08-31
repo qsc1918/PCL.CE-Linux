@@ -13,6 +13,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabServerDesc;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.Core.UI.Controls.MotdRenderer MotdRenderer;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabServerPlayer;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabServerLatency;
@@ -34,6 +36,7 @@ namespace PCL
             var __thisNameScope__ = this.FindNameScope();
             ImgServerLogo = __thisNameScope__?.Find<global::Avalonia.Controls.Image>("ImgServerLogo");
             LabServerDesc = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabServerDesc");
+            MotdRenderer = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.MotdRenderer>("MotdRenderer");
             LabServerPlayer = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabServerPlayer");
             LabServerLatency = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabServerLatency");
         }
