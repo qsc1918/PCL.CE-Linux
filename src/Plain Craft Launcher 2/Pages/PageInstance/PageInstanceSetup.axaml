@@ -35,15 +35,11 @@
                         <local:MyComboBox x:Name="ComboArgumentIndieV2" Grid.Row="0" Grid.ColumnSpan="2"
                                           Tag="VersionArgumentIndieV2" Grid.Column="1">
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Setup.Options.InstanceIsolation.Enabled}"
-                                                  ToolTipService.InitialShowDelay="0"
-                                                  ToolTipService.BetweenShowDelay="0"
                                                   ToolTip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Enabled.ToolTip}"
-                                                  ToolTipService.HorizontalOffset="100" />
+                                                  ToolTip.HorizontalOffset="100" />
                             <local:MyComboBoxItem Content="{DynamicResource Common.Action.Close}"
-                                                  ToolTipService.InitialShowDelay="0"
-                                                  ToolTipService.BetweenShowDelay="0"
                                                   ToolTip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Disabled.ToolTip}"
-                                                  ToolTipService.HorizontalOffset="100" />
+                                                  ToolTip.HorizontalOffset="100" />
                         </local:MyComboBox>
                         <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Text="{DynamicResource Setup.Launch.Options.WindowTitle.Label}"
@@ -123,9 +119,9 @@
                             Tag="VersionRamType/0"
                             Margin="0,0,20,0"
                             ToolTip="{DynamicResource Setup.Launch.Memory.Auto.ToolTip}"
-                            ToolTipService.Placement="Right"
-                            ToolTipService.HorizontalOffset="-10"
-                            ToolTipService.VerticalOffset="-3" />
+                            ToolTip.Placement="Right"
+                            ToolTip.HorizontalOffset="-10"
+                            ToolTip.VerticalOffset="-3" />
 
                         <local:MyRadioBox
                             Grid.Row="3" Grid.Column="0"
@@ -360,40 +356,40 @@
                                           Text="{DynamicResource Instance.Setup.Advanced.IgnoreJavaCompatibility}"
                                           x:Name="CheckAdvanceJava"
                                           Tag="VersionAdvanceJava"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Instance.Setup.Advanced.IgnoreJavaCompatibility.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Instance.Setup.Advanced.DisableFileVerification}"
                                           x:Name="CheckAdvanceAssetsV2"
                                           Tag="VersionAdvanceAssetsV2" Margin="0,0,60,0"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Instance.Setup.Advanced.DisableFileVerification.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Instance.Setup.Advanced.UseGlobalProxy}"
                                           x:Name="CheckAdvanceUseProxyV2"
                                           Tag="VersionAdvanceUseProxyV2"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Instance.Setup.Advanced.UseGlobalProxy.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Setup.Launch.Advanced.DisableJlw}"
                                           x:Name="CheckAdvanceDisableJLW"
                                           Tag="VersionAdvanceDisableJLW"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Setup.Launch.Advanced.DisableJlw.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Setup.Launch.Advanced.DisableLF}"
                                           x:Name="CheckAdvanceDisableLF"
                                           Tag="VersionAdvanceDisableLF"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLF.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Instance.Setup.Advanced.UseDebugLog4j}"
                                           x:Name="CheckUseDebugLog4j2Config"
                                           Tag="VersionUseDebugLog4j2Config"
-                                          ToolTipService.Placement="Right" />
+                                          ToolTip.Placement="Right" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent}"
                                           x:Name="CheckAdvanceDisableLwjglUnsafeAgent"
                                           Tag="VersionAdvanceDisableLwjglUnsafeAgent"
-                                          ToolTipService.Placement="Right"
+                                          ToolTip.Placement="Right"
                                           ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent.ToolTip}" />
                     </StackPanel>
                 </Grid>

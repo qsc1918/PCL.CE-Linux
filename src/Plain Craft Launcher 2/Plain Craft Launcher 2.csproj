@@ -79,15 +79,16 @@
         <Import Include="System.Text" />
         <Import Include="System.Threading" />
     </ItemGroup>
-    <!-- 信不过巨硬的智障代码，手动包含需要的文件（沿用上游策略） -->
+    <!-- 信不过巨硬的智障代码，手动包含需要的文件（沿用上游策略）
+         [port] EnableDefaultItems 必须 true：Avalonia 命名字段生成器在 false 时整体失效；
+         排除统一用 Remove 实现 -->
     <PropertyGroup>
-        <EnableDefaultItems>false</EnableDefaultItems>
-        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <EnableDefaultItems>true</EnableDefaultItems>
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <ItemGroup>
-        <!-- 暂不移植的功能（用户指定，文件保留在仓库）：崩溃分析、音乐、视频背景、联机、换皮肤、Markdown 公告、主页新闻、工具页、剪贴板行为 -->
+        <!-- 暂不移植的功能（用户指定，文件保留在仓库）：崩溃分析、音乐、视频背景、联机、换皮肤、Markdown 公告、工具页、剪贴板行为 -->
         <DeferredExcludes Include="
             Modules\Minecraft\CrashAnalysis\**;
             Modules\ModMusic.cs;
@@ -102,8 +103,9 @@
             Resources\Markdown.axaml;
             Controls\Behaviors\ClipboardInterceptor.cs;
             Controls\Behaviors\LazyLoadBehavior.cs;" />
-        <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
-        <!-- [port] axaml 由 Avalonia 包默认 glob 收集（EnableDefaultItems 不影响）；这里只做排除 -->
+        <Compile Remove="@(DeferredExcludes)" />
+        <Compile Remove="Generated\**" />
+        <!-- [port] .cs/.axaml 由 SDK 默认 glob 收集（EnableDefaultItems 必须 true，否则 Avalonia 命名字段生成器失效）；这里只做排除 -->
         <AvaloniaXaml Remove="@(DeferredExcludes)" />
         <AvaloniaResource Include="Images\**" />
         <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
@@ -112,4 +114,8 @@
     <ItemGroup>
         <Content Include="LICENCE" />
     </ItemGroup>
+    <PropertyGroup>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+    </PropertyGroup>
 </Project>

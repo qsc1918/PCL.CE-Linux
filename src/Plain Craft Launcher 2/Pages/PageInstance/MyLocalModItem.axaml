@@ -75,9 +75,8 @@
             SvgIcon="lucide/upload"
             Opacity="0.4"
             Theme="Black"
-            ToolTipService.InitialShowDelay="100"
-            ToolTipService.Placement="Right"
-            ToolTipService.VerticalOffset="-9"
+            ToolTip.Placement="Right"
+            ToolTip.VerticalOffset="-9"
             IsVisible="False" />
     </Grid>
     <!-- Tag 与 详情 -->

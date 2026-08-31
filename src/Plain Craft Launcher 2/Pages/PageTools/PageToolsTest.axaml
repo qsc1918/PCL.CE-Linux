@@ -31,7 +31,7 @@
                                TextWrapping="Wrap" />
                     <Grid Margin="0,10,0,0">
                         <Grid.Resources>
-                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BasedOnTextBlock}">
+                            <Style Selector="TextBlock" BasedOn="{StaticResource BasedOnTextBlock}">
                                 <Setter Property="VerticalAlignment" Value="Center" />
                                 <Setter Property="Margin" Value="0,0,25,0" />
                             </Style>

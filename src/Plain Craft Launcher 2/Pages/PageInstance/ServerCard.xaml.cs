@@ -73,9 +73,7 @@ public partial class ServerCard
         {
             _manager.SetSelectedIconByName(GetSignalIcon(server.Ping));
             Avalonia.Controls.ToolTip.SetTip(Signal, $"{server.Ping}ms"); // [port] ToolTip -> SetTip
-            ToolTipService.SetInitialShowDelay(Signal, 0);
-            ToolTipService.SetBetweenShowDelay(Signal, 50);
-            ToolTipService.SetPlacement(Signal, PlacementMode.Top);
+            ToolTip.SetPlacement(Signal, PlacementMode.Top);
 
             if (server.PlayerCount != default && server.MaxPlayers != default)
                 ServerPlayer.Text = $"{server.PlayerCount} / {server.MaxPlayers}";

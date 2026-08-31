@@ -98,7 +98,7 @@ public partial class MinecraftServer : Grid
         if (ret.Players.Samples.Any())
         {
             Avalonia.Controls.ToolTip.SetTip(LabServerPlayer, string.Join("\r\n", ret.Players.Samples.Select(x => x.Name))); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(LabServerPlayer, PlacementMode.Mouse);
+            ToolTip.SetPlacement(LabServerPlayer, PlacementMode.Mouse);
         }
     }
 }

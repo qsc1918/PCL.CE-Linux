@@ -266,7 +266,7 @@ public static class ModMusic
 
 
                     Avalonia.Controls.ToolTip.SetTip(ModMain.frmMain.BtnExtraMusic, tipText); // [port] ToolTip -> SetTip
-                    ToolTipService.SetVerticalOffset(ModMain.frmMain.BtnExtraMusic,
+                    ToolTip.SetVerticalOffset(ModMain.frmMain.BtnExtraMusic,
                         tipText.Contains("\n") ? 10 : 16);
                 }
 

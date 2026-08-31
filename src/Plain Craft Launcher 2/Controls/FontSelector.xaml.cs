@@ -15,16 +15,22 @@ using PCL.Core.Utils.Exts;
 
 namespace PCL;
 
-public partial class FontSelector
+public partial class FontSelector : ContentControl
 {
     public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
 
-    public static readonly AvaloniaProperty TooltipProperty = AvaloniaProperty.Register(nameof(Tooltip),
-        typeof(string), typeof(FontSelector), new PropertyMetadata(null, OnTooltipChanged));
+    // [port] WPF 式 Register + PropertyMetadata(null, 回调) → Avalonia Register<TOwner,TValue> + Changed 钩子
+    public static readonly StyledProperty<string?> TooltipProperty =
+        AvaloniaProperty.Register<FontSelector, string?>(nameof(Tooltip), null);
 
     private bool _isInitializing;
     private bool _isListeningLanguageChanged;
     private string? _pendingFontTag;
+
+    static FontSelector()
+    {
+        TooltipProperty.Changed.AddClassHandler<FontSelector>((d, e) => OnTooltipChanged(d, e));
+    }
 
     public FontSelector()
     {

@@ -132,29 +132,29 @@ public partial class PageLoginProfile
         // 更改 UUID
         var btnEditUuid = new MyIconButton
             { SvgIcon = "lucide/pencil", ToolTip = Lang.Text("Launch.Account.Profile.ChangeUuid"), Tag = sender.Tag };
-        ToolTipService.SetPlacement(btnEditUuid, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnEditUuid, 30d);
-        ToolTipService.SetHorizontalOffset(btnEditUuid, 2d);
+        ToolTip.SetPlacement(btnEditUuid, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnEditUuid, 30d);
+        ToolTip.SetHorizontalOffset(btnEditUuid, 2d);
         btnEditUuid.Click += EditProfileUuid;
         // 复制 UUID
         var btnCopyUuid = new MyIconButton
             { SvgIcon = "lucide/copy", ToolTip = Lang.Text("Launch.Account.Profile.CopyUuid"), Tag = sender.Tag };
-        ToolTipService.SetPlacement(btnCopyUuid, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnCopyUuid, 30d);
-        ToolTipService.SetHorizontalOffset(btnCopyUuid, 2d);
+        ToolTip.SetPlacement(btnCopyUuid, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnCopyUuid, 30d);
+        ToolTip.SetHorizontalOffset(btnCopyUuid, 2d);
         btnCopyUuid.Click += CopyProfileUuid;
         // 更改验证服务器名称
         var btnEditServerName = new MyIconButton
             { SvgIcon = "lucide/info", ToolTip = Lang.Text("Launch.Account.Profile.ChangeAuthServerName"), Tag = sender.Tag };
-        ToolTipService.SetPlacement(btnEditServerName, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnEditServerName, 30d);
-        ToolTipService.SetHorizontalOffset(btnEditServerName, 2d);
+        ToolTip.SetPlacement(btnEditServerName, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnEditServerName, 30d);
+        ToolTip.SetHorizontalOffset(btnEditServerName, 2d);
         btnEditServerName.Click += EditProfileServer;
         // 删除档案
         var btnDelete = new MyIconButton { SvgIcon = "lucide/trash-2", ToolTip = Lang.Text("Launch.Account.Profile.Delete"), Tag = sender.Tag };
-        ToolTipService.SetPlacement(btnDelete, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnDelete, 30d);
-        ToolTipService.SetHorizontalOffset(btnDelete, 2d);
+        ToolTip.SetPlacement(btnDelete, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnDelete, 30d);
+        ToolTip.SetHorizontalOffset(btnDelete, 2d);
         btnDelete.Click += DeleteProfile;
         // 根据档案类型显示不同的菜单项
         if (((ModProfile.McProfile)sender.Tag).Type == ModLaunch.McLoginType.Legacy)

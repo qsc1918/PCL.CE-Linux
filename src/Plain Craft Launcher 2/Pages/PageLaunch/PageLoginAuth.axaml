@@ -26,15 +26,15 @@
                HorizontalAlignment="Center" IsVisible="False" />
     <local:MyIconButton ToolTip="{DynamicResource Launch.Account.Auth.ChangeProfile}" Grid.Row="4" Height="14"
                         Opacity="0" x:Name="BtnEdit"
-                        ToolTipService.Placement="Center" ToolTipService.VerticalOffset="32"
-                        ToolTipService.HorizontalOffset="1" ToolTipService.InitialShowDelay="50" Grid.Column="0"
+                        ToolTip.Placement="Center" ToolTip.VerticalOffset="32"
+                        ToolTip.HorizontalOffset="1" Grid.Column="0"
                         HorizontalAlignment="Center"
                         SvgIcon="lucide/pencil"
                         Margin="8,0,0,0" VerticalAlignment="Center" />
     <local:MyIconButton ToolTip="{DynamicResource Launch.Account.Auth.Logout}" Grid.Row="4" Height="14" Opacity="0"
                         x:Name="BtnExit"
-                        ToolTipService.Placement="Center" ToolTipService.VerticalOffset="32"
-                        ToolTipService.HorizontalOffset="1" ToolTipService.InitialShowDelay="50" Grid.Column="2"
+                        ToolTip.Placement="Center" ToolTip.VerticalOffset="32"
+                        ToolTip.HorizontalOffset="1" Grid.Column="2"
                         HorizontalAlignment="Center"
                         SvgIcon="lucide/log-out"
                         Margin="0,0,8,0" VerticalAlignment="Center" />

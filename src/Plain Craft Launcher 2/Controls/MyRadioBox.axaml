@@ -1,7 +1,6 @@
 <Grid x:Class="PCL.MyRadioBox"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      FocusVisualStyle="{x:Null}"
       MinWidth="20" x:Name="PanBack" UseLayoutRounding="False" MinHeight="20"
       Background="{StaticResource ColorBrushSemiTransparent}" Focusable="True">
     <TextBlock IsHitTestVisible="False" x:Name="LabText" FontSize="13" Padding="0" Margin="26,0,0,0"

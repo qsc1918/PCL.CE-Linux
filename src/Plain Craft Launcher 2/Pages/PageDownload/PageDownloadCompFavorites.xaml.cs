@@ -283,9 +283,9 @@ public partial class PageDownloadCompFavorites
         var btn_EditNote = new MyIconButton();
         btn_EditNote.SvgIcon = "lucide/pencil";
         Avalonia.Controls.ToolTip.SetTip(btn_EditNote, Lang.Text("Download.Comp.Favorites.EditNote")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btn_EditNote, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btn_EditNote, 30d);
-        ToolTipService.SetHorizontalOffset(btn_EditNote, 2d);
+        ToolTip.SetPlacement(btn_EditNote, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btn_EditNote, 30d);
+        ToolTip.SetHorizontalOffset(btn_EditNote, 2d);
         btn_EditNote.Click += (sender, e) =>
         {
             CurrentFavTarget.Notes.TryGetValue(compId, out notes);
@@ -304,9 +304,9 @@ public partial class PageDownloadCompFavorites
             SvgIcon = "lucide/heart-filled",
             ToolTip = Lang.Text("Download.Comp.Favorites.Action.Unfavorite")
         };
-        ToolTipService.SetPlacement(btn_Delete, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btn_Delete, 30d);
-        ToolTipService.SetHorizontalOffset(btn_Delete, 2d);
+        ToolTip.SetPlacement(btn_Delete, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btn_Delete, 30d);
+        ToolTip.SetHorizontalOffset(btn_Delete, 2d);
         btn_Delete.Click += (sender, e) =>
         {
             Items_CancelFavorites(compItem);

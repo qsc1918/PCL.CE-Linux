@@ -111,7 +111,7 @@
                                             IsVisible="False"
                                             ToolTip="{DynamicResource Download.Comp.Filter.InstallModpack.ToolTip}"
                                             LogoScale="0.9"
-                                            ToolTipService.HorizontalOffset="-55" ToolTipService.VerticalOffset="5" />
+                                            ToolTip.HorizontalOffset="-55" ToolTip.VerticalOffset="5" />
                     </StackPanel>
                 </Grid>
             </local:MyCard>

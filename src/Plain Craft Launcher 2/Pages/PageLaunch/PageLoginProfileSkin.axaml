@@ -27,9 +27,8 @@
             <StackPanel Orientation="Horizontal" Margin="10,3,9,3">
                 <local:MyIconButton Height="24" Margin="0,0.5,9,0" x:Name="BtnSkin"
                                     ToolTip="{DynamicResource Launch.Account.ProfileSkin.SkinsAndCapes}"
-                                    ToolTipService.Placement="Center"
-                                    ToolTipService.VerticalOffset="35" ToolTipService.HorizontalOffset="1"
-                                    ToolTipService.InitialShowDelay="50"
+                                    ToolTip.Placement="Center"
+                                    ToolTip.VerticalOffset="35" ToolTip.HorizontalOffset="1"
                                     LogoScale="1.08"
                                     SvgIcon="lucide/shirt">
                     <local:MyIconButton.ContextMenu>
@@ -47,8 +46,8 @@
                 </local:MyIconButton>
                 <local:MyIconButton Height="24" Margin="0,0,9,0" x:Name="BtnEdit"
                                     ToolTip="{DynamicResource Launch.Account.ProfileSkin.EditProfile}"
-                                    ToolTipService.Placement="Center" ToolTipService.VerticalOffset="35"
-                                    ToolTipService.HorizontalOffset="1" ToolTipService.InitialShowDelay="50"
+                                    ToolTip.Placement="Center" ToolTip.VerticalOffset="35"
+                                    ToolTip.HorizontalOffset="1"
                                     LogoScale="1.1"
                                     SvgIcon="lucide/pencil">
                     <local:MyIconButton.ContextMenu>
@@ -62,8 +61,8 @@
                 </local:MyIconButton>
                 <local:MyIconButton Height="24" x:Name="BtnSelect" Margin="0,0,0,0" Click="ChangeProfile"
                                     ToolTip="{DynamicResource Launch.Account.ProfileSkin.SwitchProfile}"
-                                    ToolTipService.Placement="Center" ToolTipService.VerticalOffset="35"
-                                    ToolTipService.HorizontalOffset="1" ToolTipService.InitialShowDelay="50"
+                                    ToolTip.Placement="Center" ToolTip.VerticalOffset="35"
+                                    ToolTip.HorizontalOffset="1"
                                     LogoScale="1.15"
                                     SvgIcon="lucide/arrow-right-left" />
             </StackPanel>

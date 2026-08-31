@@ -3306,9 +3306,9 @@ public static class ModComp
                     if (onSaveClick is not null)
                     {
                         var btnSave = new MyIconButton { SvgIcon = "lucide/save", ToolTip = Lang.Text("Download.Version.SaveAs") };
-                        ToolTipService.SetPlacement(btnSave, PlacementMode.Center);
-                        ToolTipService.SetVerticalOffset(btnSave, 30);
-                        ToolTipService.SetHorizontalOffset(btnSave, 2);
+                        ToolTip.SetPlacement(btnSave, PlacementMode.Center);
+                        ToolTip.SetVerticalOffset(btnSave, 30);
+                        ToolTip.SetHorizontalOffset(btnSave, 2);
                         btnSave.Click += onSaveClick;
                         newItem.Buttons = new[] { btnSave };
                     }
