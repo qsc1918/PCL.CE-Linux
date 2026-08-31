@@ -134,5 +134,68 @@ cba7935(基类注入 84 文件) → bc2247b → 96227df → f6eaa1e → 3d08af5 
 - ModBase.GetObjectFromXML 的 XAML 安全检查：上游用 System.Xaml XamlXmlReader，转换后走 Avalonia.Markup.XamlReader.Load——需运行期验证
 
 ### git 提交链
-6a525ab(基线) → cbd9538(Core 绿) → 7052b07 → d0ee128 → 3ee37e1 → f894814 → 0f0a3b8 → 3d08af5 → a5b5a12(最新)
-- 分段构造参数版不存在：new LineSegment { Point = x, IsStroked = true }
+6a525ab(基线) → cbd9538(Core 绿) → 7052b07 → d0ee128 → 3ee37e1 → f894814 → 0f0a3b8 → 3d08af5 → a5b5a12 → 2f4610f → 5f367cc → de89911 → 70d4069(最新)
+
+## 当前状态（2026-08-31 下午，commit 70d4069）
+
+### 重大进展
+**C# 错误从 10564 → 1074**（降低 90%）。
+
+### 批量修复完成清单
+| 修复 | 错误削减 | 方法 |
+|---|---|---|
+| EnableDefaultItems=true + Remove 排除 | 10564→2702 | csproj 修改 |
+| 基类注入 (add-bases.ps1) | 2702→2704(等效) | 自动脚本 |
+| IsMouseOver→IsPointerOver | -62 | 全库替换 |
+| Visibility→IsVisible | -~30 | 全库替换 |
+| FontWeights→FontWeight | -14 | 全库替换 |
+| Cursors→Cursor.Parse | -少量 | 全库替换 |
+| Dispatcher.BeginInvoke→InvokeAsync | -30 | 全库替换 |
+| LineSegment 参数化→属性初始化 | -28 | 全库替换 |
+| RenderTransformOrigin Point→RelativePoint | -~20 | 全库替换 |
+| SystemDialogs 同步→异步+await+async | -~200 | 全库+逐文件 |
+| DragEventArgs.Data→DataTransfer | -36 | 全库替换 |
+| MenuBase.IsOpen .set→.Close()/.Open() | -20 | 全库替换 |
+| DataFormats→DataFormat | -24 | 全库替换 |
+| MyIconButton.ToolTip 属性 | -70 | 新增属性 |
+| SetResourceReference 扩展方法 | -68 | 新增扩展 (但级联错误仍计34) |
+| ControlResourceHelper (PCL 命名空间) | 同上 | 直接设值 |
+| ModVideoBack/BlurBorder/MotdRenderer 桩 | -8 | Stubs.cs |
+| Keyboard.FocusedElement→null 桩 | -少量 | 全库替换 |
+| ColumnPaddingRight→ColumnGap | -30 | 全库替换 |
+
+### 剩余 1074 错误的分类与修法
+| 计数 | 错误 | 修法 |
+|---|---|---|
+| 126+56 | MyColor→IBrush 隐式转换/运算符 | 属性类型改 SolidColorBrush 或调用点显式转换 |
+| 52 | PropertyMetadata 未找到（回调变体） | 需逐文件改为 AvaloniaProperty.Register + Changed.AddClassHandler |
+| 48 | FormMain.PanMsgBackground 未定义 | FormMain.axaml 里 PanMsgBackground 的 BlurBorder→Border |
+| 44+44 | TransformPos/TransformRotate 未定义 | FormMain.axaml RenderTransform 子元素 x:Name |
+| 44 | Path.SetBinding | Avalonia Path 没有 SetBinding → 改用 Bind() 或 BindingOperations |
+| 40 | 方法组→RoutedEventHandler | XAML 事件处理器签名不匹配 |
+| 38 | PageLaunchLeft.AprilPosTrans 未定义 | AXAML 缺少 x:Name |
+| 34 | ActualWidth | Avalonia Control 有 Bounds.Width 替代 |
+| 34 | SetResourceReference (级联) | 修 PropertyMetadata 后自动消失 |
+| 30 | ColumnGap | AXAML 缺少 ColumnDefinition x:Name |
+| 28 | ImageBrush.ImageSource | 改为 .Source |
+| 28 | DragEventArgs.Effects | Avalonia 无 Effects 属性 |
+| 28 | IsEnabledChanged 事件 | 无直接等价，用 IsEnabled 属性变化监听 |
+| 26+20+16 | ModMusic/ModSkin/Skin | 排除类型引用 |
+| 22 | ComponentDispatcher | Avalonia 无此类 |
+| 20 | GeometryConverter | 需实现或跳过 |
+| 18+18 | Mouse/MouseButtonState | Avalonia 用 PointerEventArgs |
+| 16 | ContentPresenter | 需检查 AXAML 生成 |
+| 16 | RelativeScalar | double→RelativeScalar 显式转换 |
+| 16 | PreviewPointerPressed/Released | Avalonia 用 PointerPressed/Released |
+| 14 | Clipboard | Avalonia 12 Clipboard 重写 |
+| 14 | Visibility (残留) | 部分文件遗漏 |
+| 12 | MotdRenderer (已桩但可能缺字段) | Stubs.cs 扩展 |
+| 12 | ms | 可能是变量名冲突 |
+| 12 | ImgFore/ColumnRamEmpty/ColumnRamUsed/ColumnRamGame | AXAML x:Name 缺失 |
+
+### 恢复点（按优先级）
+1. **PropertyMetadata 回调变体**（52→级联消除 ~100）：逐文件改 AvaloniaProperty.Register + Changed.AddClassHandler
+2. **MyColor→IBrush**（182）：MyColor 类型改为 SolidColorBrush 或运算符重载
+3. **AXAML x:Name 缺失**（TransformPos/TransformRotate/PanMsgBackground/ColumnGap 等 ~200）：修复 AXAML 中的类型引用/名称
+4. **RoutedEventHandler 签名**（40）：XAML 事件处理器签名对齐
+5. **Path.SetBinding**（44）：改用 Bind() 扩展方法
