@@ -1314,6 +1314,7 @@ public static class ModLaunch
         string result;
         try
         {
+            using (var response = HttpRequest
                        .Create("https://api.minecraftservices.com/minecraft/profile")
                        .WithBearerToken(accessToken)
                        .SendAsync()
