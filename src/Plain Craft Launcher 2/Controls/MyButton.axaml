@@ -1,7 +1,6 @@
 <Border x:Class="PCL.MyButton"
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        FocusVisualStyle="{x:Null}" x:Name="PanBack"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="PanBack"
         Focusable="True" UseLayoutRounding="False"
         Background="{StaticResource ColorBrushSemiTransparent}">
     <Border CornerRadius="3" x:Name="PanFore" BorderThickness="1" BorderBrush="{DynamicResource ColorBrush1}"

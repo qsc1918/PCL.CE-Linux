@@ -16,7 +16,7 @@
             </DataTemplate>
         </local:MyComboBox.ItemTemplate>
         <local:MyComboBox.ItemContainerStyle>
-            <Style TargetType="local:MyComboBoxItem">
+            <Style Selector="local:MyComboBoxItem">
                 <Setter Property="Tag" Value="{Binding Tag}" />
             </Style>
         </local:MyComboBox.ItemContainerStyle>

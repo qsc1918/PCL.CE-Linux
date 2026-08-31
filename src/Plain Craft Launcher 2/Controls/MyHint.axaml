@@ -2,7 +2,6 @@
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PCL"
-        FocusVisualStyle="{x:Null}"
         UseLayoutRounding="True" HorizontalAlignment="Stretch" BorderThickness="3,0,0,0"
         BorderBrush="#99FF4444" CornerRadius="2">
     <Grid UseLayoutRounding="False">
@@ -15,7 +14,7 @@
         <local:MyIconButton x:Name="BtnClose" Visibility="Collapsed" Theme="Custom" Margin="0,0,8,0" Grid.Column="1" Click="BtnClose_Click"
                             Height="20" Width="20" VerticalAlignment="Center"
                             SvgIcon="lucide/x"
-                            ToolTip="{DynamicResource Common.Hint.DoNotShowAgain}" ToolTipService.Placement="Center" ToolTipService.VerticalOffset="29"
-                            ToolTipService.HorizontalOffset="2" />
+                            ToolTip="{DynamicResource Common.Hint.DoNotShowAgain}" ToolTip.Placement="Center" ToolTip.VerticalOffset="29"
+                            ToolTip.HorizontalOffset="2" />
     </Grid>
 </Border>

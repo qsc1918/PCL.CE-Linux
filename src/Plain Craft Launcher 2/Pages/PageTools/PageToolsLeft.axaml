@@ -25,9 +25,8 @@
                 <x:Array Type="{x:Type local:MyIconButton}">
                     <local:MyIconButton Tag="1"
                                         ToolTip="{DynamicResource Common.Action.Refresh}"
-                                        ToolTipService.Placement="Right"
-                                        ToolTipService.InitialShowDelay="200"
-                                        ToolTipService.VerticalOffset="-1"
+                                        ToolTip.Placement="Right"
+                                        ToolTip.VerticalOffset="-1"
                                         LogoScale="0.85"
                                         Click="Refresh"
                                         SvgIcon="lucide/refresh-cw" />

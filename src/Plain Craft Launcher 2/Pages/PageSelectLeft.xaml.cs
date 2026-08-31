@@ -239,7 +239,7 @@ public partial class PageSelectLeft : IRefreshable
                     LogoScale = 0.9,
                     SvgIcon = "lucide/folder-plus"
                 };
-                ToolTipService.SetPlacement(itemCreate, PlacementMode.Right);
+                ToolTip.SetPlacement(itemCreate, PlacementMode.Right);
                 itemCreate.Click += (_, _) => ModMain.frmSelectLeft.Create_Click();
                 ModMain.frmSelectLeft.PanList.Children.Add(itemCreate);
             }
@@ -254,7 +254,7 @@ public partial class PageSelectLeft : IRefreshable
                 ToolTip = Lang.Text("Select.Folder.AddExisting"),
                 SvgIcon = "lucide/folder-input"
             };
-            ToolTipService.SetPlacement(itemAdd, PlacementMode.Right);
+            ToolTip.SetPlacement(itemAdd, PlacementMode.Right);
             itemAdd.Click += (_, _) => ModMain.frmSelectLeft.Add_Click();
             ModMain.frmSelectLeft.PanList.Children.Add(itemAdd);
 
@@ -268,7 +268,7 @@ public partial class PageSelectLeft : IRefreshable
                 ToolTip = Lang.Text("Select.Folder.ImportModpack"),
                 SvgIcon = "lucide/package-plus"
             };
-            ToolTipService.SetPlacement(itemInstall, PlacementMode.Right);
+            ToolTip.SetPlacement(itemInstall, PlacementMode.Right);
             itemInstall.Click += (_, _) => ModModpack.ModpackInstall();
             ModMain.frmSelectLeft.PanList.Children.Add(itemInstall);
 

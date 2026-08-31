@@ -437,18 +437,18 @@ public partial class PageSelectRight
         if (version.IsStar)
         {
             Avalonia.Controls.ToolTip.SetTip(btnStar, Lang.Text("Select.Instance.Unfavorite")); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(btnStar, PlacementMode.Center);
-            ToolTipService.SetVerticalOffset(btnStar, 30d);
-            ToolTipService.SetHorizontalOffset(btnStar, 2d);
+            ToolTip.SetPlacement(btnStar, PlacementMode.Center);
+            ToolTip.SetVerticalOffset(btnStar, 30d);
+            ToolTip.SetHorizontalOffset(btnStar, 2d);
             btnStar.LogoScale = 1.1d;
             btnStar.SvgIcon = "lucide/heart-filled";
         }
         else
         {
             Avalonia.Controls.ToolTip.SetTip(btnStar, Lang.Text("Select.Instance.Favorite")); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(btnStar, PlacementMode.Center);
-            ToolTipService.SetVerticalOffset(btnStar, 30d);
-            ToolTipService.SetHorizontalOffset(btnStar, 2d);
+            ToolTip.SetPlacement(btnStar, PlacementMode.Center);
+            ToolTip.SetVerticalOffset(btnStar, 30d);
+            ToolTip.SetHorizontalOffset(btnStar, 2d);
             btnStar.LogoScale = 1.1d;
             btnStar.SvgIcon = "lucide/heart";
         }
@@ -462,23 +462,23 @@ public partial class PageSelectRight
         };
         var btnOpenFolder = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/folder-open" };
         Avalonia.Controls.ToolTip.SetTip(btnOpenFolder, Lang.Text("Select.Instance.OpenFolder")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btnOpenFolder, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnOpenFolder, 30d);
-        ToolTipService.SetHorizontalOffset(btnOpenFolder, 2d);
+        ToolTip.SetPlacement(btnOpenFolder, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnOpenFolder, 30d);
+        ToolTip.SetHorizontalOffset(btnOpenFolder, 2d);
         btnOpenFolder.Click += (_, _) => PageInstanceOverall.OpenVersionFolder(version);
         var btnDel = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/trash-2" };
         Avalonia.Controls.ToolTip.SetTip(btnDel, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btnDel, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnDel, 30d);
-        ToolTipService.SetHorizontalOffset(btnDel, 2d);
+        ToolTip.SetPlacement(btnDel, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnDel, 30d);
+        ToolTip.SetHorizontalOffset(btnDel, 2d);
         btnDel.Click += (_, _) => DeleteVersion(sender, version);
         if (version.state != McInstanceState.Error)
         {
             var btnCont = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/settings" };
             Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Select.Instance.Settings")); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
-            ToolTipService.SetVerticalOffset(btnCont, 30d);
-            ToolTipService.SetHorizontalOffset(btnCont, 2d);
+            ToolTip.SetPlacement(btnCont, PlacementMode.Center);
+            ToolTip.SetVerticalOffset(btnCont, 30d);
+            ToolTip.SetHorizontalOffset(btnCont, 2d);
             btnCont.Click += (_, _) =>
             {
                 PageInstanceLeft.McInstance = version;
@@ -495,9 +495,9 @@ public partial class PageSelectRight
         {
             var btnCont = new MyIconButton { LogoScale = 1.15d, SvgIcon = "lucide/folder-open" };
             Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Common.Action.OpenFolder")); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
-            ToolTipService.SetVerticalOffset(btnCont, 30d);
-            ToolTipService.SetHorizontalOffset(btnCont, 2d);
+            ToolTip.SetPlacement(btnCont, PlacementMode.Center);
+            ToolTip.SetVerticalOffset(btnCont, 30d);
+            ToolTip.SetHorizontalOffset(btnCont, 2d);
             btnCont.Click += (_, _) => PageInstanceOverall.OpenVersionFolder(version);
             sender.PointerReleased += (_, _) => PageInstanceOverall.OpenVersionFolder(version); // [port] MouseRightButtonUp → PointerReleased
             sender.Buttons = new[] { btnStar, btnOpenFolder, btnDel, btnCont };

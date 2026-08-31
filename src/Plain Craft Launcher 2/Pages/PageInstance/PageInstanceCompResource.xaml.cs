@@ -647,22 +647,22 @@ public partial class PageInstanceCompResource : IRefreshable
         // 图标按钮
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
         Avalonia.Controls.ToolTip.SetTip(btnOpen, Lang.Text("Instance.Saves.OpenFileLocation")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnOpen, 30d);
-        ToolTipService.SetHorizontalOffset(btnOpen, 2d);
+        ToolTip.SetPlacement(btnOpen, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnOpen, 30d);
+        ToolTip.SetHorizontalOffset(btnOpen, 2d);
         btnOpen.Click += (ss, ee) => Open_Click((MyIconButton)ss, ee);
         var btnCont = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/info", Tag = sender };
         Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Instance.Saves.Detail")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnCont, 30d);
-        ToolTipService.SetHorizontalOffset(btnCont, 2d);
+        ToolTip.SetPlacement(btnCont, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnCont, 30d);
+        ToolTip.SetHorizontalOffset(btnCont, 2d);
         btnCont.Click += Info_Click;
         sender.MouseRightButtonUp += Info_Click;
         var btnDelete = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/trash-2", Tag = sender };
         Avalonia.Controls.ToolTip.SetTip(btnDelete, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
-        ToolTipService.SetPlacement(btnDelete, PlacementMode.Center);
-        ToolTipService.SetVerticalOffset(btnDelete, 30d);
-        ToolTipService.SetHorizontalOffset(btnDelete, 2d);
+        ToolTip.SetPlacement(btnDelete, PlacementMode.Center);
+        ToolTip.SetVerticalOffset(btnDelete, 30d);
+        ToolTip.SetHorizontalOffset(btnDelete, 2d);
         btnDelete.Click += (ss, ee) => Delete_Click((MyIconButton)ss, ee);
         if (currentCompType != ModComp.CompType.Mod ||
             sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Unavailable)
@@ -680,9 +680,9 @@ public partial class PageInstanceCompResource : IRefreshable
                 Tag = sender
             };
             Avalonia.Controls.ToolTip.SetTip(btnED, sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine ? Lang.Text("Instance.Resource.Disable") : Lang.Text("Instance.Resource.Enable")); // [port] ToolTip -> SetTip
-            ToolTipService.SetPlacement(btnED, PlacementMode.Center);
-            ToolTipService.SetVerticalOffset(btnED, 30d);
-            ToolTipService.SetHorizontalOffset(btnED, 2d);
+            ToolTip.SetPlacement(btnED, PlacementMode.Center);
+            ToolTip.SetVerticalOffset(btnED, 30d);
+            ToolTip.SetHorizontalOffset(btnED, 2d);
             btnED.Click += (ss, ee) => ED_Click((MyIconButton)ss, ee);
             sender.Buttons = new[] { btnCont, btnOpen, btnED, btnDelete };
         }

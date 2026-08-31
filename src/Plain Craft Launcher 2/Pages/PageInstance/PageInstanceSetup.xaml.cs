@@ -785,8 +785,6 @@ public partial class PageInstanceSetup
                         Lang.Text("Instance.Setup.Options.Java.Details", curJava.Installation.JavaExePath, curJava.Installation.Version, curJava.Source),
                     Tag = curJava
                 };
-                ToolTipService.SetInitialShowDelay(item, 300);
-                ToolTipService.SetBetweenShowDelay(item, 100);
                 ComboArgumentJava.Items.Add(item);
             }
         }

@@ -11,8 +11,7 @@
                           LogoScale="1" SvgIcon="lucide/rocket">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="0" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="0" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -24,8 +23,7 @@
               LogoScale="1" SvgIcon="lucide/coffee">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="9" ToolTip="{DynamicResource Common.Action.Refresh}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="9" ToolTip="{DynamicResource Common.Action.Refresh}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Refresh" LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
                     </x:Array>
@@ -39,8 +37,7 @@
                               SvgIcon="lucide/book-marked">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="2" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="2" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -56,8 +53,7 @@
                               SvgIcon="lucide/bubbles">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="7" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="7" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -74,8 +70,7 @@
                               Type="RadioBox">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="1" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="1" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -94,8 +89,7 @@
                               SvgIcon="lucide/earth">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="11" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="11" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -110,8 +104,7 @@
                               SvgIcon="lucide/monitor-cog">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="10" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="10" ToolTip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
@@ -136,8 +129,7 @@
                               SvgIcon="lucide/message-circle">
                 <local:MyListItem.Buttons>
                     <x:Array Type="{x:Type local:MyIconButton}">
-                        <local:MyIconButton Tag="6" ToolTip="{DynamicResource Common.Action.Refresh}" ToolTipService.Placement="Right"
-                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                        <local:MyIconButton Tag="6" ToolTip="{DynamicResource Common.Action.Refresh}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Refresh" LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
                     </x:Array>
