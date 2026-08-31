@@ -4,8 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Media;
-using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.IO.Net.Http;

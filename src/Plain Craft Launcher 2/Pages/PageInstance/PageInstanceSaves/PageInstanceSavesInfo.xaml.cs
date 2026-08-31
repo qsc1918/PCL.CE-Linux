@@ -1,11 +1,10 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Humanizer;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
@@ -186,7 +185,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
         var lockCheckBox = new MyCheckBox
         {
             Text = Lang.Text("Instance.Saves.Info.LockDifficulty"),
-            ToolTip = Lang.Text("Instance.Saves.Info.LockDifficulty.ToolTip"),
+            ToolTip = Lang.Text("Instance.Saves.Info.LockDifficulty"),
             VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10d, 0d, 0d, 0d),
             Checked = isLocked,
             Visibility = isHardcore ? false : true,
@@ -284,7 +283,7 @@ public partial class PageInstanceSavesInfo : IRefreshable
                 SvgIcon = "lucide/external-link",
                 Width = 22d,
                 Height = 22d,
-                ToolTip = Lang.Text("Instance.Saves.Info.Chunkbase.ToolTip"),
+                ToolTip = Lang.Text("Instance.Saves.Info.Chunkbase"),
             };
             chunkbaseBtn.Click += (_, _) => OpenChunkbase(content, versionName);
             contentStack.Children.Add(chunkbaseBtn);

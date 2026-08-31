@@ -6,10 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.Logging;
@@ -108,7 +106,7 @@ public partial class PageLaunchRight : IRefreshable
         {
             // 本地文件
             LogWrapper.Info("[Page] 主页自定义数据来源：本地文件");
-            content = ModBase.ReadFile(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"));
+            content = ModBase.ReadFile(System.IO.Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"));
         }
         else if (uiCustomType == 2)
         {
@@ -264,7 +262,7 @@ public partial class PageLaunchRight : IRefreshable
     {
         if (string.IsNullOrWhiteSpace(url)) return "";
 
-        var cachePath = Path.Combine(ModBase.pathTemp, "Cache", "Custom.xaml");
+        var cachePath = System.IO.Path.Combine(ModBase.pathTemp, "Cache", "Custom.xaml");
         var cachedUrl = (string)States.UI.SavedHomepageUrl;
 
         if (url == cachedUrl && File.Exists(cachePath))
@@ -290,7 +288,7 @@ public partial class PageLaunchRight : IRefreshable
         string[]? lines = null;
 
         // 外部文件
-        var externalPath = Path.Combine(ModBase.exePath, "PCL", "hints.txt");
+        var externalPath = System.IO.Path.Combine(ModBase.exePath, "PCL", "hints.txt");
         if (File.Exists(externalPath))
         {
             try
@@ -648,7 +646,7 @@ public partial class PageLaunchRight : IRefreshable
         if (PanCustom.Children.Count == 0) return;
         if ((int)Config.Preference.Homepage.Type != 1) return;
 
-        var file = Path.Combine(_GetHomepageLiveDirectory(), homepageLivePatchFileName);
+        var file = System.IO.Path.Combine(_GetHomepageLiveDirectory(), homepageLivePatchFileName);
         if (!File.Exists(file)) return;
 
         try
@@ -674,7 +672,6 @@ public partial class PageLaunchRight : IRefreshable
             try
             {
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                using var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
             }
             catch (Exception ex)
@@ -689,7 +686,7 @@ public partial class PageLaunchRight : IRefreshable
 
     private static string _GetHomepageLiveDirectory()
     {
-        return Path.Combine(ModBase.exePath, "PCL");
+        return System.IO.Path.Combine(ModBase.exePath, "PCL");
     }
 
     private static void _WriteHomepageLiveSupportMarker(string directory)
@@ -703,7 +700,7 @@ public partial class PageLaunchRight : IRefreshable
                 ["patchFile"] = homepageLivePatchFileName,
                 ["startedAt"] = DateTime.Now.ToString("O", CultureInfo.InvariantCulture)
             };
-            File.WriteAllText(Path.Combine(directory, homepageLiveSupportFileName), marker.ToJsonString());
+            File.WriteAllText(System.IO.Path.Combine(directory, homepageLiveSupportFileName), marker.ToJsonString());
         }
         catch (Exception ex)
         {
@@ -715,7 +712,7 @@ public partial class PageLaunchRight : IRefreshable
     {
         try
         {
-            var file = Path.Combine(_GetHomepageLiveDirectory(), homepageLiveSupportFileName);
+            var file = System.IO.Path.Combine(_GetHomepageLiveDirectory(), homepageLiveSupportFileName);
             if (!File.Exists(file)) return;
 
             var marker = (JsonObject)JsonNode.Parse(_ReadHomepageLivePatchFile(file),

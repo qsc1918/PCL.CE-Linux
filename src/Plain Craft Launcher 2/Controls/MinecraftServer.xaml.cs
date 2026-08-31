@@ -3,11 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media;
 using PCL.Core.App.Localization;
 using PCL.Core.Link.McPing;
 using PCL.Core.Link.McPing.Model;
@@ -50,7 +48,7 @@ public partial class MinecraftServer : Grid
         LabServerDesc.Foreground = Brushes.White;
         LabServerDesc.Text = Lang.Text("Tools.ServerQuery.State.Querying");
         LabServerPlayer.Text = "-/-";
-        LabServerPlayer.ToolTip = null;
+        Avalonia.Controls.ToolTip.SetTip(LabServerPlayer, null); // [port] ToolTip -> SetTip
         LabServerLatency.Text = string.Empty;
         ImageLoaderHelper.SetFallbackImage(ImgServerLogo, fallbackImageUri);
 
@@ -99,7 +97,7 @@ public partial class MinecraftServer : Grid
         // 玩家列表提示
         if (ret.Players.Samples.Any())
         {
-            LabServerPlayer.ToolTip = string.Join("\r\n", ret.Players.Samples.Select(x => x.Name));
+            Avalonia.Controls.ToolTip.SetTip(LabServerPlayer, string.Join("\r\n", ret.Players.Samples.Select(x => x.Name))); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(LabServerPlayer, PlacementMode.Mouse);
         }
     }

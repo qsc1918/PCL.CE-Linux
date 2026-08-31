@@ -9,9 +9,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using PCL.Core.App;
@@ -268,7 +267,7 @@ public partial class PageToolsTest
                     }
 
                     num += ModBase.DeleteDirectory(ModBase.pathTemp, true);
-                    num += ModBase.DeleteDirectory(Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL"), true);
+                    num += ModBase.DeleteDirectory(System.IO.Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL"), true);
                     if (num != 0)
                     {
                         ModMain.MyMsgBox(Lang.Text("Tools.Test.Clean.ClearedMessage", num),

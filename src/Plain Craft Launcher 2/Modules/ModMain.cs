@@ -8,12 +8,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 // [port] Avalonia.Interop removed
-using Avalonia.Media;
 using Avalonia.Threading;
 using FluentValidation;
 using Microsoft.VisualBasic;
@@ -1023,7 +1020,7 @@ public static class ModMain
             try
             {
                 ModBase.Log("[System] 开始清理任务缓存文件夹");
-                ModBase.DeleteDirectory(Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL", "TaskTemp"));
+                ModBase.DeleteDirectory(System.IO.Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL", "TaskTemp"));
                 ModBase.DeleteDirectory($@"{ModBase.pathTemp}TaskTemp\");
                 ModBase.Log("[System] 已清理任务缓存文件夹");
             }
@@ -1071,7 +1068,7 @@ public static class ModMain
 
         // 使用备用路径
         resultFolder =
-            Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL", "TaskTemp", $"{ModBase.GetUuid()}-{RandomUtils.NextInt(0, 1000000)}");
+            System.IO.Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL", "TaskTemp", $"{ModBase.GetUuid()}-{RandomUtils.NextInt(0, 1000000)}");
         Directory.CreateDirectory(resultFolder);
         ModBase.CheckPermission(resultFolder);
         return resultFolder;

@@ -4,12 +4,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Documents;
 using Avalonia.Markup;
-using Avalonia.Controls.Shapes;
 
 using PCL.Core.App.Localization;
 using Avalonia.Metadata;

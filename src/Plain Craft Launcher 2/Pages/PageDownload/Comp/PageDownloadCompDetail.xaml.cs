@@ -8,9 +8,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using FluentValidation;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
@@ -127,7 +126,7 @@ public partial class PageDownloadCompDetail
                     ModDownloadLib.McInstallFailedClearFolder(myLoader);
                 }
             };
-            loader.Start(Path.Combine(ModFolder.mcFolderSelected, "versions", instanceName));
+            loader.Start(System.IO.Path.Combine(ModFolder.mcFolderSelected, "versions", instanceName));
             ModLoader.LoaderTaskbarAdd(loader);
             ModMain.frmMain.BtnExtraDownload.ShowRefresh();
             ModMain.frmMain.BtnExtraDownload.Ribble();

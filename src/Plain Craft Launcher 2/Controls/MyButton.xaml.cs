@@ -6,7 +6,6 @@ using Avalonia.Layout;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Markup;
-using Avalonia.Media;
 
 using Avalonia.Metadata;
 

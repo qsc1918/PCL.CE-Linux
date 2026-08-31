@@ -7,9 +7,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using PCL.Core.App;
@@ -87,8 +86,8 @@ public partial class Application : Avalonia.Application
             // 初始化文件结构
             Directory.CreateDirectory(ModBase.exePath + @"PCL\Pictures");
             Directory.CreateDirectory(ModBase.exePath + @"PCL\Musics");
-            Directory.CreateDirectory(Path.Combine(ModBase.pathTemp, "Cache"));
-            Directory.CreateDirectory(Path.Combine(ModBase.pathTemp, "Download"));
+            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Cache"));
+            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Download"));
             Directory.CreateDirectory(ModBase.pathAppdata);
 
             // 设置 ToolTipService 默认值
@@ -159,7 +158,7 @@ public partial class Application : Avalonia.Application
             if (SystemInfo.Is32BitSystem)
                 problemList.Add(Lang.Text("Application.EnvironmentWarning.System32Bit"));
         }
-        if (ModBase.exePath.Contains(Path.GetTempPath()) || ModBase.exePath.Contains(@"AppData\Local\Temp\"))
+        if (ModBase.exePath.Contains(System.IO.Path.GetTempPath()) || ModBase.exePath.Contains(@"AppData\Local\Temp\"))
             problemList.Add(Lang.Text("Application.EnvironmentWarning.TempFolder"));
         if (ModBase.exePath.ContainsF("wechat_files", true) || ModBase.exePath.ContainsF("WeChat Files", true) ||
             ModBase.exePath.ContainsF("Tencent Files", true))

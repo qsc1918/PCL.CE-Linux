@@ -5,10 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -205,7 +203,7 @@ public partial class PageInstanceCompResource : IRefreshable
         res.loaders = requireLoaders;
         res.compPath = PageInstanceLeft.McInstance.PathIndie +
                        (PageInstanceLeft.McInstance.Info.HasLabyMod
-                           ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                           ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                            : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
         res.compType = currentCompType;
         return res;
@@ -346,7 +344,7 @@ public partial class PageInstanceCompResource : IRefreshable
             // 加载根目录
             loadPath = PageInstanceLeft.McInstance.PathIndie +
                        (PageInstanceLeft.McInstance.Info.HasLabyMod
-                           ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                           ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                            : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
         else
             // 加载当前文件夹
@@ -425,9 +423,9 @@ public partial class PageInstanceCompResource : IRefreshable
             // 获取根路径
             var rootPath = PageInstanceLeft.McInstance.PathIndie +
                            (PageInstanceLeft.McInstance.Info.HasLabyMod
-                               ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                               ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
-            rootPath = Path.GetFullPath(rootPath.TrimEnd('\\'));
+            rootPath = System.IO.Path.GetFullPath(rootPath.TrimEnd('\\'));
 
             // 获取父级路径
             var parentPath = Directory.GetParent(CurrentFolderPath)?.FullName;
@@ -454,7 +452,7 @@ public partial class PageInstanceCompResource : IRefreshable
             // 返回到根目录
             loadPath = PageInstanceLeft.McInstance.PathIndie +
                        (PageInstanceLeft.McInstance.Info.HasLabyMod
-                           ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                           ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                            : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
         else
             // 加载当前文件夹
@@ -549,9 +547,9 @@ public partial class PageInstanceCompResource : IRefreshable
             modItems.Clear();
             var rootPath = PageInstanceLeft.McInstance.PathIndie +
                            (PageInstanceLeft.McInstance.Info.HasLabyMod
-                               ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                               ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
-            rootPath = Path.GetFullPath(rootPath.TrimEnd('\\'));
+            rootPath = System.IO.Path.GetFullPath(rootPath.TrimEnd('\\'));
 
             var itemsToShow = ModLocalComp.compResourceListLoader.output.Where(item =>
             {
@@ -648,20 +646,20 @@ public partial class PageInstanceCompResource : IRefreshable
 
         // 图标按钮
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
-        btnOpen.ToolTip = Lang.Text("Instance.Saves.OpenFileLocation");
+        Avalonia.Controls.ToolTip.SetTip(btnOpen, Lang.Text("Instance.Saves.OpenFileLocation")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnOpen, 30d);
         ToolTipService.SetHorizontalOffset(btnOpen, 2d);
         btnOpen.Click += (ss, ee) => Open_Click((MyIconButton)ss, ee);
         var btnCont = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/info", Tag = sender };
-        btnCont.ToolTip = Lang.Text("Instance.Saves.Detail");
+        Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Instance.Saves.Detail")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnCont, 30d);
         ToolTipService.SetHorizontalOffset(btnCont, 2d);
         btnCont.Click += Info_Click;
         sender.MouseRightButtonUp += Info_Click;
         var btnDelete = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/trash-2", Tag = sender };
-        btnDelete.ToolTip = Lang.Text("Common.Action.Delete");
+        Avalonia.Controls.ToolTip.SetTip(btnDelete, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnDelete, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnDelete, 30d);
         ToolTipService.SetHorizontalOffset(btnDelete, 2d);
@@ -681,7 +679,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     : "lucide/circle-check",
                 Tag = sender
             };
-            btnED.ToolTip = sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine ? Lang.Text("Instance.Resource.Disable") : Lang.Text("Instance.Resource.Enable");
+            Avalonia.Controls.ToolTip.SetTip(btnED, sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine ? Lang.Text("Instance.Resource.Disable") : Lang.Text("Instance.Resource.Enable")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnED, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnED, 30d);
             ToolTipService.SetHorizontalOffset(btnED, 2d);
@@ -958,7 +956,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 // 打开根目录
                 compFilePath = PageInstanceLeft.McInstance.PathIndie +
                                (PageInstanceLeft.McInstance.Info.HasLabyMod
-                                   ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                                   ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                    : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
             else
                 // 打开当前子文件夹
@@ -1099,7 +1097,7 @@ public partial class PageInstanceCompResource : IRefreshable
 
                 if (!fileName.Contains(".")) fileName += ".jar"; // Ensure extension (#4227)
 
-                ModBase.CopyFile(modFile, Path.Combine(modFolder, fileName));
+                ModBase.CopyFile(modFile, System.IO.Path.Combine(modFolder, fileName));
             }
 
             // Success hint
@@ -1164,7 +1162,7 @@ public partial class PageInstanceCompResource : IRefreshable
                 if (string.IsNullOrEmpty(targetFolderPath))
                     compFolder = targetInstance.PathIndie +
                                  (targetInstance.Info.HasLabyMod
-                                     ? Path.Combine("labymod-neo", "fabric", targetInstance.Info.VanillaName)
+                                     ? System.IO.Path.Combine("labymod-neo", "fabric", targetInstance.Info.VanillaName)
                                      : "") + @"mods\";
                 else
                     compFolder = targetFolderPath;
@@ -2155,7 +2153,7 @@ public partial class PageInstanceCompResource : IRefreshable
                     Lang.Text("Instance.Resource.Update.Task.Title", PageInstanceLeft.McInstance.Name), installLoaders);
             var pathMods = PageInstanceLeft.McInstance.PathIndie +
                            (PageInstanceLeft.McInstance.Info.HasLabyMod
-                               ? Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
+                               ? System.IO.Path.Combine("labymod-neo", "fabric", PageInstanceLeft.McInstance.Info.VanillaName)
                                : "") + ModLocalComp.GetPathNameByCompType(currentCompType) + @"\";
             loader.OnStateChanged = _ =>
             {

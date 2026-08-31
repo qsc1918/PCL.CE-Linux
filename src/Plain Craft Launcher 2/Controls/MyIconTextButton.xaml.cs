@@ -3,13 +3,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Documents;
 using Avalonia.Markup;
-using Avalonia.Media;
-using Avalonia.Controls.Shapes;
 
 using Avalonia.Metadata;
 

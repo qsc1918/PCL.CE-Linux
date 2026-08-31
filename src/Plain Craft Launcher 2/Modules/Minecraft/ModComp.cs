@@ -13,11 +13,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using PCL.Core.App;
@@ -33,6 +31,7 @@ using PCL.Core.UI;
 namespace PCL;
 
 public static class ModComp
+            using (var conn = CompDB)
 {
     public enum CompLoaderType
     {
@@ -714,8 +713,8 @@ public static class ModComp
                     trueDbFile.CopyTo(ms);
                     ms.Seek(0L, SeekOrigin.Begin);
                     var fileHash = ModBase.GetHexString(SHA1Provider.Instance.ComputeHash(ms));
-                    var dbDir = Path.Combine(ModBase.pathTemp, "Cache");
-                    var dbPath = Path.Combine(dbDir, $"ModData{fileHash}.sqlite");
+                    var dbDir = System.IO.Path.Combine(ModBase.pathTemp, "Cache");
+                    var dbPath = System.IO.Path.Combine(dbDir, $"ModData{fileHash}.sqlite");
 
                     if (File.Exists(dbPath) && !IsDatabaseValid(dbPath))
                     {
@@ -2406,7 +2405,6 @@ public static class ModComp
         if (isChineseSearch && request.type is CompType.Mod or CompType.DataPack)
         {
             var searchEntries = new List<ModBase.SearchEntry<CompDatabaseEntry>>();
-            using (var conn = CompDB)
             {
                 var likeEscaped = rawFilter.Replace("\\", "\\\\").Replace("%", "\\%").Replace("_", "\\_");
                 var searchRes = conn.Query<CompDatabaseEntry>(
@@ -3587,7 +3585,7 @@ public static class ModComp
         }
         var folder = instance.PathIndie + _GetSubFolder(project.Type);
         Directory.CreateDirectory(folder);
-        var target = Path.Combine(folder, CompFileNameGet(project, file));
+        var target = System.IO.Path.Combine(folder, CompFileNameGet(project, file));
         _StartQuickDownload(file, target);
         HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.DownloadStarted", project.RawName), HintType.Success);
     }
@@ -3644,7 +3642,7 @@ public static class ModComp
         var saveFolder = ModBase.RunInUiWait(() =>
             SystemDialogs.SelectFolder(Lang.Text("Download.Comp.QuickDownload.Hint.SelectFolder")));
         if (string.IsNullOrWhiteSpace(saveFolder)) return; // 取消
-        var target = Path.Combine(saveFolder, CompFileNameGet(project, file));
+        var target = System.IO.Path.Combine(saveFolder, CompFileNameGet(project, file));
         _StartQuickDownload(file, target);
         HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.DownloadStarted", project.RawName), HintType.Success);
     }
@@ -3679,7 +3677,7 @@ public static class ModComp
         };
         if (file.Type == CompType.World)
         {
-            var extractDir = Path.GetDirectoryName(target);
+            var extractDir = System.IO.Path.GetDirectoryName(target);
             loaders.Add(new ModLoader.LoaderTask<int, int>(
                 Lang.Text("Download.Comp.Detail.InstallWorld"),
                 _ => ModBase.ExtractFile(target, extractDir, Encoding.UTF8))

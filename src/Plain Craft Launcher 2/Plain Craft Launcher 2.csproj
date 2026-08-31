@@ -103,7 +103,8 @@
             Controls\Behaviors\ClipboardInterceptor.cs;
             Controls\Behaviors\LazyLoadBehavior.cs;" />
         <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
-        <AvaloniaXaml Include="**\*.axaml" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
+        <!-- [port] axaml 由 Avalonia 包默认 glob 收集（EnableDefaultItems 不影响）；这里只做排除 -->
+        <AvaloniaXaml Remove="@(DeferredExcludes)" />
         <AvaloniaResource Include="Images\**" />
         <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
         <EmbeddedResource Include="metadata.json" />

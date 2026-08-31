@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using PCL.Core.App;
@@ -123,8 +123,8 @@ public static class UpdateManager
                         isUpdateWaitingRestart = true;
                         ModBase.RunInUi(() =>
                         {
-                            ModMain.frmMain.BtnExtraUpdateRestart.ToolTip =
-                                Lang.Text("Main.Extra.UpdateRestart.ToolTipWithVersion", ModBase.versionBaseName, version.VersionName);
+                            Avalonia.Controls.ToolTip.SetTip(ModMain.frmMain.BtnExtraUpdateRestart,
+                                Lang.Text("Main.Extra.UpdateRestart.ToolTipWithVersion", ModBase.versionBaseName, version.VersionName));
                             ModMain.frmMain.BtnExtraUpdateRestart.ShowRefresh();
                             ModMain.frmMain.BtnExtraUpdateRestart.Ribble();
                         });

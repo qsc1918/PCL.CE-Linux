@@ -1,13 +1,12 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 using Avalonia.Threading;
 using PCL.Core.App;
@@ -146,7 +145,7 @@ public partial class PageInstanceSetup
             {
                 CheckAdvanceDisableJLW.Checked = true;
                 CheckAdvanceDisableJLW.IsEnabled = false;
-                CheckAdvanceDisableJLW.ToolTip = Lang.Text("Setup.Launch.Advanced.DisableJlw.Arm64ToolTip");
+                Avalonia.Controls.ToolTip.SetTip(CheckAdvanceDisableJLW, Lang.Text("Setup.Launch.Advanced.DisableJlw.Arm64ToolTip")); // [port] ToolTip -> SetTip
             }
             else
             {
@@ -739,7 +738,7 @@ public partial class PageInstanceSetup
         if (preference is UseRelativePath)
         {
             var relPref = (UseRelativePath)preference;
-            var absPath = Path.GetFullPath(Path.Combine(Basics.ExecutableDirectory, relPref.RelativePath));
+            var absPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Basics.ExecutableDirectory, relPref.RelativePath));
             var javaEntry = ModJava.Javas.Get(absPath);
 
             if (Files.IsPathWithinDirectory(absPath, Basics.ExecutableDirectory) && javaEntry is not null &&
@@ -783,7 +782,7 @@ public partial class PageInstanceSetup
                 {
                     Content = curJava.ToString(),
                     ToolTip =
-                        Lang.Text("Instance.Setup.Options.Java.Details.ToolTip", curJava.Installation.JavaExePath, curJava.Installation.Version, curJava.Source),
+                        Lang.Text("Instance.Setup.Options.Java.Details", curJava.Installation.JavaExePath, curJava.Installation.Version, curJava.Source),
                     Tag = curJava
                 };
                 ToolTipService.SetInitialShowDelay(item, 300);
@@ -858,7 +857,7 @@ public partial class PageInstanceSetup
             var noJavaItem = new MyComboBoxItem
             {
                 Content = Lang.Text("Instance.Setup.Options.Java.NoRuntime"),
-                ToolTip = Lang.Text("Instance.Setup.Options.Java.NoRuntime.ToolTip"),
+                ToolTip = Lang.Text("Instance.Setup.Options.Java.NoRuntime"),
                 IsEnabled = false
             };
             ComboArgumentJava.Items.Add(noJavaItem);
@@ -921,8 +920,8 @@ public partial class PageInstanceSetup
                 // 用户取消，不保存配置，保持原选择
                 return;
 
-            ret = Path.GetFullPath(ret);
-            var relativePath = Path.GetRelativePath(Basics.ExecutableDirectory, ret);
+            ret = System.IO.Path.GetFullPath(ret);
+            var relativePath = System.IO.Path.GetRelativePath(Basics.ExecutableDirectory, ret);
 
             // 验证路径是否在启动器目录内
             if (!Files.IsPathWithinDirectory(relativePath, Basics.ExecutableDirectory))

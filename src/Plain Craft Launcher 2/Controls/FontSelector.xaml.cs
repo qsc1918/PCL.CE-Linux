@@ -7,11 +7,8 @@ using Avalonia.Threading;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
-using Avalonia.Threading;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App.Localization;
 using PCL.Core.Logging;
 using PCL.Core.Utils.Exts;
@@ -88,7 +85,7 @@ public partial class FontSelector
 
     private static void OnTooltipChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
-        if (d is FontSelector control) control.ComboFont.ToolTip = e.NewValue;
+        if (d is FontSelector control) Avalonia.Controls.ToolTip.SetTip(control.ComboFont, e.NewValue); // [port] ToolTip -> SetTip
     }
 
     public event SelectionChangedEventHandler? SelectionChanged;

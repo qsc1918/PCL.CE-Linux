@@ -5,10 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -104,7 +102,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         res.gameVersion = PageInstanceLeft.McInstance;
         res.frm = null;
         res.loaders = new[] { ModComp.CompLoaderType.Minecraft }.ToList();
-        res.compPath = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+        res.compPath = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
         res.compType = ModComp.CompType.DataPack;
         return res;
     }
@@ -184,7 +182,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
     public bool LoaderRun(ModLoader.LoaderFolderRunType type)
     {
-        var loadPath = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+        var loadPath = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
         return ModLoader.LoaderFolderRun(ModLocalComp.compResourceListLoader, loadPath, type,
             loaderInput: GetRequireLoaderData());
     }
@@ -289,14 +287,14 @@ public partial class PageInstanceSavesDatapack : IRefreshable
 
         // 图标按钮
         var btnOpen = new MyIconButton { LogoScale = 1.05d, SvgIcon = "lucide/folder-open", Tag = sender };
-        btnOpen.ToolTip = Lang.Text("Instance.Saves.OpenFileLocation");
+        Avalonia.Controls.ToolTip.SetTip(btnOpen, Lang.Text("Instance.Saves.OpenFileLocation")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnOpen, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnOpen, 30d);
         ToolTipService.SetHorizontalOffset(btnOpen, 2d);
         btnOpen.Click += (sender, e) => Open_Click((MyIconButton)sender, e);
 
         var btnCont = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/info", Tag = sender };
-        btnCont.ToolTip = Lang.Text("Instance.Saves.Detail");
+        Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Instance.Saves.Detail")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnCont, 30d);
         ToolTipService.SetHorizontalOffset(btnCont, 2d);
@@ -304,7 +302,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         sender.MouseRightButtonUp += Info_Click;
 
         var btnDelete = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/trash-2", Tag = sender };
-        btnDelete.ToolTip = Lang.Text("Common.Action.Delete");
+        Avalonia.Controls.ToolTip.SetTip(btnDelete, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnDelete, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnDelete, 30d);
         ToolTipService.SetHorizontalOffset(btnDelete, 2d);
@@ -313,7 +311,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         if (sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Fine)
         {
             var btnDisable = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/circle-minus", Tag = sender };
-            btnDisable.ToolTip = Lang.Text("Instance.Resource.Disable");
+            Avalonia.Controls.ToolTip.SetTip(btnDisable, Lang.Text("Instance.Resource.Disable")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnDisable, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnDisable, 30d);
             ToolTipService.SetHorizontalOffset(btnDisable, 2d);
@@ -323,7 +321,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         else if (sender.Entry.State == ModLocalComp.LocalCompFile.LocalFileStatus.Disabled)
         {
             var btnEnable = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/circle-check", Tag = sender };
-            btnEnable.ToolTip = Lang.Text("Instance.Resource.Enable");
+            Avalonia.Controls.ToolTip.SetTip(btnEnable, Lang.Text("Instance.Resource.Enable")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnEnable, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnEnable, 30d);
             ToolTipService.SetHorizontalOffset(btnEnable, 2d);
@@ -556,7 +554,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     {
         try
         {
-            var datapackPath = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+            var datapackPath = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
             Directory.CreateDirectory(datapackPath);
             ModBase.OpenExplorer(datapackPath);
         }
@@ -629,7 +627,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         // 执行安装
         try
         {
-            var datapackFolder = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+            var datapackFolder = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
             Directory.CreateDirectory(datapackFolder);
 
             foreach (var FilePath in filePathList)
@@ -671,7 +669,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
     /// </summary>
     private void BtnManageDownload_Click(object sender, PointerPressedEventArgs e)
     {
-        var datapackPath = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+        var datapackPath = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
         Directory.CreateDirectory(datapackPath);
         PageDownloadCompDetail.cachedFolder[ModComp.CompType.DataPack] = datapackPath;
         ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadDataPack);
@@ -1205,20 +1203,20 @@ public partial class PageInstanceSavesDatapack : IRefreshable
         if (fileName.IndexOfAny(new[] { '\\', '/', ':' }) >= 0)
             return false;
 
-        if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+        if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0)
             return false;
 
-        return fileName == Path.GetFileName(fileName) && fileName != "." && fileName != "..";
+        return fileName == System.IO.Path.GetFileName(fileName) && fileName != "." && fileName != "..";
     }
 
     private static bool TryBuildDatapackUpdatePath(string rootPath, string fileName, out string fullPath)
     {
-        var fullRootPath = Path.GetFullPath(rootPath);
-        if (!fullRootPath.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
-            !fullRootPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
-            fullRootPath += Path.DirectorySeparatorChar;
+        var fullRootPath = System.IO.Path.GetFullPath(rootPath);
+        if (!fullRootPath.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()) &&
+            !fullRootPath.EndsWith(System.IO.Path.AltDirectorySeparatorChar.ToString()))
+            fullRootPath += System.IO.Path.DirectorySeparatorChar;
 
-        fullPath = Path.GetFullPath(Path.Combine(fullRootPath, fileName));
+        fullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(fullRootPath, fileName));
         return fullPath.StartsWith(fullRootPath, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -1242,8 +1240,8 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             var fileList = new List<DownloadFile>();
             var fileCopyList = new Dictionary<string, string>();
             var updateEntryList = new List<ModLocalComp.LocalCompFile>();
-            var tempRoot = Path.Combine(ModBase.pathTemp, "DownloadedComp");
-            var datapackRoot = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+            var tempRoot = System.IO.Path.Combine(ModBase.pathTemp, "DownloadedComp");
+            var datapackRoot = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
             var skippedUnsafeFileCount = 0;
             foreach (var Entry in datapackList)
             {
@@ -1323,7 +1321,7 @@ public partial class PageInstanceSavesDatapack : IRefreshable
             var loader = new ModLoader.LoaderCombo<IEnumerable<ModLocalComp.LocalCompFile>>(
                 Lang.Text("Instance.Saves.Datapack.Update.Task.Title",
                     ModBase.GetFolderNameFromPath(PageInstanceSavesLeft.currentSave)), installLoaders);
-            var pathDatapacks = Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
+            var pathDatapacks = System.IO.Path.Combine(PageInstanceSavesLeft.currentSave, "datapacks");
 
             loader.OnStateChanged = _ =>
             {

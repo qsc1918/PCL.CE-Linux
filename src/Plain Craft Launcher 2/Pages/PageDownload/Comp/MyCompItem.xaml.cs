@@ -3,11 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
-using Avalonia.Media;
 
 namespace PCL;
 
@@ -176,11 +174,11 @@ public partial class MyCompItem : Grid
         {
             ToolTipInfo.Content = LabInfo.Text;
             ToolTipInfo.Width = LabInfo.Bounds.Width + 25d;
-            LabInfo.ToolTip = ToolTipInfo;
+            Avalonia.Controls.ToolTip.SetTip(LabInfo, ToolTipInfo); // [port] ToolTip -> SetTip
         }
         else
         {
-            LabInfo.ToolTip = null;
+            Avalonia.Controls.ToolTip.SetTip(LabInfo, null); // [port] ToolTip -> SetTip
         }
     }
 

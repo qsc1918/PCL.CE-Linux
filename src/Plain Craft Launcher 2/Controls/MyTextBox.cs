@@ -5,12 +5,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
-using Avalonia.Media;
 using FluentValidation;
 
 using PCL.Core.App.Localization;
