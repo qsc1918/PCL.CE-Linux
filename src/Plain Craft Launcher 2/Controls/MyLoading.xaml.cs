@@ -34,8 +34,8 @@ public partial class MyLoading : Grid
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly AvaloniaProperty ForegroundProperty =
-        AvaloniaProperty.Register("Foreground", typeof(SolidColorBrush), typeof(MyLoading));
+    public static readonly StyledProperty<SolidColorBrush> ForegroundProperty =
+        AvaloniaProperty.Register<MyLoading, SolidColorBrush>(nameof(Foreground));
 
     public MyLoading()
     {
@@ -78,9 +78,8 @@ public partial class MyLoading : Grid
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly AvaloniaProperty TextProperty =
-        AvaloniaProperty.Register("Text", typeof(string), typeof(MyLoading),
-            new PropertyMetadata("", (d, e) => ((MyLoading)d).RefreshText()));
+    public static readonly StyledProperty<string> TextProperty =
+        AvaloniaProperty.Register<MyLoading, string>(nameof(Text), string.Empty);
 
     public string TextError
     {
@@ -88,9 +87,14 @@ public partial class MyLoading : Grid
         set => SetValue(TextErrorProperty, value);
     }
 
-    public static readonly AvaloniaProperty TextErrorProperty =
-        AvaloniaProperty.Register("TextError", typeof(string), typeof(MyLoading),
-            new PropertyMetadata("", (d, e) => ((MyLoading)d).RefreshText()));
+    public static readonly StyledProperty<string> TextErrorProperty =
+        AvaloniaProperty.Register<MyLoading, string>(nameof(TextError), string.Empty);
+
+    static MyLoading()
+    {
+        TextProperty.Changed.AddClassHandler<MyLoading>((d, e) => d.RefreshText());
+        TextErrorProperty.Changed.AddClassHandler<MyLoading>((d, e) => d.RefreshText());
+    }
 
     /// <summary>
     ///     是否在使用 Loader 时使用 Loader 的错误输出来替换默认的错误文本显示。

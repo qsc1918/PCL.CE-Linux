@@ -18,19 +18,23 @@ public class MyTextButton : Label
     private const int animationTimeIn = 100;
     private const int animationTimeOut = 200;
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyTextButton), new PropertyMetadata("", (sender, e) =>
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyTextButton, string>(
+        nameof(Text), string.Empty);
+
+    static MyTextButton()
+    {
+        TextProperty.Changed.AddClassHandler<MyTextButton>((d, e) =>
         {
             if (Equals(e.OldValue, e.NewValue)) return;
-            var button = (MyTextButton)sender;
             ModAnimation.AniStart(
                 new[]
                 {
-                    ModAnimation.AaOpacity(button, -button.Opacity, 50),
-                    ModAnimation.AaCode(() => button.Content = e.NewValue, after: true),
-                    ModAnimation.AaOpacity(button, 1d, 170)
-                }, "MyTextButton Text " + button.Uuid);
-        }));
+                    ModAnimation.AaOpacity(d, -d.Opacity, 50),
+                    ModAnimation.AaCode(() => d.Content = e.NewValue, after: true),
+                    ModAnimation.AaOpacity(d, 1d, 170)
+                }, "MyTextButton Text " + d.Uuid);
+        });
+    }
     
     private string colorName;
 

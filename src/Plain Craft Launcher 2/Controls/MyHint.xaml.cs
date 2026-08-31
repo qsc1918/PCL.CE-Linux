@@ -25,21 +25,20 @@ public partial class MyHint : Border
         Yellow = 2
     }
 
-    public static readonly AvaloniaProperty IsWarnProperty = AvaloniaProperty.Register("IsWarn", typeof(bool),
-        typeof(MyHint),
-        new PropertyMetadata(true,
-            (d, e) =>
-            {
-                var f = (MyHint)d;
-                f.Theme = e.NewValue is not null ? Themes.Red : Themes.Blue;
-            }));
+    public static readonly StyledProperty<bool> IsWarnProperty = AvaloniaProperty.Register<MyHint, bool>(
+        nameof(IsWarn), true);
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyHint), new PropertyMetadata("", (d, e) =>
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyHint, string>(
+        nameof(Text), string.Empty);
+
+    static MyHint()
+    {
+        IsWarnProperty.Changed.AddClassHandler<MyHint>((d, e) =>
         {
-            var f = (MyHint)d;
-            f.LabText.Text = (string)e.NewValue;
-        }));
+            d.Theme = e.NewValue is not null ? Themes.Red : Themes.Blue;
+        });
+        TextProperty.Changed.AddClassHandler<MyHint>((d, e) => d.LabText.Text = (string)e.NewValue);
+    }
 
     // 触发点击事件
     private bool isMouseDown;

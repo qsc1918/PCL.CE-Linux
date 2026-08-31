@@ -207,11 +207,8 @@ public class MyImage : Image
         }
     } = "";
 
-    public new static readonly AvaloniaProperty SourceProperty = AvaloniaProperty.Register("Source", typeof(string),
-        typeof(MyImage), new PropertyMetadata((sender, e) =>
-        {
-            if (sender is not null) ((MyImage)sender).Source = e.NewValue.ToString();
-        }));
+    public new static readonly StyledProperty<string> SourceProperty = AvaloniaProperty.Register<MyImage, string>(
+        nameof(Source), string.Empty);
 
     /// <summary>
     ///     当 Source 首次下载失败时，会从该备用地址加载图片。
@@ -227,19 +224,16 @@ public class MyImage : Image
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
-    private static readonly AvaloniaProperty CornerRadiusProperty =
-        AvaloniaProperty.Register(
-            "CornerRadius",
-            typeof(CornerRadius),
-            typeof(MyImage),
-            new FrameworkPropertyMetadata(
-                new CornerRadius(-1),
-                OnCornerRadiusChanged)
+    private static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
+        AvaloniaProperty.Register<MyImage, CornerRadius>(
+            nameof(CornerRadius),
+            new CornerRadius(-1)
         );
 
-    private static void OnCornerRadiusChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
+    static MyImage()
     {
-        ((MyImage)d).UpdateClip();
+        SourceProperty.Changed.AddClassHandler<MyImage>((d, e) => d.Source = e.NewValue?.ToString());
+        CornerRadiusProperty.Changed.AddClassHandler<MyImage>((d, e) => d.UpdateClip());
     }
 
     private void UpdateClip() // Handles Me.SizeChanged will be added separately

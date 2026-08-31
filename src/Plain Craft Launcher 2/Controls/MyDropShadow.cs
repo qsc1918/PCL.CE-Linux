@@ -10,19 +10,21 @@ namespace PCL;
 
 public class MyDropShadow : Decorator
 {
-    public static readonly AvaloniaProperty ColorProperty = AvaloniaProperty.Register("Color", typeof(Color),
-        typeof(MyDropShadow),
-        new FrameworkPropertyMetadata(Color.FromArgb(0x71, 0x0, 0x0, 0x0),
-            FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes));
+    public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<MyDropShadow, Color>(
+        nameof(Color), Color.FromArgb(0x71, 0x0, 0x0, 0x0));
 
-    public static readonly AvaloniaProperty ShadowRadiusProperty = AvaloniaProperty.Register("ShadowRadius",
-        typeof(double), typeof(MyDropShadow),
-        new FrameworkPropertyMetadata(5d, FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes));
+    public static readonly StyledProperty<double> ShadowRadiusProperty = AvaloniaProperty.Register<MyDropShadow, double>(
+        nameof(ShadowRadius), 5d);
 
-    public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register("CornerRadius",
-        typeof(CornerRadius), typeof(MyDropShadow),
-        new FrameworkPropertyMetadata(new CornerRadius(), FrameworkPropertyMetadataOptions.AffectsRender, ClearBrushes),
-        IsCornerRadiusValid);
+    public static readonly StyledProperty<CornerRadius> CornerRadiusProperty = AvaloniaProperty.Register<MyDropShadow, CornerRadius>(
+        nameof(CornerRadius), new CornerRadius());
+
+    static MyDropShadow()
+    {
+        ColorProperty.Changed.AddClassHandler<MyDropShadow>((o, e) => ((MyDropShadow)o)._brushes = null);
+        ShadowRadiusProperty.Changed.AddClassHandler<MyDropShadow>((o, e) => ((MyDropShadow)o)._brushes = null);
+        CornerRadiusProperty.Changed.AddClassHandler<MyDropShadow>((o, e) => ((MyDropShadow)o)._brushes = null);
+    }
 
     private static Brush[] _commonBrushes;
     private static CornerRadius _commonCornerRadius;
@@ -55,16 +57,6 @@ public class MyDropShadow : Decorator
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
-
-    private static bool IsCornerRadiusValid(object value)
-    {
-        var cr = (CornerRadius)value;
-        return !(cr.TopLeft < 0.0d || cr.TopRight < 0.0d || cr.BottomLeft < 0.0d || cr.BottomRight < 0.0d ||
-                 double.IsNaN(cr.TopLeft) || double.IsNaN(cr.TopRight) || double.IsNaN(cr.BottomLeft) ||
-                 double.IsNaN(cr.BottomRight) || double.IsInfinity(cr.TopLeft) || double.IsInfinity(cr.TopRight) ||
-                 double.IsInfinity(cr.BottomLeft) || double.IsInfinity(cr.BottomRight));
-    }
-
 
     // =======================================
     // 渲染
@@ -213,11 +205,6 @@ public class MyDropShadow : Decorator
 
             drawingContext.Pop();
         }
-    }
-
-    private static void ClearBrushes(AvaloniaObject o, AvaloniaPropertyChangedEventArgs e)
-    {
-        ((MyDropShadow)o)._brushes = null;
     }
 
     private System.Collections.Generic.List<GradientStop> CreateStops(Color c, double cornerRadius)

@@ -35,11 +35,16 @@ public partial class MyRadioButton : Border
     private const int animationTimeOfMouseOut = 150; // 鼠标移出动画长度
     private const int animationTimeOfCheck = 120; // 勾选状态变更动画长度
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyRadioButton), new PropertyMetadata((sender, e) =>
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyRadioButton, string>(
+        nameof(Text), string.Empty);
+
+    static MyRadioButton()
+    {
+        TextProperty.Changed.AddClassHandler<MyRadioButton>((d, e) =>
         {
-            if (sender is MyRadioButton rb && rb.LabText is not null) rb.LabText.Text = (string)e.NewValue;
-        }));
+            if (d.LabText is not null) d.LabText.Text = (string)e.NewValue;
+        });
+    }
 
     private bool _Checked; // 是否选中
     private bool _hasLegacyLogo;

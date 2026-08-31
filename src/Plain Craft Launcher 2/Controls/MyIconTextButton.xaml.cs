@@ -30,11 +30,13 @@ public partial class MyIconTextButton : Border
     private const int animationTimeOfMouseIn = 100; // 鼠标指向动画长度
     private const int animationTimeOfMouseOut = 150; // 鼠标移出动画长度
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyIconTextButton), new PropertyMetadata((sender, e) =>
-        {
-            if (sender is not null) ((MyIconTextButton)sender).LabText.Text = (string)e.NewValue;
-        }));
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyIconTextButton, string>(
+        nameof(Text), string.Empty);
+
+    static MyIconTextButton()
+    {
+        TextProperty.Changed.AddClassHandler<MyIconTextButton>((d, e) => d.LabText.Text = (string)e.NewValue);
+    }
 
     public static readonly AvaloniaProperty ColorTypeProperty = AvaloniaProperty.Register<MyIconTextButton, ColorState>("ColorType", ColorState.Black);
 

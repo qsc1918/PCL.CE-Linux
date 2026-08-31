@@ -34,9 +34,8 @@ public partial class MySearchBox : MyCard
         set => SetValue(HintTextProperty, value);
     }
 
-    public static readonly AvaloniaProperty HintTextProperty =
-        AvaloniaProperty.Register("HintText", typeof(string), typeof(MySearchBox),
-            new PropertyMetadata(string.Empty, (d, e) => ((MySearchBox)d).TextBox.HintText = (string)e.NewValue));
+    public static readonly StyledProperty<string> HintTextProperty =
+        AvaloniaProperty.Register<MySearchBox, string>(nameof(HintText), string.Empty);
 
     public string Text
     {
@@ -44,9 +43,14 @@ public partial class MySearchBox : MyCard
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly AvaloniaProperty TextProperty =
-        AvaloniaProperty.Register("Text", typeof(string), typeof(MySearchBox),
-            new PropertyMetadata(string.Empty, (d, e) => ((MySearchBox)d).TextBox.Text = (string)e.NewValue));
+    public static readonly StyledProperty<string> TextProperty =
+        AvaloniaProperty.Register<MySearchBox, string>(nameof(Text), string.Empty);
+
+    static MySearchBox()
+    {
+        HintTextProperty.Changed.AddClassHandler<MySearchBox>((d, e) => d.TextBox.HintText = (string)e.NewValue);
+        TextProperty.Changed.AddClassHandler<MySearchBox>((d, e) => d.TextBox.Text = (string)e.NewValue);
+    }
 
     public bool SearchButtonVisibility
     {

@@ -26,24 +26,26 @@ public partial class MyCheckBox : Grid
     private const int animationTimeOfMouseOut = 200;
 
     // 在使用 XAML 设置 Checked 属性时，不会触发 Checked_Set 方法，所以需要在这里手动触发 UI 改变
-    public static readonly AvaloniaProperty CheckedProperty = AvaloniaProperty.Register("Checked", typeof(bool?),
-        typeof(MyCheckBox), new PropertyMetadata(false, (d, e) =>
-        {
-            var obj = (MyCheckBox)d;
-            if (!obj.IsLoaded) obj.SyncUI();
-        }));
+    public static readonly StyledProperty<bool?> CheckedProperty = AvaloniaProperty.Register<MyCheckBox, bool?>(
+        nameof(Checked), false);
 
     /// <summary>
     ///     是否为三态复选框。
     /// </summary>
-    public static readonly AvaloniaProperty IsThreeStateProperty =
+    public static readonly StyledProperty<bool> IsThreeStateProperty =
         AvaloniaProperty.Register<MyCheckBox, bool>("IsThreeState", false);
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyCheckBox), new PropertyMetadata((sender, e) =>
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyCheckBox, string>(
+        nameof(Text), string.Empty);
+
+    static MyCheckBox()
+    {
+        CheckedProperty.Changed.AddClassHandler<MyCheckBox>((d, e) =>
         {
-            if (sender is not null) ((MyCheckBox)sender).LabText.Text = (string)e.NewValue;
-        }));
+            if (!d.IsLoaded) d.SyncUI();
+        });
+        TextProperty.Changed.AddClassHandler<MyCheckBox>((d, e) => d.LabText.Text = (string)e.NewValue);
+    }
 
     private bool? _previousState = false; // 上一次的勾选状态
     private bool allowMouseDown = true;
