@@ -7,7 +7,6 @@ using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using PCL.Core.App;
 using PCL.Core.UI.Controls.SvgIcon;
 
 namespace PCL;

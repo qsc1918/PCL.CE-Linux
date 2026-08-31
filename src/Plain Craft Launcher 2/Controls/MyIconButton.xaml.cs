@@ -33,6 +33,13 @@ public partial class MyIconButton : Border
 
     public int Uuid = ModBase.GetUuid();
 
+    // [port] WPF ToolTip property -> Avalonia ToolTip.SetTip wrapper
+    public object ToolTip
+    {
+        get => Avalonia.Controls.ToolTip.GetTip(this);
+        set => Avalonia.Controls.ToolTip.SetTip(this, value);
+    }
+
     protected override Size MeasureOverride(Size constraint)
     {
         var measured = base.MeasureOverride(constraint);
