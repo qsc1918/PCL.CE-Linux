@@ -91,14 +91,14 @@ public partial class PageSetupLog : MyPageRight
         }
     }
 
-    private static void ExportLog(IEnumerable<string> sourceFiles)
+    private static async void ExportLog(IEnumerable<string> sourceFiles)
     {
         var filter = Lang.Text("Setup.Log.ExportFilter");
         var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         var baseName = "PCL_CE_Logs_" + DateTime.Now.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture);
         var tempDirName = baseName + ".tmp";
         var fileName = baseName + ".zip";
-        var selectedPath = SystemDialogs.SelectSaveFile(Lang.Text("Setup.Log.ExportSaveTitle"), fileName, filter, desktopPath);
+        var selectedPath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Setup.Log.ExportSaveTitle"), fileName, filter, desktopPath);
         if (string.IsNullOrEmpty(selectedPath))
             return;
         try

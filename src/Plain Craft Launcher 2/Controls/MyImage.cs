@@ -35,7 +35,7 @@ public class MyImage : Image
             if ((field ?? "") == (value ?? ""))
                 return;
             field = value;
-            Dispatcher.BeginInvoke(new Func<Task>(async () =>
+            Dispatcher.InvokeAsync(new Func<Task>(async () =>
             {
                 try
                 {
@@ -83,7 +83,7 @@ public class MyImage : Image
                 return; // 无需刷新缓存
         }
 
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             try
             {
@@ -184,7 +184,7 @@ public class MyImage : Image
     }
 
     public new static readonly AvaloniaProperty EnableCacheProperty =
-        AvaloniaProperty.Register("EnableCache", typeof(bool), typeof(MyImage), new PropertyMetadata(true));
+        AvaloniaProperty.Register<MyImage, bool>("EnableCache", true);
 
     /// <summary>
     ///     与 Image 的 Source 类似。

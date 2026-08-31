@@ -20,7 +20,7 @@ public class MyCard : AnimatedBackgroundGrid
     private const double dropShadowHoverOpacity = 0.4d;
 
     public static readonly AvaloniaProperty TitleProperty =
-        AvaloniaProperty.Register("Title", typeof(string), typeof(MyCard), new PropertyMetadata(""));
+        AvaloniaProperty.Register<MyCard, string>("Title", "");
 
     private readonly Border mainBorder; // [port] BlurBorder 暂缓 → Border
 
@@ -128,7 +128,7 @@ public class MyCard : AnimatedBackgroundGrid
             MainTextBlock = new TextBlock
             {
                 HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(15d, 12d, 0d, 0d), FontWeight = FontWeights.Bold, FontSize = 13d,
+                Margin = new Thickness(15d, 12d, 0d, 0d), FontWeight = FontWeight.Bold, FontSize = 13d,
                 IsHitTestVisible = false
             };
             MainTextBlock.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush1");
@@ -147,7 +147,7 @@ public class MyCard : AnimatedBackgroundGrid
                 VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0d, 17d, 16d, 0d),
                 Data =
                     (Geometry)new GeometryConverter().ConvertFromString("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
-                RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new Point(0.5d, 0.5d)
+                RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative)
             };
             MainSwap.SetResourceReference(Shape.FillProperty, "ColorBrush1");
             mainGrid.Children.Add(MainSwap);

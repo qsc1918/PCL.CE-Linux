@@ -64,7 +64,7 @@ public class AnimatedBackgroundGrid : Grid
             return;
         }
 
-        // [port] Dispatcher.BeginInvoke(Func<Task>) → InvokeAsync（Avalonia 12）
+        // [port] Dispatcher.InvokeAsync(Func<Task>) → InvokeAsync（Avalonia 12）
         grid.Dispatcher.InvokeAsync(async () =>
         {
             grid.IsAnimating = true;

@@ -165,7 +165,7 @@ public partial class PageComp : MyScrollViewer
     public ItemCollection SearchTags => ComboSearchTag.Items;
 
     public static readonly AvaloniaProperty SupportCurseForgeProperty =
-        AvaloniaProperty.Register("SupportCurseForge", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
+        AvaloniaProperty.Register<PageComp, bool>("SupportCurseForge", true);
 
     public bool SupportCurseForge
     {
@@ -174,7 +174,7 @@ public partial class PageComp : MyScrollViewer
     }
 
     public static readonly AvaloniaProperty SupportModrinthProperty =
-        AvaloniaProperty.Register("SupportModrinth", typeof(bool), typeof(PageComp), new PropertyMetadata(true));
+        AvaloniaProperty.Register<PageComp, bool>("SupportModrinth", true);
 
     public bool SupportModrinth
     {

@@ -67,7 +67,7 @@ public partial class PageLoginProfileSkin : Grid
 
     private void HidePanel(object sender, EventArgs e)
     {
-        if (BtnEdit.ContextMenu.IsOpen || BtnSkin.ContextMenu.IsOpen || PanData.IsMouseOver)
+        if (BtnEdit.ContextMenu.IsOpen || BtnSkin.ContextMenu.IsOpen || PanData.IsPointerOver)
             return;
         ModAnimation.AniStart(ModAnimation.AaOpacity(PanButtons, -PanButtons.Opacity, 120),
             "PageLoginProfileSkin Button");
@@ -81,13 +81,13 @@ public partial class PageLoginProfileSkin : Grid
     // 皮肤与披风子菜单
     private void BtnSkin_Click(object sender, EventArgs e)
     {
-        BtnSkin.ContextMenu.IsOpen = true;
+        BtnSkin.ContextMenu.Open();
     }
 
     // 账号信息子菜单
     private void BtnEdit_Click(object sender, EventArgs e)
     {
-        BtnEdit.ContextMenu.IsOpen = true;
+        BtnEdit.ContextMenu.Open();
     }
 
     // 修改密码

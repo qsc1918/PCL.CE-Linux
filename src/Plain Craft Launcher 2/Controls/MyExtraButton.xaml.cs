@@ -269,7 +269,7 @@ public partial class MyExtraButton : Grid
                     ModAnimation.AniStart(
                         ModAnimation.AaColor(PanColor, BackgroundProperty, "ColorBrushGray4", animationColorIn),
                         "MyExtraButton Color " + Uuid);
-                else if (IsMouseOver)
+                else if (IsPointerOver)
                     // 指向
                     ModAnimation.AniStart(
                         ModAnimation.AaColor(PanColor, BackgroundProperty, "ColorBrush4", animationColorIn),
@@ -284,8 +284,8 @@ public partial class MyExtraButton : Grid
             else
             {
                 ControlVisualHelpers.AnimateColorOrSetResource(PanColor, BackgroundProperty,
-                    !IsEnabled ? "ColorBrushGray4" : IsMouseOver ? "ColorBrush4" : "ColorBrush3",
-                    !IsEnabled || IsMouseOver ? animationColorIn : animationColorOut,
+                    !IsEnabled ? "ColorBrushGray4" : IsPointerOver ? "ColorBrush4" : "ColorBrush3",
+                    !IsEnabled || IsPointerOver ? animationColorIn : animationColorOut,
                     "MyExtraButton Color " + Uuid, false);
             }
         }
@@ -305,7 +305,7 @@ public partial class MyExtraButton : Grid
             var shape = new Border
             {
                 CornerRadius = new CornerRadius(1000d), BorderThickness = new Thickness(0.001d), Opacity = 0.5d,
-                RenderTransformOrigin = new Point(0.5d, 0.5d), RenderTransform = new ScaleTransform()
+                RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative), RenderTransform = new ScaleTransform()
             };
             shape.SetResourceReference(Border.BackgroundProperty, "ColorBrush5");
             PanScale.Children.Insert(0, shape);

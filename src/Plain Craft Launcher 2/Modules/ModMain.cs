@@ -634,7 +634,7 @@ public static class ModMain
                 WaitingMyMsgBox.RemoveAt(0);
             }
             // 没有弹窗，没有等待的弹窗
-            else if (!(frmMain.PanMsgBackground.Visibility == false))
+            else if (!(frmMain.PanMsgBackground.IsVisible == false))
             {
                 frmMain.PanMsgBackground.IsVisible = false;
             }

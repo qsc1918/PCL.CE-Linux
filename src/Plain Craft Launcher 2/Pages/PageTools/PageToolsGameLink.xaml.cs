@@ -105,7 +105,7 @@ public partial class PageToolsGameLink
         if (_linkAnnounceUpdateCancelSource is not null)
             _linkAnnounceUpdateCancelSource.Cancel();
         _linkAnnounceUpdateCancelSource = new CancellationTokenSource();
-        await Dispatcher.BeginInvoke(new Action(async () =>
+        await Dispatcher.InvokeAsync(new Action(async () =>
             await _LinkAnnounceUpdateAsync())); // 我实在不理解为啥 BeginInvoke 这个委托要 MustBeInherit
 
         await LobbyService.InitializeAsync().ConfigureAwait(false);

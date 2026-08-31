@@ -143,7 +143,7 @@ public partial class PageDownloadCompDetail : MyPageRight
     }
 
     // 世界下载
-    public void InstallWorld_Click(MyListItem sender, EventArgs e)
+    public async void InstallWorld_Click(MyListItem sender, EventArgs e)
     {
         try
         {
@@ -222,7 +222,7 @@ public partial class PageDownloadCompDetail : MyPageRight
                 }
             }
 
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Comp.Detail.SelectWorldInstallLocation"), file.FileName, Lang.Text("Download.Comp.Detail.WorldFile.Filter"),
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Comp.Detail.SelectWorldInstallLocation"), file.FileName, Lang.Text("Download.Comp.Detail.WorldFile.Filter"),
                 defaultFolder);
             if (string.IsNullOrEmpty(target))
                 return;
@@ -261,7 +261,7 @@ public partial class PageDownloadCompDetail : MyPageRight
         }
     }
 
-    public void Save_Click(object sender, EventArgs e)
+    public async void Save_Click(object sender, EventArgs e)
     {
         // 获取点击项关联的文件对象
         var file = sender switch
@@ -389,7 +389,7 @@ public partial class PageDownloadCompDetail : MyPageRight
                 var fileName = ModComp.CompFileNameGet(_project, file);
                 ModBase.RunInUi(() =>
                 {
-                    var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Comp.Detail.SelectSaveLocation"),
+                    var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Comp.Detail.SelectSaveLocation"),
                         fileName, Lang.Text("Download.Comp.Detail.ResourceFile.Filter", desc) + "|" +
                                   (file.Type == ModComp.CompType.Mod
                                       ? file.FileName.EndsWith(".litemod") ? "*.litemod" : "*.jar"

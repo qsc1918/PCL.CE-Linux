@@ -143,7 +143,7 @@ public partial class FontSelector : ContentControl
 
     private void LoadFonts()
     {
-        Dispatcher.BeginInvoke(async () =>
+        Dispatcher.InvokeAsync(async () =>
         {
             ComboFont.IsEnabled = false;
             _isInitializing = true;

@@ -432,7 +432,7 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
             case PageStates.LoaderWait:
             {
                 PageState = PageStates.LoaderEnter;
-                if (panAlways is not null && panAlways.Visibility == false)
+                if (panAlways is not null && panAlways.IsVisible == false)
                     TriggerEnterAnimation(panAlways, panLoader);
                 else
                     TriggerEnterAnimation(panLoader);
@@ -530,7 +530,7 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
                     case PageStates.LoaderWait:
                     {
                         PageState = PageStates.ContentEnter;
-                        if (panAlways is not null && panAlways.Visibility == false)
+                        if (panAlways is not null && panAlways.IsVisible == false)
                             TriggerEnterAnimation(panAlways, panContent);
                         else
                             TriggerEnterAnimation(panContent);
@@ -664,7 +664,7 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
     private void _GetAllAnimControls(Control element, ref List<Control> allControls,
         bool ignoreInvisibility)
     {
-        if (!ignoreInvisibility && element.Visibility == false)
+        if (!ignoreInvisibility && element.IsVisible == false)
             return;
         if (element is MyCard || element is MyHint || element is MyExtraTextButton || element is TextBlock ||
             element is MyTextButton)

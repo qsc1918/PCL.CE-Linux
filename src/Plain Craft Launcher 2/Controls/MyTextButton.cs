@@ -70,7 +70,7 @@ public class MyTextButton : Label
     {
         if (isMouseDown)
             return ("ColorBrush4", 30);
-        if (IsMouseOver)
+        if (IsPointerOver)
             return ("ColorBrush3", animationTimeIn);
         return ("ColorBrush1", animationTimeOut);
     }

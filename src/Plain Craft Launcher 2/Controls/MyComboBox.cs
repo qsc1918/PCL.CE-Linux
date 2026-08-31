@@ -148,7 +148,7 @@ public class MyComboBox : ComboBox
                 backColorName = "ColorBrush7";
                 time = 10;
             }
-            else if (IsMouseOver)
+            else if (IsPointerOver)
             {
                 foreColorName = "ColorBrush4";
                 backColorName = "ColorBrush7";

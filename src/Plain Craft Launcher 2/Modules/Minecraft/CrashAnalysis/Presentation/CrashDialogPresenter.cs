@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.IO;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
@@ -168,7 +168,7 @@ internal sealed class CrashDialogPresenter(CrashAnalysisContext context)
     {
         string? fileAddress = null;
 
-        ModBase.RunInUiWait(() => fileAddress = SystemDialogs.SelectSaveFile(
+        ModBase.RunInUiWait(() => fileAddress = await SystemDialogs.SelectSaveFileAsync(
             Lang.Text("Crash.Report.SaveDialog.Title"),
             _GetDefaultReportFileName(),
             Lang.Text("Crash.Report.SaveDialog.Filter")));

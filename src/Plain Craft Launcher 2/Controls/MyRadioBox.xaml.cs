@@ -213,7 +213,7 @@ public partial class MyRadioBox : Grid, IMyRadio
                     }, "MyRadioBox Dot " + Uuid);
                 ModAnimation.AniStart(
                     ModAnimation.AaColor(ShapeBorder, Shape.StrokeProperty,
-                        IsMouseOver ? "ColorBrush3" : IsEnabled ? "ColorBrush2" : "ColorBrushGray4",
+                        IsPointerOver ? "ColorBrush3" : IsEnabled ? "ColorBrush2" : "ColorBrushGray4",
                         animationTimeOfCheck),
                     "MyRadioBox BorderColor " + Uuid);
             }
@@ -236,7 +236,7 @@ public partial class MyRadioBox : Grid, IMyRadio
                     }, "MyRadioBox Dot " + Uuid);
                 ModAnimation.AniStart(
                     ModAnimation.AaColor(ShapeBorder, Shape.StrokeProperty,
-                        IsMouseOver ? "ColorBrush3" : IsEnabled ? "ColorBrush1" : "ColorBrushGray4",
+                        IsPointerOver ? "ColorBrush3" : IsEnabled ? "ColorBrush1" : "ColorBrushGray4",
                         animationTimeOfCheck),
                     "MyRadioBox BorderColor " + Uuid);
             }

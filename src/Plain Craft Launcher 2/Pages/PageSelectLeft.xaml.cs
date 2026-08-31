@@ -208,7 +208,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
                 newIconButton.Click += (_, _) =>
                 {
                     contMenu.PlacementTarget = newItem;
-                    contMenu.IsOpen = true;
+                    contMenu.Open();
                 };
                 newItem.Buttons = [newIconButton];
 
@@ -350,7 +350,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
     }
 
     // 添加文件夹
-    private void Add_Click()
+    private async void Add_Click()
     {
         var newFolder = "";
         // 检查是否有下载任务
@@ -363,7 +363,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
         try
         {
             // 获取输入
-            newFolder = SystemDialogs.SelectFolder();
+            newFolder = await SystemDialogs.SelectFolderAsync();
             if (string.IsNullOrEmpty(newFolder))
                 return;
             if (newFolder.Contains('!') || newFolder.Contains(';'))

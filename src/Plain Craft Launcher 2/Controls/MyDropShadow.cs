@@ -162,8 +162,8 @@ public class MyDropShadow : Decorator
                 if (cornerRadius.TopLeft > ShadowRadius)
                 {
                     figure.StartPoint = new Point(guidelineSetX[1], guidelineSetY[0]);
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[1], guidelineSetY[1]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[0], guidelineSetY[1]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[1], guidelineSetY[1]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[0], guidelineSetY[1]), IsStroked = true });
                 }
                 else
                 {
@@ -172,35 +172,35 @@ public class MyDropShadow : Decorator
 
                 if (cornerRadius.BottomLeft > ShadowRadius)
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[0], guidelineSetY[3]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[3], guidelineSetY[3]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[3], guidelineSetY[5]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[0], guidelineSetY[3]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[3], guidelineSetY[3]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[3], guidelineSetY[5]), IsStroked = true });
                 }
                 else
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[0], guidelineSetY[5]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[0], guidelineSetY[5]), IsStroked = true });
                 }
 
                 if (cornerRadius.BottomRight > ShadowRadius)
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[4], guidelineSetY[5]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[4], guidelineSetY[4]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[5], guidelineSetY[4]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[4], guidelineSetY[5]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[4], guidelineSetY[4]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[5], guidelineSetY[4]), IsStroked = true });
                 }
                 else
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[5], guidelineSetY[5]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[5], guidelineSetY[5]), IsStroked = true });
                 }
 
                 if (cornerRadius.TopRight > ShadowRadius)
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[5], guidelineSetY[2]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[2], guidelineSetY[2]), true));
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[2], guidelineSetY[0]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[5], guidelineSetY[2]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[2], guidelineSetY[2]), IsStroked = true });
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[2], guidelineSetY[0]), IsStroked = true });
                 }
                 else
                 {
-                    figure.Segments.Add(new LineSegment(new Point(guidelineSetX[5], guidelineSetY[0]), true));
+                    figure.Segments.Add(new LineSegment { Point = new Point(guidelineSetX[5], guidelineSetY[0]), IsStroked = true });
                 }
 
                 figure.IsClosed = true;

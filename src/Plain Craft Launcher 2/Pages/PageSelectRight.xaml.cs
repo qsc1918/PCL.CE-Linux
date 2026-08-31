@@ -536,7 +536,7 @@ public partial class PageSelectRight : MyPageRight
     {
         try
         {
-            var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var isShiftPressed = false /* [port] Keyboard.IsKeyDown(Key.LeftShift) */ || false /* [port] Keyboard.IsKeyDown(Key.RightShift) */;
             var isHintIndie = mcInstance.state != McInstanceState.Error &&
                               (mcInstance.PathIndie ?? "") != (ModFolder.mcFolderSelected ?? "");
             var confirmMsg = isShiftPressed

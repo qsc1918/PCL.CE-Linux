@@ -442,14 +442,14 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
         foreach (var Element in PanOptions.Children)
         {
             if (!includeHidden &&
-                ((Control)Element).Visibility != true)
+                ((Control)Element).IsVisible != true)
                 continue;
             if (Element is MyCheckBox)
                 yield return (MyCheckBox)Element;
             else if (Element is StackPanel)
                 foreach (var SubElement in ((StackPanel)Element).Children)
                 {
-                    if (!includeHidden && ((Control)SubElement).Visibility != true)
+                    if (!includeHidden && ((Control)SubElement).IsVisible != true)
                         continue;
                     if (SubElement is MyCheckBox)
                         yield return (MyCheckBox)SubElement;
@@ -488,15 +488,15 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
                 BtnOverrideCancel.IsVisible = false;
                 PanOptions.IsVisible = true;
                 CardOptions.Inlines.Clear();
-                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle")) { FontWeight = FontWeights.Bold });
+                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle")) { FontWeight = FontWeight.Bold });
             }
             else
             {
                 BtnOverrideCancel.IsVisible = true;
                 PanOptions.IsVisible = false;
                 CardOptions.Inlines.Clear();
-                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle") + ":    ") { FontWeight = FontWeights.Bold });
-                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionList.FromConfig")) { FontWeight = FontWeights.Normal });
+                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionListTitle") + ":    ") { FontWeight = FontWeight.Bold });
+                CardOptions.Inlines.Add(new Run(Lang.Text("Instance.Export.OptionList.FromConfig")) { FontWeight = FontWeight.Normal });
             }
         }
     }
@@ -590,11 +590,11 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     // ================ 保存 / 读取 ================
 
     // 保存配置文件
-    private void ExportConfig(object sender, PointerPressedEventArgs e)
+    private async void ExportConfig(object sender, PointerPressedEventArgs e)
     {
         try
         {
-            var configPath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Export.SelectFileLocation"), "export_config.txt", Lang.Text("Instance.Export.Config.FileFilter"),
+            var configPath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Instance.Export.SelectFileLocation"), "export_config.txt", Lang.Text("Instance.Export.Config.FileFilter"),
                 (string?)States.System.ExportConfigPath);
             if (string.IsNullOrEmpty(configPath))
                 return;
@@ -721,11 +721,11 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     #endregion
 
     // 读取配置文件
-    private void ImportConfig(object sender, PointerPressedEventArgs e)
+    private async void ImportConfig(object sender, PointerPressedEventArgs e)
     {
         try
         {
-            var configPath = SystemDialogs.SelectFile(Lang.Text("Instance.Export.Config.FileFilter"), Lang.Text("Instance.Export.SelectConfigFile"),
+            var configPath = await SystemDialogs.SelectFileAsync(Lang.Text("Instance.Export.Config.FileFilter"), Lang.Text("Instance.Export.SelectConfigFile"),
                 (string?)States.System.ExportConfigPath);
             if (string.IsNullOrEmpty(configPath))
                 return;
@@ -752,10 +752,10 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     private void PanAllBack_DragEnter(object sender, DragEventArgs e)
     {
         // 检查是否包含文件拖放数据
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
             // 获取拖入的文件路径数组
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = (string[])e.Data.GetData(DataFormat.File);
 
             // 验证：仅允许单个.txt文件
             if (files.Length == 1 &&
@@ -778,9 +778,9 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     private void PanAllBack_Drop(object sender, DragEventArgs e)
     {
         // 获取拖入的文件路径
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = (string[])e.Data.GetData(DataFormat.File);
             var configPath = files[0];
 
             // 调用核心读取逻辑
@@ -804,7 +804,7 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     /// <summary>
     ///     开始导出。
     /// </summary>
-    private void StartExport(object sender, PointerPressedEventArgs e)
+    private async void StartExport(object sender, PointerPressedEventArgs e)
     {
         var packName = string.IsNullOrEmpty(TextExportName.Text) ? TextExportName.HintText : TextExportName.Text;
         var packVersion = string.IsNullOrEmpty(TextExportVersion.Text) ? "1.0.0" : TextExportVersion.Text;
@@ -846,7 +846,7 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
                 extensions.Add(Lang.Text("Instance.Export.ZipFilter"));
             if (CheckOptionsPcl.Checked == false)
                 extensions.Add(Lang.Text("Instance.Export.MrpackFilter"));
-            packPath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Export.SelectSaveLocation"),
+            packPath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Instance.Export.SelectSaveLocation"),
                 packName + (string.IsNullOrEmpty(TextExportVersion.Text) ? "" : " " + TextExportVersion.Text),
                 extensions.Join("|"));
             ModBase.Log($"[Export] 手动指定的导出路径：{packPath}");

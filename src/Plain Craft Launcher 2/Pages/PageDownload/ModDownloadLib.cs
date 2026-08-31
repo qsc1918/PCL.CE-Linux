@@ -137,11 +137,11 @@ public static class ModDownloadLib
     /// </summary>
     /// <param name="id">所下载的 Minecraft 的版本名。</param>
     /// <param name="jsonUrl">Json 文件的 Mojang 官方地址。</param>
-    public static void McDownloadClientCore(string id, string jsonUrl, NetPreDownloadBehaviour behaviour)
+    public static async void McDownloadClientCore(string id, string jsonUrl, NetPreDownloadBehaviour behaviour)
     {
         try
         {
-            var versionFolder = SystemDialogs.SelectFolder();
+            var versionFolder = await SystemDialogs.SelectFolderAsync();
             if (!versionFolder.Contains(@"\"))
                 return;
             versionFolder = System.IO.Path.Combine(versionFolder, id);
@@ -424,7 +424,7 @@ public static class ModDownloadLib
         McUpdateLogShow(version);
     }
 
-    private static void McDownloadMenuSaveServer(object sender, RoutedEventArgs e)
+    private static async void McDownloadMenuSaveServer(object sender, RoutedEventArgs e)
     {
         MyListItem version;
         if (sender is MyListItem)
@@ -437,7 +437,7 @@ public static class ModDownloadLib
         {
             var id = version.Title;
             string jsonUrl = ((dynamic)version.Tag)["url"].ToString();
-            var versionFolder = SystemDialogs.SelectFolder();
+            var versionFolder = await SystemDialogs.SelectFolderAsync();
             if (!versionFolder.Contains(@"\"))
                 return;
             versionFolder = System.IO.Path.Combine(versionFolder, id);
@@ -534,7 +534,7 @@ public static class ModDownloadLib
         }
     }
 
-    public static void McDownloadMenuSave(object sender, RoutedEventArgs e)
+    public static async void McDownloadMenuSave(object sender, RoutedEventArgs e)
     {
         var element = (Control)sender;
         MyListItem version;
@@ -545,7 +545,7 @@ public static class ModDownloadLib
         {
             var id = version.Title;
             var jsonUrl = ((JsonObject)version.Tag)["url"]!.ToString();
-            var versionFolder = SystemDialogs.SelectFolder();
+            var versionFolder = await SystemDialogs.SelectFolderAsync();
             if (!versionFolder.Contains(@"\"))
                 return;
             versionFolder = System.IO.Path.Combine(versionFolder, id);
@@ -674,12 +674,12 @@ public static class ModDownloadLib
         }
     }
 
-    private static void McDownloadOptiFineSave(ModDownload.DlOptiFineListEntry downloadInfo)
+    private static async void McDownloadOptiFineSave(ModDownload.DlOptiFineListEntry downloadInfo)
     {
         try
         {
             var id = downloadInfo.NameVersion;
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), downloadInfo.NameFile, "OptiFine Jar (*.jar)|*.jar");
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), downloadInfo.NameFile, "OptiFine Jar (*.jar)|*.jar");
             if (!target.Contains(@"\"))
                 return;
 
@@ -1352,12 +1352,12 @@ public static class ModDownloadLib
         }
     }
 
-    private static void McDownloadLiteLoaderSave(ModDownload.DlLiteLoaderListEntry downloadInfo)
+    private static async void McDownloadLiteLoaderSave(ModDownload.DlLiteLoaderListEntry downloadInfo)
     {
         try
         {
             var id = downloadInfo.Inherit;
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), downloadInfo.FileName.Replace("-SNAPSHOT", ""),
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), downloadInfo.FileName.Replace("-SNAPSHOT", ""),
                 Lang.Text("Minecraft.Download.Stage.ForgelikeInstallerFilter", "LiteLoader", "jar"));
             if (!target.Contains(@"\"))
                 return;
@@ -1623,11 +1623,11 @@ public static class ModDownloadLib
 
     #region Forgelike 下载
 
-    public static void McDownloadForgelikeSave(ModDownload.DlForgelikeEntry info)
+    public static async void McDownloadForgelikeSave(ModDownload.DlForgelikeEntry info)
     {
         try
         {
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"),
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"),
                 $"{info.LoaderName}-{info.Inherit}-{info.VersionName}.{info.FileExtension}",
                 Lang.Text("Minecraft.Download.Stage.ForgelikeInstallerFilter", info.LoaderName, info.FileExtension));
             var displayName = $"{info.LoaderName} {info.Inherit} - {info.VersionName}";
@@ -2859,14 +2859,14 @@ public static class ModDownloadLib
 
     #region Fabric 下载
 
-    public static void McDownloadFabricLoaderSave(JsonObject downloadInfo)
+    public static async void McDownloadFabricLoaderSave(JsonObject downloadInfo)
     {
         try
         {
             var url = downloadInfo["url"].ToString();
             var fileName = ModBase.GetFileNameFromPath(url);
             var version = ModBase.GetFileNameFromPath(downloadInfo["version"].ToString());
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.Fabric.Filter"));
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.Fabric.Filter"));
             if (!target.Contains(@"\"))
                 return;
 
@@ -2985,14 +2985,14 @@ public static class ModDownloadLib
 
     #region LegacyFabric 下载
 
-    public static void McDownloadLegacyFabricLoaderSave(JsonObject downloadInfo)
+    public static async void McDownloadLegacyFabricLoaderSave(JsonObject downloadInfo)
     {
         try
         {
             var url = downloadInfo["url"].ToString();
             var fileName = ModBase.GetFileNameFromPath(url);
             var version = ModBase.GetFileNameFromPath(downloadInfo["version"].ToString());
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LegacyFabric.Filter"));
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LegacyFabric.Filter"));
             if (!target.Contains(@"\"))
                 return;
 
@@ -3210,13 +3210,13 @@ public static class ModDownloadLib
 
     #region LabyMod 下载
 
-    public static void McDownloadLabyModProductionLoaderSave()
+    public static async void McDownloadLabyModProductionLoaderSave()
     {
         try
         {
             var url = "https://releases.labymod.net/api/v1/installer/production/java";
             var fileName = "LabyMod4ProductionInstaller.jar";
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LabyMod.Filter"));
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LabyMod.Filter"));
             if (!target.Contains(@"\"))
                 return;
 
@@ -3258,13 +3258,13 @@ public static class ModDownloadLib
         }
     }
 
-    public static void McDownloadLabyModSnapshotLoaderSave()
+    public static async void McDownloadLabyModSnapshotLoaderSave()
     {
         try
         {
             var url = "https://releases.labymod.net/api/v1/installer/snapshot/java";
             var fileName = "LabyMod4SnapshotInstaller.jar";
-            var target = SystemDialogs.SelectSaveFile(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LabyMod.Filter"));
+            var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Version.SelectSaveLocation"), fileName, Lang.Text("Download.Version.Installer.LabyMod.Filter"));
             if (!target.Contains(@"\"))
                 return;
 

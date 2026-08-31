@@ -45,7 +45,7 @@ public class MyComboBoxItem : ComboBoxItem
             newFontOpacity = 1d;
             time = animationTimeIn;
         }
-        else if (IsMouseOver)
+        else if (IsPointerOver)
         {
             newBackColorName = "ColorBrush8";
             newFontOpacity = 1d;

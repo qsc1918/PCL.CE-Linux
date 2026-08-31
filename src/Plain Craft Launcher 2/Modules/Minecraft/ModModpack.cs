@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -20,9 +20,9 @@ public static class ModModpack
     /// <summary>
     ///     弹窗要求选择一个整合包文件并进行安装。
     /// </summary>
-    public static void ModpackInstall()
+    public static async void ModpackInstall()
     {
-        var file = SystemDialogs.SelectFile(Lang.Text("Minecraft.Download.Modpack.FileDialog.Filter"),
+        var file = await SystemDialogs.SelectFileAsync(Lang.Text("Minecraft.Download.Modpack.FileDialog.Filter"),
             Lang.Text("Minecraft.Download.Modpack.FileDialog.Title")); // 选择整合包文件
         if (string.IsNullOrEmpty(file))
             return;
@@ -1133,7 +1133,7 @@ public static class ModModpack
         // 获取解压路径
         ModMain.MyMsgBox(Lang.Text("Minecraft.Download.Modpack.SelectEmptyFolder.Message"),
             Lang.Text("Common.Action.Install"), Lang.Text("Common.Action.Continue"), forceWait: true);
-        var targetFolder = SystemDialogs.SelectFolder(Lang.Text("Minecraft.Download.Modpack.SelectTargetFolder.Title"));
+        var targetFolder = SystemDialogs.SelectFolderAsync(Lang.Text("Minecraft.Download.Modpack.SelectTargetFolder.Title")).GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(targetFolder))
             throw new ModBase.CancelledException();
         if (Directory.GetFileSystemEntries(targetFolder).Length > 0)
@@ -1241,7 +1241,7 @@ public static class ModModpack
         // 获取解压路径
         ModMain.MyMsgBox(Lang.Text("Minecraft.Download.Modpack.SelectEmptyFolder.Message"),
             Lang.Text("Common.Action.Install"), Lang.Text("Common.Action.Continue"), forceWait: true);
-        var targetFolder = SystemDialogs.SelectFolder(Lang.Text("Minecraft.Download.Modpack.SelectTargetFolder.Title"));
+        var targetFolder = SystemDialogs.SelectFolderAsync(Lang.Text("Minecraft.Download.Modpack.SelectTargetFolder.Title")).GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(targetFolder))
             throw new ModBase.CancelledException();
         if (targetFolder.Contains("!") || targetFolder.Contains(";"))

@@ -389,9 +389,9 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
     /// <summary>
     ///     刷新顶栏和底栏显示。
     /// </summary>
-    public void RefreshBars()
+    public async void RefreshBars()
     {
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             // -----------------
             // 顶部栏
@@ -579,9 +579,9 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
     /// <summary>
     ///     安装数据包。
     /// </summary>
-    private void BtnManageInstall_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnManageInstall_Click(object sender, PointerPressedEventArgs e)
     {
-        var fileList = SystemDialogs.SelectFiles(
+        var fileList = await SystemDialogs.SelectFilesAsync(
             Lang.Text("Instance.Saves.Datapack.Install.FileDialog.Filter"),
             Lang.Text("Instance.Saves.Datapack.Install.FileDialog.Title"));
         if (fileList is null || fileList.Length == 0)
@@ -679,7 +679,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
     /// <summary>
     ///     导出信息。
     /// </summary>
-    private void BtnManageInfoExport_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnManageInfoExport_Click(object sender, PointerPressedEventArgs e)
     {
         var choice =
             ModMain.MyMsgBox(
@@ -690,8 +690,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
         {
             try
             {
-                var savePath =
-                    SystemDialogs.SelectSaveFile(Lang.Text("Instance.Resource.Export.SelectSaveLocation"), fileName, Lang.Text("Instance.Resource.Export.FilesFilter"));
+                var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Instance.Resource.Export.SelectSaveLocation"), fileName, Lang.Text("Instance.Resource.Export.FilesFilter"));
                 if (string.IsNullOrWhiteSpace(savePath)) return;
                 File.WriteAllText(savePath, content, Encoding.UTF8);
                 ModBase.OpenExplorer(savePath);
@@ -785,7 +784,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
     {
         if (!ReferenceEquals(ModMain.frmMain.pageRight, this))
             return;
-        if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
+        if ((false /* [port] Keyboard.IsKeyDown(Key.LeftCtrl) */ || false /* [port] Keyboard.IsKeyDown(Key.RightCtrl) */) && e.Key == Key.A)
             ChangeAllSelected(true);
     }
 
@@ -794,7 +793,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
         // Ctrl + A 会被搜索框捕获，导致无法全选，所以在按下 Ctrl + A 时转移焦点以便捕获
         if (SearchBox.Text.Any())
             return;
-        if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
+        if ((false /* [port] Keyboard.IsKeyDown(Key.LeftCtrl) */ || false /* [port] Keyboard.IsKeyDown(Key.RightCtrl) */) && e.Key == Key.A)
             PanBack.Focus();
     }
 
@@ -960,7 +959,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
 
         body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
-        body.IsOpen = true;
+        body.Open();
     }
 
     private readonly object sortLock = new();
@@ -1414,7 +1413,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
         try
         {
             var isSuccessful = true;
-            var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var isShiftPressed = false /* [port] Keyboard.IsKeyDown(Key.LeftShift) */ || false /* [port] Keyboard.IsKeyDown(Key.RightShift) */;
 
             // 确认需要删除的文件
             datapackList = datapackList.SelectMany(target =>

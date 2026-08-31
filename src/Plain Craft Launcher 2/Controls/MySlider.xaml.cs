@@ -186,14 +186,14 @@ public partial class MySlider : Border
         ModAnimation.AniStart(
             ModAnimation.AaScaleTransform(ShapeDot, 1d - ((ScaleTransform)ShapeDot.RenderTransform).ScaleX, 200,
                 ease: new ModAnimation.AniEaseOutFluent()), "MySlider Scale " + Uuid);
-        Popup.IsOpen = false;
+        Popup.Close();
     }
 
     public void RefreshPopup()
     {
         if (getHintText is null)
             return;
-        Popup.IsOpen = true;
+        Popup.Open();
         TextHint.Text = getHintText.DynamicInvoke(Value)?.ToString() ?? "";
         var typeface = new Typeface(TextHint.FontFamily, TextHint.FontStyle, TextHint.FontWeight, TextHint.FontStretch);
         var formattedText = new FormattedText(TextHint.Text, Thread.CurrentThread.CurrentCulture,
@@ -213,7 +213,7 @@ public partial class MySlider : Border
             int animationTime;
             if (IsEnabled)
             {
-                if (ModMain.dragControl is not null && ModMain.dragControl.Equals(this) || IsMouseOver)
+                if (ModMain.dragControl is not null && ModMain.dragControl.Equals(this) || IsPointerOver)
                 {
                     foregroundName = "ColorBrush3";
                     dotFillName = "ColorBrush3";
@@ -295,7 +295,7 @@ public partial class MySlider : Border
             RefreshPopup();
             ModAnimation.AniStop("MySlider KeyPopup " + Uuid);
             ModAnimation.AniStart(
-                ModAnimation.AaCode(() => Popup.IsOpen = false, (int)Math.Round(700d * ModAnimation.aniSpeed)),
+                ModAnimation.AaCode(() => Popup.Close(), (int)Math.Round(700d * ModAnimation.aniSpeed)),
                 "MySlider KeyPopup " + Uuid);
         }
     }

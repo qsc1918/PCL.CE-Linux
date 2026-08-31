@@ -427,7 +427,7 @@ public partial class PageInstanceOverall : MyPageRight
     }
 
     // 实例图标
-    private void ComboDisplayLogo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ComboDisplayLogo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (!(isLoad && ModAnimation.AniControlEnabled == 0))
             return;
@@ -436,7 +436,7 @@ public partial class PageInstanceOverall : MyPageRight
         {
             if (ReferenceEquals(ComboDisplayLogo.SelectedItem, ItemDisplayLogoCustom))
             {
-                var fileName = SystemDialogs.SelectFile(Lang.Text("Instance.Overall.Icon.SelectFile.Filter"), Lang.Text("Instance.Overall.Icon.SelectFile.Title"));
+                var fileName = await SystemDialogs.SelectFileAsync(Lang.Text("Instance.Overall.Icon.SelectFile.Filter"), Lang.Text("Instance.Overall.Icon.SelectFile.Title"));
                 if (string.IsNullOrEmpty(fileName))
                 {
                     Reload(); // 还原选项
@@ -540,12 +540,12 @@ public partial class PageInstanceOverall : MyPageRight
     #region 卡片：管理
 
     // 导出启动脚本
-    private void BtnManageScript_Click(object sender, PointerPressedEventArgs mouseButtonEventArgs)
+    private async void BtnManageScript_Click(object sender, PointerPressedEventArgs mouseButtonEventArgs)
     {
         try
         {
             // 弹窗要求指定脚本的保存位置
-            var savePath = SystemDialogs.SelectSaveFile(Lang.Text("Instance.Overall.Script.SelectSaveTitle"), "启动 " + PageInstanceLeft.McInstance.Name + ".bat",
+            var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Instance.Overall.Script.SelectSaveTitle"), "启动 " + PageInstanceLeft.McInstance.Name + ".bat",
                 Lang.Text("Instance.Overall.Script.FileFilter"));
             if (string.IsNullOrEmpty(savePath))
                 return;
@@ -739,7 +739,7 @@ public partial class PageInstanceOverall : MyPageRight
     {
         try
         {
-            var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var isShiftPressed = false /* [port] Keyboard.IsKeyDown(Key.LeftShift) */ || false /* [port] Keyboard.IsKeyDown(Key.RightShift) */;
 
             var isIsolatedInstance =
                 PageInstanceLeft.McInstance.state != McInstanceState.Error &&
@@ -814,7 +814,7 @@ public partial class PageInstanceOverall : MyPageRight
     }
 
     // 修补核心
-    private void BtnManagePatch_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnManagePatch_Click(object sender, PointerPressedEventArgs e)
     {
         switch (ModMain.MyMsgBox(
                     Lang.Text("Instance.Overall.Patch.ConfirmMessage", PageInstanceLeft.McInstance.Name),
@@ -822,7 +822,7 @@ public partial class PageInstanceOverall : MyPageRight
         {
             case 1:
             {
-                var userInput = SystemDialogs.SelectFile(Lang.Text("Instance.Overall.Patch.SelectFile.Filter"), Lang.Text("Instance.Overall.Patch.SelectFile.Title"));
+                var userInput = await SystemDialogs.SelectFileAsync(Lang.Text("Instance.Overall.Patch.SelectFile.Filter"), Lang.Text("Instance.Overall.Patch.SelectFile.Title"));
                 if (userInput is null || string.IsNullOrWhiteSpace(userInput))
                     return;
                 HintService.Hint(Lang.Text("Instance.Overall.Patch.Patching"));

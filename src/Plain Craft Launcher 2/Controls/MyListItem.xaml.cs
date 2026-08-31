@@ -50,7 +50,7 @@ public partial class MyListItem : Grid, IMyRadio
             stateNew = "MouseDown";
             time = 120;
         }
-        else if (IsMouseOver && isMouseOverAnimationEnabled)
+        else if (IsPointerOver && isMouseOverAnimationEnabled)
         {
             stateNew = "MouseOver";
             time = 120;
@@ -69,16 +69,16 @@ public partial class MyListItem : Grid, IMyRadio
         {
             // 有动画
             var ani = new List<ModAnimation.AniData>();
-            if (IsMouseOver && isMouseOverAnimationEnabled)
+            if (IsPointerOver && isMouseOverAnimationEnabled)
             {
                 if (buttonStack is not null)
                 {
                     ani.Add(ModAnimation.AaOpacity(buttonStack, 1d - buttonStack.Opacity, (int)Math.Round(time * 0.7d),
                         (int)Math.Round(time * 0.3d)));
                     ani.Add(ModAnimation.AaDouble(
-                        i => ColumnPaddingRight.Width =
-                            new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                        Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25) - ColumnPaddingRight.Width.Value,
+                        i => ColumnGap.Width =
+                            new GridLength(Math.Max(0, ColumnGap.Width.Value + (double)i)),
+                        Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25) - ColumnGap.Width.Value,
                         (int)Math.Round(time * 0.3d), (int)Math.Round(time * 0.7d)));
                 }
 
@@ -108,9 +108,9 @@ public partial class MyListItem : Grid, IMyRadio
                 {
                     ani.Add(ModAnimation.AaOpacity(buttonStack, -buttonStack.Opacity, (int)Math.Round(time * 0.4d)));
                     ani.Add(ModAnimation.AaDouble(
-                        i => ColumnPaddingRight.Width =
-                            new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                        MinPaddingRight - ColumnPaddingRight.Width.Value, (int)Math.Round(time * 0.4d)));
+                        i => ColumnGap.Width =
+                            new GridLength(Math.Max(0, ColumnGap.Width.Value + (double)i)),
+                        MinPaddingRight - ColumnGap.Width.Value, (int)Math.Round(time * 0.4d)));
                 }
 
                 ani.Add(ModAnimation.AaOpacity(RectBack, -RectBack.Opacity, time));
@@ -133,12 +133,12 @@ public partial class MyListItem : Grid, IMyRadio
         else
         {
             // 无动画
-            if (IsMouseOver && isMouseOverAnimationEnabled)
+            if (IsPointerOver && isMouseOverAnimationEnabled)
             {
                 if (buttonStack is not null)
                 {
                     buttonStack.Opacity = 1d;
-                    ColumnPaddingRight.Width = new GridLength(Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25));
+                    ColumnGap.Width = new GridLength(Math.Max(MinPaddingRight, 5 + Buttons.Count() * 25));
                 }
 
                 // 由于鼠标已经移入，所以直接实例化 RectBack
@@ -152,7 +152,7 @@ public partial class MyListItem : Grid, IMyRadio
                 if (buttonStack is not null)
                 {
                     buttonStack.Opacity = 0d;
-                    ColumnPaddingRight.Width = new GridLength(MinPaddingRight);
+                    ColumnGap.Width = new GridLength(MinPaddingRight);
                 }
 
                 RenderTransform = new ScaleTransform(1d, 1d);
@@ -175,7 +175,7 @@ public partial class MyListItem : Grid, IMyRadio
             SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
         else
             SetResourceReference(ForegroundProperty, "ColorBrush1");
-        ColumnPaddingRight.Width = new GridLength(MinPaddingRight);
+        ColumnGap.Width = new GridLength(MinPaddingRight);
     }
 
     public override string ToString()
@@ -199,7 +199,7 @@ public partial class MyListItem : Grid, IMyRadio
                     Name = "RectBack",
                     CornerRadius = new CornerRadius(IsScaleAnimationEnabled || Height > 40d ? 6 : 0),
                     RenderTransform = IsScaleAnimationEnabled ? new ScaleTransform(0.8d, 0.8d) : null,
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
                     SnapsToDevicePixels = true,
                     IsHitTestVisible = false,
@@ -452,7 +452,7 @@ public partial class MyListItem : Grid, IMyRadio
     }
 
     public static readonly AvaloniaProperty FontSizeProperty =
-        AvaloniaProperty.Register("FontSize", typeof(double), typeof(MyListItem), new PropertyMetadata(14d));
+        AvaloniaProperty.Register<MyListItem, double>("FontSize", 14d);
 
     // 信息
     public string Info
@@ -467,8 +467,7 @@ public partial class MyListItem : Grid, IMyRadio
         }
     }
 
-    public static readonly AvaloniaProperty InfoProperty = AvaloniaProperty.Register("Info", typeof(string),
-        typeof(MyListItem), new PropertyMetadata("", OnInfoChanged));
+    public static readonly AvaloniaProperty InfoProperty = AvaloniaProperty.Register<MyListItem, string>("Info", "", OnInfoChanged);
 
     public MyListItem()
     {
@@ -559,7 +558,7 @@ public partial class MyListItem : Grid, IMyRadio
                 IsHitTestVisible = LogoClickable,
                 Icon = SvgIcon,
                 Stretch = Stretch.Uniform,
-                RenderTransformOrigin = new Point(0.5d, 0.5d),
+                RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                 RenderTransform = new ScaleTransform { ScaleX = 1D, ScaleY = 1D },
                 SnapsToDevicePixels = false,
                 UseLayoutRounding = false,
@@ -580,7 +579,7 @@ public partial class MyListItem : Grid, IMyRadio
                     Tag = this,
                     IsHitTestVisible = LogoClickable,
                     Source = logo,
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
                     SnapsToDevicePixels = true,
                     UseLayoutRounding = false
@@ -595,7 +594,7 @@ public partial class MyListItem : Grid, IMyRadio
                     Tag = this,
                     IsHitTestVisible = LogoClickable,
                     Background = new MyBitmap(logo),
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
                     SnapsToDevicePixels = true,
                     UseLayoutRounding = false,
@@ -619,7 +618,7 @@ public partial class MyListItem : Grid, IMyRadio
                     VerticalAlignment = VerticalAlignment.Center,
                     Stretch = Stretch.Uniform,
                     Data = (Geometry)new GeometryConverter().ConvertFromString(logo),
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
                     SnapsToDevicePixels = false,
                     UseLayoutRounding = false
@@ -895,7 +894,7 @@ public partial class MyListItem : Grid, IMyRadio
 
                         // 初始化缩放中心为正中心
                         var scale = new ScaleTransform(1d, 0d);
-                        rectCheck.RenderTransformOrigin = new Point(0.5d, 0.5d);
+                        rectCheck.RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
                         rectCheck.RenderTransform = scale;
 
                         // 动画：让 ScaleY 从 0 弹性放大到 1
@@ -917,7 +916,7 @@ public partial class MyListItem : Grid, IMyRadio
                     {
                         if (rectCheck.RenderTransform is not ScaleTransform)
                         {
-                            rectCheck.RenderTransformOrigin = new Point(0.5d, 0.5d);
+                            rectCheck.RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
                             rectCheck.RenderTransform = new ScaleTransform(1d, 1d);
                         }
 
@@ -983,8 +982,7 @@ public partial class MyListItem : Grid, IMyRadio
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register("Foreground",
-        typeof(Brush), typeof(MyListItem), new PropertyMetadata(ThemeManager.AppResources["ColorBrush1"]));
+    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", ThemeManager.AppResources["ColorBrush1"]);
 
     // 菜单与按钮绑定
     public Action<MyListItem, EventArgs> ContentHandler { get; set; }

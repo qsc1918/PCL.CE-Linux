@@ -144,9 +144,9 @@ public partial class PageLogRight : MyPageRight
         ModMain.frmLogLeft.flowDocuments[ModMain.frmLogLeft.currentUuid].Blocks.Clear();
     }
 
-    private void BtnOperationExport_Click(object sender, ModBase.RouteEventArgs e)
+    private async void BtnOperationExport_Click(object sender, ModBase.RouteEventArgs e)
     {
-        var savePath = SystemDialogs.SelectSaveFile(Lang.Text("LogPage.Export.SelectLocation"),
+        var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("LogPage.Export.SelectLocation"),
             Lang.Text("LogPage.Export.GameLog.FileName", ModMain.frmLogLeft.currentLog.version.Name),
             Lang.Text("LogPage.Export.GameLog.Filter"));
         if (savePath.Length < 3)
@@ -166,13 +166,13 @@ public partial class PageLogRight : MyPageRight
         }
     }
 
-    private void BtnOperationExportStackDump_Click(object sender, ModBase.RouteEventArgs e)
+    private async void BtnOperationExportStackDump_Click(object sender, ModBase.RouteEventArgs e)
     {
         var formattedDate = DateTime.Now.ToString("G", CultureInfo.InvariantCulture)
             .Replace("/", "-")
             .Replace(":", ".")
             .Replace(" ", "_");
-        var savePath = SystemDialogs.SelectSaveFile(Lang.Text("LogPage.Export.SelectLocation"),
+        var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("LogPage.Export.SelectLocation"),
             Lang.Text("LogPage.ExportStack.FileName", formattedDate),
             Lang.Text("LogPage.ExportStack.Filter"));
         if (savePath.Length < 3)

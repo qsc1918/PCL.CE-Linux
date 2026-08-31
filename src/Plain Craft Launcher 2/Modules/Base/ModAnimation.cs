@@ -394,7 +394,7 @@ public static partial class ModAnimation
                     var obj = (Control)ani.obj;
                     if (!(obj.RenderTransform is ScaleTransform))
                     {
-                        obj.RenderTransformOrigin = new Point(0.5d, 0.5d);
+                        obj.RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
                         obj.RenderTransform = new ScaleTransform(1d, 1d);
                     }
 
@@ -412,7 +412,7 @@ public static partial class ModAnimation
                     var obj = (Control)ani.obj;
                     if (!(obj.RenderTransform is RotateTransform))
                     {
-                        obj.RenderTransformOrigin = new Point(0.5d, 0.5d);
+                        obj.RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
                         obj.RenderTransform = new RotateTransform(0d);
                     }
 

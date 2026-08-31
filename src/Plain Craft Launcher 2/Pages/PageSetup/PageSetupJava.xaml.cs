@@ -195,15 +195,15 @@ public partial class PageSetupJava : MyPageRight
         return item;
     }
 
-    private void BtnAdd_Click(object sender, ModBase.RouteEventArgs e)
+    private async void BtnAdd_Click(object sender, ModBase.RouteEventArgs e)
     {
-        var ret = SystemDialogs.SelectFile(Lang.Text("Setup.Java.SelectFile.Filter"), Lang.Text("Setup.Java.SelectFile.Title"));
+        var ret = await SystemDialogs.SelectFileAsync(Lang.Text("Setup.Java.SelectFile.Filter"), Lang.Text("Setup.Java.SelectFile.Title"));
         if (string.IsNullOrEmpty(ret) || !File.Exists(ret))
             return;
         if (ModJava.Javas.Exist(ret))
             HintService.Hint(Lang.Text("Setup.Java.AlreadyExists"));
         else
-            Dispatcher.BeginInvoke(new Action(async () =>
+            Dispatcher.InvokeAsync(new Action(async () =>
             {
                 await Task.Run(() =>
                 {

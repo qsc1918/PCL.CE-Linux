@@ -34,7 +34,7 @@ public class MyCollapseBar : StackPanel
 
         _titleBlock = new TextBlock
         {
-            FontSize = 14d, FontWeight = FontWeights.Bold,
+            FontSize = 14d, FontWeight = FontWeight.Bold,
             VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left,
             Margin = new Thickness(6d, 0d, 0d, 0d), IsHitTestVisible = false
         };
@@ -46,11 +46,11 @@ public class MyCollapseBar : StackPanel
             Stretch = Stretch.Uniform, Height = 6d, Width = 10d, Margin = new Thickness(0d, 0d, 12d, 0d),
             IsHitTestVisible = false,
             Data = (Geometry)new GeometryConverter().ConvertFromString("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
-            RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new Point(0.5d, 0.5d)
+            RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative)
         };
         _triangle.SetResourceReference(Shape.FillProperty, "ColorBrush1");
 
-        var header = new Grid { Height = HeaderHeight, Background = Brushes.Transparent, Cursor = Cursors.Hand };
+        var header = new Grid { Height = HeaderHeight, Background = Brushes.Transparent, Cursor = Cursor.Parse("hand") };
         header.Children.Add(_titleBlock);
         header.Children.Add(_triangle);
         header.PointerReleased += (_, _) => IsCollapsed = !IsCollapsed;

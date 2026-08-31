@@ -17,8 +17,7 @@ public class MyTextBox : TextBox
 {
     public delegate void ValidateChangedEventHandler(object sender, EventArgs e);
 
-    public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register("CornerRadius",
-        typeof(CornerRadius), typeof(MyTextBox), new PropertyMetadata(new CornerRadius(3d)));
+    public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register<MyTextBox, CornerRadius>("CornerRadius", new CornerRadius(3d));
 
     public static readonly AvaloniaProperty ValidateResultProperty = AvaloniaProperty.Register("ValidateResult",
         typeof(string), typeof(MyTextBox),
@@ -325,7 +324,7 @@ public class MyTextBox : TextBox
                         backColorName = "ColorBrush7";
                         animationTime = 10;
                     }
-                    else if (IsMouseOver)
+                    else if (IsPointerOver)
                     {
                         foreColorName = "ColorBrush4";
                         backColorName = "ColorBrush7";

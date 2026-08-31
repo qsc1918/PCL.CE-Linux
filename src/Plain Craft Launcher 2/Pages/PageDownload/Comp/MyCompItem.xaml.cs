@@ -445,7 +445,7 @@ public partial class MyCompItem : Grid
                     Name = "RectBack",
                     CornerRadius = new CornerRadius(3d),
                     RenderTransform = new ScaleTransform(0.8d, 0.8d),
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
                     IsHitTestVisible = false,
                     Opacity = 0d
