@@ -76,25 +76,40 @@
 - .xaml 必须改名为 .axaml（生成器只认 axaml）；code-behind 保持 .xaml.cs
 - Avalonia 12 关键差异（实测）：无 Visibility 枚举（用 IsVisible bool）、无 ContentPropertyAttribute（→ [Content] 标注在属性上）、无 RichTextBlock（用 SelectableTextBlock + Inlines + LineBreak）、ReadLocalValue→已移除（用 IsSet）、Matrix 三行制 M31/M32、BezierSegment 等只有无参 ctor、IAsyncDataTransfer（TryGetFilesAsync 扩展）、IDataObject 移除、Clipboard 全面重写、Application 无 FrameworkInitializationCompleted 事件（用桌面生命周期 Startup）/无 MainWindow 属性（经 IClassicDesktopStyleApplicationLifetime）、FormattedText 六参构造、Dispatcher.InvokeAsync(Action) 返回 DispatcherOperation（Func<Task> 重载直接返回 Task）、ItemsControl 容器方法改名（CreateContainerForItemOverride(item,index,recycleKey) / NeedsContainerOverride(item,index,out recycleKey)）、OnApplyTemplate(TemplateAppliedEventArgs)、OnRender→Render、Control 无 SetResourceReference（用 GetResourceObservable + Bind）、Control 无 .ToolTip 实例属性（用 ToolTip.SetTip/GetTip）、ToolTipService 为内部 API（SetPlacement/SetVerticalOffset/SetHorizontalOffset → ToolTip.SetPlacement 等；InitialShowDelay/BetweenShowDelay 无对应删除）、SystemDialogs 已异步化（SelectSaveFileAsync 等）
 
-## 当前状态（2026-08-31 上午，commit bc2247b）
+## 当前状态（2026-08-31 上午二期，commit cba7935）
 
-### 昨夜+今晨大事记
-1. PCL.Core 编译全绿（cbd9538）。
-2. 主工程 csc 主阶段已通过到较深层，剩余 ~10.5k 错误，**全部是"axaml 未 Avalonia 化 → 命名字段未生成"的连锁**（约 60 个 axaml 待转换）+ 少量真实 C# 残留（ModSetup 对 FormMain.ImgBack/PanMainRight 等、ModDownloadLib 的 ToolTipService、PageSelectLeft/Right 的 SystemDialogs 异步化与 Keyboard/DragDrop、PageSetupUI 的 FindName/ModMusic/ModVideoBack 引用、Program.cs 的 UsePlatformDetect using/MainWindowService.Loading 返回类型、PageLogLeft 的 Blocks→Inlines、MySkin/MyMsgLogin 等）。
-3. 昨夜 GBK 损坏事故已全部修复（26 文件，tools/repair-gbk.ps1）；今晨去重脚本误删 using( 语句的事故已修复（ModBase/ModLocalComp/ModComp/ModLaunch/ModDownloadLib，tools/repair-using*.ps1 + 手工）。
+### 重大突破
+**基类注入激活生成器**：Avalonia 命名字段生成器要求 code-behind partial 类显式声明 Avalonia 基类（WPF 把基类放生成代码里，Avalonia 生成器不加）。tools/add-bases.ps1 按 axaml 根元素为 63 个文件插入基类 + 12 个接口-only 声明手工补根类型，生成文件 9 → **84**，错误 10564 → **2704**。
+
+### 剩余 2704 错误的分类与修法（按计数排序，均可机械处理）
+| 计数 | 错误 | 修法 |
+|---|---|---|
+| 126+56 | MyColor→IBrush 隐式转换失败 / MyColor-IBrush 运算符 | C# 不允许到接口的隐式转换：AnimatableBrush/BackgroundBrush 属性类型改 SolidColorBrush 或调用点显式 `(SolidColorBrush)(Brush)myColor`；逐点看 |
+| 72 | PropertyMetadata 未找到 | 残留的 WPF 式 DP 注册（MyCard/MySlider/MyToast 等）→ StyledProperty.Register<TOwner,T> + Changed.AddClassHandler |
+| 70 | MyIconButton.ToolTip | `.ToolTip = x` → `ToolTip.SetTip(x所在对象, x)`；getter → GetTip；再次跑 tools/fix-tooltip.ps1 式扫描（这次是 MyIconButton 类型的接收者） |
+| 62 | IsMouseOver | `.IsMouseOver` → `.IsPointerOver`（全库替换） |
+| 52 | Point→RelativePoint | `RenderTransformOrigin = new Point(...)` → `new RelativePoint(new Point(...), RelativeUnit.Relative)`（usings: Avalonia） |
+| 52 | ModVideoBack 未定义 | PageSetupUI 引用已排除类型 → 注释 + [port] |
+| 48 | FormMain.PanMsgBackground | FormMain.axaml 里 x:Name 是否存在？Msg 背景面板可能被 agent B 删了 → 恢复一个 Grid 或改用 PanForm |
+| 44+44 | TransformPos/TransformRotate | FormMain.axaml 中 TransformGroup 子变换的 x:Name——确认 axaml 有这些名字；若在 RenderTransform 里正常应生成 |
+| 44 | Path.SetBinding | var 命名冲突或 Shapes.Path 用了 Avalonia 无的 SetBinding 签名（binding 参数顺序不同）→ 逐点看 |
+| 40 | 方法组→RoutedEventHandler | XAML 事件处理器签名不匹配（Click 处理器用了 PointerPressedEventArgs 等）→ 签名改回 RoutedEventHandler(object, RoutedEventArgs) |
+| 38 | SystemDialogs.SelectSaveFile | 同步→异步调用点迁移（SelectSaveFileAsync），还有 ~38 处 |
+| 36 | DragEventArgs.Data | Avalonia 12: e.Data → e.DataTransfer（IAsyncDataTransfer）；TryGetFilesAsync 等 |
 
 ### 今日恢复点（按序）
-1. **核心任务 = 把剩余 ~60 个 axaml 逐个转成合法 Avalonia XAML**（tools/convert-axaml.ps1 已跑过安全子集；剩余 WPF 残留见 tools/fix-tooltip2.ps1 后状态）。判据：csc 错误按文件分组，每组对应一个 axaml。转换要点照 Application.axaml 范本 + docs/PORTING-MAPPING.md。每转一个，csc 该文件错误消失且 Generated 下出现对应 .g.cs（EmitCompilerGeneratedFiles 已开）。
-2. 注意 PageSetupUI/PageLaunchLeft 等引用 FormMain 的字段（ImgBack/PanTitleSelect/BtnTitleSelect*）——FormMain.axaml 转换成功后自动解决。
-3. PageSetupUI 引用 ModMusic/ModVideoBack（已排除类型）→ 相应代码段注释 + [port]。
-4. PageSelectLeft/Right：SystemDialogs.SelectFolder→SelectFolderAsync、Keyboard→KeyEventArgs 处理、DragEventArgs.Data→新 API、MenuBase.IsOpen setter 不可访问（用 Open/Close 方法或 ContextMenu.IsOpen=）。
-5. Program.cs：AppBuilder.UsePlatformDetect 缺 using Avalonia（已加？验证）；MainWindowService.Loading 返回 FormMain→需 Window 类型匹配（FormMain 必须已继承 Window——由 FormMain.axaml 生成基类，先修 FormMain.axaml）。
-6. PageLogLeft/Right：SelectableTextBlock 无 Blocks → Inlines 改写（已开始，继续完成 maxLog 修剪逻辑）。
-7. MySkin/MyMsgLogin 等已排除或待定文件的引用清理。
-8. csc 全绿后 → XAML 编译波 → WSL 冒烟 → 发布 → VM 实测 → 向用户集中提问。
+1. 上表逐类清剿（先全局替换类：IsMouseOver→IsPointerOver；再 PropertyMetadata 注册；再 ToolTip 残余；再逐文件特殊点）
+2. csc 全绿后 XAML 编译波（AVLN 错误将真实显示，逐文件修）
+3. WSL 冒烟 → 发布 → VM 实测 → 集中提问
+
+### 关键环境事实（新增）
+- **Avalonia 命名字段生成器要求 code-behind 显式声明 Avalonia 基类**（tools/add-bases.ps1 已为 75 个文件注入；新 axaml 记得同步）
+- EnableDefaultItems 必须 true（false 使生成器整体失效）；排除用 Compile/AvaloniaXaml Remove
+- 生成器对无法解析的 axaml 静默跳过——csc 报某文件字段缺失 = 该 axaml 未转换完
+- .xaml 必须改名 .axaml；code-behind 保持 .xaml.cs
 
 ### git 提交链（最新在前）
-bc2247b(EnableDefaultItems 修复) → 96227df → f6eaa1e → 3d08af5 → 0f0a3b8 → 7052b07 → cbd9538(Core 绿) → 6a525ab(基线)
+cba7935(基类注入 84 文件) → bc2247b → 96227df → f6eaa1e → 3d08af5 → 0f0a3b8 → 7052b07 → cbd9538(Core 绿) → 6a525ab(基线)
 
 ## 当前状态（夜班结束，2026-08-31 约 01:20，commit a5b5a12）
 
