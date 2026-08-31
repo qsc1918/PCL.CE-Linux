@@ -19,7 +19,7 @@
         <Configurations>Beta;Debug;Release;CI</Configurations>
         <Platforms>AnyCPU;x64;ARM64</Platforms>
         <ImplicitUsings>enable</ImplicitUsings>
-        <!-- app.manifest �?Windows 专属（DPI/兼容性声明），Linux 无需 -->
+        <!-- app.manifest 为 Windows 专属（DPI/兼容性声明），Linux 无需 -->
         <NoWarn>
             41999;42016;42017;42018;42019;42020;42021;42022;42032;42036;42314;
             VSTHRD002;VSTHRD003;VSTHRD110;VSTHRD200
@@ -94,18 +94,18 @@
             Modules\ModVideoBack.cs;
             Modules\ModLink.cs;
             Modules\Minecraft\ModSkin.cs;
-            Pages\PageLaunch\MySkin.xaml.cs;
-            Pages\PageLaunch\MySkin.xaml;
+            Pages\PageLaunch\MySkin.axaml.cs;
+            Pages\PageLaunch\MySkin.axaml;
             Pages\PageTools\**;
-            Controls\MyMsg\MyMsgMarkdown.xaml.cs;
-            Controls\MyMsg\MyMsgMarkdown.xaml;
-            Resources\Markdown.xaml;
+            Controls\MyMsg\MyMsgMarkdown.axaml.cs;
+            Controls\MyMsg\MyMsgMarkdown.axaml;
+            Resources\Markdown.axaml;
             Controls\Behaviors\ClipboardInterceptor.cs;
             Controls\Behaviors\LazyLoadBehavior.cs;" />
         <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
-        <AvaloniaXaml Include="**\*.xaml" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
+        <AvaloniaXaml Include="**\*.axaml" Exclude="bin\**;obj\**;publish\**;@(DeferredExcludes)" />
         <AvaloniaResource Include="Images\**" />
-        <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.xaml" />
+        <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
         <EmbeddedResource Include="metadata.json" />
     </ItemGroup>
     <ItemGroup>

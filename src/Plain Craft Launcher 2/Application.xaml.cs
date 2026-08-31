@@ -92,9 +92,9 @@ public partial class Application : Avalonia.Application
             Directory.CreateDirectory(ModBase.pathAppdata);
 
             // 设置 ToolTipService 默认值
-            // [port] WPF OverrideMetadata + FrameworkPropertyMetadata → Avalonia ToolTipService.AttachedProperty.OverrideDefaultValue
-            ToolTipService.InitialShowDelayProperty.OverrideDefaultValue<AvaloniaObject>(100);
-            Tooltip.Enable();
+            // [port] Avalonia 12 ToolTipService 为内部 API、Tooltip 自定义引擎暂缓（PCL.Core Tooltip.cs 排除），默认延迟逻辑暂缺
+            // ToolTipService.InitialShowDelayProperty.OverrideDefaultValue<AvaloniaObject>(100);
+            // Tooltip.Enable();
 
             // 设置初始窗口
             if (Config.Preference.ShowStartupLogo)

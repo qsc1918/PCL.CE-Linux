@@ -12,13 +12,19 @@ namespace PCL;
 
 public class AnimatedBackgroundGrid : Grid
 {
-    public static readonly AvaloniaProperty BackgroundBrushProperty = AvaloniaProperty.Register("BackgroundBrush",
-        typeof(SolidColorBrush), typeof(AnimatedBackgroundGrid),
-        new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)), _BackgroundBrushChanged));
+    // [port] WPF 式 Register + PropertyMetadata(默认值, 回调) → Avalonia Register<TOwner,TValue> + Changed 钩子
+    public static readonly StyledProperty<SolidColorBrush> BackgroundBrushProperty =
+        AvaloniaProperty.Register<AnimatedBackgroundGrid, SolidColorBrush>(
+            "BackgroundBrush", new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)));
 
     private readonly AvaloniaProperty _animatableBrushProperty;
 
     public readonly int uuid = ModBase.GetUuid();
+
+    static AnimatedBackgroundGrid()
+    {
+        BackgroundBrushProperty.Changed.AddClassHandler<AnimatedBackgroundGrid>((d, e) => _BackgroundBrushChanged(d, e));
+    }
 
     public AnimatedBackgroundGrid(AvaloniaProperty brushDp)
     {
@@ -60,7 +66,8 @@ public class AnimatedBackgroundGrid : Grid
             return;
         }
 
-        grid.Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        // [port] Dispatcher.BeginInvoke(Func<Task>) → InvokeAsync（Avalonia 12）
+        grid.Dispatcher.InvokeAsync(async () =>
         {
             grid.IsAnimating = true;
             ModAnimation.AniStart(
@@ -72,7 +79,7 @@ public class AnimatedBackgroundGrid : Grid
             await Task.Delay(300);
             grid.AnimatableBrush = brush;
             grid.IsAnimating = false;
-        }));
+        });
     }
 
     private void Init()

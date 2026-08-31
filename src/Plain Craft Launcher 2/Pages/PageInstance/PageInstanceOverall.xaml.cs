@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using FluentValidation;
