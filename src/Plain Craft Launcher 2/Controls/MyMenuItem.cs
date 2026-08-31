@@ -18,11 +18,17 @@ public class MyMenuItem : MenuItem
     private const int AnimationTimeIn = 100;
     private const int AnimationTimeOut = 200;
 
-    public static readonly AvaloniaProperty SvgIconProperty = AvaloniaProperty.Register(
-        nameof(SvgIcon),
-        typeof(string),
-        typeof(MyMenuItem),
-        new PropertyMetadata(string.Empty, OnSvgIconChanged));
+    public static readonly StyledProperty<string> SvgIconProperty = AvaloniaProperty.Register<MyMenuItem, string>(
+        nameof(SvgIcon), string.Empty);
+
+    static MyMenuItem()
+    {
+        SvgIconProperty.Changed.AddClassHandler<MyMenuItem>((d, e) =>
+        {
+            if (d is MyMenuItem { IsLoaded: true } item)
+                item.UpdateTemplateIcon();
+        });
+    }
 
     private SvgIcon? _svgIconControl;
     private string _colorName;
@@ -43,12 +49,6 @@ public class MyMenuItem : MenuItem
     {
         get => (string)GetValue(SvgIconProperty);
         set => SetValue(SvgIconProperty, value);
-    }
-
-    private static void OnSvgIconChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
-    {
-        if (d is MyMenuItem { IsLoaded: true } item)
-            item.UpdateTemplateIcon();
     }
 
     private (string BackName, string ForeName, int Time) GetVisualState()

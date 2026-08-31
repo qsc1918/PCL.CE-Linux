@@ -23,9 +23,8 @@ internal static class ModStyle
         public delegate void TimerTickDelegate(TimerRun sender);
 
         // 定义依赖属性
-        public static readonly AvaloniaProperty UpdateIntervalProperty =
-            AvaloniaProperty.Register(nameof(UpdateInterval), typeof(TimeSpan), typeof(TimerRun),
-                new PropertyMetadata(TimeSpan.FromSeconds(1d)));
+        public static readonly StyledProperty<TimeSpan> UpdateIntervalProperty =
+            AvaloniaProperty.Register<TimerRun, TimeSpan>(nameof(UpdateInterval), TimeSpan.FromSeconds(1d));
 
         private object _isDisposed = false;
 

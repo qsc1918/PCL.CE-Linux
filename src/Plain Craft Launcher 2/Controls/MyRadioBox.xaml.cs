@@ -27,18 +27,20 @@ public partial class MyRadioBox : Grid, IMyRadio
     private const int animationTimeOfCheck = 150; // 勾选状态变更动画长度
 
     // 在使用 XAML 设置 Checked 属性时，不会触发 Checked_Set 方法，所以需要在这里手动触发 UI 改变
-    public static readonly AvaloniaProperty CheckedProperty = AvaloniaProperty.Register("Checked", typeof(bool),
-        typeof(MyRadioBox), new PropertyMetadata(false, (dRaw, e) =>
-        {
-            var d = (MyRadioBox)dRaw;
-            if (!d.IsLoaded) d.SyncUI();
-        }));
+    public static readonly StyledProperty<bool> CheckedProperty = AvaloniaProperty.Register<MyRadioBox, bool>(
+        nameof(Checked), false);
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyRadioBox), new PropertyMetadata((sender, e) =>
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyRadioBox, string>(
+        nameof(Text), string.Empty);
+
+    static MyRadioBox()
+    {
+        CheckedProperty.Changed.AddClassHandler<MyRadioBox>((d, e) =>
         {
-            if (sender is not null) ((MyRadioBox)sender).LabText.Text = (string)e.NewValue;
-        }));
+            if (!d.IsLoaded) d.SyncUI();
+        });
+        TextProperty.Changed.AddClassHandler<MyRadioBox>((d, e) => d.LabText.Text = (string)e.NewValue);
+    }
 
     private bool allowMouseDown = true;
 

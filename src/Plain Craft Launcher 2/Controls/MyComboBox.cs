@@ -16,13 +16,17 @@ public class MyComboBox : ComboBox
 {
     public delegate void TextChangedEventHandler(object sender, TextChangedEventArgs e);
 
-    public static readonly AvaloniaProperty HintTextProperty = AvaloniaProperty.Register("HintText", typeof(string),
-        typeof(MyComboBox), new PropertyMetadata("", (d, e) =>
+    public static readonly StyledProperty<string> HintTextProperty = AvaloniaProperty.Register<MyComboBox, string>(
+        nameof(HintText), string.Empty);
+
+    static MyComboBox()
+    {
+        HintTextProperty.Changed.AddClassHandler<MyComboBox>((d, e) =>
         {
-            var c = (MyComboBox)d;
-            if (c.textBox is not null)
-                c.textBox.HintText = (string)e.NewValue;
-        }));
+            if (d.textBox is not null)
+                d.textBox.HintText = (string)e.NewValue;
+        });
+    }
 
     private string _Text;
 

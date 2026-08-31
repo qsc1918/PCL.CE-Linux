@@ -505,11 +505,8 @@ public partial class MyListItem : Grid, IMyRadio
         }
     }
 
-    public static readonly AvaloniaProperty LogoProperty = AvaloniaProperty.Register(
-        nameof(Logo),
-        typeof(string),
-        typeof(MyListItem),
-        new PropertyMetadata("", OnLogoChanged));
+    public static readonly StyledProperty<string> LogoProperty = AvaloniaProperty.Register<MyListItem, string>(
+        nameof(Logo), string.Empty);
 
     public string SvgIcon
     {
@@ -522,11 +519,22 @@ public partial class MyListItem : Grid, IMyRadio
         }
     }
 
-    public static readonly AvaloniaProperty SvgIconProperty = AvaloniaProperty.Register(
-        nameof(SvgIcon),
-        typeof(string),
-        typeof(MyListItem),
-        new PropertyMetadata("", OnSvgIconChanged));
+    public static readonly StyledProperty<string> SvgIconProperty = AvaloniaProperty.Register<MyListItem, string>(
+        nameof(SvgIcon), string.Empty);
+
+    static MyListItem()
+    {
+        LogoProperty.Changed.AddClassHandler<MyListItem>((d, e) =>
+        {
+            var control = (MyListItem)d;
+            control.UpdateLogo(e.NewValue as string);
+        });
+        SvgIconProperty.Changed.AddClassHandler<MyListItem>((d, e) =>
+        {
+            var control = (MyListItem)d;
+            control.UpdateLogo(control.Logo);
+        });
+    }
 
     private static void OnLogoChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {

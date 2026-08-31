@@ -19,22 +19,22 @@ public class MyTextBox : TextBox
 
     public static readonly AvaloniaProperty CornerRadiusProperty = AvaloniaProperty.Register<MyTextBox, CornerRadius>("CornerRadius", new CornerRadius(3d));
 
-    public static readonly AvaloniaProperty ValidateResultProperty = AvaloniaProperty.Register("ValidateResult",
-        typeof(string), typeof(MyTextBox),
-        new PropertyMetadata("",
-            (d, e) => d.SetValue(IsValidatedProperty,
-                string.IsNullOrEmpty((string)e.NewValue))));
+    public static readonly StyledProperty<string> ValidateResultProperty = AvaloniaProperty.Register<MyTextBox, string>(
+        nameof(ValidateResult), string.Empty);
 
     // [port] WPF DependencyPropertyKey 只读属性 → Avalonia 普通 StyledProperty（写入方仅限模板内部逻辑）
     public static readonly StyledProperty<bool> IsValidatedProperty =
         AvaloniaProperty.Register<MyTextBox, bool>("IsValidated", true);
 
-    public static readonly AvaloniaProperty HintTextProperty = AvaloniaProperty.Register("HintText", typeof(string),
-        typeof(MyTextBox), new PropertyMetadata("", (t, e) =>
-        {
-            var textBox = (MyTextBox)t;
-            textBox.UpdateHintText();
-        }));
+    public static readonly StyledProperty<string> HintTextProperty = AvaloniaProperty.Register<MyTextBox, string>(
+        nameof(HintText), string.Empty);
+
+    static MyTextBox()
+    {
+        ValidateResultProperty.Changed.AddClassHandler<MyTextBox>((d, e) =>
+            d.SetValue(IsValidatedProperty, string.IsNullOrEmpty((string)e.NewValue)));
+        HintTextProperty.Changed.AddClassHandler<MyTextBox>((d, e) => d.UpdateHintText());
+    }
 
     // 额外控件初始化
 

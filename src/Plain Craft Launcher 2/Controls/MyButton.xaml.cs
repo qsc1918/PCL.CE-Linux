@@ -25,18 +25,18 @@ public partial class MyButton : Border
     private const int animationColorIn = 100;
     private const int animationColorOut = 200;
 
-    public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
-        typeof(MyButton), new PropertyMetadata((sender, e) =>
-        {
-            if (sender is not null) ((MyButton)sender).LabText.Text = (string)e.NewValue;
-        }));
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<MyButton, string>(
+        nameof(Text), string.Empty);
 
     // 属性穿透
-    public new static readonly AvaloniaProperty PaddingProperty = AvaloniaProperty.Register("Padding",
-        typeof(Thickness), typeof(MyButton), new PropertyMetadata((sender, e) =>
-        {
-            if (sender is not null) ((MyButton)sender).PanFore.Padding = (Thickness)e.NewValue;
-        }));
+    public new static readonly StyledProperty<Thickness> PaddingProperty = AvaloniaProperty.Register<MyButton, Thickness>(
+        nameof(Padding), default(Thickness));
+
+    static MyButton()
+    {
+        TextProperty.Changed.AddClassHandler<MyButton>((d, e) => d.LabText.Text = (string)e.NewValue);
+        PaddingProperty.Changed.AddClassHandler<MyButton>((d, e) => d.PanFore.Padding = (Thickness)e.NewValue);
+    }
     
     private ColorState _ColorType = ColorState.Normal; // 配色方案
 

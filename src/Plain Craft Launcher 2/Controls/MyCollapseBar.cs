@@ -15,9 +15,13 @@ namespace PCL;
 /// </summary>
 public class MyCollapseBar : StackPanel
 {
-    public static readonly AvaloniaProperty TitleProperty =
-        AvaloniaProperty.Register(nameof(Title), typeof(string), typeof(MyCollapseBar),
-            new PropertyMetadata("", (d, e) => ((MyCollapseBar)d)._titleBlock.Text = (string)e.NewValue));
+    public static readonly StyledProperty<string> TitleProperty =
+        AvaloniaProperty.Register<MyCollapseBar, string>(nameof(Title), "");
+
+    static MyCollapseBar()
+    {
+        TitleProperty.Changed.AddClassHandler<MyCollapseBar>((d, e) => d._titleBlock.Text = (string)e.NewValue);
+    }
 
     private const double HeaderHeight = 30d;
 

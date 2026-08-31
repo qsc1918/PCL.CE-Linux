@@ -19,8 +19,13 @@ public partial class MinecraftServer : Grid
     private const string fallbackImageUri =
         "pack://application:,,,/Plain Craft Launcher 2;component/Images/Icons/DefaultServer.png";
 
-    private static readonly AvaloniaProperty AddressProperty = AvaloniaProperty.Register(nameof(Address),
-        typeof(string), typeof(MinecraftServer), new PropertyMetadata(string.Empty, OnAddressChanged));
+    public static readonly StyledProperty<string> AddressProperty = AvaloniaProperty.Register<MinecraftServer, string>(
+        nameof(Address), string.Empty);
+
+    static MinecraftServer()
+    {
+        AddressProperty.Changed.AddClassHandler<MinecraftServer>((d, e) => OnAddressChanged(d, e));
+    }
 
     public MinecraftServer()
     {
