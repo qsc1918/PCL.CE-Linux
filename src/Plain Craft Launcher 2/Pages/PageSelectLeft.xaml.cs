@@ -17,7 +17,7 @@ using PCL.Network;
 
 namespace PCL;
 
-public partial class PageSelectLeft : IRefreshable
+public partial class PageSelectLeft : MyPageLeft, IRefreshable
 {
     // [port] WPF DragDrop.DoDragDrop(object)/GetDataPresent(typeof) 依赖 WPF 类型化数据。
     // Avalonia 12 改用 IDataTransfer + DataFormat<T>；此处定义进程内拖拽格式，保证 Drop 端与源端格式相等。

@@ -15,7 +15,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadCompFavorites
+public partial class PageDownloadCompFavorites : MyPageRight
 {
     private readonly List<MyListItem> compItemList = new();
     private List<MyListItem> selectedItemList = new();

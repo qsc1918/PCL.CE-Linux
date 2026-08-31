@@ -11,7 +11,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadForge
+public partial class PageDownloadForge : MyPageRight
 {
     public PageDownloadForge()
     {

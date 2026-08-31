@@ -8,7 +8,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadLeft : IRefreshable
+public partial class PageDownloadLeft : MyPageLeft, IRefreshable
 {
     public void Refresh()
     {

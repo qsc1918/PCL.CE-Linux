@@ -13,7 +13,7 @@ using PCL.Core.App.Localization;
 namespace PCL;
 
 // [port] WPF 类级 [ContentProperty("SearchTags")] → Avalonia 12 属性级 [Content]（移至 SearchTags 属性）
-public partial class PageComp
+public partial class PageComp : MyScrollViewer
 {
     /// <summary>
     ///     每页展示的结果数量。

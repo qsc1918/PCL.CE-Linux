@@ -11,7 +11,7 @@ using Avalonia.Markup;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyIconTextButton
+public partial class MyIconTextButton : Border
 {
     public delegate void ChangeEventHandler(object sender, bool raiseByMouse);
 

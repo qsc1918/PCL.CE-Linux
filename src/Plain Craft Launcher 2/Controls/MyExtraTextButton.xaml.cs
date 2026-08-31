@@ -10,7 +10,7 @@ using Avalonia.Markup;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyExtraTextButton
+public partial class MyExtraTextButton : Grid
 {
     public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e); // 自定义事件
 

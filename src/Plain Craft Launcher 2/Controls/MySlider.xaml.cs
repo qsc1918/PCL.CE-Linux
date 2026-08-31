@@ -10,7 +10,7 @@ using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App.Localization;
 namespace PCL;
 
-public partial class MySlider
+public partial class MySlider : Border
 {
     public delegate void ChangeEventHandler(object sender, bool user);
 

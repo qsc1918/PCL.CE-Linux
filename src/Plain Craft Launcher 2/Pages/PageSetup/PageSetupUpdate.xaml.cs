@@ -13,7 +13,7 @@ using PCL.Core.Utils.OS;
 
 namespace PCL;
 
-public partial class PageSetupUpdate
+public partial class PageSetupUpdate : MyPageRight
 {
     public VersionDataModel updateInfo;
 

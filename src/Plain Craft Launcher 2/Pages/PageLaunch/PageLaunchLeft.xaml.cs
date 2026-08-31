@@ -15,7 +15,7 @@ using PCL.Network;
 
 namespace PCL;
 
-public partial class PageLaunchLeft
+public partial class PageLaunchLeft : MyPageLeft
 {
     private double actualUsedHeight;
     private double actualUsedWidth;

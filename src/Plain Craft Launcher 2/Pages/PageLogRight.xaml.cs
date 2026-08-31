@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace PCL;
 
-public partial class PageLogRight
+public partial class PageLogRight : MyPageRight
 {
     public Run labDebug;
     public Run labError;

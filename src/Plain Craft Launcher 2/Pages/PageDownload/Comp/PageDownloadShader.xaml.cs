@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageDownloadShader
+public partial class PageDownloadShader : MyPageRight
 {
     public PageDownloadShader()
     {

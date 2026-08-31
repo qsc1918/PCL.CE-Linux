@@ -11,6 +11,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyTextBox LabServerIp;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.MyButton BtnServerQuery;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Border ServerInfo;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MinecraftServer PanMcServer;
@@ -31,6 +33,7 @@ namespace PCL
 
             var __thisNameScope__ = this.FindNameScope();
             LabServerIp = __thisNameScope__?.Find<global::PCL.MyTextBox>("LabServerIp");
+            BtnServerQuery = __thisNameScope__?.Find<global::PCL.MyButton>("BtnServerQuery");
             ServerInfo = __thisNameScope__?.Find<global::Avalonia.Controls.Border>("ServerInfo");
             PanMcServer = __thisNameScope__?.Find<global::PCL.MinecraftServer>("PanMcServer");
         }

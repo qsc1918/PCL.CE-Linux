@@ -12,7 +12,7 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public partial class PageSetupGameManage
+public partial class PageSetupGameManage : MyPageRight
 {
     private new bool isLoaded;
 

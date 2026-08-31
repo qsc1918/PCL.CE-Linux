@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageDownloadDataPack
+public partial class PageDownloadDataPack : MyPageRight
 {
     public PageDownloadDataPack()
     {

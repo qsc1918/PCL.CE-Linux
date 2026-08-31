@@ -10,7 +10,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadLiteLoader
+public partial class PageDownloadLiteLoader : MyPageRight
 {
     public PageDownloadLiteLoader()
     {

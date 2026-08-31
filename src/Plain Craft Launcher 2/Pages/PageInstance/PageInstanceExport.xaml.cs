@@ -53,7 +53,7 @@ public class ExportOption : AvaloniaObject
     public bool RequireModLoaderOrOptiFine { get; set; }
 }
 
-public partial class PageInstanceExport : IRefreshable
+public partial class PageInstanceExport : MyPageRight, IRefreshable
 {
     private string currentVersion = "";
 

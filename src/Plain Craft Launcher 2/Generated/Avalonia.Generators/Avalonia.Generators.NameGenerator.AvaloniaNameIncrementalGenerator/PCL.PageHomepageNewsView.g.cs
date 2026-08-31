@@ -8,7 +8,8 @@ namespace PCL
 {
     partial class PageHomepageNewsView
     {
-
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.MyLoading Load;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -24,7 +25,8 @@ namespace PCL
                 AvaloniaXamlLoader.Load(this);
             }
 
-
+            var __thisNameScope__ = this.FindNameScope();
+            Load = __thisNameScope__?.Find<global::PCL.MyLoading>("Load");
         }
     }
 }

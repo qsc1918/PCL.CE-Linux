@@ -16,7 +16,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageInstanceSaves : IRefreshable
+public partial class PageInstanceSaves : MyPageRight, IRefreshable
 {
     private readonly DispatcherTimer fileSystemRefreshTimer;
     private readonly DispatcherTimer searchTimer;

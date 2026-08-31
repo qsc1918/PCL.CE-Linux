@@ -14,7 +14,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class MyLocalCompItem
+public partial class MyLocalCompItem : Grid
 {
     private string GetUpdateCompareDescription()
     {

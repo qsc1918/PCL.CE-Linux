@@ -8,7 +8,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageLoginOffline
+public partial class PageLoginOffline : Grid
 {
     public PageLoginOffline()
     {

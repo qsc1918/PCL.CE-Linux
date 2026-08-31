@@ -1,8 +1,8 @@
-﻿using PCL.Core.App.Localization;
+using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadLabyMod
+public partial class PageDownloadLabyMod : MyPageRight
 {
     public PageDownloadLabyMod()
     {

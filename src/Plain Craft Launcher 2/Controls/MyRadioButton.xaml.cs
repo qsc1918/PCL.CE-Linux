@@ -15,7 +15,7 @@ using PCL.Core.App.Localization;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyRadioButton
+public partial class MyRadioButton : Border
 {
     public delegate void ChangeEventHandler(MyRadioButton sender, bool raiseByMouse);
 

@@ -13,7 +13,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupJava
+public partial class PageSetupJava : MyPageRight
 {
     private bool isLoad = false;
 

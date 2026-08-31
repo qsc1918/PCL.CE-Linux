@@ -12,7 +12,7 @@ using PCL.Core.UI.Theme;
 
 namespace PCL;
 
-public partial class MyToast
+public partial class MyToast : Border
 {
     public int Uuid = ModBase.GetUuid();
 

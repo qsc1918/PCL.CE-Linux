@@ -15,7 +15,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupUI
+public partial class PageSetupUI : MyPageRight
 {
     public string[] ThemeColors => Basics.IsAprilFool 
         ? [Lang.Text("Setup.Ui.Theme.Color.SkyBlue"), Lang.Text("Setup.Ui.Theme.Color.CatBlue"), Lang.Text("Setup.Ui.Theme.Color.CrashBlue"), Lang.Text("Setup.Ui.Theme.Color.Hmcl")]

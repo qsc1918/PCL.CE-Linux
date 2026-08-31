@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageSpeedRight
+public partial class PageSpeedRight : MyPageRight
 {
     public PageSpeedRight()
     {

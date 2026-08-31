@@ -12,7 +12,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupFeedback
+public partial class PageSetupFeedback : MyPageRight
 {
     public enum TagId : long
     {

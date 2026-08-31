@@ -13,7 +13,7 @@ using PCL.Core.App.Localization;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyRadioBox : IMyRadio
+public partial class MyRadioBox : Grid, IMyRadio
 {
     public delegate void PreviewChangeEventHandler(object sender, ModBase.RouteEventArgs e);
 
