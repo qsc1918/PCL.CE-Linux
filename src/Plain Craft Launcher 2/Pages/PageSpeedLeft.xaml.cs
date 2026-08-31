@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Threading;
 using PCL.Network;
 using PCL.Core.App.Localization;

@@ -10,6 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Interactivity;
 // [port] Avalonia.Interop removed
 using Avalonia.Media;

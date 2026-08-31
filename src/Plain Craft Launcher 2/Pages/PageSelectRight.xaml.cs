@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;

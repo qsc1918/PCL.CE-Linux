@@ -23,7 +23,7 @@ internal static class ControlVisualHelpers
         else
         {
             ModAnimation.AniStop(animationKey);
-            target.SetResourceReference(property, resourceKey);
+            target.Bind(property, target.GetResourceObservable(resourceKey)); // [port] Avalonia 动态资源绑定
         }
     }
 }
