@@ -1,13 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App;
 using PCL.Core.Minecraft;
 using PCL.Core.UI;
@@ -102,7 +100,7 @@ public partial class PageSetupJava
         };
         var btnOpenFolder = new MyIconButton();
         btnOpenFolder.SvgIcon = "lucide/folder-open";
-        btnOpenFolder.ToolTip = Lang.Text("Common.Action.Open");
+        Avalonia.Controls.ToolTip.SetTip(btnOpenFolder, Lang.Text("Common.Action.Open")); // [port] ToolTip -> SetTip
         btnOpenFolder.Click += (sender, e) =>
         {
             if (!j.Installation.IsStillAvailable)
@@ -115,7 +113,7 @@ public partial class PageSetupJava
         };
         var btnInfo = new MyIconButton();
         btnInfo.SvgIcon = "lucide/info";
-        btnInfo.ToolTip = Lang.Text("Setup.Java.Detail.ToolTip");
+        Avalonia.Controls.ToolTip.SetTip(btnInfo, Lang.Text("Setup.Java.Detail")); // [port] ToolTip -> SetTip
         btnInfo.Click += (sender, e) =>
         {
             if (!j.Installation.IsStillAvailable)
@@ -151,14 +149,14 @@ public partial class PageSetupJava
                 item.LabTitle.TextDecorations = null;
                 item.LabTitle.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush1");
                 btnEnableSwitch.SvgIcon = "lucide/circle-minus";
-                btnEnableSwitch.ToolTip = Lang.Text("Setup.Java.Disable");
+                Avalonia.Controls.ToolTip.SetTip(btnEnableSwitch, Lang.Text("Setup.Java.Disable")); // [port] ToolTip -> SetTip
             }
             else
             {
                 item.LabTitle.TextDecorations = TextDecorations.Strikethrough;
                 item.LabTitle.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrushGray4");
                 btnEnableSwitch.SvgIcon = "lucide/circle-check";
-                btnEnableSwitch.ToolTip = Lang.Text("Setup.Java.Enable");
+                Avalonia.Controls.ToolTip.SetTip(btnEnableSwitch, Lang.Text("Setup.Java.Enable")); // [port] ToolTip -> SetTip
             }
         }
         

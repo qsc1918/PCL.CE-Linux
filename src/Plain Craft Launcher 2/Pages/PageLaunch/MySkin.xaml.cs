@@ -8,7 +8,6 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Input;
-using Avalonia.Media;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
 using PCL.Network;
@@ -48,7 +47,7 @@ public partial class MySkin
             field = value;
             ToolTip = string.IsNullOrEmpty(field)
                 ? Lang.Text("Common.State.Loading")
-                : Lang.Text("Launch.Skin.Change.ToolTip");
+                : Lang.Text("Launch.Skin.Change");
         }
     }
 

@@ -5,7 +5,6 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Input;
-using Avalonia.Media;
 using static PCL.MyLoading;
 using PCL.Core.App.Localization;
 

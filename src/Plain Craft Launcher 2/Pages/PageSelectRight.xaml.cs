@@ -436,7 +436,7 @@ public partial class PageSelectRight
         var btnStar = new MyIconButton();
         if (version.IsStar)
         {
-            btnStar.ToolTip = Lang.Text("Select.Instance.Unfavorite");
+            Avalonia.Controls.ToolTip.SetTip(btnStar, Lang.Text("Select.Instance.Unfavorite")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnStar, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnStar, 30d);
             ToolTipService.SetHorizontalOffset(btnStar, 2d);
@@ -445,7 +445,7 @@ public partial class PageSelectRight
         }
         else
         {
-            btnStar.ToolTip = Lang.Text("Select.Instance.Favorite");
+            Avalonia.Controls.ToolTip.SetTip(btnStar, Lang.Text("Select.Instance.Favorite")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnStar, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnStar, 30d);
             ToolTipService.SetHorizontalOffset(btnStar, 2d);
@@ -461,13 +461,13 @@ public partial class PageSelectRight
                 ModLoader.LoaderFolderRunType.ForceRun, 1, @"versions\");
         };
         var btnOpenFolder = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/folder-open" };
-        btnOpenFolder.ToolTip = Lang.Text("Select.Instance.OpenFolder");
+        Avalonia.Controls.ToolTip.SetTip(btnOpenFolder, Lang.Text("Select.Instance.OpenFolder")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnOpenFolder, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnOpenFolder, 30d);
         ToolTipService.SetHorizontalOffset(btnOpenFolder, 2d);
         btnOpenFolder.Click += (_, _) => PageInstanceOverall.OpenVersionFolder(version);
         var btnDel = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/trash-2" };
-        btnDel.ToolTip = Lang.Text("Common.Action.Delete");
+        Avalonia.Controls.ToolTip.SetTip(btnDel, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btnDel, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btnDel, 30d);
         ToolTipService.SetHorizontalOffset(btnDel, 2d);
@@ -475,7 +475,7 @@ public partial class PageSelectRight
         if (version.state != McInstanceState.Error)
         {
             var btnCont = new MyIconButton { LogoScale = 1.1d, SvgIcon = "lucide/settings" };
-            btnCont.ToolTip = Lang.Text("Select.Instance.Settings");
+            Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Select.Instance.Settings")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnCont, 30d);
             ToolTipService.SetHorizontalOffset(btnCont, 2d);
@@ -494,7 +494,7 @@ public partial class PageSelectRight
         else
         {
             var btnCont = new MyIconButton { LogoScale = 1.15d, SvgIcon = "lucide/folder-open" };
-            btnCont.ToolTip = Lang.Text("Common.Action.OpenFolder");
+            Avalonia.Controls.ToolTip.SetTip(btnCont, Lang.Text("Common.Action.OpenFolder")); // [port] ToolTip -> SetTip
             ToolTipService.SetPlacement(btnCont, PlacementMode.Center);
             ToolTipService.SetVerticalOffset(btnCont, 30d);
             ToolTipService.SetHorizontalOffset(btnCont, 2d);
@@ -549,7 +549,7 @@ public partial class PageSelectRight
             {
                 case 1:
                 {
-                    ModBase.IniClearCache(Path.Combine(mcInstance.PathIndie, "options.txt"));
+                    ModBase.IniClearCache(System.IO.Path.Combine(mcInstance.PathIndie, "options.txt"));
                     ((DynamicCacheConfigStorage)ConfigService.GetProvider(ConfigSource.GameInstance)).InvalidateCache(
                         mcInstance.PathInstance);
                     if (isShiftPressed)

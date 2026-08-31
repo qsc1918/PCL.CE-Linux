@@ -70,7 +70,6 @@ public class MyBitmap
                 else
                 {
                     // [port] 使用这种自己接管 FileStream 的方法加载才能解除文件占用；Skia 原生支持 WebP
-                    using (var picStream = new FileStream(filePathOrResourceName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         pic = SKBitmap.Decode(picStream);
                     }
@@ -198,9 +197,6 @@ public class MyBitmap
     private Bitmap _ToAvalonia()
     {
         if (_AvaloniaCache is not null) return _AvaloniaCache;
-        using var image = SKImage.FromBitmap(pic);
-        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-        using var ms = new MemoryStream();
         data.SaveTo(ms);
         ms.Position = 0;
         _AvaloniaCache = new Bitmap(ms);
@@ -209,7 +205,6 @@ public class MyBitmap
 
     private static SKBitmap _FromAvalonia(Bitmap bitmap)
     {
-        using var ms = new MemoryStream();
         bitmap.Save(ms);
         ms.Position = 0;
         return SKBitmap.Decode(ms);

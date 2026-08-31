@@ -1,13 +1,12 @@
-﻿using System.IO;
+using System.IO;
 using System.IO.Compression;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using DotNet.Globbing;
@@ -253,7 +252,7 @@ public partial class PageInstanceExport : IRefreshable
                     });
                     if (Folder == "shaderpacks") // 处理光影包的配置文件
                     {
-                        var shaderConfig = new FileInfo(Path.Combine(File.Directory.FullName,
+                        var shaderConfig = new FileInfo(System.IO.Path.Combine(File.Directory.FullName,
                             $"{File.Name}.txt"));
                         if (shaderConfig.Exists)
                             panel.Children.Add(new MyCheckBox
@@ -290,7 +289,7 @@ public partial class PageInstanceExport : IRefreshable
                     panel.Children.Add(newCheckBox);
                     if (Folder == "shaderpacks") // 处理文件夹形式光影包的配置文件
                     {
-                        var shaderConfig = new FileInfo(Path.Combine(targetFolder.FullName,
+                        var shaderConfig = new FileInfo(System.IO.Path.Combine(targetFolder.FullName,
                             $"{SubFolder.Name}.txt"));
                         if (shaderConfig.Exists)
                             panel.Children.Add(new MyCheckBox
@@ -858,7 +857,7 @@ public partial class PageInstanceExport : IRefreshable
 
         // 缓存所需参数
         var cacheFolder = ModMain.RequestTaskTempFolder();
-        var overridesFolder = Path.Combine(cacheFolder, "modpack", "overrides");
+        var overridesFolder = System.IO.Path.Combine(cacheFolder, "modpack", "overrides");
         var mcInstance = PageInstanceLeft.McInstance;
         var pathIndie = mcInstance.PathIndie;
         var checkHostedAssets = (bool)!CheckAdvancedInclude.Checked;
@@ -880,8 +879,8 @@ public partial class PageInstanceExport : IRefreshable
                 loader =>
                 {
                     UpdateManager.DownloadLatestPCL(loader);
-                    ModBase.CopyFile(Path.Combine(ModBase.pathTemp, "CE-Latest.exe"),
-                        Path.Combine(cacheFolder, "Plain Craft Launcher.exe"));
+                    ModBase.CopyFile(System.IO.Path.Combine(ModBase.pathTemp, "CE-Latest.exe"),
+                        System.IO.Path.Combine(cacheFolder, "Plain Craft Launcher.exe"));
                 })
             {
                 ProgressWeight = 0.5d,
@@ -930,7 +929,7 @@ public partial class PageInstanceExport : IRefreshable
 
                     if (!shouldKeep)
                         continue;
-                    var targetPath = Path.Combine(overridesFolder, relativePath);
+                    var targetPath = System.IO.Path.Combine(overridesFolder, relativePath);
                     ModBase.CopyFile(Entry.FullName, targetPath);
                     // 若为压缩包，考虑联网获取路径
                     if (checkHostedAssets &&
@@ -956,18 +955,18 @@ public partial class PageInstanceExport : IRefreshable
             ModBase.Log($"[Export] 复制 overrides 文件完成，有 {loader.output.Count} 个文件需要联网检查");
             loader.Progress = 0.95d;
             // 复制追加内容到根目录
-            var baseFolder = includePCL ? cacheFolder : Path.Combine(cacheFolder, "modpack");
+            var baseFolder = includePCL ? cacheFolder : System.IO.Path.Combine(cacheFolder, "modpack");
             foreach (var Line in allExtraFiles)
                 if (Line.EndsWithF(@"\") || Line.EndsWithF("/"))
                 {
                     if (Directory.Exists(Line))
-                        ModBase.CopyDirectory(Line, Path.Combine(baseFolder, ModBase.GetFolderNameFromPath(Line)) + @"\");
+                        ModBase.CopyDirectory(Line, System.IO.Path.Combine(baseFolder, ModBase.GetFolderNameFromPath(Line)) + @"\");
                     else
                         HintService.Hint(Lang.Text("Instance.Export.Config.FolderNotFound", Line), HintType.Error);
                 }
                 else if (File.Exists(Line))
                 {
-                    ModBase.CopyFile(Line, Path.Combine(baseFolder, ModBase.GetFileNameFromPath(Line)));
+                    ModBase.CopyFile(Line, System.IO.Path.Combine(baseFolder, ModBase.GetFileNameFromPath(Line)));
                 }
                 else
                 {
@@ -976,26 +975,26 @@ public partial class PageInstanceExport : IRefreshable
 
             loader.Progress = 0.97d;
             // 复制 PCL 实例设置
-            ModBase.CopyDirectory(Path.Combine(mcInstance.PathInstance, "PCL"), Path.Combine(overridesFolder, "PCL"));
+            ModBase.CopyDirectory(System.IO.Path.Combine(mcInstance.PathInstance, "PCL"), System.IO.Path.Combine(overridesFolder, "PCL"));
             #if RELEASE
                         // 复制 PCL 本体
-                        if (includePCL) ModBase.CopyFile(Basics.ExecutablePath, Path.Combine(cacheFolder, Basics.ExecutableName));
+                        if (includePCL) ModBase.CopyFile(Basics.ExecutablePath, System.IO.Path.Combine(cacheFolder, Basics.ExecutableName));
             #endif
             // 复制 PCL 个性化内容
             if (includePCLCustom)
             {
-                if (Directory.Exists(Path.Combine(ModBase.exePath, "PCL", "Pictures")))
-                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "PCL", "Pictures"), Path.Combine(cacheFolder, "PCL", "Pictures"));
-                if (Directory.Exists(Path.Combine(ModBase.exePath, "PCL", "Musics")))
-                    ModBase.CopyDirectory(Path.Combine(ModBase.exePath, "PCL", "Musics"), Path.Combine(cacheFolder, "PCL", "Musics"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"), Path.Combine(cacheFolder, "PCL", "Custom.xaml"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Setup.ini")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Setup.ini"), Path.Combine(cacheFolder, "PCL", "Setup.ini"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "hints.txt")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "hints.txt"), Path.Combine(cacheFolder, "PCL", "hints.txt"));
-                if (File.Exists(Path.Combine(ModBase.exePath, "PCL", "Logo.png")))
-                    ModBase.CopyFile(Path.Combine(ModBase.exePath, "PCL", "Logo.png"), Path.Combine(cacheFolder, "PCL", "Logo.png"));
+                if (Directory.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "Pictures")))
+                    ModBase.CopyDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Pictures"), System.IO.Path.Combine(cacheFolder, "PCL", "Pictures"));
+                if (Directory.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics")))
+                    ModBase.CopyDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics"), System.IO.Path.Combine(cacheFolder, "PCL", "Musics"));
+                if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "Custom.xaml")))
+                    ModBase.CopyFile(System.IO.Path.Combine(ModBase.exePath, "PCL", "Custom.xaml"), System.IO.Path.Combine(cacheFolder, "PCL", "Custom.xaml"));
+                if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "Setup.ini")))
+                    ModBase.CopyFile(System.IO.Path.Combine(ModBase.exePath, "PCL", "Setup.ini"), System.IO.Path.Combine(cacheFolder, "PCL", "Setup.ini"));
+                if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "hints.txt")))
+                    ModBase.CopyFile(System.IO.Path.Combine(ModBase.exePath, "PCL", "hints.txt"), System.IO.Path.Combine(cacheFolder, "PCL", "hints.txt"));
+                if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "PCL", "Logo.png")))
+                    ModBase.CopyFile(System.IO.Path.Combine(ModBase.exePath, "PCL", "Logo.png"), System.IO.Path.Combine(cacheFolder, "PCL", "Logo.png"));
             }
         })
         {
@@ -1149,7 +1148,7 @@ public partial class PageInstanceExport : IRefreshable
                     var modFile = Pair.Key;
                     files.Add(new JsonObject
                     {
-                        { "path", Path.GetRelativePath(overridesFolder, modFile.path).Replace(@"\", "/") },
+                        { "path", System.IO.Path.GetRelativePath(overridesFolder, modFile.path).Replace(@"\", "/") },
                         {
                             "hashes",
                             new JsonObject
@@ -1177,7 +1176,7 @@ public partial class PageInstanceExport : IRefreshable
                     { "game", "minecraft" }, { "formatVersion", 1 }, { "versionId", packVersion }, { "name", packName },
                     { "summary", mcInstance.Desc }, { "files", files }, { "dependencies", dependencies }
                 };
-                File.WriteAllText(Path.Combine(cacheFolder, "modpack", "modrinth.index.json"),
+                File.WriteAllText(System.IO.Path.Combine(cacheFolder, "modpack", "modrinth.index.json"),
                     resultJson.ToJsonString(new JsonSerializerOptions(JsonCompat.SerializerOptions) { WriteIndented = true }));
                 // 打包
                 Directory.CreateDirectory(ModBase.GetPathFromFullPath(packPath));
@@ -1186,9 +1185,9 @@ public partial class PageInstanceExport : IRefreshable
                 if (includePCL)
                 {
                     // 首次压缩整合包
-                    ZipFile.CreateFromDirectory(Path.Combine(cacheFolder, "modpack"), Path.Combine(cacheFolder, "modpack.mrpack"));
+                    ZipFile.CreateFromDirectory(System.IO.Path.Combine(cacheFolder, "modpack"), System.IO.Path.Combine(cacheFolder, "modpack.mrpack"));
                     loader.Progress = 0.5d;
-                    Directory.Delete(Path.Combine(cacheFolder, "modpack"), true);
+                    Directory.Delete(System.IO.Path.Combine(cacheFolder, "modpack"), true);
                     loader.Progress = 0.6d;
                     // 二次压缩整合包
                     ZipFile.CreateFromDirectory(cacheFolder, packPath);
@@ -1197,7 +1196,7 @@ public partial class PageInstanceExport : IRefreshable
                 else
                 {
                     // 直接压缩整合包
-                    ZipFile.CreateFromDirectory(Path.Combine(cacheFolder, "modpack"), packPath);
+                    ZipFile.CreateFromDirectory(System.IO.Path.Combine(cacheFolder, "modpack"), packPath);
                     loader.Progress = 0.8d;
                 }
 

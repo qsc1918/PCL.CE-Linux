@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using PCL.Core.App;
@@ -122,7 +123,7 @@ public partial class PageSelectLeft : IRefreshable
                             ModMain.frmSelectLeft.Refresh_Click);
                         AddMenuItem("Delete",
                             ModFolder.mcFolderList.Count == 1 &&
-                            folder.Location == Path.Combine(ModBase.exePath, ".minecraft") + @"\"
+                            folder.Location == System.IO.Path.Combine(ModBase.exePath, ".minecraft") + @"\"
                                 ? Lang.Text("Select.Folder.Clear")
                                 : Lang.Text("Common.Action.Delete"), iconDelete, new Thickness(0, 0, 0, 2),
                             ModMain.frmSelectLeft.Delete_Click);
@@ -226,7 +227,7 @@ public partial class PageSelectLeft : IRefreshable
             });
 
             // 创建新文件夹按钮
-            if (!Directory.Exists(Path.Combine(ModBase.exePath, ".minecraft")))
+            if (!Directory.Exists(System.IO.Path.Combine(ModBase.exePath, ".minecraft")))
             {
                 var itemCreate = new MyListItem
                 {
@@ -234,7 +235,7 @@ public partial class PageSelectLeft : IRefreshable
                     Type = MyListItem.CheckType.Clickable,
                     Title = Lang.Text("Select.Folder.CreateNew.Title"),
                     Height = 34,
-                    ToolTip = Lang.Text("Select.Folder.CreateNew.ToolTip"),
+                    ToolTip = Lang.Text("Select.Folder.CreateNew"),
                     LogoScale = 0.9,
                     SvgIcon = "lucide/folder-plus"
                 };
@@ -250,7 +251,7 @@ public partial class PageSelectLeft : IRefreshable
                 Type = MyListItem.CheckType.Clickable,
                 Title = Lang.Text("Select.Folder.AddExisting.Title"),
                 Height = 34,
-                ToolTip = Lang.Text("Select.Folder.AddExisting.ToolTip"),
+                ToolTip = Lang.Text("Select.Folder.AddExisting"),
                 SvgIcon = "lucide/folder-input"
             };
             ToolTipService.SetPlacement(itemAdd, PlacementMode.Right);
@@ -264,7 +265,7 @@ public partial class PageSelectLeft : IRefreshable
                 Type = MyListItem.CheckType.Clickable,
                 Title = Lang.Text("Select.Folder.ImportModpack.Title"),
                 Height = 34,
-                ToolTip = Lang.Text("Select.Folder.ImportModpack.ToolTip"),
+                ToolTip = Lang.Text("Select.Folder.ImportModpack"),
                 SvgIcon = "lucide/package-plus"
             };
             ToolTipService.SetPlacement(itemInstall, PlacementMode.Right);
@@ -428,7 +429,7 @@ public partial class PageSelectLeft : IRefreshable
 
                 if (!ModBase.CheckPermission(folderPath + @"versions\"))
                     foreach (var Folder in new DirectoryInfo(folderPath).GetDirectories())
-                        if (ModBase.CheckPermission(Path.Combine(Folder.FullName, "versions")))
+                        if (ModBase.CheckPermission(System.IO.Path.Combine(Folder.FullName, "versions")))
                         {
                             folderPath = Folder.FullName + @"\";
                             break;
@@ -532,8 +533,8 @@ public partial class PageSelectLeft : IRefreshable
                     if (Directory.Exists(folder.Location + @"versions\"))
                         foreach (var Version in new DirectoryInfo(folder.Location + @"versions\")
                                      .EnumerateDirectories())
-                            if (Directory.Exists(Path.Combine(Version.FullName, "PCL")))
-                                Directory.Delete(Path.Combine(Version.FullName, "PCL"), true);
+                            if (Directory.Exists(System.IO.Path.Combine(Version.FullName, "PCL")))
+                                Directory.Delete(System.IO.Path.Combine(Version.FullName, "PCL"), true);
 
                     break;
                 }
@@ -670,7 +671,7 @@ public partial class PageSelectLeft : IRefreshable
 
     public static void RefreshCurrent(string folder)
     {
-        ModBase.WriteIni(Path.Combine(folder, "PCL.ini"), "InstanceCache", "");
+        ModBase.WriteIni(System.IO.Path.Combine(folder, "PCL.ini"), "InstanceCache", "");
         if (folder == ModFolder.mcFolderSelected)
             ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,
                 ModLoader.LoaderFolderRunType.ForceRun, 1, @"versions\");

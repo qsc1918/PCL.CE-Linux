@@ -3,13 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Avalonia.Media;
 using PCL.Core.UI;
 using PCL.Network;
 using PCL.Network.Loaders;
@@ -284,7 +282,7 @@ public partial class PageDownloadCompFavorites
         // 修改备注按钮
         var btn_EditNote = new MyIconButton();
         btn_EditNote.SvgIcon = "lucide/pencil";
-        btn_EditNote.ToolTip = Lang.Text("Download.Comp.Favorites.EditNote");
+        Avalonia.Controls.ToolTip.SetTip(btn_EditNote, Lang.Text("Download.Comp.Favorites.EditNote")); // [port] ToolTip -> SetTip
         ToolTipService.SetPlacement(btn_EditNote, PlacementMode.Center);
         ToolTipService.SetVerticalOffset(btn_EditNote, 30d);
         ToolTipService.SetHorizontalOffset(btn_EditNote, 2d);

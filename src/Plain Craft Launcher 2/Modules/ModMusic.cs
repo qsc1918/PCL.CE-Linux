@@ -1,6 +1,7 @@
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Interactivity;
 using NAudio;
 using NAudio.Wave;
@@ -163,7 +164,7 @@ public static class ModMusic
             if (musicAllList is null)
             {
                 musicAllList = new List<string>();
-                var musicDir = Path.Combine(ModBase.exePath, "PCL", "Musics");
+                var musicDir = System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics");
                 Directory.CreateDirectory(musicDir);
                 foreach (var file in ModBase.EnumerateFiles(musicDir))
                 {
@@ -248,8 +249,8 @@ public static class ModMusic
                         ModMain.frmMain.BtnExtraMusic.LogoScale = 0.8d;
                         tipText = Lang.Text(
                             isSingle
-                                ? "Music.ToolTip.Paused.Single"
-                                : "Music.ToolTip.Paused.Multiple",
+                                ? "Music).Paused.Single"
+                                : "Music).Paused.Multiple",
                             fileName);
                     }
                     else
@@ -258,12 +259,13 @@ public static class ModMusic
                         ModMain.frmMain.BtnExtraMusic.LogoScale = 1d;
                         tipText = Lang.Text(
                             isSingle
-                                ? "Music.ToolTip.Playing.Single"
-                                : "Music.ToolTip.Playing.Multiple",
+                                ? "Music.Playing.Single"
+                                : "Music.Playing.Multiple",
                             fileName);
                     }
 
-                    ModMain.frmMain.BtnExtraMusic.ToolTip = tipText;
+
+                    Avalonia.Controls.ToolTip.SetTip(ModMain.frmMain.BtnExtraMusic, tipText); // [port] ToolTip -> SetTip
                     ToolTipService.SetVerticalOffset(ModMain.frmMain.BtnExtraMusic,
                         tipText.Contains("\n") ? 10 : 16);
                 }

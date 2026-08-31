@@ -15,12 +15,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using System.Xaml;
@@ -114,7 +112,7 @@ public static class ModBase
     /// <summary>
     ///     AppData 中的 PCL 文件夹路径，以 \ 结尾。
     /// </summary>
-    public static string pathAppdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PCL") + @"\";
+    public static string pathAppdata = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PCL") + @"\";
 
     /// <summary>
     ///     AppData 中的 PCLCE 配置文件夹路径，以 \ 结尾。
@@ -837,7 +835,7 @@ public static class ModBase
     /// </summary>
     public static string GetFileNameWithoutExtentionFromPath(string filePath)
     {
-        return Path.GetFileNameWithoutExtension(filePath);
+        return System.IO.Path.GetFileNameWithoutExtension(filePath);
     }
 
     /// <summary>
@@ -1383,9 +1381,9 @@ public static class ModBase
         Action<double> progressIncrementHandler = null)
     {
         Directory.CreateDirectory(destDirectory);
-        destDirectory = Path.GetFullPath(destDirectory);
-        if (!destDirectory.EndsWith(Path.DirectorySeparatorChar.ToString()))
-            destDirectory += Path.DirectorySeparatorChar.ToString();
+        destDirectory = System.IO.Path.GetFullPath(destDirectory);
+        if (!destDirectory.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()))
+            destDirectory += System.IO.Path.DirectorySeparatorChar.ToString();
         if (compressFilePath.EndsWithF(".gz", true))
             // 以 gz 方式解压
             using (var compressedFile = new FileStream(compressFilePath, FileMode.Open, FileAccess.Read))
@@ -1394,7 +1392,7 @@ public static class ModBase
                 {
                     using (var extractFileStream =
                            new FileStream(
-                               Path.Combine(destDirectory,
+                               System.IO.Path.Combine(destDirectory,
                                    GetFileNameFromPath(compressFilePath).ToLower().Replace(".tar", "")
                                        .Replace(".gz", "")), FileMode.OpenOrCreate, FileAccess.Write))
                     {
@@ -1412,7 +1410,7 @@ public static class ModBase
                 {
                     if (progressIncrementHandler is not null)
                         progressIncrementHandler(1d / totalCount);
-                    var destinationPath = Path.GetFullPath(Path.Combine(destDirectory, entry.FullName));
+                    var destinationPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(destDirectory, entry.FullName));
                     if (!destinationPath.StartsWithF(destDirectory))
                         throw new Exception(
                             $"解压文件 {entry.FullName} 错误：解压文件路径 {destinationPath} 不在目标目录 {destDirectory} 内");
@@ -1559,13 +1557,13 @@ public static class ModBase
         foreach (var filePath in Directory.GetFiles(sourceDir))
         {
             var fileName = GetFileNameFromPath(filePath);
-            File.Move(filePath, Path.Combine(targetDir, fileName));
+            File.Move(filePath, System.IO.Path.Combine(targetDir, fileName));
         }
 
         foreach (var dirPath in Directory.GetDirectories(sourceDir))
         {
             var dirName = GetFolderNameFromPath(dirPath);
-            MoveDirectory(dirPath, Path.Combine(targetDir, dirName));
+            MoveDirectory(dirPath, System.IO.Path.Combine(targetDir, dirName));
         }
     }
 
@@ -2404,7 +2402,7 @@ public static class ModBase
 
         if (pathTemp.IsASCII()) return pathTemp;
 
-        return Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL");
+        return System.IO.Path.Combine(SystemPaths.DriveLetter, "ProgramData", "PCL");
     }
 
     /// <summary>
@@ -2551,9 +2549,9 @@ public static class ModBase
     /// <param name="timeout">等待该程序结束的最长时间（毫秒）。超时会返回 Result.Timeout。</param>
     public static ProcessReturnValues ShellAndGetExitCode(string fileName, string arguments = "", int timeout = 1000000)
     {
+            using (var program = new Process())
         try
         {
-            using (var program = new Process())
             {
                 program.StartInfo.Arguments = arguments;
                 program.StartInfo.FileName = fileName;

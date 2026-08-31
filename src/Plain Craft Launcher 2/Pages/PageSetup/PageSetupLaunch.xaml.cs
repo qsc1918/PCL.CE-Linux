@@ -1,12 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 using Avalonia.Threading;
 using PCL.Core.App;
@@ -90,7 +89,7 @@ public partial class PageSetupLaunch
             {
                 CheckAdvanceDisableJLW.Checked = true;
                 CheckAdvanceDisableJLW.IsEnabled = false;
-                CheckAdvanceDisableJLW.ToolTip = Lang.Text("Setup.Launch.Advanced.DisableJlw.Arm64Notice");
+                Avalonia.Controls.ToolTip.SetTip(CheckAdvanceDisableJLW, Lang.Text("Setup.Launch.Advanced.DisableJlw.Arm64Notice")); // [port] ToolTip -> SetTip
             }
             else
             {

@@ -4,11 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
@@ -95,10 +93,10 @@ public partial class PageLaunchLeft
         {
             // 自动整合包安装：准备
             string packInstallPath = null;
-            if (File.Exists(Path.Combine(ModBase.exePath, "modpack.zip")))
-                packInstallPath = Path.Combine(ModBase.exePath, "modpack.zip");
-            if (File.Exists(Path.Combine(ModBase.exePath, "modpack.mrpack")))
-                packInstallPath = Path.Combine(ModBase.exePath, "modpack.mrpack");
+            if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "modpack.zip")))
+                packInstallPath = System.IO.Path.Combine(ModBase.exePath, "modpack.zip");
+            if (File.Exists(System.IO.Path.Combine(ModBase.exePath, "modpack.mrpack")))
+                packInstallPath = System.IO.Path.Combine(ModBase.exePath, "modpack.mrpack");
             if (packInstallPath is not null)
             {
                 ModBase.Log("[Launch] 需自动安装整合包：" + packInstallPath, ModBase.LogLevel.Debug);

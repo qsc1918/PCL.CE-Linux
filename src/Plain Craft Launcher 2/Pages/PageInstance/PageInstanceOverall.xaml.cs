@@ -5,10 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using FluentValidation;
 using Microsoft.VisualBasic.FileIO;
@@ -335,10 +333,10 @@ public partial class PageInstanceOverall
                 [new FolderNameValidator(ModFolder.mcFolderSelected + "versions", ignoreCase: false)]);
             if (string.IsNullOrWhiteSpace(newName))
                 return;
-            var newPath = Path.Combine(ModFolder.mcFolderSelected, "versions", newName);
+            var newPath = System.IO.Path.Combine(ModFolder.mcFolderSelected, "versions", newName);
             // 获取临时中间名，以防止仅修改大小写的重命名失败
             var tempName = newName + "_temp";
-            var tempPath = Path.Combine(ModFolder.mcFolderSelected, "versions", tempName);
+            var tempPath = System.IO.Path.Combine(ModFolder.mcFolderSelected, "versions", tempName);
             var isCaseChangedOnly = (newName.ToLower() ?? "") == (oldName.ToLower() ?? "");
             // 重新加载实例 Json 信息，避免 HMCL 项被合并
             JsonObject jsonObject;
@@ -357,41 +355,41 @@ public partial class PageInstanceOverall
             FileSystem.RenameDirectory(oldPath, tempName);
             FileSystem.RenameDirectory(tempPath, newName);
             // 清理 ini 缓存
-            ModBase.IniClearCache(Path.Combine(PageInstanceLeft.McInstance.PathIndie, "options.txt"));
+            ModBase.IniClearCache(System.IO.Path.Combine(PageInstanceLeft.McInstance.PathIndie, "options.txt"));
             // 重命名 Jar 文件与 natives 文件夹
             // 不能进行遍历重命名，否则在实例名很短的时候容易误伤其他文件（Meloong-Git/#6443）
-            if (Directory.Exists(Path.Combine(newPath, $"{oldName}-natives")))
+            if (Directory.Exists(System.IO.Path.Combine(newPath, $"{oldName}-natives")))
             {
                 if (isCaseChangedOnly)
                 {
-                    FileSystem.RenameDirectory(Path.Combine(newPath, $"{oldName}-natives"), $"{oldName}natives_temp");
-                    FileSystem.RenameDirectory(Path.Combine(newPath, $"{oldName}-natives_temp"), $"{newName}-natives");
+                    FileSystem.RenameDirectory(System.IO.Path.Combine(newPath, $"{oldName}-natives"), $"{oldName}natives_temp");
+                    FileSystem.RenameDirectory(System.IO.Path.Combine(newPath, $"{oldName}-natives_temp"), $"{newName}-natives");
                 }
                 else
                 {
-                    ModBase.DeleteDirectory(Path.Combine(newPath, $"{newName}-natives"));
-                    FileSystem.RenameDirectory(Path.Combine(newPath, $"{oldName}-natives"), $"{newName}-natives");
+                    ModBase.DeleteDirectory(System.IO.Path.Combine(newPath, $"{newName}-natives"));
+                    FileSystem.RenameDirectory(System.IO.Path.Combine(newPath, $"{oldName}-natives"), $"{newName}-natives");
                 }
             }
 
-            if (File.Exists(Path.Combine(newPath, $"{oldName}.jar")))
+            if (File.Exists(System.IO.Path.Combine(newPath, $"{oldName}.jar")))
             {
                 if (isCaseChangedOnly)
                 {
-                    FileSystem.RenameFile(Path.Combine(newPath, $"{oldName}.jar"), $"{oldName}_temp.jar");
-                    FileSystem.RenameFile(Path.Combine(newPath, $"{oldName}_temp.jar"), $"{newName}.jar");
+                    FileSystem.RenameFile(System.IO.Path.Combine(newPath, $"{oldName}.jar"), $"{oldName}_temp.jar");
+                    FileSystem.RenameFile(System.IO.Path.Combine(newPath, $"{oldName}_temp.jar"), $"{newName}.jar");
                 }
                 else
                 {
-                    File.Delete(Path.Combine(newPath, $"{newName}.jar"));
-                    FileSystem.RenameFile(Path.Combine(newPath, $"{oldName}.jar"), $"{newName}.jar");
+                    File.Delete(System.IO.Path.Combine(newPath, $"{newName}.jar"));
+                    FileSystem.RenameFile(System.IO.Path.Combine(newPath, $"{oldName}.jar"), $"{newName}.jar");
                 }
             }
 
             // 替换实例设置文件中的路径
-            if (File.Exists(Path.Combine(newPath, "PCL", "Setup.ini")))
-                ModBase.WriteFile(Path.Combine(newPath, "PCL", "Setup.ini"),
-                    ModBase.ReadFile(Path.Combine(newPath, "PCL", "Setup.ini")).Replace(oldPath, newPath));
+            if (File.Exists(System.IO.Path.Combine(newPath, "PCL", "Setup.ini")))
+                ModBase.WriteFile(System.IO.Path.Combine(newPath, "PCL", "Setup.ini"),
+                    ModBase.ReadFile(System.IO.Path.Combine(newPath, "PCL", "Setup.ini")).Replace(oldPath, newPath));
             // 更改已选中的实例
             if ((ModBase.ReadIni(ModFolder.mcFolderSelected + "PCL.ini", "Version") ?? "") == (oldName ?? ""))
                 ModBase.WriteIni(ModFolder.mcFolderSelected + "PCL.ini", "Version", newName);
@@ -399,9 +397,9 @@ public partial class PageInstanceOverall
             try
             {
                 jsonObject["id"] = newName;
-                ModBase.WriteFile(Path.Combine(newPath, $"{newName}.json"), jsonObject.ToString());
+                ModBase.WriteFile(System.IO.Path.Combine(newPath, $"{newName}.json"), jsonObject.ToString());
                 if (!isCaseChangedOnly)
-                    File.Delete(Path.Combine(newPath, $"{oldName}.json"));
+                    File.Delete(System.IO.Path.Combine(newPath, $"{oldName}.json"));
             }
             catch (Exception ex)
             {
@@ -772,7 +770,7 @@ public partial class PageInstanceOverall
                 {
                     var instancePath = PageInstanceLeft.McInstance.PathInstance;
                     var instanceName = PageInstanceLeft.McInstance.Name;
-                    ModBase.IniClearCache(Path.Combine(PageInstanceLeft.McInstance.PathIndie, "options.txt"));
+                    ModBase.IniClearCache(System.IO.Path.Combine(PageInstanceLeft.McInstance.PathIndie, "options.txt"));
                     ((DynamicCacheConfigStorage)ConfigService.GetProvider(ConfigSource.GameInstance)).InvalidateCache(
                         instancePath);
                     if (isShiftPressed)

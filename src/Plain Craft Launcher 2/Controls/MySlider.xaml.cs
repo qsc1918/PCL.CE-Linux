@@ -4,8 +4,8 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Controls.Shapes;
+using Path = Avalonia.Controls.Shapes.Path;
 
 using PCL.Core.App.Localization;
 namespace PCL;

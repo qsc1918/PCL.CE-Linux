@@ -1,13 +1,12 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -89,7 +88,7 @@ public partial class PageInstanceSaves : IRefreshable
 
     private string GetFileNameFromPath(string fullPath)
     {
-        return Path.GetFileName(fullPath);
+        return System.IO.Path.GetFileName(fullPath);
     }
 
     private void SetupFileSystemWatcher()
@@ -192,7 +191,7 @@ public partial class PageInstanceSaves : IRefreshable
                     // 检查文件夹是否仍然存在
                     if (!Directory.Exists(curFolder)) continue;
 
-                    var saveLogo = Path.Combine(curFolder, "icon.png");
+                    var saveLogo = System.IO.Path.Combine(curFolder, "icon.png");
                     var tmpCurFolder = curFolder;
                     if (File.Exists(saveLogo))
                     {

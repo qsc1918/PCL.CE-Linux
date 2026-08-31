@@ -1,19 +1,21 @@
-# Fix Path ambiguity: for .cs files that have both Avalonia.Controls.Shapes using and System.IO usage
-# with unqualified Path, add using alias. Also dedupe using lines. ASCII only.
+# Comprehensive Path fix: add Shapes alias + qualify all System.IO.Path calls. ASCII only.
 param([Parameter(Mandatory=$true)][string]$Root)
+
+$ioMembers = 'Combine|GetFullPath|GetFileName|GetDirectoryName|GetExtension|GetTempPath|GetRandomFileName|GetShortPathName|Exists|DirectorySeparatorChar|AltDirectorySeparatorChar|ChangeExtension|GetInvalidFileNameChars|GetInvalidPathChars|GetFileNameWithoutExtension|GetPathRoot|HasExtension|Join|GetRelativePath|GetTempFileName|GetPathRoot'
 
 $n = 0
 Get-ChildItem $Root -Recurse -Include *.cs -File | Where-Object { $_.FullName -notmatch '\\(bin|obj)\\' } | ForEach-Object {
     $t = [System.IO.File]::ReadAllText($_.FullName)
     $orig = $t
-    # skip files that already have the alias
-    if ($t -match 'using Path =') { return }
-    # must use unqualified Path as type or ctor
-    $usesPath = $t -match '(?m)(^|[^.\w])Path(\s|\(|\.|>|,|\))' -and $t -notmatch 'System\.IO\.Path|IcoPath|ExePath|pathImage'
-    if (-not $usesPath) { return }
-    if ($t -notmatch 'using Avalonia\.Controls\.Shapes;') { return }
-    # add alias right after the Shapes using
-    $t = [regex]::Replace($t, 'using Avalonia\.Controls\.Shapes;', "using Avalonia.Controls.Shapes;`r`nusing Path = Avalonia.Controls.Shapes.Path;", 'Multiline')
+    $hasShapes = $t -match 'using Avalonia\.Controls\.Shapes;'
+    # qualify IO usages (not already qualified, not after alias)
+    if ($hasShapes) {
+        $t = [regex]::Replace($t, "(?<![\w.])(?<!System\.IO\.)(?<!IO\.)Path\.($ioMembers)\b", "System.IO.Path.`$1")
+    }
+    # add alias if missing and Shapes using present
+    if ($hasShapes -and $t -notmatch 'using Path =') {
+        $t = [regex]::Replace($t, 'using Avalonia\.Controls\.Shapes;', "using Avalonia.Controls.Shapes;`r`nusing Path = Avalonia.Controls.Shapes.Path;", 'Multiline')
+    }
     if ($t -ne $orig) { [System.IO.File]::WriteAllText($_.FullName, $t); $n++ }
 }
-"alias added: $n files"
+"fixed: $n files"

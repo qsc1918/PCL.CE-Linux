@@ -7,13 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 // [port] Avalonia.Interop removed
-using Avalonia.Media;
-using Avalonia.Media;
 using PCL.Core.App;
 using PCL.Core.App.IoC;
 using PCL.Core.App.Localization;
@@ -1073,14 +1070,14 @@ public partial class FormMain
                     {
                         var destFolder = PageInstanceLeft.McInstance.PathIndie + @"saves\" +
                                          ModBase.GetFileNameWithoutExtentionFromPath(filePath);
-                        var destLevelDat = Path.Combine(destFolder, "level.dat");
+                        var destLevelDat = System.IO.Path.Combine(destFolder, "level.dat");
                         if (Directory.Exists(destFolder))
                         {
                             HintService.Hint(Lang.Text("Main.FileDrag.SameFolderExists", destFolder), HintType.Error);
                             return;
                         }
 
-                        var extractFolder = Path.Combine(ModBase.pathTemp, "Cache", "WorldImport", ModBase.GetUuid().ToString());
+                        var extractFolder = System.IO.Path.Combine(ModBase.pathTemp, "Cache", "WorldImport", ModBase.GetUuid().ToString());
                         try
                         {
                             ModBase.ExtractFile(filePath, extractFolder);

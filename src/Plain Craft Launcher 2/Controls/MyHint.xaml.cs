@@ -9,9 +9,8 @@ using Avalonia.Markup;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.UI.Theme;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 
 using Avalonia.Metadata;
 

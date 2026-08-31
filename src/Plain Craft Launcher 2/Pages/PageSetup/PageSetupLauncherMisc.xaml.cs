@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Avalonia;
@@ -6,9 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
@@ -266,14 +265,14 @@ public partial class PageSetupLauncherMisc
             foreach (var path in States.Game.Folders.Split('|'))
             {
                 var realPath = path.Split('>')[1];
-                Delete([Path.Combine(realPath, "PCL.ini")]);
+                Delete([System.IO.Path.Combine(realPath, "PCL.ini")]);
 
-                var versionsPath = Path.Combine(realPath, "versions");
+                var versionsPath = System.IO.Path.Combine(realPath, "versions");
                 if (!Directory.Exists(versionsPath)) continue;
                 
                 Delete(
                     Directory.EnumerateDirectories(versionsPath)
-                        .Select(p => Path.Combine(p, "PCL", "config.v1.yml"))
+                        .Select(p => System.IO.Path.Combine(p, "PCL", "config.v1.yml"))
                 );
             }
         }

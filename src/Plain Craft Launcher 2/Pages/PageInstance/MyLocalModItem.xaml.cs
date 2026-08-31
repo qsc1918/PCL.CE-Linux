@@ -1,13 +1,11 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
+using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
-using Avalonia.Media;
 using Microsoft.VisualBasic;
 using PCL.Core.App;
 using PCL.Core.Utils;
@@ -54,7 +52,7 @@ public partial class MyLocalCompItem
             if (Entry.CanUpdate)
             {
                 BtnUpdate.IsVisible = true;
-                BtnUpdate.ToolTip = $"{GetUpdateCompareDescription()}\r\n{Lang.Text("Instance.Resource.Item.UpdateToolTip")}";
+                Avalonia.Controls.ToolTip.SetTip(BtnUpdate, $"{GetUpdateCompareDescription()}\r\n{Lang.Text("Instance.Resource.Item.UpdateToolTip")}"); // [port] ToolTip -> SetTip
             }
             else
             {

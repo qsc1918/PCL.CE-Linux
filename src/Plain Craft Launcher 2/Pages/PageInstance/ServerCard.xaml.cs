@@ -3,10 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
 using PCL.Core.UI;
 using PCL.Core.UI.Theme;
@@ -74,7 +72,7 @@ public partial class ServerCard
         if (server.Status == ServerStatus.Online)
         {
             _manager.SetSelectedIconByName(GetSignalIcon(server.Ping));
-            Signal.ToolTip = $"{server.Ping}ms";
+            Avalonia.Controls.ToolTip.SetTip(Signal, $"{server.Ping}ms"); // [port] ToolTip -> SetTip
             ToolTipService.SetInitialShowDelay(Signal, 0);
             ToolTipService.SetBetweenShowDelay(Signal, 50);
             ToolTipService.SetPlacement(Signal, PlacementMode.Top);
