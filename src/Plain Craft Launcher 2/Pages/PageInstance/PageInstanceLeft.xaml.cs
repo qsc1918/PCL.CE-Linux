@@ -10,7 +10,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageInstanceLeft : IRefreshable
+public partial class PageInstanceLeft : MyPageLeft, IRefreshable
 {
     /// <summary>
     ///     当前显示设置的 MC 实例。

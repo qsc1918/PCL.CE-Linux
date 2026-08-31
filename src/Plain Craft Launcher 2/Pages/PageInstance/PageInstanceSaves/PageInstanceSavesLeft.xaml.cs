@@ -10,7 +10,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageInstanceSavesLeft : IRefreshable
+public partial class PageInstanceSavesLeft : MyPageLeft, IRefreshable
 {
     public static string currentSave;
 

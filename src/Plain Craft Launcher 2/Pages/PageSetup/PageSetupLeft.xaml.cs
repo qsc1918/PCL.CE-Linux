@@ -10,7 +10,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupLeft
+public partial class PageSetupLeft : MyPageLeft
 {
     private bool isLoad;
     private bool isPageSwitched; // 如果在 Loaded 前切换到其他页面，会导致触发 Loaded 时再次切换一次

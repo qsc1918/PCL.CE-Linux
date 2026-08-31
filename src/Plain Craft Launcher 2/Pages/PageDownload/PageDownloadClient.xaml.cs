@@ -11,7 +11,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadClient
+public partial class PageDownloadClient : MyPageRight
 {
     public PageDownloadClient()
     {

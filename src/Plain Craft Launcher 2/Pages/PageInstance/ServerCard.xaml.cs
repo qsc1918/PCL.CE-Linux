@@ -12,7 +12,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class ServerCard
+public partial class ServerCard : MyCard
 {
     private readonly IconManager _manager;
     public MinecraftServerInfo server;

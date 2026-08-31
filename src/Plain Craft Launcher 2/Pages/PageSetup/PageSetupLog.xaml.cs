@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using Avalonia;
@@ -16,7 +16,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupLog
+public partial class PageSetupLog : MyPageRight
 {
     public PageSetupLog()
     {

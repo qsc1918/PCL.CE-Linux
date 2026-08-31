@@ -16,7 +16,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageDownloadInstall
+public partial class PageDownloadInstall : MyPageRight
 {
     private bool isLoad;
 

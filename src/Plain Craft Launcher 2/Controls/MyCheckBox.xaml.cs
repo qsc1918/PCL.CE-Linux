@@ -11,7 +11,7 @@ using Avalonia.Markup;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyCheckBox
+public partial class MyCheckBox : Grid
 {
     public delegate void ChangeEventHandler(object sender, bool user);
 

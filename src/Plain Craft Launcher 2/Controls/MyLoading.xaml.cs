@@ -10,7 +10,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class MyLoading
+public partial class MyLoading : Grid
 {
     public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
 

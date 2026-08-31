@@ -25,7 +25,7 @@ using PCL.Network;
 
 namespace PCL;
 
-public partial class FormMain
+public partial class FormMain : Window
 {
     // 愚人节鼠标位置
     // [port] WPF PointerEventArgs → Avalonia PointerEventArgs（PointerMoved 事件参数）

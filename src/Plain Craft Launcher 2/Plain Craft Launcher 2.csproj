@@ -105,9 +105,7 @@
             Controls\Behaviors\LazyLoadBehavior.cs;" />
         <Compile Remove="@(DeferredExcludes)" />
         <Compile Remove="Generated\**" />
-        <!-- [port] .cs/.axaml 由 SDK 默认 glob 收集（EnableDefaultItems 必须 true，否则 Avalonia 命名字段生成器失效）；这里只做排除 -->
-        <AvaloniaXaml Remove="@(DeferredExcludes)" />
-        <AvaloniaResource Include="Images\**" />
+        <!-- [port] .cs/.axaml 由 SDK 默认 glob 收集（EnableDefaultItems 必须 true，否则 Avalonia 命名字段生成器失效）；这里只做排除 -->        <AvaloniaResource Include="Images\**" />
         <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
         <EmbeddedResource Include="metadata.json" />
     </ItemGroup>

@@ -13,6 +13,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyCard PanNoServer;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.MyButton BtnAddServerTop;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyCard PanContent;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.StackPanel PanServers;
@@ -34,6 +36,7 @@ namespace PCL
             var __thisNameScope__ = this.FindNameScope();
             PanBack = __thisNameScope__?.Find<global::PCL.MyScrollViewer>("PanBack");
             PanNoServer = __thisNameScope__?.Find<global::PCL.MyCard>("PanNoServer");
+            BtnAddServerTop = __thisNameScope__?.Find<global::PCL.MyButton>("BtnAddServerTop");
             PanContent = __thisNameScope__?.Find<global::PCL.MyCard>("PanContent");
             PanServers = __thisNameScope__?.Find<global::Avalonia.Controls.StackPanel>("PanServers");
         }

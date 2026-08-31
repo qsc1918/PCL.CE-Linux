@@ -11,7 +11,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSpeedLeft
+public partial class PageSpeedLeft : MyPageLeft
 {
     private const int watcherInterval = 300;
 

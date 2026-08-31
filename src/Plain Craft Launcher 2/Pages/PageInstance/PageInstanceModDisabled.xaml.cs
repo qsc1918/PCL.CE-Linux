@@ -7,7 +7,7 @@ using PCL.Core.App;
 
 namespace PCL;
 
-public partial class PageInstanceModDisabled
+public partial class PageInstanceModDisabled : MyPageRight
 {
     public PageInstanceModDisabled()
     {

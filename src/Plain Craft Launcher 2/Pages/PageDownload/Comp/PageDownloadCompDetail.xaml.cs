@@ -24,7 +24,7 @@ using Control = Avalonia.Controls.Control; // [port] original WinForms Control a
 
 namespace PCL;
 
-public partial class PageDownloadCompDetail
+public partial class PageDownloadCompDetail : MyPageRight
 {
     // 资源下载；整合包另存为
     public static Dictionary<ModComp.CompType, string> cachedFolder = new(); // 仅在本次缓存的下载文件夹

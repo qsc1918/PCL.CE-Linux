@@ -15,7 +15,7 @@ using PCL.Core.Utils.Validate;
 
 namespace PCL;
 
-public partial class PageLoginAuth
+public partial class PageLoginAuth : Grid
 {
     public static string draggedAuthServer;
 

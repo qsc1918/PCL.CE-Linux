@@ -21,7 +21,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageInstanceOverall
+public partial class PageInstanceOverall : MyPageRight
 {
     private ModLoader.LoaderCombo<int> instanceInfoLoader;
 

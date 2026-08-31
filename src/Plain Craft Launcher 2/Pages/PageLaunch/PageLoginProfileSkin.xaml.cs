@@ -8,7 +8,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageLoginProfileSkin
+public partial class PageLoginProfileSkin : Grid
 {
     public PageLoginProfileSkin()
     {

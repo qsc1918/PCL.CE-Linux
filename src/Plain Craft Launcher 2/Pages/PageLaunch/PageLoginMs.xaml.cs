@@ -8,7 +8,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageLoginMs
+public partial class PageLoginMs : StackPanel
 {
     public PageLoginMs()
     {

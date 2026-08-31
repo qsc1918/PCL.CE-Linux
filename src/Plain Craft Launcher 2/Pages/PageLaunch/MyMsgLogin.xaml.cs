@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 
 namespace PCL;
 
-public partial class MyMsgLogin
+public partial class MyMsgLogin : Grid
 {
     private readonly JsonObject data;
     private string deviceCode; // 用于轮询的设备代码

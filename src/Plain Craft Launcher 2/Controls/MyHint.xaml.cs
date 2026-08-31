@@ -15,7 +15,7 @@ using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Metadata;
 
 namespace PCL;
-public partial class MyHint
+public partial class MyHint : Border
 {
     // 配色
     public enum Themes

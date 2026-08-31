@@ -15,7 +15,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageSetupLaunch
+public partial class PageSetupLaunch : MyPageRight
 {
     private bool isLoad;
 

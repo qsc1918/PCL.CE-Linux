@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageDownloadWorld
+public partial class PageDownloadWorld : MyPageRight
 {
     public PageDownloadWorld()
     {

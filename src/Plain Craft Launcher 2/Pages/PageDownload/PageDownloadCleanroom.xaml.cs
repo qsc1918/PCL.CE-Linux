@@ -10,7 +10,7 @@ using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App.Localization;
 namespace PCL;
 
-public partial class PageDownloadCleanroom
+public partial class PageDownloadCleanroom : MyPageRight
 {
     public PageDownloadCleanroom()
     {

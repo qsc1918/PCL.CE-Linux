@@ -12,6 +12,8 @@ namespace PCL
         internal global::PCL.MyTextBox TextBox;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyIconButton BtnClear;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.MyButton BtnSearch;
 
         /// <summary>
         /// Wires up the controls and optionally loads XAML markup and attaches dev tools (if Avalonia.Diagnostics package is referenced).
@@ -30,6 +32,7 @@ namespace PCL
             var __thisNameScope__ = this.FindNameScope();
             TextBox = __thisNameScope__?.Find<global::PCL.MyTextBox>("TextBox");
             BtnClear = __thisNameScope__?.Find<global::PCL.MyIconButton>("BtnClear");
+            BtnSearch = __thisNameScope__?.Find<global::PCL.MyButton>("BtnSearch");
         }
     }
 }

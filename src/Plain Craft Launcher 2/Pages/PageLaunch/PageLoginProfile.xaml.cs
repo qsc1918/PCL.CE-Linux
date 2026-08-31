@@ -15,7 +15,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageLoginProfile
+public partial class PageLoginProfile : Grid
 {
     public PageLoginProfile()
     {

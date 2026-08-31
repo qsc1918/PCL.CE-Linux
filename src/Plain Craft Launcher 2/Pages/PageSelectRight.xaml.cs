@@ -21,7 +21,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageSelectRight
+public partial class PageSelectRight : MyPageRight
 {
     private const int normalDelay = 75; // 正常输入延迟0.075秒
     private const int quickDelay = 50; // 清空搜索框延迟0.05秒

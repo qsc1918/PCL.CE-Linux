@@ -17,7 +17,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageLaunchRight : IRefreshable
+public partial class PageLaunchRight : MyPageRight, IRefreshable
 {
     public PageLaunchRight()
     {

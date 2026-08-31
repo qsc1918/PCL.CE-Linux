@@ -16,7 +16,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageInstanceScreenshot : IRefreshable
+public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
 {
     private bool _AppendLock;
     private int _Offset;

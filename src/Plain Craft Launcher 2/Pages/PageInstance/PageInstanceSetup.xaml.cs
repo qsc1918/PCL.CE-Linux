@@ -21,7 +21,7 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public partial class PageInstanceSetup
+public partial class PageInstanceSetup : MyPageRight
 {
     private new bool isLoaded;
 

@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageDownloadMod
+public partial class PageDownloadMod : MyPageRight
 {
     public PageDownloadMod()
     {

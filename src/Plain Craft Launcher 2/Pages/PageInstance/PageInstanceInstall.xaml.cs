@@ -17,7 +17,7 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public partial class PageInstanceInstall
+public partial class PageInstanceInstall : MyPageRight
 {
     private enum InstallAction
     {

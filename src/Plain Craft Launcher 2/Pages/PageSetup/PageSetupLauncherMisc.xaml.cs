@@ -18,7 +18,7 @@ using PCL.Core.Utils.OS;
 
 namespace PCL;
 
-public partial class PageSetupLauncherMisc
+public partial class PageSetupLauncherMisc : MyPageRight
 {
     private bool isFirstLoad = true;
 

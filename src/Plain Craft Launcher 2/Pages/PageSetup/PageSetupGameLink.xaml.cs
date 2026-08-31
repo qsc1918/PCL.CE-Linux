@@ -13,7 +13,7 @@ using PCL.Core.Link.Scaffolding.EasyTier;
 
 namespace PCL;
 
-public partial class PageSetupGameLink
+public partial class PageSetupGameLink : MyPageRight
 {
     private bool isFirstLoad = true;
 

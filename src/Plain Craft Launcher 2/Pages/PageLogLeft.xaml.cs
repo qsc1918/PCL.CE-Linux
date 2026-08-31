@@ -12,7 +12,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageLogLeft
+public partial class PageLogLeft : MyPageLeft
 {
     public ModWatcher.Watcher currentLog;
     public int currentUuid;

@@ -21,7 +21,7 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageInstanceSavesDatapack : IRefreshable
+public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
 {
     #region 数据包信息缓存
 

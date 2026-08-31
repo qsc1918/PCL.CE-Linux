@@ -24,7 +24,7 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public partial class PageInstanceCompResource : IRefreshable
+public partial class PageInstanceCompResource : MyPageRight, IRefreshable
 {
     #region 模组信息缓存
 

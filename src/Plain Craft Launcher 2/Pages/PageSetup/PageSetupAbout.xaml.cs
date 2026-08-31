@@ -12,7 +12,7 @@ using PCL.Core.Utils;
 
 namespace PCL;
 
-public partial class PageSetupAbout
+public partial class PageSetupAbout : MyPageRight
 {
     // 彩蛋
     private int clickCount;

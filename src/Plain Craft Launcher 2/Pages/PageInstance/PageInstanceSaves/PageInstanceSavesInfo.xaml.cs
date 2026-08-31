@@ -14,7 +14,7 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageInstanceSavesInfo : IRefreshable
+public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
 {
     /// <summary>无状态服务，线程安全，所有实例可共享。</summary>
     private static readonly SaveManager SaveManager = new();

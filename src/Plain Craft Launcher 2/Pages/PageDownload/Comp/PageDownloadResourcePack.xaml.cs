@@ -1,6 +1,6 @@
 namespace PCL;
 
-public partial class PageDownloadResourcePack
+public partial class PageDownloadResourcePack : MyPageRight
 {
     public PageDownloadResourcePack()
     {

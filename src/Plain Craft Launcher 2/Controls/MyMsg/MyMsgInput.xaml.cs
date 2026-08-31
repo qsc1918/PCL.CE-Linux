@@ -12,7 +12,7 @@ using PCL.Core.UI.Controls;
 using PCL.Core.App.Localization;
 namespace PCL;
 
-public partial class MyMsgInput
+public partial class MyMsgInput : Grid
 {
     private readonly ModMain.MyMsgBoxConverter myConverter;
     private readonly int uuid = ModBase.GetUuid();
