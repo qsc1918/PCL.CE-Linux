@@ -31,7 +31,6 @@ using PCL.Core.UI;
 namespace PCL;
 
 public static class ModComp
-            using (var conn = CompDB)
 {
     public enum CompLoaderType
     {
@@ -2405,6 +2404,7 @@ public static class ModComp
         if (isChineseSearch && request.type is CompType.Mod or CompType.DataPack)
         {
             var searchEntries = new List<ModBase.SearchEntry<CompDatabaseEntry>>();
+            using (var conn = CompDB)
             {
                 var likeEscaped = rawFilter.Replace("\\", "\\\\").Replace("%", "\\%").Replace("_", "\\_");
                 var searchRes = conn.Query<CompDatabaseEntry>(
