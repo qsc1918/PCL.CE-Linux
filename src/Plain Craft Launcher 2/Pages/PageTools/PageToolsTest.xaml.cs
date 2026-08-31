@@ -126,7 +126,7 @@ public partial class PageToolsTest
         {
             if (string.IsNullOrWhiteSpace(folder))
             {
-                folder = SystemDialogs.SelectSaveFile(Lang.Text("Tools.Test.CustomDownload.SelectLocation"), fileName);
+                folder = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Tools.Test.CustomDownload.SelectLocation"), fileName);
                 if (!folder.Contains(@"\")) return;
                 if (folder.EndsWith(fileName)) folder = folder[..^fileName.Length];
             }
@@ -334,7 +334,7 @@ public partial class PageToolsTest
 
     private void MyTextButton_Click(object sender, EventArgs e)
     {
-        var text = SystemDialogs.SelectFolder();
+        var text = await SystemDialogs.SelectFolderAsync();
         if (!string.IsNullOrEmpty(text)) TextDownloadFolder.Text = text;
     }
 
@@ -404,7 +404,7 @@ public partial class PageToolsTest
                     result = ModSkin.McSkinDownload(result);
                     ModBase.RunInUi(() =>
                     {
-                        var path = SystemDialogs.SelectSaveFile(Lang.Text("Tools.Test.Skin.Save"), $"{id}.png", Lang.Text("Tools.Test.Skin.FileFilter"));
+                        var path = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Tools.Test.Skin.Save"), $"{id}.png", Lang.Text("Tools.Test.Skin.FileFilter"));
                         ModBase.CopyFile(result, path);
                         HintService.Hint(Lang.Text("Tools.Test.Skin.Saved", id), HintType.Success);
                     });
@@ -563,8 +563,7 @@ public partial class PageToolsTest
                 // 将字节写入本地文件
                 File.WriteAllBytes(savePath, imageBytes);
 
-                var path =
-                    SystemDialogs.SelectSaveFile(Lang.Text("Tools.Test.Achievement.Save"), AchievementTitleTextBox.Text + ".png", Lang.Text("Tools.Test.Achievement.FileFilter"));
+                var path = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Tools.Test.Achievement.Save"), AchievementTitleTextBox.Text + ".png", Lang.Text("Tools.Test.Achievement.FileFilter"));
                 if (string.IsNullOrEmpty(path))
                 {
                     ModBase.Log("用户取消了保存操作");
@@ -623,7 +622,7 @@ public partial class PageToolsTest
 
     private void BtnSelectSkin_Click(object sender, RoutedEventArgs e)
     {
-        var filePath = SystemDialogs.SelectFile(Lang.Text("Tools.Test.Avatar.FileFilter"),
+        var filePath = await SystemDialogs.SelectFileAsync(Lang.Text("Tools.Test.Avatar.FileFilter"),
             Lang.Text("Tools.Test.Avatar.SelectSkinFile"));
         if (!string.IsNullOrEmpty(filePath)) LoadAndGenerateHead(filePath);
     }
@@ -726,7 +725,7 @@ public partial class PageToolsTest
             return;
         }
 
-        var savePath = SystemDialogs.SelectSaveFile(Lang.Text("Tools.Test.Avatar.Save"), "Head.png");
+        var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Tools.Test.Avatar.Save"), "Head.png");
 
         if (string.IsNullOrEmpty(savePath))
             return;

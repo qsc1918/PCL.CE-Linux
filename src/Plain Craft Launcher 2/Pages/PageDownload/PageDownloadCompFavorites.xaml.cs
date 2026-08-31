@@ -612,7 +612,7 @@ public partial class PageDownloadCompFavorites : MyPageRight
                 });
                 string selectedVersionStr = suitVersion[(int)selectedVersion];
                 HintService.Hint(Lang.Text("Download.Comp.Favorites.Hint.SelectSaveLocation", selectedVersionStr));
-                var saveFolder = SystemDialogs.SelectFolder();
+                var saveFolder = await SystemDialogs.SelectFolderAsync();
                 if (string.IsNullOrWhiteSpace(saveFolder))
                 {
                     ts.Abort();
@@ -849,7 +849,7 @@ public partial class PageDownloadCompFavorites : MyPageRight
         body.Items.Add(newItem);
         body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
-        body.IsOpen = true;
+        body.Open();
     }
 
     private void ComboTargetFav_Selected(object sender, RoutedEventArgs e)

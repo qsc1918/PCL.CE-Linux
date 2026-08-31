@@ -498,14 +498,14 @@ public partial class PageSetupLaunch : MyPageRight
         if (ComboArgumentWindowType is null)
             return;
         if (ComboArgumentWindowType.SelectedIndex == 3 && LabArgumentWindowMiddle is not null &&
-            LabArgumentWindowMiddle.Visibility == false)
+            LabArgumentWindowMiddle.IsVisible == false)
         {
             LabArgumentWindowMiddle.IsVisible = true;
             TextArgumentWindowHeight.IsVisible = true;
             TextArgumentWindowWidth.IsVisible = true;
         }
         else if (ComboArgumentWindowType.SelectedIndex != 3 && LabArgumentWindowMiddle is not null &&
-                 LabArgumentWindowMiddle.Visibility == true)
+                 LabArgumentWindowMiddle.IsVisible == true)
         {
             LabArgumentWindowMiddle.IsVisible = false;
             TextArgumentWindowHeight.IsVisible = false;

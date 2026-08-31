@@ -81,7 +81,7 @@ public partial class PageLoginAuth : Grid
             UserName = TextName.Text, Password = TextPass.Password, Description = "Authlib-Injector",
             LoginType = ModLaunch.McLoginType.Auth
         };
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             try
             {
@@ -153,7 +153,7 @@ public partial class PageLoginAuth : Grid
             return;
         }
 
-        Dispatcher.BeginInvoke(async () =>
+        Dispatcher.InvokeAsync(async () =>
         {
             string serverUri = null;
             string serverName = null;

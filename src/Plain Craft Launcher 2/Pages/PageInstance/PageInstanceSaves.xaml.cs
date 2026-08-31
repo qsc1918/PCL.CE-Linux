@@ -503,7 +503,7 @@ public partial class PageInstanceSaves : MyPageRight, IRefreshable
 
         body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
-        body.IsOpen = true;
+        body.Open();
     }
 
     private void SearchRun(object sender, EventArgs e)

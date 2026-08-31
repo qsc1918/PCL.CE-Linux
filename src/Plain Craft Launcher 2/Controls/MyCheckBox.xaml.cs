@@ -37,7 +37,7 @@ public partial class MyCheckBox : Grid
     ///     是否为三态复选框。
     /// </summary>
     public static readonly AvaloniaProperty IsThreeStateProperty =
-        AvaloniaProperty.Register("IsThreeState", typeof(bool), typeof(MyCheckBox), new PropertyMetadata(false));
+        AvaloniaProperty.Register<MyCheckBox, bool>("IsThreeState", false);
 
     public static readonly AvaloniaProperty TextProperty = AvaloniaProperty.Register("Text", typeof(string),
         typeof(MyCheckBox), new PropertyMetadata((sender, e) =>
@@ -415,7 +415,7 @@ public partial class MyCheckBox : Grid
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(ShapeBorder, Border.BorderBrushProperty,
-                IsEnabled ? IsMouseOver ? "ColorBrush3" : "ColorBrush2" : "ColorBrushGray4", animationTimeOfCheck),
+                IsEnabled ? IsPointerOver ? "ColorBrush3" : "ColorBrush2" : "ColorBrushGray4", animationTimeOfCheck),
             "MyCheckBox BorderColor " + Uuid);
     }
 
@@ -423,7 +423,7 @@ public partial class MyCheckBox : Grid
     {
         ModAnimation.AniStart(
             ModAnimation.AaColor(ShapeBorder, Border.BorderBrushProperty,
-                IsEnabled ? IsMouseOver ? "ColorBrush3" : "ColorBrush1" : "ColorBrushGray4", animationTimeOfCheck),
+                IsEnabled ? IsPointerOver ? "ColorBrush3" : "ColorBrush1" : "ColorBrushGray4", animationTimeOfCheck),
             "MyCheckBox BorderColor " + Uuid);
     }
 

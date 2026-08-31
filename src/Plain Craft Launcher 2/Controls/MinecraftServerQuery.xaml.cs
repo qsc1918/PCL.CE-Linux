@@ -18,7 +18,7 @@ public partial class MinecraftServerQuery : Grid
     }
     private void BtnServerQuery_Click(object sender, PointerPressedEventArgs e)
     {
-        Dispatcher.BeginInvoke(new Func<Task>(() => ServerQueryAsync()));
+        Dispatcher.InvokeAsync(new Func<Task>(() => ServerQueryAsync()));
     }
 
     private async Task ServerQueryAsync()

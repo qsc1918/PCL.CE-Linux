@@ -56,7 +56,7 @@ public class MyMenuItem : MenuItem
     {
         if (!IsEnabled)
             return ("ColorBrushTransparent", "ColorBrushGray5", AnimationTimeOut);
-        if (IsMouseOver)
+        if (IsPointerOver)
             return ("ColorBrush6", "ColorBrush2", AnimationTimeIn);
         return ("ColorBrushTransparent", "ColorBrush1", AnimationTimeOut);
     }

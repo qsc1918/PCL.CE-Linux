@@ -46,7 +46,7 @@ public partial class ServerCard : MyCard
 
     private void BtnSkin_Click(object sender, EventArgs eventArgs)
     {
-        BtnSetting.ContextMenu.IsOpen = true;
+        BtnSetting.ContextMenu.Open();
     }
 
     /// <summary>

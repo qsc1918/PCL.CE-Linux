@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -25,7 +25,7 @@ public static class ModSkin
     /// </summary>
     public static McSkinInfo McSkinSelect()
     {
-        var fileName = SystemDialogs.SelectFile(Lang.Text("Launch.Skin.FileDialog.Filter"), Lang.Text("Launch.Skin.FileDialog.Title"));
+        var fileName = await SystemDialogs.SelectFileAsync(Lang.Text("Launch.Skin.FileDialog.Filter"), Lang.Text("Launch.Skin.FileDialog.Title"));
 
         // 验证有效性
         if (string.IsNullOrEmpty(fileName))

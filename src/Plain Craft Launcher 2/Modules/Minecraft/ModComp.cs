@@ -393,7 +393,7 @@ public static class ModComp
             body.Closed += (_, _) => closedCallBack?.Invoke();
             body.Placement = PlacementMode.Bottom;
             body.PlacementTarget = pos;
-            body.IsOpen = true;
+            body.Open();
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ public static class ModComp
             body.Closed += (_, _) => closedCallBack?.Invoke();
             body.Placement = PlacementMode.Bottom;
             body.PlacementTarget = pos;
-            body.IsOpen = true;
+            body.Open();
         }
 
         /// <summary>
@@ -654,7 +654,7 @@ public static class ModComp
                     ModBase.Log($"[Clipboard] Found ProjectId: {projectId}");
 
                     // 3. UI 交互：跳转到详情页
-                    Avalonia.Application.Current.Dispatcher.BeginInvoke(new Func<Task>(async () =>
+                    Avalonia.Application.Current.Dispatcher.InvokeAsync(new Func<Task>(async () =>
                     {
                         if (ModMain.MyMsgBox(
                                 Lang.Text("Download.Comp.Detail.Clipboard.Detected.Message"),
@@ -3640,7 +3640,7 @@ public static class ModComp
             return;
         }
         var saveFolder = ModBase.RunInUiWait(() =>
-            SystemDialogs.SelectFolder(Lang.Text("Download.Comp.QuickDownload.Hint.SelectFolder")));
+            await SystemDialogs.SelectFolderAsync(Lang.Text("Download.Comp.QuickDownload.Hint.SelectFolder")));
         if (string.IsNullOrWhiteSpace(saveFolder)) return; // 取消
         var target = System.IO.Path.Combine(saveFolder, CompFileNameGet(project, file));
         _StartQuickDownload(file, target);

@@ -268,7 +268,7 @@ internal static class ModStyle
                     }
 
                     curRun.Foreground = new SolidColorBrush(new ModBase.MyColor(color));
-                    curRun.FontWeight = hasBlodProperty ? FontWeights.Bold : FontWeights.Normal;
+                    curRun.FontWeight = hasBlodProperty ? FontWeight.Bold : FontWeight.Normal;
                     curRun.FontStyle = hasItalicProperty ? FontStyles.Italic : FontStyles.Normal;
                     curRun.TextDecorations = hasStrickThroughProperty ? TextDecorations.Strikethrough : null;
                     curRun.TextDecorations = hasDeleteLineProperty ? TextDecorations.Underline : null;

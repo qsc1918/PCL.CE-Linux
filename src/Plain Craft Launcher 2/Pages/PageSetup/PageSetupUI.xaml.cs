@@ -355,7 +355,7 @@ public partial class PageSetupUI : MyPageRight
             {
                 if (refresh)
                 {
-                    if (ModMain.frmMain.ImgBack.Visibility == false)
+                    if (ModMain.frmMain.ImgBack.IsVisible == false)
                     {
                         if (isHint)
                             HintService.Hint(Lang.Text("Setup.Ui.Background.NoAvailableContent"), HintType.Error);
@@ -426,9 +426,9 @@ public partial class PageSetupUI : MyPageRight
     }
 
     // 顶部栏
-    private void BtnLogoChange_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnLogoChange_Click(object sender, PointerPressedEventArgs e)
     {
-        var fileName = SystemDialogs.SelectFile(
+        var fileName = await SystemDialogs.SelectFileAsync(
             Lang.Text("Setup.Ui.ImageFile.Filter"),
             Lang.Text("Setup.Ui.ImageFile.SelectTitle"));
         if (string.IsNullOrEmpty(fileName))
@@ -462,7 +462,7 @@ public partial class PageSetupUI : MyPageRight
         }
     }
 
-    private void RadioLogoType3_Check(object sender, ModBase.RouteEventArgs e)
+    private async void RadioLogoType3_Check(object sender, ModBase.RouteEventArgs e)
     {
         if (!(ModAnimation.AniControlEnabled == 0 && e.raiseByMouse))
             return;
@@ -512,7 +512,7 @@ public partial class PageSetupUI : MyPageRight
         }
 
         // 没有图片则要求选择
-        var fileName = SystemDialogs.SelectFile(Lang.Text("Setup.Ui.ImageFile.Filter"), Lang.Text("Setup.Ui.ImageFile.SelectTitle"));
+        var fileName = await SystemDialogs.SelectFileAsync(Lang.Text("Setup.Ui.ImageFile.Filter"), Lang.Text("Setup.Ui.ImageFile.SelectTitle"));
         if (string.IsNullOrEmpty(fileName))
         {
             ModMain.frmMain.ImageTitleLogo.Source = null;

@@ -46,7 +46,7 @@ public partial class MyLocalCompItem : Grid
 
     public void Refresh()
     {
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             // 更新
             if (Entry.CanUpdate)
@@ -199,33 +199,33 @@ public partial class MyLocalCompItem : Grid
     {
         InitLate(sender, e);
         // 触发颜色动画
-        var time = IsMouseOver ? 120 : 180;
+        var time = IsPointerOver ? 120 : 180;
         var ani = new List<ModAnimation.AniData>();
         // ButtonStack
         if (buttonStack is not null)
         {
-            if (IsMouseOver)
+            if (IsPointerOver)
             {
                 ani.Add(ModAnimation.AaOpacity(buttonStack, 1d - buttonStack.Opacity, (int)Math.Round(time * 0.7d),
                     (int)Math.Round(time * 0.3d)));
                 ani.Add(ModAnimation.AaDouble(
-                    i => ColumnPaddingRight.Width =
-                        new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                    5 + Buttons.Count() * 25 - ColumnPaddingRight.Width.Value, (int)Math.Round(time * 0.3d),
+                    i => ColumnGap.Width =
+                        new GridLength(Math.Max(0, ColumnGap.Width.Value + (double)i)),
+                    5 + Buttons.Count() * 25 - ColumnGap.Width.Value, (int)Math.Round(time * 0.3d),
                     (int)Math.Round(time * 0.7d)));
             }
             else
             {
                 ani.Add(ModAnimation.AaOpacity(buttonStack, -buttonStack.Opacity, (int)Math.Round(time * 0.4d)));
                 ani.Add(ModAnimation.AaDouble(
-                    i => ColumnPaddingRight.Width =
-                        new GridLength(Math.Max(0, ColumnPaddingRight.Width.Value + (double)i)),
-                    4d - ColumnPaddingRight.Width.Value, (int)Math.Round(time * 0.4d)));
+                    i => ColumnGap.Width =
+                        new GridLength(Math.Max(0, ColumnGap.Width.Value + (double)i)),
+                    4d - ColumnGap.Width.Value, (int)Math.Round(time * 0.4d)));
             }
         }
 
         // RectBack
-        if (IsMouseOver || Checked)
+        if (IsPointerOver || Checked)
         {
             ani.AddRange(new[]
             {
@@ -368,7 +368,7 @@ public partial class MyLocalCompItem : Grid
             case 0:
             {
                 if (ColumnExtend.Bounds.Width < 0.5d)
-                    newCompressLevel = LabSubtitle.Visibility == false ? 2 : 1;
+                    newCompressLevel = LabSubtitle.IsVisible == false ? 2 : 1;
                 else
                     return;
 
@@ -388,7 +388,7 @@ public partial class MyLocalCompItem : Grid
             case 2:
             {
                 if (!LabTitle.IsTextTrimmed())
-                    newCompressLevel = LabSubtitle.Visibility == false ? 0 : 1;
+                    newCompressLevel = LabSubtitle.IsVisible == false ? 0 : 1;
                 else
                     return;
 
@@ -793,7 +793,7 @@ public partial class MyLocalCompItem : Grid
                     Name = "RectBack",
                     CornerRadius = new CornerRadius(3d),
                     RenderTransform = new ScaleTransform(0.8d, 0.8d),
-                    RenderTransformOrigin = new Point(0.5d, 0.5d),
+                    RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
                     SnapsToDevicePixels = true,
                     IsHitTestVisible = false,

@@ -54,7 +54,7 @@ public partial class MySkin
     // 披风
     public bool HasCape
     {
-        get => BtnSkinCape.Visibility == false;
+        get => BtnSkinCape.IsVisible == false;
         set => BtnSkinCape.IsVisible = value ? true : false;
     }
 
@@ -100,7 +100,7 @@ public partial class MySkin
         Save(loader);
     }
 
-    public static void Save(ModLoader.LoaderTask<ModBase.EqualableList<string>, string> loader)
+    public static async void Save(ModLoader.LoaderTask<ModBase.EqualableList<string>, string> loader)
     {
         var address = loader.output;
         if (loader.State != ModBase.LoadState.Finished)
@@ -113,7 +113,7 @@ public partial class MySkin
 
         try
         {
-            var fileAddress = SystemDialogs.SelectSaveFile(Lang.Text("Launch.Skin.SaveDialog.Title"),
+            var fileAddress = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Launch.Skin.SaveDialog.Title"),
                 ModBase.GetFileNameFromPath(address),
                 Lang.Text("Launch.Skin.SaveDialog.Filter"));
             if (!fileAddress.Contains(@"\")) return;

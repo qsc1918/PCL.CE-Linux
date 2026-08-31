@@ -742,9 +742,9 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
     /// <summary>
     ///     刷新顶栏和底栏显示。
     /// </summary>
-    public void RefreshBars()
+    public async void RefreshBars()
     {
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             // -----------------
             // 顶部栏
@@ -986,35 +986,35 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
     /// <summary>
     ///     安装 Mod。
     /// </summary>
-    private void BtnManageInstall_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnManageInstall_Click(object sender, PointerPressedEventArgs e)
     {
         string[] fileList = null;
         switch (currentCompType)
         {
             case ModComp.CompType.Mod:
             {
-                fileList = SystemDialogs.SelectFiles(
+                fileList = await SystemDialogs.SelectFilesAsync(
                     Lang.Text("Instance.Resource.Install.FileDialog.Mod.Filter"),
                     Lang.Text("Instance.Resource.Install.FileDialog.Mod.Title"));
                 break;
             }
             case ModComp.CompType.ResourcePack:
             {
-                fileList = SystemDialogs.SelectFiles(
+                fileList = await SystemDialogs.SelectFilesAsync(
                     Lang.Text("Instance.Resource.Install.FileDialog.ResourcePack.Filter"),
                     Lang.Text("Instance.Resource.Install.FileDialog.ResourcePack.Title"));
                 break;
             }
             case ModComp.CompType.Shader:
             {
-                fileList = SystemDialogs.SelectFiles(
+                fileList = await SystemDialogs.SelectFilesAsync(
                     Lang.Text("Instance.Resource.Install.FileDialog.Shader.Filter"),
                     Lang.Text("Instance.Resource.Install.FileDialog.Shader.Title"));
                 break;
             }
             case ModComp.CompType.Schematic:
             {
-                fileList = SystemDialogs.SelectFiles(
+                fileList = await SystemDialogs.SelectFilesAsync(
                     Lang.Text("Instance.Resource.Install.FileDialog.Schematic.Filter"),
                     Lang.Text("Instance.Resource.Install.FileDialog.Schematic.Title"));
                 break;
@@ -1349,7 +1349,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         }
     }
 
-    private void BtnManageInfoExport_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnManageInfoExport_Click(object sender, PointerPressedEventArgs e)
     {
         var choice =
             ModMain.MyMsgBox(
@@ -1359,8 +1359,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         {
             try
             {
-                var savePath =
-                    SystemDialogs.SelectSaveFile(Lang.Text("Instance.Resource.Export.SelectSaveLocation"), fileName, Lang.Text("Instance.Resource.Export.FilesFilter"));
+                var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Instance.Resource.Export.SelectSaveLocation"), fileName, Lang.Text("Instance.Resource.Export.FilesFilter"));
                 if (string.IsNullOrWhiteSpace(savePath)) return;
                 File.WriteAllText(savePath, content, Encoding.UTF8);
                 ModBase.OpenExplorer(savePath);
@@ -1526,7 +1525,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
     {
         if (!ReferenceEquals(ModMain.frmMain.pageRight, this))
             return;
-        if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
+        if ((false /* [port] Keyboard.IsKeyDown(Key.LeftCtrl) */ || false /* [port] Keyboard.IsKeyDown(Key.RightCtrl) */) && e.Key == Key.A)
             ChangeAllSelected(true);
     }
 
@@ -1535,7 +1534,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         // Ctrl + A 会被搜索框捕获，导致无法全选，所以在按下 Ctrl + A 时转移焦点以便捕获
         if (SearchBox.Text.Any())
             return;
-        if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && e.Key == Key.A)
+        if ((false /* [port] Keyboard.IsKeyDown(Key.LeftCtrl) */ || false /* [port] Keyboard.IsKeyDown(Key.RightCtrl) */) && e.Key == Key.A)
             PanBack.Focus();
     }
 
@@ -1722,7 +1721,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
 
         body.PlacementTarget = (Control)sender;
         body.Placement = PlacementMode.Bottom;
-        body.IsOpen = true;
+        body.Open();
     }
 
     private readonly object sortLock = new();
@@ -2245,7 +2244,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         try
         {
             var isSuccessful = true;
-            var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var isShiftPressed = false /* [port] Keyboard.IsKeyDown(Key.LeftShift) */ || false /* [port] Keyboard.IsKeyDown(Key.RightShift) */;
             // 确认需要删除的文件
             // 文件夹只需要删除自身
             modList = modList.SelectMany(target =>
@@ -2897,7 +2896,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
     private List<ModLocalComp.LocalCompFile> searchResult;
     private CancellationTokenSource _cancelToken;
 
-    public void SearchRun(object sender, EventArgs e)
+    public async void SearchRun(object sender, EventArgs e)
     {
         var curToken = new CancellationTokenSource();
         var oldToken = Interlocked.Exchange(ref _cancelToken, curToken);
@@ -2905,7 +2904,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         oldToken?.Dispose();
 
         // this exception is ignored
-        Dispatcher.BeginInvoke(new Func<Task>(async () =>
+        Dispatcher.InvokeAsync(new Func<Task>(async () =>
         {
             try
             {

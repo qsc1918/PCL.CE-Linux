@@ -36,7 +36,7 @@ public partial class MinecraftServer : Grid
     private static void OnAddressChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var server = (MinecraftServer)d;
-        d.Dispatcher.BeginInvoke(new Func<Task>(() => server.UpdateServerInfoAsync(e.NewValue?.ToString())));
+        d.Dispatcher.InvokeAsync(new Func<Task>(() => server.UpdateServerInfoAsync(e.NewValue?.ToString())));
     }
 
     public async Task UpdateServerInfoAsync(string address)

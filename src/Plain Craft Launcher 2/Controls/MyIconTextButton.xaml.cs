@@ -36,8 +36,7 @@ public partial class MyIconTextButton : Border
             if (sender is not null) ((MyIconTextButton)sender).LabText.Text = (string)e.NewValue;
         }));
 
-    public static readonly AvaloniaProperty ColorTypeProperty = AvaloniaProperty.Register("ColorType",
-        typeof(ColorState), typeof(MyIconTextButton), new PropertyMetadata(ColorState.Black));
+    public static readonly AvaloniaProperty ColorTypeProperty = AvaloniaProperty.Register<MyIconTextButton, ColorState>("ColorType", ColorState.Black);
 
     private bool _hasLegacyLogo;
     private bool isMouseDown;
@@ -241,7 +240,7 @@ public partial class MyIconTextButton : Border
                 {
                     StartBackgroundAnimation("ColorBrush6", 70);
                 }
-                else if (IsMouseOver)
+                else if (IsPointerOver)
                 {
                     StartForegroundAnimation("ColorBrush3", animationTimeOfMouseIn);
                     StartBackgroundAnimation("ColorBrushBg1", animationTimeOfMouseIn);

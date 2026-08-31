@@ -207,10 +207,9 @@ public partial class PageSetupLauncherMisc : MyPageRight
 
     #region 导出 / 导入设置
 
-    private void BtnSystemSettingExp_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnSystemSettingExp_Click(object sender, PointerPressedEventArgs e)
     {
-        var savePath =
-            SystemDialogs.SelectSaveFile(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 全局配置.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
+        var savePath = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Setup.Misc.System.ExportSettings.SaveTitle"), "PCL 全局配置.json", Lang.Text("Setup.Misc.System.ExportSettings.Filter"), ModBase.exePath);
         if (string.IsNullOrWhiteSpace(savePath))
             return;
         File.Copy(ConfigService.SharedConfigPath, savePath, true);
@@ -218,9 +217,9 @@ public partial class PageSetupLauncherMisc : MyPageRight
         ModBase.OpenExplorer(savePath);
     }
 
-    private void BtnSystemSettingImp_Click(object sender, PointerPressedEventArgs e)
+    private async void BtnSystemSettingImp_Click(object sender, PointerPressedEventArgs e)
     {
-        var sourcePath = SystemDialogs.SelectFile(Lang.Text("Setup.Misc.System.ExportSettings.Filter"), Lang.Text("Setup.Misc.System.ImportSettings.SelectTitle"));
+        var sourcePath = await SystemDialogs.SelectFileAsync(Lang.Text("Setup.Misc.System.ExportSettings.Filter"), Lang.Text("Setup.Misc.System.ImportSettings.SelectTitle"));
         if (string.IsNullOrWhiteSpace(sourcePath))
             return;
         File.Copy(sourcePath, ConfigService.SharedConfigPath, true);

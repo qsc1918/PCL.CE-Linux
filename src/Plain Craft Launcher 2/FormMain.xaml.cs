@@ -882,16 +882,16 @@ public partial class FormMain : Window
 
             // 确定拖放效果
             e.Effects = DragDropEffects.None;
-            if (e.Data.GetDataPresent(DataFormats.Text))
+            if (e.Data.GetDataPresent(DataFormat.Text))
             {
-                var str = (string)e.Data.GetData(DataFormats.Text);
+                var str = (string)e.Data.GetData(DataFormat.Text);
                 if (str.StartsWithF("authlib-injector:yggdrasil-server:"))
                     e.Effects = DragDropEffects.Copy;
                 else if (str.StartsWithF("file:///")) e.Effects = DragDropEffects.Copy;
             }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            else if (e.DataTransfer.Contains(DataFormat.File))
             {
-                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                var files = (string[])e.Data.GetData(DataFormat.File);
                 if (files is not null && files.Length > 0) e.Effects = DragDropEffects.Link;
             }
 
@@ -913,12 +913,12 @@ public partial class FormMain : Window
     {
         try
         {
-            if (e.Data.GetDataPresent(DataFormats.Text))
+            if (e.Data.GetDataPresent(DataFormat.Text))
             {
                 // 获取文本
                 try
                 {
-                    var str = (string)e.Data.GetData(DataFormats.Text);
+                    var str = (string)e.Data.GetData(DataFormat.Text);
                     ModBase.Log("[System] 接受文本拖拽：" + str);
                     if (str.StartsWithF("authlib-injector:yggdrasil-server:"))
                     {
@@ -961,10 +961,10 @@ public partial class FormMain : Window
                     ModBase.Log(ex, "无法接取文本拖拽事件", ModBase.LogLevel.Developer);
                 }
             }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            else if (e.DataTransfer.Contains(DataFormat.File))
             {
                 // 获取文件并检查
-                var filePathRaw = e.Data.GetData(DataFormats.FileDrop);
+                var filePathRaw = e.Data.GetData(DataFormat.File);
                 if (filePathRaw is null) // #2690
                 {
                     HintService.Hint(Lang.Text("Main.FileDrag.ExtractFirst"), HintType.Error);

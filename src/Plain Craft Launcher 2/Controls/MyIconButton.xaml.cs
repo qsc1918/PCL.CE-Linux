@@ -417,7 +417,7 @@ public partial class MyIconButton : Border
             if (ControlVisualHelpers.ShouldAnimate(this)) // 防止默认属性变更触发动画
             {
                 EnsureBaseBrushes();
-                ModAnimation.AniStart(IsMouseOver ? GetHoverAnimations() : GetNormalAnimations(), ColorAnimationKey);
+                ModAnimation.AniStart(IsPointerOver ? GetHoverAnimations() : GetNormalAnimations(), ColorAnimationKey);
             }
 
             else

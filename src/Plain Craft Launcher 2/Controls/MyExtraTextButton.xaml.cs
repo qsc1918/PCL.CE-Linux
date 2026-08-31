@@ -259,7 +259,7 @@ public partial class MyExtraTextButton : Grid
                     ModAnimation.AniStart(
                         ModAnimation.AaColor(PanColor, BackgroundProperty, "ColorBrushGray4", animationColorIn),
                         "MyExtraTextButton Color " + Uuid);
-                else if (IsMouseOver)
+                else if (IsPointerOver)
                     // 指向
                     ModAnimation.AniStart(
                         ModAnimation.AaColor(PanColor, BackgroundProperty, "ColorBrush4", animationColorIn),
@@ -274,8 +274,8 @@ public partial class MyExtraTextButton : Grid
             else
             {
                 ControlVisualHelpers.AnimateColorOrSetResource(PanColor, BackgroundProperty,
-                    !IsEnabled ? "ColorBrushGray4" : IsMouseOver ? "ColorBrush4" : "ColorBrush3",
-                    !IsEnabled || IsMouseOver ? animationColorIn : animationColorOut,
+                    !IsEnabled ? "ColorBrushGray4" : IsPointerOver ? "ColorBrush4" : "ColorBrush3",
+                    !IsEnabled || IsPointerOver ? animationColorIn : animationColorOut,
                     "MyExtraTextButton Color " + Uuid, false);
             }
         }

@@ -40,7 +40,7 @@ public class MyScrollBar : ScrollBar
                 newColor = "ColorBrush4";
                 time = 50;
             }
-            else if (IsMouseOver)
+            else if (IsPointerOver)
             {
                 newOpacity = 0.9d;
                 newColor = "ColorBrush3";

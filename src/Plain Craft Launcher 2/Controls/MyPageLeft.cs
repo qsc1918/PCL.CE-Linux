@@ -42,7 +42,7 @@ public class MyPageLeft : Grid
             if (RenderTransform is not ScaleTransform)
             {
                 RenderTransform = new ScaleTransform(0.96d, 0.96d);
-                RenderTransformOrigin = new Point(0.5d, 0.5d);
+                RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
             }
 
             Opacity = 0d;
@@ -63,7 +63,7 @@ public class MyPageLeft : Grid
             foreach (var ElementRaw in GetAllAnimControls(true))
             {
                 var element = MyVirtualizingElement.TryInit(ElementRaw);
-                if (element.Visibility == false)
+                if (element.IsVisible == false)
                 {
                     // 还原之前的隐藏动画可能导致的改变（#2436）
                     element.Opacity = 1d;
@@ -106,7 +106,7 @@ public class MyPageLeft : Grid
             if (RenderTransform is not ScaleTransform)
             {
                 RenderTransform = new ScaleTransform(1d, 1d);
-                RenderTransformOrigin = new Point(0.5d, 0.5d);
+                RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
             }
 
             ModAnimation.AniStart(
@@ -146,7 +146,7 @@ public class MyPageLeft : Grid
     private void GetAllAnimControls(Control element, ref List<Control> allControls,
         bool ignoreInvisibility)
     {
-        if (!ignoreInvisibility && element.Visibility == false)
+        if (!ignoreInvisibility && element.IsVisible == false)
             return;
         if (element is MyTextButton)
             allControls.Add(element);

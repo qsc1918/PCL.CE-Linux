@@ -100,7 +100,7 @@ public partial class MyHint : Border
     // 关闭按钮
     public bool CanClose
     {
-        get => BtnClose.Visibility == true;
+        get => BtnClose.IsVisible == true;
         set => BtnClose.IsVisible = value ? true : false;
     }
 

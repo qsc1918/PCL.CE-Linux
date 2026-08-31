@@ -60,7 +60,7 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
         screenshotPath = PageInstanceLeft.McInstance.PathIndie + @"screenshots\";
         if (!Directory.Exists(screenshotPath))
             Directory.CreateDirectory(screenshotPath);
-        Dispatcher.BeginInvoke(new Func<Task>(ReloadAsync));
+        Dispatcher.InvokeAsync(new Func<Task>(ReloadAsync));
 
         // 非重复加载部分
         if (isLoad)
@@ -120,7 +120,7 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
     {
         if (fileList.Count != 0 && !_AppendLock && PanBack.VerticalOffset + PanBack.ViewportHeight >= PanBack.ExtentHeight)
         {
-            Dispatcher.BeginInvoke(new Func<Task>(async () => await ListAppendAsync()));
+            Dispatcher.InvokeAsync(new Func<Task>(async () => await ListAppendAsync()));
         }
     }
 
@@ -187,7 +187,7 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
                     return bitmapImage;
                 });
                 image.Stretch = Stretch.Uniform; // 使图片自适应控件大小
-                image.Cursor = Cursors.Hand;
+                image.Cursor = Cursor.Parse("hand");
                 image.PointerPressed += (sender, e) =>
                 {
                     try

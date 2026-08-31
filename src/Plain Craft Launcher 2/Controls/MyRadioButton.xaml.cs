@@ -355,7 +355,7 @@ public partial class MyRadioButton : Border
                                         new ModBase.MyColor(ThemeManager.AppResources["ColorObject8"])) - Background, 60),
                                 "MyRadioButton Color " + Uuid);
                         }
-                        else if (IsMouseOver)
+                        else if (IsPointerOver)
                         {
                             // 指向
                             ModAnimation.AniStart(
@@ -419,7 +419,7 @@ public partial class MyRadioButton : Border
                                 ModAnimation.AaColor(this, BackgroundProperty, "ColorBrush6", animationTimeOfMouseIn),
                                 "MyRadioButton Color " + Uuid);
                         }
-                        else if (IsMouseOver)
+                        else if (IsPointerOver)
                         {
                             // 指向
                             ModAnimation.AniStart(

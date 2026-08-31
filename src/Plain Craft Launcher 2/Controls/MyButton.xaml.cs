@@ -105,9 +105,9 @@ public partial class MyButton : Border
     {
         return ColorType switch
         {
-            ColorState.Normal => IsMouseOver ? "ColorBrush3" : "ColorBrush1",
-            ColorState.Highlight => IsMouseOver ? "ColorBrush3" : "ColorBrush2",
-            ColorState.Red => IsMouseOver ? "ColorBrushRedLight" : "ColorBrushRedDark",
+            ColorState.Normal => IsPointerOver ? "ColorBrush3" : "ColorBrush1",
+            ColorState.Highlight => IsPointerOver ? "ColorBrush3" : "ColorBrush2",
+            ColorState.Red => IsPointerOver ? "ColorBrushRedLight" : "ColorBrushRedDark",
             _ => "ColorBrush1"
         };
     }
@@ -128,7 +128,7 @@ public partial class MyButton : Border
             if (ControlVisualHelpers.ShouldAnimate(this)) // 防止默认属性变更触发动画
             {
                 if (IsEnabled)
-                    StartBorderBrushAnimation(GetBorderBrushResourceKey(), IsMouseOver ? animationColorIn : animationColorOut);
+                    StartBorderBrushAnimation(GetBorderBrushResourceKey(), IsPointerOver ? animationColorIn : animationColorOut);
                 else
                     // 不可用（Gray 4）
                     ModAnimation.AniStart(

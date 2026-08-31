@@ -883,7 +883,7 @@ public partial class PageInstanceSetup : MyPageRight
     }
 
     // 下拉框选择更改处理（保存新格式配置）
-    private void JavaSelectionUpdate(object sender, SelectionChangedEventArgs e)
+    private async void JavaSelectionUpdate(object sender, SelectionChangedEventArgs e)
     {
         if (ModAnimation.AniControlEnabled != 0)
             return;
@@ -913,7 +913,7 @@ public partial class PageInstanceSetup : MyPageRight
         else if (selectedItem.Tag is UseRelativePath)
         {
             // 相对路径：需要用户选择实际文件
-            var ret = SystemDialogs.SelectFile(Lang.Text("Setup.Java.SelectFile.Filter"), Lang.Text("Setup.Java.SelectFile.Title"), Basics.ExecutableDirectory);
+            var ret = await SystemDialogs.SelectFileAsync(Lang.Text("Setup.Java.SelectFile.Filter"), Lang.Text("Setup.Java.SelectFile.Title"), Basics.ExecutableDirectory);
             if (string.IsNullOrWhiteSpace(ret))
                 // 用户取消，不保存配置，保持原选择
                 return;
