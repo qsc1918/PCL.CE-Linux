@@ -1,0 +1,710 @@
+﻿D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(36,9): error CS0103: 当前上下文中不存在名称“IsEnable
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(42,9): error CS0103: 当前上下文中不存在名称“IsEn
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(44,9): error CS0123: “Button_LeftPoin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(46,18): error CS1061: “Border”未包含“Mou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(56,17): error CS0103: 当前上下文中不存在名称“RectPro
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(55,9): error CS0123: “Button_PointerReleas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(48,9): error CS0103: 当前上下文中不存在名称“SetResourceReference
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(54,9): error CS0123: “MyCard_PointerReleased”没有与委托“Ev
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(60,9): error CS0103: 当前上下文中不存在名称“IsEna
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(60,33): error CS0246: 未能找到类型或命名空间名“Ge
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(47,9): error CS0103: 当前上下文中不存在名称“PreviewPointerPr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(48,9): error CS0103: 当前上下文中不存在名称“PreviewPointerRe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(50,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewPointerPr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(54,9): error CS0103: 当前上下文中不存在名称“PreviewPointerRe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(55,9): error CS0103: 当前上下文中不存在名称“GotKeyboardFocus
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,9): error CS0103: 当前上下文中不存在名称“Style” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,24): error CS0103: 当前上下文中不存在名称“FindResourc
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,18): error CS0246: 未能找到类型或命名空间名“Style”(是否缺
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(28,9): error CS0103: 当前上下文中不存在名称“Unselected” 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(29,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(31,9): error CS0103: 当前上下文中不存在名称“Selected” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(32,9): error CS0103: 当前上下文中不存在名称“IsEnabledCha
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(33,9): error CS0123: “MyComboBoxItem_PointerR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(53,9): error CS0123: “MyHint_PointerReleased”没有与
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(70,39): error CS0246: 未能找到类型或命名空间名“Geometr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(73,33): error CS0246: 未能找到类型或命名空间名“Geo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(45,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyLoading.xaml.cs(45,9): error CS0103: 当前上下文中不存在名称“SetResourceR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyLoading.xaml.cs(51,9): error CS0123: “Button_PointerReleased”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(56,9): error CS0103: 当前上下文中不存在名称“IsEnabledChan
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(57,9): error CS0123: “Button_PointerReleased”没
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(86,13): error CS0103: 当前上下文中不存在名称“SetResource
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageLeft.cs(14,26): error CS0411: 无法从用法中推断出方法“AvaloniaPropert
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(52,34): error CS0246: 未能找到类型或命名空间名“GeometryCon
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(69,39): error CS0246: 未能找到类型或命名空间名“Geomet
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(68,9): error CS0103: 当前上下文中不存在名称“IsEnabledCh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(66,41): error CS0103: 当前上下文中不存在名称“Config” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(61,9): error CS0103: 当前上下文中不存在名称“IsEnabledCh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(150,9): error CS0019: 运算符“??=”无法应用于“IBrush
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(153,13): error CS0019: 运算符“??=”无法应用于“IBrus
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(71,33): error CS0103: 当前上下文中不存在名称“GetTemplateChil
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(88,42): error CS0246: 未能找到类型或命名空间名“GeometryConver
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(31,22): error CS0411: 无法从用法中推断出方法“AvaloniaProper
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(37,9): error CS0103: 当前上下文中不存在名称“IsEnabledChan
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(97,76): error CS1061: “IControlTemplate”未包含“FindN
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(131,22): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(132,23): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(133,30): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(42,21): error CS0246: 未能找到类型或命名空间名“ImageSource”(是否缺少
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(145,13): error CS0103: 当前上下文中不存在名称“Visibility” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(100,29): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(104,13): error CS0117: “SvgIcon”未包含“Visibility”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(106,25): error CS1061: “SvgIcon”未包含“SetBinding”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(109,13): error CS0103: 当前上下文中不存在名称“VisualTreeHelp
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(85,21): error CS0019: 运算符“-”无法应用于“ModB
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(94,26): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(93,48): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(96,26): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(95,48): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(97,16): error CS0266: 无法将类型“Avalonia.Media.ITr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(122,26): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(139,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(140,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(107,43): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(108,52): error CS0246: 未能找到类型或命名空间名“RoutedEventHa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(117,42): error CS0103: 当前上下文中不存在名称“TextBoxBase” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(104,33): error CS0246: 未能找到类型或命名空间名“Geome
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(51,9): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(52,22): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(55,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(58,9): error CS0103: 当前上下文中不存在名称“IsEnabledChang
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(201,21): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(215,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(230,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(243,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(84,25): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(86,65): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(88,52): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(101,37): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(102,38): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(117,9): error CS0103: 当前上下文中不存在名称“Comp
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(126,25): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(130,75): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(130,40): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(133,22): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(132,40): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\SvgIconControlHelper.cs(81,14): error CS1929: “ResourceDictiona
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(146,26): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(82,21): error CS0019: 运算符“-”无法应用于“ModBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(91,26): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(90,48): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(93,26): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(92,48): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(149,53): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(190,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(191,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(117,21): error CS0103: 当前上下文中不存在名称“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(138,55): error CS0103: 当前上下文中不存在名称“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(52,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewMouseMo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(54,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(55,9): error CS0103: 当前上下文中不存在名称“LostMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(71,25): error CS1061: “Rectangle”未包含“BeginAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(199,21): error CS0103: 当前上下文中不存在名称“ActualWidth” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(202,40): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(205,34): error CS0103: 当前上下文中不存在名称“ActualWidth” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(116,21): error CS0019: 运算符“-”无法应用于“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(125,26): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(124,48): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(127,26): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(126,48): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(166,19): error CS1061: “PointerPressed
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(166,33): error CS0103: 当前上下文中不存在名称“Mou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(168,37): error CS1061: “FormMain”未包含“D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(144,53): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(147,13): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(147,56): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(60,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(65,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(138,33): error CS0019: 运算符“-”无法应用于“ModBase.MyC
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(147,43): error CS0266: 无法将类型“PCL.ModBase.MyCol
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(135,27): error CS1061: “TextBlock”未包含“SetBinding”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(149,35): error CS0246: 未能找到类型或命名空间名“GeometryConverter
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(268,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(286,21): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(299,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(302,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(316,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(319,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(331,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(334,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(74,47): error CS0103: 当前上下文中不存在名称“picStream” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(80,61): error CS1061: “Application”未包含“TryFindR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(153,9): error CS0103: 当前上下文中不存在名称“CaptureMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(154,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(84,60): error CS1061: “IControlTemplate”未包含“FindNa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(148,9): error CS0103: 当前上下文中不存在名称“Com
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(157,25): error CS0019: 运算符“-”无法应用于“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(161,75): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(161,40): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(164,22): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(163,40): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(94,60): error CS1061: “IControlTemplate”未包含“FindNa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(169,32): error CS0103: 当前上下文中不存在名称“Mouse” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(169,87): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(253,46): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(258,46): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(267,30): error CS0266: 无法将类型“PCL.ModBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(365,30): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(126,25): error CS0019: 运算符“-”无法应用于“ModB
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(130,75): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(130,40): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(133,22): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(132,40): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,26): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,45): error CS0029: 无法将类型“string”隐式转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,61): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(113,23): error CS7036: 未提供与“IImage.Draw(Drawing
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(121,46): error CS1503: 参数 1: 无法从“Avalonia.Media
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,26): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,45): error CS0029: 无法将类型“string”隐式转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,61): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(98,13): error CS0837: “is”或“as”运算符的第一个操作数不能是 la
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(99,53): error CS0119: “ResourceExtensions.MainW
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(105,34): error CS0103: 当前上下文中不存在名称“ActualHeight
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(197,19): error CS1061: “PointerPresse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(197,33): error CS0103: 当前上下文中不存在名称“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(199,37): error CS1061: “FormMain”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(183,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(184,13): error CS0103: 当前上下文中不存在名称“IsMouseCapt
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(184,30): error CS0103: 当前上下文中不存在名称“ReleaseMous
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(199,33): error CS1729: “FormattedText”不包含采用 7 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(190,19): error CS1061: “PointerPressedE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(190,33): error CS0103: 当前上下文中不存在名称“Mous
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(192,37): error CS1061: “FormMain”未包含“Dr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(188,70): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(128,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(194,33): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(180,78): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(203,67): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(250,73): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(272,77): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(251,17): error CS0103: 当前上下文中不存在名称“SetResource
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(248,95): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(271,17): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(277,17): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(300,35): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(302,13): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(200,9): error CS0103: 当前上下文中不存在名称“data” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(200,21): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(201,9): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(202,37): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(208,21): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(209,9): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(210,32): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(241,13): error CS0103: 当前上下文中不存在名称“ActualWidth” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(241,32): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(245,32): error CS0103: 当前上下文中不存在名称“ActualWidth” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(245,45): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(169,13): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(169,30): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(174,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(198,24): error CS0246: 未能找到类型或命名空间名“DoubleAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(199,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(241,30): error CS1061: “PointerPressedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\FontSelector.xaml.cs(157,38): error CS0103: 当前上下文中不存在名称“Fonts” 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\FontSelector.xaml.cs(191,75): error CS1061: “FontFamily”未包含“Sou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(414,22): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(415,97): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOve
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(418,120): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOv
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(255,17): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(255,37): error CS0103: 当前上下文中不存在名称“MouseButtonS
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(259,21): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(259,38): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(271,13): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(271,33): error CS0103: 当前上下文中不存在名称“MouseButtonS
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(301,13): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(302,13): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(344,89): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(347,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(351,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(359,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(370,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(372,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(377,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(388,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(391,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(396,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(411,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(413,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(455,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(475,42): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(482,46): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(483,50): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(492,29): error CS0103: 当前上下文中不存在名称“SetRes
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(493,46): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(494,50): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(315,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(319,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(323,77): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(327,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(432,22): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(433,120): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOv
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(338,9): error CS0103: 当前上下文中不存在名称“CaptureMouse”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(371,17): error CS0103: 当前上下文中不存在名称“SetResourceRefe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(372,17): error CS0103: 当前上下文中不存在名称“SetResourceRefe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(384,21): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(384,39): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(401,26): error CS0266: 无法将类型“PCL.ModBase.MyColor”隐
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(390,46): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(399,26): error CS0103: 当前上下文中不存在名称“VisualTreeHe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(411,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(422,24): error CS0246: 未能找到类型或命名空间名“DoubleAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(423,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(695,28): error CS1061: “MyScrollViewer”未包含“Compu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(700,37): error CS0103: 当前上下文中不存在名称“LogicalTreeHe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(703,37): error CS1061: “MyScrollViewer”未包含“Compu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(19,54): error CS0266: 无法将类型“Avalonia.Co
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(52,28): error CS0029: 无法将类型“Avalonia.Po
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(53,30): error CS0029: 无法将类型“Avalonia.Po
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(74,44): error CS1061: “IBrush”未包含“Freez
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(84,17): error CS0103: 当前上下文中不存在名称“Event
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(85,25): error CS0246: 未能找到类型或命名空间名“Rout
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(89,68): error CS1061: “Application”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(104,48): error CS0117: “Control”未包含“Sty
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(105,29): error CS1061: “ContextMenu”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(123,51): error CS0117: “Control”未包含“Sty
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(124,32): error CS1061: “ContextMenu”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(127,33): error CS0103: 当前上下文中不存在名称“Visu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(129,46): error CS0103: 当前上下文中不存在名称“Visu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageDownload\Comp\MyCompItem.xaml.cs(411,42): error CS1503: 参数 1: 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageDownload\Comp\MyCompItem.xaml.cs(427,31): error CS1503: 参数 1: 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(176,66): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(176,35): error CS0117: “Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(187,35): error CS0266: 无法将类型“P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(214,48): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(212,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(213,52): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(223,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(221,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(222,52): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(364,13): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(364,45): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(370,21): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(379,21): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(404,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(405,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(406,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(412,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(413,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(414,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(420,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(421,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(422,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(513,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(549,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(550,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(552,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(564,19): error CS1061: “MyIcon
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(585,14): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,13): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,33): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,63): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(798,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(840,17): error CS0117: “StackP
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(841,44): error CS0234: 命名空间“Av
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(877,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(30,9): error CS0103: 当前上下文中不存在名称“Initial
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(31,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(32,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(33,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(34,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(36,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(37,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(38,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(39,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(48,13): error CS0118: “ToolTip”是 类型，但此处被
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(57,16): error CS0103: 当前上下文中不存在名称“BtnSki
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(58,16): error CS0103: 当前上下文中不存在名称“BtnSki
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(67,54): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(67,73): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(72,54): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(72,73): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(75,71): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(83,73): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(90,71): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(178,13): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(183,17): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(184,17): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(192,46): error CS1061: “SKColor”未包含“A”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(193,83): error CS1061: “SKColor”未包含“A”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(194,106): error CS1061: “SKColor”未包含“A”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(202,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(207,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(212,17): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(216,13): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(228,44): error CS0029: 无法将类型“PCL.MyBitma
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(233,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(235,47): error CS0029: 无法将类型“PCL.MyBitma
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(272,9): error CS0103: 当前上下文中不存在名称“ImgFor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(273,9): error CS0103: 当前上下文中不存在名称“ImgBac
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(179,21): error CS0019: 运算符“-”无法应用于“M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(188,26): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(187,48): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(190,26): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(189,48): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(405,37): error CS0104: “Image”是“Avalonia
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(216,25): error CS0019: 运算符“-”无法应用于“M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(220,75): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(220,40): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(223,22): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(222,40): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(245,29): error CS1061: “FormMain”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(36,9): error CS0103: 当前上下文中不存在名称“IsEnable
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(42,9): error CS0103: 当前上下文中不存在名称“IsEn
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(44,9): error CS0123: “Button_LeftPoin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(46,18): error CS1061: “Border”未包含“Mou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(56,17): error CS0103: 当前上下文中不存在名称“RectPro
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(55,9): error CS0123: “Button_PointerReleas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(48,9): error CS0103: 当前上下文中不存在名称“SetResourceReference
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(54,9): error CS0123: “MyCard_PointerReleased”没有与委托“Ev
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(60,9): error CS0103: 当前上下文中不存在名称“IsEna
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraTextButton.xaml.cs(60,33): error CS0246: 未能找到类型或命名空间名“Ge
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(47,9): error CS0103: 当前上下文中不存在名称“PreviewPointerPr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(48,9): error CS0103: 当前上下文中不存在名称“PreviewPointerRe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(50,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewPointerPr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(54,9): error CS0103: 当前上下文中不存在名称“PreviewPointerRe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(55,9): error CS0103: 当前上下文中不存在名称“GotKeyboardFocus
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,9): error CS0103: 当前上下文中不存在名称“Style” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,24): error CS0103: 当前上下文中不存在名称“FindResourc
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(27,18): error CS0246: 未能找到类型或命名空间名“Style”(是否缺
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(28,9): error CS0103: 当前上下文中不存在名称“Unselected” 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(29,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(31,9): error CS0103: 当前上下文中不存在名称“Selected” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(32,9): error CS0103: 当前上下文中不存在名称“IsEnabledCha
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(33,9): error CS0123: “MyComboBoxItem_PointerR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(53,9): error CS0123: “MyHint_PointerReleased”没有与
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(70,39): error CS0246: 未能找到类型或命名空间名“Geometr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(73,33): error CS0246: 未能找到类型或命名空间名“Geo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(45,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyLoading.xaml.cs(45,9): error CS0103: 当前上下文中不存在名称“SetResourceR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyLoading.xaml.cs(51,9): error CS0123: “Button_PointerReleased”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(56,9): error CS0103: 当前上下文中不存在名称“IsEnabledChan
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(57,9): error CS0123: “Button_PointerReleased”没
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBoxItem.cs(86,13): error CS0103: 当前上下文中不存在名称“SetResource
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageLeft.cs(14,26): error CS0411: 无法从用法中推断出方法“AvaloniaPropert
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(52,34): error CS0246: 未能找到类型或命名空间名“GeometryCon
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(69,39): error CS0246: 未能找到类型或命名空间名“Geomet
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(68,9): error CS0103: 当前上下文中不存在名称“IsEnabledCh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(66,41): error CS0103: 当前上下文中不存在名称“Config” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(61,9): error CS0103: 当前上下文中不存在名称“IsEnabledCh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(150,9): error CS0019: 运算符“??=”无法应用于“IBrush
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(153,13): error CS0019: 运算符“??=”无法应用于“IBrus
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(71,33): error CS0103: 当前上下文中不存在名称“GetTemplateChil
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(88,42): error CS0246: 未能找到类型或命名空间名“GeometryConver
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(31,22): error CS0411: 无法从用法中推断出方法“AvaloniaProper
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(37,9): error CS0103: 当前上下文中不存在名称“IsEnabledChan
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(97,76): error CS1061: “IControlTemplate”未包含“FindN
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(131,22): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(132,23): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(133,30): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(42,21): error CS0246: 未能找到类型或命名空间名“ImageSource”(是否缺少
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyHint.xaml.cs(145,13): error CS0103: 当前上下文中不存在名称“Visibility” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(100,29): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(104,13): error CS0117: “SvgIcon”未包含“Visibility”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(106,25): error CS1061: “SvgIcon”未包含“SetBinding”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(109,13): error CS0103: 当前上下文中不存在名称“VisualTreeHelp
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(85,21): error CS0019: 运算符“-”无法应用于“ModB
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(94,26): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(93,48): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(96,26): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(95,48): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(97,16): error CS0266: 无法将类型“Avalonia.Media.ITr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(122,26): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(139,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMenuItem.cs(140,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(107,43): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(108,52): error CS0246: 未能找到类型或命名空间名“RoutedEventHa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(117,42): error CS0103: 当前上下文中不存在名称“TextBoxBase” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(104,33): error CS0246: 未能找到类型或命名空间名“Geome
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(51,9): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(52,22): error CS0266: 无法将类型“PCL.ModBase.MyColor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(55,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextButton.cs(58,9): error CS0103: 当前上下文中不存在名称“IsEnabledChang
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(201,21): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(215,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(230,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(243,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(84,25): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(86,65): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(88,52): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(101,37): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(102,38): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(117,9): error CS0103: 当前上下文中不存在名称“Comp
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(126,25): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(130,75): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(130,40): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(133,22): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(132,40): error CS0103: 当前上下文中不存在名称“Tra
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\SvgIconControlHelper.cs(81,14): error CS1929: “ResourceDictiona
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCollapseBar.cs(146,26): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(82,21): error CS0019: 运算符“-”无法应用于“ModBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(91,26): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(90,48): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(93,26): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(92,48): error CS0103: 当前上下文中不存在名称“Trans
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(149,53): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(190,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(191,13): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(117,21): error CS0103: 当前上下文中不存在名称“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(138,55): error CS0103: 当前上下文中不存在名称“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(52,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(53,9): error CS0103: 当前上下文中不存在名称“PreviewMouseMo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(54,9): error CS0103: 当前上下文中不存在名称“PreviewPointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(55,9): error CS0103: 当前上下文中不存在名称“LostMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(71,25): error CS1061: “Rectangle”未包含“BeginAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(199,21): error CS0103: 当前上下文中不存在名称“ActualWidth” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(202,40): error CS1061: “IControlTemplate”未包含“Find
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyComboBox.cs(205,34): error CS0103: 当前上下文中不存在名称“ActualWidth” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(116,21): error CS0019: 运算符“-”无法应用于“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(125,26): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(124,48): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(127,26): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(126,48): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(166,19): error CS1061: “PointerPressed
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(166,33): error CS0103: 当前上下文中不存在名称“Mou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgInput.xaml.cs(168,37): error CS1061: “FormMain”未包含“D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(144,53): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(147,13): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(147,56): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(60,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(65,9): error CS0103: 当前上下文中不存在名称“IsEnabledChanged”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(138,33): error CS0019: 运算符“-”无法应用于“ModBase.MyC
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyButton.xaml.cs(147,43): error CS0266: 无法将类型“PCL.ModBase.MyCol
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(135,27): error CS1061: “TextBlock”未包含“SetBinding”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(149,35): error CS0246: 未能找到类型或命名空间名“GeometryConverter
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(268,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(286,21): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(299,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(302,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(316,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(319,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(331,25): error CS0019: 运算符“-”无法应用于“ModBase
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(334,38): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(74,47): error CS0103: 当前上下文中不存在名称“picStream” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(80,61): error CS1061: “Application”未包含“TryFindR
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(153,9): error CS0103: 当前上下文中不存在名称“CaptureMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(154,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(84,60): error CS1061: “IControlTemplate”未包含“FindNa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(148,9): error CS0103: 当前上下文中不存在名称“Com
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(157,25): error CS0019: 运算符“-”无法应用于“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(161,75): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(161,40): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(164,22): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(163,40): error CS0103: 当前上下文中不存在名称“Tr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(94,60): error CS1061: “IControlTemplate”未包含“FindNa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(169,32): error CS0103: 当前上下文中不存在名称“Mouse” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(169,87): error CS0103: 当前上下文中不存在名称“ActualWidth
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(253,46): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(258,46): error CS0019: 运算符“-”无法应用于“Mod
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconTextButton.xaml.cs(267,30): error CS0266: 无法将类型“PCL.ModBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyIconButton.xaml.cs(365,30): error CS0266: 无法将类型“PCL.ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(126,25): error CS0019: 运算符“-”无法应用于“ModB
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(130,75): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(130,40): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(133,22): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(132,40): error CS0103: 当前上下文中不存在名称“Tran
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,26): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,45): error CS0029: 无法将类型“string”隐式转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(192,61): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(113,23): error CS7036: 未提供与“IImage.Draw(Drawing
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(121,46): error CS1503: 参数 1: 无法从“Avalonia.Media
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,26): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,45): error CS0029: 无法将类型“string”隐式转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyExtraButton.xaml.cs(204,61): error CS0119: “ToolTip”是一个 类型，这在
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(98,13): error CS0837: “is”或“as”运算符的第一个操作数不能是 la
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(99,53): error CS0119: “ResourceExtensions.MainW
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(105,34): error CS0103: 当前上下文中不存在名称“ActualHeight
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(197,19): error CS1061: “PointerPresse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(197,33): error CS0103: 当前上下文中不存在名称“Mo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgSelect.xaml.cs(199,37): error CS1061: “FormMain”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(183,9): error CS0103: 当前上下文中不存在名称“MouseMove” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(184,13): error CS0103: 当前上下文中不存在名称“IsMouseCapt
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(184,30): error CS0103: 当前上下文中不存在名称“ReleaseMous
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(199,33): error CS1729: “FormattedText”不包含采用 7 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(190,19): error CS1061: “PointerPressedE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(190,33): error CS0103: 当前上下文中不存在名称“Mous
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyMsg\MyMsgText.xaml.cs(192,37): error CS1061: “FormMain”未包含“Dr
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(188,70): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(128,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(194,33): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(180,78): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(203,67): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(250,73): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(272,77): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MySlider.xaml.cs(251,17): error CS0103: 当前上下文中不存在名称“SetResource
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(248,95): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(271,17): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Event\CustomEvent.cs(277,17): error CS0103: 当前上下文中不存在名称“PageTool
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(300,35): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(302,13): error CS0103: 当前上下文中不存在名称“Child” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(200,9): error CS0103: 当前上下文中不存在名称“data” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(200,21): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(201,9): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(202,37): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(208,21): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(209,9): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\MyBitmap.cs(210,32): error CS0103: 当前上下文中不存在名称“ms” [D:\a\j\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(241,13): error CS0103: 当前上下文中不存在名称“ActualWidth” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(241,32): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(245,32): error CS0103: 当前上下文中不存在名称“ActualWidth” [D:\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyImage.cs(245,45): error CS0103: 当前上下文中不存在名称“ActualHeight” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(169,13): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(169,30): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(174,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(198,24): error CS0246: 未能找到类型或命名空间名“DoubleAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(199,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(241,30): error CS1061: “PointerPressedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\FontSelector.xaml.cs(157,38): error CS0103: 当前上下文中不存在名称“Fonts” 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\FontSelector.xaml.cs(191,75): error CS1061: “FontFamily”未包含“Sou
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(414,22): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(415,97): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOve
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(418,120): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOv
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(255,17): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(255,37): error CS0103: 当前上下文中不存在名称“MouseButtonS
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(259,21): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(259,38): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(271,13): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(271,33): error CS0103: 当前上下文中不存在名称“MouseButtonS
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(301,13): error CS0103: 当前上下文中不存在名称“IsMouseCaptu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(302,13): error CS0103: 当前上下文中不存在名称“ReleaseMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(344,89): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(347,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(351,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(359,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(370,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(372,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(377,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(388,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(391,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(396,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(411,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(413,41): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(455,37): error CS0019: 运算符“-”无法应用于“ModBas
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(475,42): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(482,46): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(483,50): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(492,29): error CS0103: 当前上下文中不存在名称“SetRes
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(493,46): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioButton.xaml.cs(494,50): error CS0266: 无法将类型“PCL.ModBase.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(315,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCheckBox.xaml.cs(319,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(323,77): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyRadioBox.xaml.cs(327,25): error CS0019: 运算符“-”无法应用于“ModBase.M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(432,22): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyCard.cs(433,120): error CS0103: 当前上下文中不存在名称“IsMouseDirectlyOv
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(338,9): error CS0103: 当前上下文中不存在名称“CaptureMouse”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(371,17): error CS0103: 当前上下文中不存在名称“SetResourceRefe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(372,17): error CS0103: 当前上下文中不存在名称“SetResourceRefe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(384,21): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(384,39): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyTextBox.cs(401,26): error CS0266: 无法将类型“PCL.ModBase.MyColor”隐
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(390,46): error CS0103: 当前上下文中不存在名称“ActualWidth”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(399,26): error CS0103: 当前上下文中不存在名称“VisualTreeHe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(411,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(422,24): error CS0246: 未能找到类型或命名空间名“DoubleAnima
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyToast.xaml.cs(423,21): error CS1061: “Rectangle”未包含“BeginAnim
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(695,28): error CS1061: “MyScrollViewer”未包含“Compu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(700,37): error CS0103: 当前上下文中不存在名称“LogicalTreeHe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyPageRight.cs(703,37): error CS1061: “MyScrollViewer”未包含“Compu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(19,54): error CS0266: 无法将类型“Avalonia.Co
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(52,28): error CS0029: 无法将类型“Avalonia.Po
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(53,30): error CS0029: 无法将类型“Avalonia.Po
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(74,44): error CS1061: “IBrush”未包含“Freez
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(84,17): error CS0103: 当前上下文中不存在名称“Event
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(85,25): error CS0246: 未能找到类型或命名空间名“Rout
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(89,68): error CS1061: “Application”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(104,48): error CS0117: “Control”未包含“Sty
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(105,29): error CS1061: “ContextMenu”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(123,51): error CS0117: “Control”未包含“Sty
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(124,32): error CS1061: “ContextMenu”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(127,33): error CS0103: 当前上下文中不存在名称“Visu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\UI\Theme\ThemeManager.cs(129,46): error CS0103: 当前上下文中不存在名称“Visu
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageDownload\Comp\MyCompItem.xaml.cs(411,42): error CS1503: 参数 1: 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageDownload\Comp\MyCompItem.xaml.cs(427,31): error CS1503: 参数 1: 
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(176,66): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(176,35): error CS0117: “Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(187,35): error CS0266: 无法将类型“P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(214,48): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(212,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(213,52): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(223,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(221,26): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(222,52): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(364,13): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(364,45): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(370,21): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(379,21): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(404,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(405,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(406,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(412,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(413,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(414,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(420,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(421,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(422,17): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(513,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(549,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(550,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(552,9): error CS0103: 当前上下文中不存
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(564,19): error CS1061: “MyIcon
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(585,14): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,13): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,33): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(646,63): error CS0103: 当前上下文中不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(798,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(840,17): error CS0117: “StackP
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(841,44): error CS0234: 命名空间“Av
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageInstance\MyLocalModItem.xaml.cs(877,21): error CS0117: “Border
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(30,9): error CS0103: 当前上下文中不存在名称“Initial
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(31,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(32,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(33,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(34,9): error CS0103: 当前上下文中不存在名称“Pointer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(36,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(37,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(38,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(39,9): error CS0103: 当前上下文中不存在名称“BtnSkin
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(48,13): error CS0118: “ToolTip”是 类型，但此处被
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(57,16): error CS0103: 当前上下文中不存在名称“BtnSki
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(58,16): error CS0103: 当前上下文中不存在名称“BtnSki
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(67,54): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(67,73): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(72,54): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(72,73): error CS0103: 当前上下文中不存在名称“Shadow
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(75,71): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(83,73): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(90,71): error CS0103: 当前上下文中不存在名称“Render
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(178,13): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(183,17): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(184,17): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(192,46): error CS1061: “SKColor”未包含“A”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(193,83): error CS1061: “SKColor”未包含“A”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(194,106): error CS1061: “SKColor”未包含“A”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(202,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(207,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(212,17): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(216,13): error CS0103: 当前上下文中不存在名称“ImgBa
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(228,44): error CS0029: 无法将类型“PCL.MyBitma
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(233,21): error CS0103: 当前上下文中不存在名称“ImgFo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(235,47): error CS0029: 无法将类型“PCL.MyBitma
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(272,9): error CS0103: 当前上下文中不存在名称“ImgFor
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(273,9): error CS0103: 当前上下文中不存在名称“ImgBac
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(179,21): error CS0019: 运算符“-”无法应用于“M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(188,26): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(187,48): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(190,26): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(189,48): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MySkin.xaml.cs(405,37): error CS0104: “Image”是“Avalonia
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(216,25): error CS0019: 运算符“-”无法应用于“M
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(220,75): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(220,40): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(223,22): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(222,40): error CS0103: 当前上下文中不存在名称“T
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Pages\PageLaunch\MyMsgLogin.xaml.cs(245,29): error CS1061: “FormMain”未包含

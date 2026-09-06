@@ -1,0 +1,252 @@
+﻿D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(445,26): error CS0411: 无法从用法中推断出方法“AvaloniaP
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(470,118): error CS1503: 参数 3: 无法从“方法组”转换为“bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(993,125): error CS1503: 参数 2: 无法从“object”转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(21,9): error CS0103: 当前上下文中不存在名称“PreviewMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(23,9): error CS0103: 当前上下文中不存在名称“IsVisibleCha
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(13,9): error CS0103: 当前上下文中不存在名称“IsEnabledChange
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(14,9): error CS0103: 当前上下文中不存在名称“GotMouseCapture
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(15,9): error CS0103: 当前上下文中不存在名称“LostMouseCaptur
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(18,9): error CS0103: 当前上下文中不存在名称“IsVisibleChange
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(32,13): error CS0019: 运算符“==”无法应用于“Vector”和“i
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(32,29): error CS0103: 当前上下文中不存在名称“ScrollableH
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(49,36): error CS1503: 参数 1: 无法从“Avalonia.Vect
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(51,9): error CS0103: 当前上下文中不存在名称“Tooltip” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(37,22): error CS0103: 当前上下文中不存在名称“IsMouseCapture
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(71,17): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyVirtualizingElement.cs(18,14): error CS1061: “MyVirtualizingE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyVirtualizingElement.cs(54,14): error CS1061: “MyVirtualizingE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(58,80): error CS0103: 当前上下文中不存在名称“ExtentHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(58,95): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(59,13): error CS0103: 当前上下文中不存在名称“ScrollToVer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(65,22): error CS0103: 当前上下文中不存在名称“VerticalOff
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(67,16): error CS1061: “ScrollChangedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(67,41): error CS1061: “ScrollChangedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(78,34): error CS0103: 当前上下文中不存在名称“GetTemplate
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(81,79): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(79,30): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(80,56): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(113,43): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(111,30): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(112,56): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(141,21): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(155,21): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(175,13): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(177,13): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(178,9): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(204,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(277,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(69,45): error CS0103: 当前上下文中不存在名称“RenderSize” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(69,63): error CS0103: 当前上下文中不存在名称“RenderSize” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(77,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(78,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(79,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(80,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(96,49): error CS0246: 未能找到类型或命名空间名“GuidelineSet
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(96,28): error CS1061: “DrawingContext”未包含“PushG
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(97,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(98,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(99,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(100,13): error CS0200: 无法为属性或索引器“CornerRadius.B
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(199,24): error CS1061: “PathFigure”未包含“Freeze”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(202,26): error CS1061: “PathGeometry”未包含“Freeze
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(206,28): error CS1061: “DrawingContext”未包含“Pop”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(216,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(218,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(220,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(222,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(224,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(226,13): error CS1061: “List<GradientStop>”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(303,21): error CS0117: “TextBlock”未包含“SnapsT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(308,21): error CS0117: “TextBlock”未包含“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(349,32): error CS0103: 当前上下文中不存在名称“ColumnPad
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(350,16): error CS0103: 当前上下文中不存在名称“ColumnPad
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(393,29): error CS1061: “MyIconButton”未包含“Sna
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(411,79): error CS0117: “StackPanel”未包含“Snaps
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(234,40): error CS1061: “Brush”未包含“Freeze”的定义，并且
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(236,23): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(237,13): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(239,24): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(240,14): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(242,25): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(243,15): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(245,26): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(246,16): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(255,27): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(257,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(258,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(259,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(260,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(262,17): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(273,28): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(275,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(276,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(277,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(278,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(280,18): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(293,30): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(295,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(296,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(297,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(298,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(300,20): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(315,31): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(317,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(318,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(319,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(320,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(322,21): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(477,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(478,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(480,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(571,17): error CS0117: “SvgIcon”未包含“SnapsToD
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(576,33): error CS1061: “SvgIcon”未包含“SetBindi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(592,21): error CS0117: “MyImage”未包含“SnapsToD
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(595,62): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(595,31): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(604,34): error CS0266: 无法将类型“PCL.MyBitmap”隐式
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(607,21): error CS0117: “Canvas”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(614,66): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(614,35): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(616,66): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(616,35): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(628,42): error CS0246: 未能找到类型或命名空间名“Geometry
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(631,21): error CS0117: “Path”未包含“SnapsToDevi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(634,26): error CS1061: “Control”未包含“SetBindi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(654,66): error CS1503: 参数 2: 无法从“Avalonia.In
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(662,9): error CS0103: 当前上下文中不存在名称“ColumnLogo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(707,13): error CS0103: 当前上下文中不存在名称“ColumnChe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(732,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(747,9): error CS0103: 当前上下文中不存在名称“ColumnChec
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(752,9): error CS0103: 当前上下文中不存在名称“ColumnLogo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(963,21): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(976,21): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1018,20): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1037,77): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1050,36): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1107,13): error CS0103: 当前上下文中不存在名称“IsMouseD
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(445,26): error CS0411: 无法从用法中推断出方法“AvaloniaP
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(470,118): error CS1503: 参数 3: 无法从“方法组”转换为“bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(993,125): error CS1503: 参数 2: 无法从“object”转换为
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(21,9): error CS0103: 当前上下文中不存在名称“PreviewMouse
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(23,9): error CS0103: 当前上下文中不存在名称“IsVisibleCha
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(13,9): error CS0103: 当前上下文中不存在名称“IsEnabledChange
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(14,9): error CS0103: 当前上下文中不存在名称“GotMouseCapture
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(15,9): error CS0103: 当前上下文中不存在名称“LostMouseCaptur
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(18,9): error CS0103: 当前上下文中不存在名称“IsVisibleChange
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(32,13): error CS0019: 运算符“==”无法应用于“Vector”和“i
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(32,29): error CS0103: 当前上下文中不存在名称“ScrollableH
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(49,36): error CS1503: 参数 1: 无法从“Avalonia.Vect
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(51,9): error CS0103: 当前上下文中不存在名称“Tooltip” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(37,22): error CS0103: 当前上下文中不存在名称“IsMouseCapture
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollBar.cs(71,17): error CS0103: 当前上下文中不存在名称“SetResourceRef
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyVirtualizingElement.cs(18,14): error CS1061: “MyVirtualizingE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyVirtualizingElement.cs(54,14): error CS1061: “MyVirtualizingE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(58,80): error CS0103: 当前上下文中不存在名称“ExtentHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(58,95): error CS0103: 当前上下文中不存在名称“ActualHeigh
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(59,13): error CS0103: 当前上下文中不存在名称“ScrollToVer
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(65,22): error CS0103: 当前上下文中不存在名称“VerticalOff
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(67,16): error CS1061: “ScrollChangedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(67,41): error CS1061: “ScrollChangedEventArgs
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyScrollViewer.cs(78,34): error CS0103: 当前上下文中不存在名称“GetTemplate
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(81,79): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(79,30): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(80,56): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(113,43): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(111,30): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(112,56): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(141,21): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(155,21): error CS0103: 当前上下文中不存在名称“ColumnGap
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(175,13): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(177,13): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(178,9): error CS0103: 当前上下文中不存在名称“ColumnGap”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(204,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(277,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(69,45): error CS0103: 当前上下文中不存在名称“RenderSize” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(69,63): error CS0103: 当前上下文中不存在名称“RenderSize” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(77,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(78,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(79,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(80,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(96,49): error CS0246: 未能找到类型或命名空间名“GuidelineSet
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(96,28): error CS1061: “DrawingContext”未包含“PushG
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(97,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(98,13): error CS0200: 无法为属性或索引器“CornerRadius.To
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(99,13): error CS0200: 无法为属性或索引器“CornerRadius.Bo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(100,13): error CS0200: 无法为属性或索引器“CornerRadius.B
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(199,24): error CS1061: “PathFigure”未包含“Freeze”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(202,26): error CS1061: “PathGeometry”未包含“Freeze
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(206,28): error CS1061: “DrawingContext”未包含“Pop”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(216,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(218,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(220,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(222,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(224,9): error CS0200: 无法为属性或索引器“Color.A”赋值 - 它是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(226,13): error CS1061: “List<GradientStop>”未包含“
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(303,21): error CS0117: “TextBlock”未包含“SnapsT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(308,21): error CS0117: “TextBlock”未包含“Visibi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(349,32): error CS0103: 当前上下文中不存在名称“ColumnPad
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(350,16): error CS0103: 当前上下文中不存在名称“ColumnPad
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(393,29): error CS1061: “MyIconButton”未包含“Sna
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(411,79): error CS0117: “StackPanel”未包含“Snaps
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(234,40): error CS1061: “Brush”未包含“Freeze”的定义，并且
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(236,23): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(237,13): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(239,24): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(240,14): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(242,25): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(243,15): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(245,26): error CS1729: “LinearGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(246,16): error CS1061: “LinearGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(255,27): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(257,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(258,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(259,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(260,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(262,17): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(273,28): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(275,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(276,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(277,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(278,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(280,18): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(293,30): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(295,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(296,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(297,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(298,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(300,20): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(315,31): error CS1729: “RadialGradientBrush”不包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(317,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(318,23): error CS0029: 无法将类型“double”隐式转换为“Avalo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(319,22): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(320,30): error CS0029: 无法将类型“Avalonia.Point”隐式转
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyDropShadow.cs(322,21): error CS1061: “RadialGradientBrush”未包含
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(477,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(478,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(480,9): error CS0103: 当前上下文中不存在名称“PreviewPoi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(571,17): error CS0117: “SvgIcon”未包含“SnapsToD
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(576,33): error CS1061: “SvgIcon”未包含“SetBindi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(592,21): error CS0117: “MyImage”未包含“SnapsToD
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(595,62): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(595,31): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(604,34): error CS0266: 无法将类型“PCL.MyBitmap”隐式
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(607,21): error CS0117: “Canvas”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(614,66): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(614,35): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(616,66): error CS0103: 当前上下文中不存在名称“BitmapSca
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(616,35): error CS0117: “RenderOptions”未包含“Se
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(628,42): error CS0246: 未能找到类型或命名空间名“Geometry
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(631,21): error CS0117: “Path”未包含“SnapsToDevi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(634,26): error CS1061: “Control”未包含“SetBindi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(654,66): error CS1503: 参数 2: 无法从“Avalonia.In
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(662,9): error CS0103: 当前上下文中不存在名称“ColumnLogo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(707,13): error CS0103: 当前上下文中不存在名称“ColumnChe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(732,21): error CS0117: “Border”未包含“SnapsToDe
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(747,9): error CS0103: 当前上下文中不存在名称“ColumnChec
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(752,9): error CS0103: 当前上下文中不存在名称“ColumnLogo
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(963,21): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(976,21): error CS0103: 当前上下文中不存在名称“SetResour
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1018,20): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1037,77): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1050,36): error CS0117: “Canvas”未包含“ActualWi
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Controls\MyListItem.xaml.cs(1107,13): error CS0103: 当前上下文中不存在名称“IsMouseD

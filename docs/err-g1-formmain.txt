@@ -1,0 +1,140 @@
+﻿D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(100,49): error CS0246: 未能找到类型或命名空间名“DragEventHandler”(是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(101,48): error CS0246: 未能找到类型或命名空间名“DragEventHandler”(是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(145,44): error CS0103: 当前上下文中不存在名称“ContentPresenter” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(147,45): error CS0103: 当前上下文中不存在名称“ContentPresenter” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(173,18): error CS0117: “ModMusic”未包含“MusicRefreshPlay”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(189,49): error CS0246: 未能找到类型或命名空间名“GeometryConverter”(
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(208,30): error CS1501: “Close”方法没有采用 1 个参数的重载 [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(221,70): error CS0103: 当前上下文中不存在名称“TransformPos” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(221,40): error CS0103: 当前上下文中不存在名称“TransformPos” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(224,18): error CS0103: 当前上下文中不存在名称“TransformRotate” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(223,40): error CS0103: 当前上下文中不存在名称“TransformRotate” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(525,32): error CS1061: “ScaleTransform”未包含“CenterX”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(526,32): error CS1061: “ScaleTransform”未包含“CenterY”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(528,38): error CS0246: 未能找到类型或命名空间名“TransformCollection
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(625,13): error CS0103: 当前上下文中不存在名称“RectForm” [D:\a\j\PC
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(649,47): error CS1061: “ColumnDefinition”未包含“Bounds”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(652,92): error CS1061: “ColumnDefinition”未包含“Bounds”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(697,21): error CS8121: “MyMsgMarkdown”类型的模式无法处理“Control
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(721,21): error CS8121: “MyMsgMarkdown”类型的模式无法处理“Control
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(721,56): error CS1061: “MyMsgMarkdown”未包含“Btn3”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(723,36): error CS1061: “MyMsgMarkdown”未包含“Btn2”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(873,32): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(877,35): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(879,19): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(884,15): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(885,19): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(887,37): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(889,23): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(890,57): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(894,41): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(895,62): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(898,38): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(899,41): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(900,74): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(916,19): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(921,41): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(927,27): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(955,27): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(967,37): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(975,19): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1204,40): error CS0246: 未能找到类型或命名空间名“CrashAnalyzer”(是否缺
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1283,17): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1285,17): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1285,30): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1286,53): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1286,66): error CS0103: 当前上下文中不存在名称“Top” [D:\a\j\PCL.CE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1291,21): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1292,21): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1305,13): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1305,26): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1313,47): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1313,55): error CS0103: 当前上下文中不存在名称“Top” [D:\a\j\PCL.CE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1320,9): error CS0103: 当前上下文中不存在名称“VideoBack” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1321,9): error CS0103: 当前上下文中不存在名称“VideoBack” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1331,30): error CS0117: “ModVideoBack”未包含“isMinimized”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1332,30): error CS0117: “ModVideoBack”未包含“VideoPause”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1337,30): error CS0117: “ModVideoBack”未包含“isMinimized”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1338,30): error CS0117: “ModVideoBack”未包含“VideoPlay”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1935,33): error CS0103: 当前上下文中不存在名称“ContentPresenter” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1937,34): error CS0103: 当前上下文中不存在名称“ContentPresenter” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2066,15): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2066,35): error CS0103: 当前上下文中不存在名称“MouseButtonState” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2074,13): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2074,33): error CS0103: 当前上下文中不存在名称“MouseButtonState” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2118,18): error CS0117: “ModMusic”未包含“MusicControlPause
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2123,18): error CS0117: “ModMusic”未包含“MusicControlNext”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2144,35): error CS1061: “PageLaunchLeft”未包含“AprilScaleT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2145,35): error CS1061: “PageLaunchLeft”未包含“AprilScaleT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2206,63): error CS1061: “MyScrollViewer”未包含“VerticalOff
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2223,27): error CS1061: “MyScrollViewer”未包含“VerticalOff
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(100,49): error CS0246: 未能找到类型或命名空间名“DragEventHandler”(是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(101,48): error CS0246: 未能找到类型或命名空间名“DragEventHandler”(是
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(145,44): error CS0103: 当前上下文中不存在名称“ContentPresenter” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(147,45): error CS0103: 当前上下文中不存在名称“ContentPresenter” [D
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(173,18): error CS0117: “ModMusic”未包含“MusicRefreshPlay”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(189,49): error CS0246: 未能找到类型或命名空间名“GeometryConverter”(
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(208,30): error CS1501: “Close”方法没有采用 1 个参数的重载 [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(221,70): error CS0103: 当前上下文中不存在名称“TransformPos” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(221,40): error CS0103: 当前上下文中不存在名称“TransformPos” [D:\a\
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(224,18): error CS0103: 当前上下文中不存在名称“TransformRotate” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(223,40): error CS0103: 当前上下文中不存在名称“TransformRotate” [D:
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(525,32): error CS1061: “ScaleTransform”未包含“CenterX”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(526,32): error CS1061: “ScaleTransform”未包含“CenterY”的定义，
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(528,38): error CS0246: 未能找到类型或命名空间名“TransformCollection
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(625,13): error CS0103: 当前上下文中不存在名称“RectForm” [D:\a\j\PC
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(649,47): error CS1061: “ColumnDefinition”未包含“Bounds”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(652,92): error CS1061: “ColumnDefinition”未包含“Bounds”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(697,21): error CS8121: “MyMsgMarkdown”类型的模式无法处理“Control
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(721,21): error CS8121: “MyMsgMarkdown”类型的模式无法处理“Control
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(721,56): error CS1061: “MyMsgMarkdown”未包含“Btn3”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(723,36): error CS1061: “MyMsgMarkdown”未包含“Btn2”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(873,32): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(877,35): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(879,19): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(884,15): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(885,19): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(887,37): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(889,23): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(890,57): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(894,41): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(895,62): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(898,38): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(899,41): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(900,74): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(916,19): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(921,41): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(927,27): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(955,27): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(967,37): error CS1061: “DragEventArgs”未包含“Data”的定义，并且找不
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(975,19): error CS1061: “DragEventArgs”未包含“Effects”的定义，并
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1204,40): error CS0246: 未能找到类型或命名空间名“CrashAnalyzer”(是否缺
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1283,17): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1285,17): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1285,30): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1286,53): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1286,66): error CS0103: 当前上下文中不存在名称“Top” [D:\a\j\PCL.CE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1291,21): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1292,21): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1305,13): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1305,26): error CS0103: 当前上下文中不存在名称“Visibility” [D:\a\j
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1313,47): error CS0103: 当前上下文中不存在名称“Left” [D:\a\j\PCL.C
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1313,55): error CS0103: 当前上下文中不存在名称“Top” [D:\a\j\PCL.CE
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1320,9): error CS0103: 当前上下文中不存在名称“VideoBack” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1321,9): error CS0103: 当前上下文中不存在名称“VideoBack” [D:\a\j\P
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1331,30): error CS0117: “ModVideoBack”未包含“isMinimized”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1332,30): error CS0117: “ModVideoBack”未包含“VideoPause”的定
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1337,30): error CS0117: “ModVideoBack”未包含“isMinimized”的
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1338,30): error CS0117: “ModVideoBack”未包含“VideoPlay”的定义
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1935,33): error CS0103: 当前上下文中不存在名称“ContentPresenter” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(1937,34): error CS0103: 当前上下文中不存在名称“ContentPresenter” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2066,15): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2066,35): error CS0103: 当前上下文中不存在名称“MouseButtonState” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2074,13): error CS0103: 当前上下文中不存在名称“Mouse” [D:\a\j\PCL.
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2074,33): error CS0103: 当前上下文中不存在名称“MouseButtonState” [
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2118,18): error CS0117: “ModMusic”未包含“MusicControlPause
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2123,18): error CS0117: “ModMusic”未包含“MusicControlNext”
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2144,35): error CS1061: “PageLaunchLeft”未包含“AprilScaleT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2145,35): error CS1061: “PageLaunchLeft”未包含“AprilScaleT
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2206,63): error CS1061: “MyScrollViewer”未包含“VerticalOff
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\FormMain.xaml.cs(2223,27): error CS1061: “MyScrollViewer”未包含“VerticalOff
