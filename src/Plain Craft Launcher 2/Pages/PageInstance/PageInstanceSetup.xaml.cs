@@ -110,7 +110,7 @@ public partial class PageInstanceSetup : MyPageRight
 
             // 游戏内存
             var ramType = Config.Instance.MemorySolution[PageInstanceLeft.McInstance.PathInstance];
-            ((MyRadioBox)FindName("RadioRamType" + ramType)).Checked = true;
+            this.FindControl<MyRadioBox>("RadioRamType" + ramType).Checked = true; // [port] FindName → FindControl<MyRadioBox>
             SliderRamCustom.Value = Config.Instance.CustomMemorySize[PageInstanceLeft.McInstance.PathInstance];
             RamType(ramType);
 
@@ -285,7 +285,7 @@ public partial class PageInstanceSetup : MyPageRight
         LabRamGame.Text = $"{Lang.Number(ramGame, "N1")} GiB{(ramGame != ramGameActual ? $" ({Lang.Text("Setup.Launch.Memory.AvailableSuffix", Lang.Number(ramGameActual, "N1"))})" : "")}";
         LabRamUsed.Text = $"{Lang.Number(ramUsed, "N1")} GiB";
         LabRamTotal.Text = $" / {Lang.Number(ramTotal, "N1")} GiB";
-        LabRamWarn.Visibility =
+        LabRamWarn.IsVisible =
             ramGame == 1d && !ModJava.IsGameSet64BitJava(PageInstanceLeft.McInstance) && !SystemInfo.Is32BitSystem &&
             ModJava.Javas.ExistAnyJava()
                 ? true
@@ -294,23 +294,24 @@ public partial class PageInstanceSetup : MyPageRight
         if (showAnim)
         {
             // 宽度动画
+            // [port] Avalonia 不为 ColumnDefinition 生成命名字段 → 通过所属 Grid PanRamDisplay.ColumnDefinitions[index] 访问
             ModAnimation.AniStart(
                 new[]
                 {
-                    ModAnimation.AaGridLengthWidth(ColumnRamUsed, ramUsed - ColumnRamUsed.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[0], ramUsed - PanRamDisplay.ColumnDefinitions[0].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong)),
-                    ModAnimation.AaGridLengthWidth(ColumnRamGame, ramGameActual - ColumnRamGame.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[1], ramGameActual - PanRamDisplay.ColumnDefinitions[1].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong)),
-                    ModAnimation.AaGridLengthWidth(ColumnRamEmpty, ramEmpty - ColumnRamEmpty.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[2], ramEmpty - PanRamDisplay.ColumnDefinitions[2].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong))
                 }, "VersionSetup Ram Grid");
         }
         else
         {
             // 宽度设置
-            ColumnRamUsed.Width = new GridLength(ramUsed, GridUnitType.Star);
-            ColumnRamGame.Width = new GridLength(ramGameActual, GridUnitType.Star);
-            ColumnRamEmpty.Width = new GridLength(ramEmpty, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[0].Width = new GridLength(ramUsed, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[1].Width = new GridLength(ramGameActual, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[2].Width = new GridLength(ramEmpty, GridUnitType.Star);
         }
     }
 
@@ -743,21 +744,25 @@ public partial class PageInstanceSetup : MyPageRight
 
             if (Files.IsPathWithinDirectory(absPath, Basics.ExecutableDirectory) && javaEntry is not null &&
                 javaEntry.IsEnabled)
+            {
                 // 有效路径：显示具体 Java 信息
                 relativePathItem = new MyComboBoxItem
                 {
                     Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative.WithJava", javaEntry.ToString()),
-                    Tag = new UseRelativePath(relPref.RelativePath),
-                    ToolTip = Lang.Text("Instance.Setup.Options.Java.RelativePathToolTip", relPref.RelativePath, absPath)
+                    Tag = new UseRelativePath(relPref.RelativePath)
                 };
+                Avalonia.Controls.ToolTip.SetTip(relativePathItem, Lang.Text("Instance.Setup.Options.Java.RelativePathToolTip", relPref.RelativePath, absPath)); // [port] ToolTip -> SetTip
+            }
             else
+            {
                 // 无效路径：提示用户重新选择
                 relativePathItem = new MyComboBoxItem
                 {
                     Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative.Invalid"),
-                    Tag = new UseRelativePath(relPref.RelativePath),
-                    ToolTip = Lang.Text("Instance.Setup.Options.Java.InvalidPathToolTip", absPath)
+                    Tag = new UseRelativePath(relPref.RelativePath)
                 };
+                Avalonia.Controls.ToolTip.SetTip(relativePathItem, Lang.Text("Instance.Setup.Options.Java.InvalidPathToolTip", absPath)); // [port] ToolTip -> SetTip
+            }
         }
         else
         {
@@ -765,9 +770,9 @@ public partial class PageInstanceSetup : MyPageRight
             relativePathItem = new MyComboBoxItem
             {
                 Content = Lang.Text("Instance.Setup.Options.Java.SelectRelative"),
-                Tag = new UseRelativePath(@"jre\bin\java.exe"),
-                ToolTip = Lang.Text("Instance.Setup.Options.Java.SelectRelativeToolTip")
+                Tag = new UseRelativePath(@"jre\bin\java.exe")
             };
+            Avalonia.Controls.ToolTip.SetTip(relativePathItem, Lang.Text("Instance.Setup.Options.Java.SelectRelativeToolTip")); // [port] ToolTip -> SetTip
         }
 
         ComboArgumentJava.Items.Add(relativePathItem);
@@ -781,10 +786,10 @@ public partial class PageInstanceSetup : MyPageRight
                 var item = new MyComboBoxItem
                 {
                     Content = curJava.ToString(),
-                    ToolTip =
-                        Lang.Text("Instance.Setup.Options.Java.Details", curJava.Installation.JavaExePath, curJava.Installation.Version, curJava.Source),
                     Tag = curJava
                 };
+                Avalonia.Controls.ToolTip.SetTip(item,
+                    Lang.Text("Instance.Setup.Options.Java.Details", curJava.Installation.JavaExePath, curJava.Installation.Version, curJava.Source)); // [port] ToolTip -> SetTip
                 ComboArgumentJava.Items.Add(item);
             }
         }
@@ -855,9 +860,9 @@ public partial class PageInstanceSetup : MyPageRight
             var noJavaItem = new MyComboBoxItem
             {
                 Content = Lang.Text("Instance.Setup.Options.Java.NoRuntime"),
-                ToolTip = Lang.Text("Instance.Setup.Options.Java.NoRuntime"),
                 IsEnabled = false
             };
+            Avalonia.Controls.ToolTip.SetTip(noJavaItem, Lang.Text("Instance.Setup.Options.Java.NoRuntime")); // [port] ToolTip -> SetTip
             ComboArgumentJava.Items.Add(noJavaItem);
             ComboArgumentJava.SelectedItem = noJavaItem;
         }
