@@ -11,6 +11,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Markup;
+using Avalonia.Media.Imaging;
 using PCL.Core.UI.Controls.SvgIcon;
 
 using Avalonia.Metadata;
@@ -18,13 +19,20 @@ using Avalonia.Metadata;
 namespace PCL;
 public partial class MyListItem : Grid, IMyRadio
 {
-    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
+    // [port] WPF MouseButtonEventArgs（按下与松开共用）→ Avalonia 分开为 PointerPressed/PointerReleased；
+    // 单击/Logo 点击在松开时触发，故使用 PointerReleasedEventArgs
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e);
 
-    public delegate void LogoClickEventHandler(object sender, PointerPressedEventArgs e);
+    public delegate void LogoClickEventHandler(object sender, PointerReleasedEventArgs e);
 
     public bool isMouseOverAnimationEnabled = true;
 
     private string stateLast;
+
+    // [port] Avalonia 命名字段生成器不为 ColumnDefinition 生成字段（即使 axaml 写了 x:Name）
+    // → 经所属 Grid 的 ColumnDefinitions 按索引访问（ColumnGap 为第 6 列，索引 5）。
+    // protected 以便派生类（如 MyLocalModItem）复用。
+    protected ColumnDefinition ColumnGap => ColumnDefinitions[5];
 
     public object tag { get; set; }
     public event IMyRadio.CheckEventHandler? Check;
@@ -201,7 +209,7 @@ public partial class MyListItem : Grid, IMyRadio
                     RenderTransform = IsScaleAnimationEnabled ? new ScaleTransform(0.8d, 0.8d) : null,
                     RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念（默认抗锯齿），移除
                     IsHitTestVisible = false,
                     Opacity = 0d
                 };
@@ -274,7 +282,7 @@ public partial class MyListItem : Grid, IMyRadio
                     Padding = new Thickness(3d, 1d, 3d, 1d),
                     CornerRadius = new CornerRadius(3d),
                     Margin = new Thickness(0d, 0d, 3d, 0d),
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false
                 };
                 var tagTextBlock = new TextBlock
@@ -300,12 +308,13 @@ public partial class MyListItem : Grid, IMyRadio
                 var lab = new TextBlock
                 {
                     Name = "LabInfo",
-                    SnapsToDevicePixels = false,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     IsHitTestVisible = false,
                     TextTrimming = TextTrimming.CharacterEllipsis,
-                    Visibility = false,
+                    // [port] WPF Control.Visibility 枚举 → Avalonia 使用 IsVisible 布尔
+                    IsVisible = false,
                     FontSize = 12d,
                     Margin = new Thickness(4d, 0d, 0d, 0d),
                     Opacity = 0.6d
@@ -390,7 +399,7 @@ public partial class MyListItem : Grid, IMyRadio
                             Btn.Width = 25d;
                         Btn.Opacity = 0d;
                         Btn.Margin = new Thickness(0d, 0d, 5d, 0d);
-                        Btn.SnapsToDevicePixels = false;
+                        // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                         Btn.HorizontalAlignment = HorizontalAlignment.Right;
                         Btn.VerticalAlignment = VerticalAlignment.Center;
                         Btn.UseLayoutRounding = false;
@@ -408,7 +417,8 @@ public partial class MyListItem : Grid, IMyRadio
                     // 有复数按钮，使用 StackPanel
                     buttonStack = new StackPanel
                     {
-                        Opacity = 0d, Margin = new Thickness(0d, 0d, 5d, 0d), SnapsToDevicePixels = false,
+                        // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
+                        Opacity = 0d, Margin = new Thickness(0d, 0d, 5d, 0d),
                         Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center, UseLayoutRounding = false
                     };
@@ -442,7 +452,8 @@ public partial class MyListItem : Grid, IMyRadio
     }
 
     public static readonly AvaloniaProperty TitleProperty =
-        AvaloniaProperty.Register("Title", typeof(string), typeof(MyListItem));
+        // [port] WPF AvaloniaProperty.Register(name, type, owner) 无此非泛型重载 → 泛型 Register<Owner, TValue>
+        AvaloniaProperty.Register<MyListItem, string>(nameof(Title), null!);
 
     // 字号
     public double FontSize
@@ -467,17 +478,18 @@ public partial class MyListItem : Grid, IMyRadio
         }
     }
 
-    public static readonly AvaloniaProperty InfoProperty = AvaloniaProperty.Register<MyListItem, string>("Info", "", OnInfoChanged);
+    public static readonly AvaloniaProperty InfoProperty = AvaloniaProperty.Register<MyListItem, string>("Info", "");
 
     public MyListItem()
     {
         InitializeComponent();
 
         SizeChanged += (_, _) => OnSizeChanged();
-        PreviewPointerReleased += Button_PointerReleased;
-        PreviewPointerPressed += Button_MouseDown;
+        // [port] WPF PreviewPointerReleased / PreviewPointerPressed（隧道）→ Avalonia AddHandler + RoutingStrategies.Tunnel
+        AddHandler(PointerPressedEvent, (EventHandler<PointerPressedEventArgs>)Button_MouseDown, RoutingStrategies.Tunnel);
+        AddHandler(PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)Button_PointerReleased, RoutingStrategies.Tunnel);
         PointerExited += Button_PointerExited;
-        PreviewPointerReleased += Button_PointerExited;
+        AddHandler(PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)Button_PointerExited, RoutingStrategies.Tunnel);
         PointerEntered += RefreshColor;
         PointerExited += RefreshColor;
         PointerPressed += RefreshColor;
@@ -524,6 +536,8 @@ public partial class MyListItem : Grid, IMyRadio
 
     static MyListItem()
     {
+        // [port] WPF Register(name, type, owner, ... 回调) → Avalonia 在静态构造里用 Changed.AddClassHandler 注册回调
+        InfoProperty.Changed.AddClassHandler<MyListItem>(OnInfoChanged);
         LogoProperty.Changed.AddClassHandler<MyListItem>((d, e) =>
         {
             var control = (MyListItem)d;
@@ -568,12 +582,12 @@ public partial class MyListItem : Grid, IMyRadio
                 Stretch = Stretch.Uniform,
                 RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                 RenderTransform = new ScaleTransform { ScaleX = 1D, ScaleY = 1D },
-                SnapsToDevicePixels = false,
+                // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                 UseLayoutRounding = false,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch
             };
-            ((SvgIcon)pathLogo).SetBinding(
+            ((SvgIcon)pathLogo).Bind(
                 Core.UI.Controls.SvgIcon.SvgIcon.IconBrushProperty,
                 new Binding("Foreground") { Source = this });
         }
@@ -589,10 +603,10 @@ public partial class MyListItem : Grid, IMyRadio
                     Source = logo,
                     RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false
                 };
-                RenderOptions.SetBitmapScalingMode(pathLogo, BitmapScalingMode.Linear);
+                RenderOptions.SetBitmapInterpolationMode(pathLogo, BitmapInterpolationMode.MediumQuality);
             }
             else if (logo.EndsWithF(".png", true) || logo.EndsWithF(".jpg", true) || logo.EndsWithF(".webp", true))
             {
@@ -601,19 +615,20 @@ public partial class MyListItem : Grid, IMyRadio
                 {
                     Tag = this,
                     IsHitTestVisible = LogoClickable,
-                    Background = new MyBitmap(logo),
+                    // [port] WPF Background = BitmapBrush → MyBitmap 的隐式 ImageBrush 转换；显式强转避开歧义
+                    Background = (ImageBrush)new MyBitmap(logo),
                     RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch
                 };
                 if (logo.Contains(ModBase.pathTemp + @"Cache\Skin\Head") ||
                     logo.Contains(ModBase.pathTemp + @"Cache\Cape"))
-                    RenderOptions.SetBitmapScalingMode(pathLogo, BitmapScalingMode.NearestNeighbor);
+                    RenderOptions.SetBitmapInterpolationMode(pathLogo, BitmapInterpolationMode.LowQuality);
                 else
-                    RenderOptions.SetBitmapScalingMode(pathLogo, BitmapScalingMode.Linear);
+                    RenderOptions.SetBitmapInterpolationMode(pathLogo, BitmapInterpolationMode.MediumQuality);
             }
             else
             {
@@ -625,13 +640,14 @@ public partial class MyListItem : Grid, IMyRadio
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     Stretch = Stretch.Uniform,
-                    Data = (Geometry)new GeometryConverter().ConvertFromString(logo),
+                    // [port] WPF GeometryConverter().ConvertFromString → Avalonia Geometry.Parse
+                    Data = Geometry.Parse(logo),
                     RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform { ScaleX = LogoScale, ScaleY = LogoScale },
-                    SnapsToDevicePixels = false,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false
                 };
-                pathLogo.SetBinding(Shape.FillProperty, new Binding("Foreground") { Source = this });
+                pathLogo.Bind(Shape.FillProperty, new Binding("Foreground") { Source = this });
             }
         }
 
@@ -729,7 +745,7 @@ public partial class MyListItem : Grid, IMyRadio
                     VerticalAlignment = Checked ? VerticalAlignment.Stretch : VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     UseLayoutRounding = false,
-                    SnapsToDevicePixels = false,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     Margin = Checked ? new Thickness(-1, 6d, 0d, 6d) : new Thickness(-1, 0d, 0d, 0d)
                 };
                 rectCheck.SetResourceReference(Border.BackgroundProperty, "ColorBrush3");
@@ -990,7 +1006,7 @@ public partial class MyListItem : Grid, IMyRadio
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", ThemeManager.AppResources["ColorBrush1"]);
+    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", (Brush)ThemeManager.AppResources["ColorBrush1"]);
 
     // 菜单与按钮绑定
     public Action<MyListItem, EventArgs> ContentHandler { get; set; }
@@ -1015,7 +1031,8 @@ public partial class MyListItem : Grid, IMyRadio
 
     private void UpdateCanvasClip(Canvas c)
     {
-        if (c is { ActualWidth: > 0, ActualHeight: > 0 })
+        // [port] WPF ActualWidth/ActualHeight → Avalonia Bounds.Width/Height
+        if (c is not null && c.Bounds.Width > 0 && c.Bounds.Height > 0)
         {
             var r = LogoCornerRadius;
             double radius = Math.Max(Math.Max(r.TopLeft, r.TopRight), Math.Max(r.BottomLeft, r.BottomRight));
@@ -1034,7 +1051,7 @@ public partial class MyListItem : Grid, IMyRadio
             case MyImage myImage:
                 myImage.CornerRadius = LogoCornerRadius;
                 break;
-            case Canvas canvas when !_canvasClipHandlerAdded && canvas is { ActualWidth: 0, ActualHeight: 0 }:
+            case Canvas canvas when !_canvasClipHandlerAdded && (canvas.Bounds.Width == 0 && canvas.Bounds.Height == 0):
                 UpdateCanvasClip(canvas);
                 canvas.SizeChanged += OnCanvasLogoSizeChanged;
                 _canvasClipHandlerAdded = true;
@@ -1047,8 +1064,9 @@ public partial class MyListItem : Grid, IMyRadio
 
     private void OnCanvasLogoSizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        if (sender is not Canvas { ActualWidth: > 0, ActualHeight: > 0 } canvas) return;
-    
+        // [port] WPF ActualWidth/ActualHeight → Avalonia Bounds.Width/Height
+        if (sender is not Canvas canvas || canvas.Bounds.Width <= 0 || canvas.Bounds.Height <= 0) return;
+
         UpdateCanvasClip(canvas);
         canvas.SizeChanged -= OnCanvasLogoSizeChanged;
         _canvasClipHandlerAdded = false;
@@ -1058,7 +1076,8 @@ public partial class MyListItem : Grid, IMyRadio
     #region 点击
 
     // 触发点击事件
-    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
+    // [port] WPF MouseButtonEventArgs → Avalonia PointerReleasedEventArgs（松开时触发）
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;
@@ -1104,7 +1123,8 @@ public partial class MyListItem : Grid, IMyRadio
 
     private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
-        if (IsMouseDirectlyOver && !(Type == CheckType.None))
+        // [port] WPF IsMouseDirectlyOver → Avalonia IsPointerOver（无 IsMouseDirectlyOver 概念）
+        if (IsPointerOver && !(Type == CheckType.None))
         {
             isMouseDown = true;
             if (buttonStack is not null)
