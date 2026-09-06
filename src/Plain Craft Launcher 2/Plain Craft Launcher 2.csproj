@@ -96,13 +96,14 @@
             Modules\ModVideoBack.cs;
             Modules\ModLink.cs;
             Modules\Minecraft\ModSkin.cs;
-            Pages\PageLaunch\MySkin.axaml.cs;
-            Pages\PageLaunch\MySkin.axaml;
             Pages\PageTools\**;
             Controls\Behaviors\ClipboardInterceptor.cs;
             Controls\Behaviors\LazyLoadBehavior.cs;" />
         <Compile Remove="@(DeferredExcludes)" />
         <Compile Remove="Generated\**" />
+        <!-- [port] Markdown.axaml 是 Markdown.Avalonia 主题样式（暂缓的 Markdown 公告功能资源），
+             Avalonia 12 无法解析其 StyleKey。不仅要排除出 AvaloniaResource，还要从 AvaloniaXaml 编译源移除 -->
+        <AvaloniaXaml Remove="Resources\Markdown.axaml" />
         <!-- [port] .cs/.axaml 由 SDK 默认 glob 收集（EnableDefaultItems 必须 true，否则 Avalonia 命名字段生成器失效）；这里只做排除 -->        <AvaloniaResource Include="Images\**" />
         <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
         <EmbeddedResource Include="metadata.json" />
