@@ -27,7 +27,7 @@ public partial class MyMsgMarkdown
             AppendUniqueNameSuffix(Btn3);
             myConverter = converter;
             LabTitle.Text = converter.Title;
-            LabCaption.Markdown = converter.Text;
+            LabCaption.Text = converter.Text;
             DataContext = this;
             ConfigurePrimaryButton(converter.Button1, converter.IsWarn);
             ConfigureSecondaryButton(Btn2, converter.Button2);
@@ -95,7 +95,7 @@ public partial class MyMsgMarkdown
                         new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak))
                 }, "MyMsgBox " + uuid);
             // 记录日志
-            ModBase.Log("[Control] 普通弹窗：" + LabTitle.Text + "\r\n" + LabCaption.Markdown);
+            ModBase.Log("[Control] 普通弹窗：" + LabTitle.Text + "\r\n" + LabCaption.Text);
         }
 
         catch (Exception ex)
@@ -113,7 +113,7 @@ public partial class MyMsgMarkdown
         // 结束线程阻塞
         if (myConverter.ForceWait || !string.IsNullOrEmpty(myConverter.Button2))
             myConverter.WaitFrame.Continue = false;
-        ComponentDispatcher.PopModal();
+        // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈（弹窗为层叠覆盖 Panel），移除
         // 动画
         ModAnimation.AniStart(new[]
         {
@@ -186,7 +186,7 @@ public partial class MyMsgMarkdown
     {
         try
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e is not null && e.GetCurrentPoint(ShapeLine).Properties.IsLeftButtonPressed)
                 if (e.GetPosition(ShapeLine).Y <= 2d)
                     ModMain.frmMain.DragMove();
         }

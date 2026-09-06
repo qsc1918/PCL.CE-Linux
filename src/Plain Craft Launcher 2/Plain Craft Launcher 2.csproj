@@ -99,9 +99,6 @@
             Pages\PageLaunch\MySkin.axaml.cs;
             Pages\PageLaunch\MySkin.axaml;
             Pages\PageTools\**;
-            Controls\MyMsg\MyMsgMarkdown.axaml.cs;
-            Controls\MyMsg\MyMsgMarkdown.axaml;
-            Resources\Markdown.axaml;
             Controls\Behaviors\ClipboardInterceptor.cs;
             Controls\Behaviors\LazyLoadBehavior.cs;" />
         <Compile Remove="@(DeferredExcludes)" />

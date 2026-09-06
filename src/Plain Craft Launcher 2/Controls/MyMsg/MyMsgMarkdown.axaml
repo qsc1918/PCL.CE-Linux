@@ -2,7 +2,6 @@
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:my="clr-namespace:PCL"
-      xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
       RenderTransformOrigin="0,0.5" UseLayoutRounding="True" MinWidth="400"
       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25">
     <Grid.RenderTransform>
@@ -32,8 +31,10 @@
                                Padding="0,0,7,0"
                                VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                DeltaMult="0.7">
-                <markdig:MarkdownViewer VerticalAlignment="Top" Name="LabCaption"
-                                        Foreground="{DynamicResource ColorBrush1}" FontWeight="Normal" />
+                <!-- [port] WPF Markdig.MarkdownViewer（富文本渲染）在 Avalonia 无对应 → 降级为可换行文本块展示纯文本内容 -->
+                <SelectableTextBlock VerticalAlignment="Top" Name="LabCaption"
+                                     Foreground="{DynamicResource ColorBrush1}" FontWeight="Normal"
+                                     TextWrapping="Wrap" />
             </my:MyScrollViewer>
             <StackPanel Grid.Row="4" Name="PanBtn" VerticalAlignment="Top" HorizontalAlignment="Right"
                         Margin="150,0,8,0" Orientation="Horizontal">
