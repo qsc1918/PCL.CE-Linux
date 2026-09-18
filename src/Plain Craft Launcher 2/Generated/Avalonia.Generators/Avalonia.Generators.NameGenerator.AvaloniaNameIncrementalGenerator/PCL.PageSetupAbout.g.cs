@@ -19,6 +19,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Image ImgPCLCommunity;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid GridAboutThanks;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyListItem ItemMcmod;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyButton BtnMcmod;
@@ -45,6 +47,7 @@ namespace PCL
             ItemAboutPcl = __thisNameScope__?.Find<global::PCL.MyListItem>("ItemAboutPcl");
             ImgPCLLogo = __thisNameScope__?.Find<global::Avalonia.Controls.Image>("ImgPCLLogo");
             ImgPCLCommunity = __thisNameScope__?.Find<global::Avalonia.Controls.Image>("ImgPCLCommunity");
+            GridAboutThanks = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("GridAboutThanks");
             ItemMcmod = __thisNameScope__?.Find<global::PCL.MyListItem>("ItemMcmod");
             BtnMcmod = __thisNameScope__?.Find<global::PCL.MyButton>("BtnMcmod");
             ImgMcmod = __thisNameScope__?.Find<global::Avalonia.Controls.Image>("ImgMcmod");

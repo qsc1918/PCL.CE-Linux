@@ -18,10 +18,14 @@ public class MyScrollViewer : ScrollViewer
 
     public MyScrollViewer()
     {
-        PreviewMouseWheel += MyScrollViewer_PreviewMouseWheel;
+        // [port] WPF PreviewMouseWheel（隧道）→ Avalonia 用 AddHandler + RoutingStrategies.Tunnel 保留隧道语义
+        AddHandler(PointerWheelChangedEvent, (EventHandler<PointerWheelEventArgs>)MyScrollViewer_PreviewMouseWheel, RoutingStrategies.Tunnel);
         ScrollChanged += MyScrollViewer_ScrollChanged;
-        IsVisibleChanged += MyScrollViewer_IsVisibleChanged;
+        // [port] WPF IsVisibleChanged → Avalonia 用 PropertyChanged 监听 IsVisibleProperty
+        PropertyChanged += (_, e) => { if (e.Property == IsVisibleProperty) MyScrollViewer_IsVisibleChanged(this, e); };
         Loaded += (_, _) => Load();
+        // [port] WPF GetTemplateChild("PART_VerticalScrollBar") → Avalonia 在 TemplateApplied 时通过 NameScope.Find 提取模板部件
+        TemplateApplied += (_, e) => { scrollBar = e.NameScope.Find("PART_VerticalScrollBar") as MyScrollBar; };
         // [port] WPF PreviewGotKeyboardFocus 事件在 Avalonia 无直接对应，滚轮跟随焦点逻辑暂缓
     }
 
@@ -29,7 +33,8 @@ public class MyScrollViewer : ScrollViewer
 
     private void MyScrollViewer_PreviewMouseWheel(object sender, PointerWheelEventArgs e)
     {
-        if (e.Delta == 0 || ScrollableHeight <= 0d)
+        // [port] WPF e.Delta（int）→ Avalonia Vector，取 Y 分量比较；ScrollableHeight → Extent.Height - Viewport.Height
+        if (e.Delta.Y == 0 || (Extent.Height - Viewport.Height) <= 0d)
             return;
 
         var src = e.Source;
@@ -46,25 +51,29 @@ public class MyScrollViewer : ScrollViewer
         }
 
         e.Handled = true;
-        PerformVerticalOffsetDelta(-e.Delta);
+        PerformVerticalOffsetDelta(-e.Delta.Y);
 
-        Tooltip.Dismiss();
+        // [port] WPF Tooltip.Dismiss() 在 Avalonia 12 无对应静态方法（无全局 Dismiss API），
+        // 且 Avalonia 在滚动/交互时会自动收起工具提示，此处保留为无副作用空操作。
+        // code kept for readability of the original intent.
     }
 
     public void PerformVerticalOffsetDelta(double delta)
     {
         ModAnimation.AniStart(ModAnimation.AaDouble(animDelta =>
         {
-            realOffset = ModBase.MathClamp(realOffset + (double)animDelta, 0d, ExtentHeight - ActualHeight);
-            ScrollToVerticalOffset(realOffset);
+            // [port] WPF ScrollToVerticalOffset/ExtentHeight/ActualHeight → Avalonia Offset/Extent/Bounds
+            realOffset = ModBase.MathClamp(realOffset + (double)animDelta, 0d, Extent.Height - Bounds.Height);
+            Offset = new Vector(Offset.X, realOffset);
         }, delta * DeltaMult, 300, 0, new ModAnimation.AniEaseOutFluent((ModAnimation.AniEasePower)6), false));
     }
 
     private void MyScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        realOffset = VerticalOffset;
+        // [port] WPF VerticalOffset → Avalonia Offset.Y；VerticalChange/ViewportHeightChange → OffsetDelta.Y/ViewportDelta.Y
+        realOffset = Offset.Y;
         if (ModMain.frmMain is not null &&
-            (e.VerticalChange != 0 || e.ViewportHeightChange != 0))
+            (e.OffsetDelta.Y != 0 || e.ViewportDelta.Y != 0))
             ModMain.frmMain.BtnExtraBack.ShowRefresh();
     }
 
@@ -75,7 +84,8 @@ public class MyScrollViewer : ScrollViewer
 
     private void Load()
     {
-        scrollBar = (MyScrollBar)GetTemplateChild("PART_VerticalScrollBar");
+        // [port] WPF GetTemplateChild("PART_VerticalScrollBar") 在 Avalonia 无对应；
+        // 模板部件在构造函数的 TemplateApplied 事件里通过 NameScope.Find 提取。
     }
 
     // [port] WPF PreviewGotKeyboardFocus（阻止获得焦点时自动滚动 #3854）在 Avalonia 无直接对应，暂缓

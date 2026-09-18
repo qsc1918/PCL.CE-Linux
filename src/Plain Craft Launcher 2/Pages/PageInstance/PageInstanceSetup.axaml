@@ -35,10 +35,10 @@
                         <local:MyComboBox x:Name="ComboArgumentIndieV2" Grid.Row="0" Grid.ColumnSpan="2"
                                           Tag="VersionArgumentIndieV2" Grid.Column="1">
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Setup.Options.InstanceIsolation.Enabled}"
-                                                  ToolTip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Enabled.ToolTip}"
+                                                  ToolTip.Tip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Enabled.ToolTip}"
                                                   ToolTip.HorizontalOffset="100" />
                             <local:MyComboBoxItem Content="{DynamicResource Common.Action.Close}"
-                                                  ToolTip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Disabled.ToolTip}"
+                                                  ToolTip.Tip="{DynamicResource Instance.Setup.Options.InstanceIsolation.Disabled.ToolTip}"
                                                   ToolTip.HorizontalOffset="100" />
                         </local:MyComboBox>
                         <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -47,7 +47,7 @@
                         <local:MyComboBox x:Name="TextArgumentTitle" Grid.Row="2" Grid.ColumnSpan="2"
                                           Tag="VersionArgumentTitle" Grid.Column="1" IsEditable="True"
                                           IsTextSearchEnabled="False"
-                                          ToolTip="{DynamicResource Instance.Setup.Options.WindowTitle.ToolTip}">
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Options.WindowTitle.ToolTip}">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowTitle.SampleFormat}" />
                         </local:MyComboBox>
                         <local:MyCheckBox x:Name="CheckArgumentTitleEmpty" Margin="0,0,0,9" Grid.Row="4"
@@ -55,14 +55,14 @@
                                           Text="{DynamicResource Instance.Setup.Options.WindowTitle.Default}"
                                           Tag="VersionArgumentTitleEmpty"
                                           Grid.Column="0"
-                                          ToolTip="{DynamicResource Instance.Setup.Options.WindowTitle.Default.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Options.WindowTitle.Default.ToolTip}" />
                         <TextBlock Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Text="{DynamicResource Setup.Launch.Options.CustomInfo.Label}"
                                    Margin="0,0,25,0" />
                         <local:MyTextBox x:Name="TextArgumentInfo" Grid.Row="6" Grid.ColumnSpan="2"
                                          Tag="VersionArgumentInfo" Grid.Column="1"
                                          HintText="{DynamicResource Instance.Setup.FollowGlobal}"
-                                         ToolTip="{DynamicResource Instance.Setup.Options.CustomInfo.ToolTip}">
+                                         ToolTip.Tip="{DynamicResource Instance.Setup.Options.CustomInfo.ToolTip}">
                             <local:MyTextBox.ValidateRules>
                                 <val:BlacklistValidator>
                                     <val:BlacklistValidator.Blacklist>
@@ -78,7 +78,7 @@
                                    Margin="0,0,25,0" />
                         <local:MyComboBox x:Name="ComboArgumentJava" Grid.ColumnSpan="2" Grid.Row="8" Grid.Column="1"
                                           MaxDropDownHeight="240"
-                                          ToolTip="{DynamicResource Instance.Setup.Options.Java.ToolTip}">
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Options.Java.ToolTip}">
                             <ComboBoxItem Content="{DynamicResource Instance.Setup.Options.Java.Loading}" IsSelected="True" />
                         </local:MyComboBox>
                     </Grid>
@@ -118,7 +118,7 @@
                             x:Name="RadioRamType0"
                             Tag="VersionRamType/0"
                             Margin="0,0,20,0"
-                            ToolTip="{DynamicResource Setup.Launch.Memory.Auto.ToolTip}"
+                            ToolTip.Tip="{DynamicResource Setup.Launch.Memory.Auto.ToolTip}"
                             ToolTip.Placement="Right"
                             ToolTip.HorizontalOffset="-10"
                             ToolTip.VerticalOffset="-3" />
@@ -142,9 +142,9 @@
                     </Grid>
                     <Grid x:Name="PanRamDisplay" Margin="0,11,2,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnRamUsed" Width="4.7*" />
-                            <ColumnDefinition x:Name="ColumnRamGame" Width="2.5*" />
-                            <ColumnDefinition x:Name="ColumnRamEmpty" Width="0.7*" />
+                            <ColumnDefinition Width="4.7*" />
+                            <ColumnDefinition Width="2.5*" />
+                            <ColumnDefinition Width="0.7*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -257,7 +257,7 @@
                                    Margin="0,0,25,0" />
                         <local:MyTextBox x:Name="TextServerEnter" Grid.ColumnSpan="2" Grid.Row="5"
                                          Tag="VersionServerEnter" Grid.Column="1"
-                                         ToolTip="{DynamicResource Instance.Setup.Server.AutoJoin.ToolTip}">
+                                         ToolTip.Tip="{DynamicResource Instance.Setup.Server.AutoJoin.ToolTip}">
                             <local:MyTextBox.ValidateRules>
                                 <val:BlacklistValidator>
                                     <val:BlacklistValidator.Blacklist>
@@ -321,17 +321,17 @@
                                Margin="0,0,25,0" />
                     <local:MyTextBox x:Name="TextAdvanceJvm" Grid.Row="2" Grid.ColumnSpan="2" Tag="VersionAdvanceJvm"
                                      Grid.Column="1" MaxLength="4000"
-                                     ToolTip="{DynamicResource Instance.Setup.Advanced.JvmArgs.ToolTip}"
+                                     ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.JvmArgs.ToolTip}"
                                      HintText="{DynamicResource Instance.Setup.FollowGlobal}"
                                      Height="100" AcceptsReturn="True" TextWrapping="Wrap"
-                                     VerticalContentAlignment="Top" Padding="0,5" VerticalScrollBarVisibility="Auto" />
+                                     VerticalContentAlignment="Top" Padding="0,5" />
 
                     <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left"
                                Text="{DynamicResource Setup.Launch.Advanced.GameTail}"
                                Margin="0,0,25,0" />
                     <local:MyTextBox x:Name="TextAdvanceGame" Grid.Row="4" Grid.ColumnSpan="2" Tag="VersionAdvanceGame"
                                      Grid.Column="1"
-                                     ToolTip="{DynamicResource Instance.Setup.Advanced.GameArgs.ToolTip}"
+                                     ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.GameArgs.ToolTip}"
                                      HintText="{DynamicResource Instance.Setup.FollowGlobal}" />
 
                     <TextBlock Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -339,14 +339,14 @@
                                Margin="0,0,25,0" />
                     <local:MyTextBox x:Name="TextAdvanceClasspathHead" Grid.Row="6" Grid.ColumnSpan="2"
                                      Tag="VersionAdvanceClasspathHead" Grid.Column="1"
-                                     ToolTip="{DynamicResource Instance.Setup.Advanced.Classpath.ToolTip}" />
+                                     ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.Classpath.ToolTip}" />
 
                     <TextBlock Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Left"
                                Text="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand}"
                                Margin="0,0,25,3" />
                     <local:MyTextBox x:Name="TextAdvanceRun" Grid.Row="8" Grid.ColumnSpan="2" Tag="VersionAdvanceRun"
                                      Grid.Column="1" HintText="" Margin="0,0,0,3"
-                                     ToolTip="{DynamicResource Instance.Setup.Advanced.PreLaunchCommand.ToolTip}" />
+                                     ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.PreLaunchCommand.ToolTip}" />
 
                     <StackPanel Margin="0,8,0,4" Grid.Row="9" Grid.ColumnSpan="2" HorizontalAlignment="Left">
                         <local:MyCheckBox Height="28" x:Name="CheckAdvanceRunWait" Tag="VersionAdvanceRunWait"
@@ -357,30 +357,30 @@
                                           x:Name="CheckAdvanceJava"
                                           Tag="VersionAdvanceJava"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Instance.Setup.Advanced.IgnoreJavaCompatibility.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.IgnoreJavaCompatibility.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Instance.Setup.Advanced.DisableFileVerification}"
                                           x:Name="CheckAdvanceAssetsV2"
                                           Tag="VersionAdvanceAssetsV2" Margin="0,0,60,0"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Instance.Setup.Advanced.DisableFileVerification.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.DisableFileVerification.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Instance.Setup.Advanced.UseGlobalProxy}"
                                           x:Name="CheckAdvanceUseProxyV2"
                                           Tag="VersionAdvanceUseProxyV2"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Instance.Setup.Advanced.UseGlobalProxy.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Instance.Setup.Advanced.UseGlobalProxy.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Setup.Launch.Advanced.DisableJlw}"
                                           x:Name="CheckAdvanceDisableJLW"
                                           Tag="VersionAdvanceDisableJLW"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Setup.Launch.Advanced.DisableJlw.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableJlw.ToolTip}" />
                         <local:MyCheckBox Height="28"
                                           Text="{DynamicResource Setup.Launch.Advanced.DisableLF}"
                                           x:Name="CheckAdvanceDisableLF"
                                           Tag="VersionAdvanceDisableLF"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLF.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableLF.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Instance.Setup.Advanced.UseDebugLog4j}"
                                           x:Name="CheckUseDebugLog4j2Config"
                                           Tag="VersionUseDebugLog4j2Config"
@@ -390,7 +390,7 @@
                                           x:Name="CheckAdvanceDisableLwjglUnsafeAgent"
                                           Tag="VersionAdvanceDisableLwjglUnsafeAgent"
                                           ToolTip.Placement="Right"
-                                          ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent.ToolTip}" />
                     </StackPanel>
                 </Grid>
             </local:MyCard>

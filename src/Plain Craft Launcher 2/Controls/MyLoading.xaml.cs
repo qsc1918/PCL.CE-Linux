@@ -12,7 +12,7 @@ namespace PCL;
 
 public partial class MyLoading : Grid
 {
-    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e);
 
     public delegate void IsErrorChangedEventHandler(object sender, bool isError);
 
@@ -42,7 +42,7 @@ public partial class MyLoading : Grid
         InitializeComponent();
         SetCurrentValue(TextProperty, Lang.Text("Application.Control.Loading.Default"));
         SetCurrentValue(TextErrorProperty, Lang.Text("Application.Control.Loading.Failed"));
-        SetResourceReference(ForegroundProperty, "ColorBrush3");
+        this.SetResourceReference(ForegroundProperty, "ColorBrush3");
         IsErrorChanged += (_, _) => RefreshText();
         Loaded += (_, _) => RefreshText();
         Loaded += (_, _) => InitState();
@@ -340,7 +340,7 @@ public partial class MyLoading : Grid
 
     #region 点击事件
 
-    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         Click?.Invoke(sender, e);
     }

@@ -52,7 +52,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         BtnSchematicDownloadMod.Click += BtnSchematicDownloadMod_Click;
         BtnSchematicVersionSelect.Click += BtnSchematicVersionSelect_Click;
         Load.StateChanged += (_, _, _) => UnselectedAllWithAnimation();
-        SearchBox.PreviewKeyDown += SearchBox_PreviewKeyDown;
+        SearchBox.KeyDown += SearchBox_PreviewKeyDown; // [port] Avalonia 无 PreviewKeyDown，改用 KeyDown
         BtnFilterAll.Check += ChangeFilter;
         BtnFilterCanUpdate.Check += ChangeFilter;
         BtnFilterDisabled.Check += ChangeFilter;
@@ -148,7 +148,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         BtnSchematicDownloadMod.Click += BtnSchematicDownloadMod_Click;
         BtnSchematicVersionSelect.Click += BtnSchematicVersionSelect_Click;
         Load.StateChanged += (_, _, _) => UnselectedAllWithAnimation();
-        SearchBox.PreviewKeyDown += SearchBox_PreviewKeyDown;
+        SearchBox.KeyDown += SearchBox_PreviewKeyDown; // [port] Avalonia 无 PreviewKeyDown，改用 KeyDown
         BtnFilterAll.Check += ChangeFilter;
         BtnFilterCanUpdate.Check += ChangeFilter;
         BtnFilterDisabled.Check += ChangeFilter;
@@ -331,7 +331,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
             _ => LoadUIFromLoaderOutput(), () => currentCompType, false);
     }
 
-    private void Load_Click(object sender, PointerPressedEventArgs e)
+    private void Load_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModLocalComp.compResourceListLoader.State == ModBase.LoadState.Failed)
             LoaderRun(ModLoader.LoaderFolderRunType.ForceRun);
@@ -461,7 +461,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         // 强制刷新UI状态
         // 确保按钮状态正确
         ModBase.RunInUi(() =>
-            BtnManageBack.Visibility =
+            BtnManageBack.IsVisible =
                 !string.IsNullOrEmpty(CurrentFolderPath) ? true : false);
 
         // 延迟一帧后再加载，确保UI状态已更新
@@ -589,7 +589,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
             ModAnimation.AniControlEnabled += 1;
             var newItem = new MyLocalCompItem
             {
-                SnapsToDevicePixels = true,
+                // [port] Avalonia 无 SnapsToDevicePixels
                 Entry = entry,
                 buttonHandler = BuildLocalCompItemBtnHandler,
                 Checked = selectedMods.Contains(entry.RawPath)
@@ -657,7 +657,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
         ToolTip.SetVerticalOffset(btnCont, 30d);
         ToolTip.SetHorizontalOffset(btnCont, 2d);
         btnCont.Click += Info_Click;
-        sender.MouseRightButtonUp += Info_Click;
+        sender.PointerReleased += Info_Click; // [port] Avalonia MyLocalCompItem 无 MouseRightButtonUp，改用 PointerReleased
         var btnDelete = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/trash-2", Tag = sender };
         Avalonia.Controls.ToolTip.SetTip(btnDelete, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
         ToolTip.SetPlacement(btnDelete, PlacementMode.Center);
@@ -881,7 +881,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
                         new[]
                         {
                             ModAnimation.AaOpacity(CardSelect, 1d - CardSelect.Opacity, 60),
-                            ModAnimation.AaTranslateY(CardSelect, -27 - TransSelect.Y, 120,
+                            ModAnimation.AaTranslateY(CardSelect, -27 - ((TranslateTransform)CardSelect.RenderTransform).Y, 120, // [port] TransSelect 字段不存在，改经 RenderTransform 访问
                                 ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)),
                             ModAnimation.AaTranslateY(CardSelect, 3d, 150, 120,
                                 new ModAnimation.AniEaseInoutFluent(ModAnimation.AniEasePower.Weak)),
@@ -900,7 +900,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
                         new[]
                         {
                             ModAnimation.AaOpacity(CardSelect, -CardSelect.Opacity, 90),
-                            ModAnimation.AaTranslateY(CardSelect, -10 - TransSelect.Y, 90,
+                            ModAnimation.AaTranslateY(CardSelect, -10 - ((TranslateTransform)CardSelect.RenderTransform).Y, 90, // [port] TransSelect 字段不存在，改经 RenderTransform 访问
                                 ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
                             ModAnimation.AaCode(() => CardSelect.IsVisible = false, after: true)
                         }, "Mod Sidebar");
@@ -914,13 +914,13 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
                 {
                     CardSelect.IsVisible = true;
                     CardSelect.Opacity = 1d;
-                    TransSelect.Y = -25;
+                    ((TranslateTransform)CardSelect.RenderTransform).Y = -25; // [port] TransSelect 字段不存在，改经 RenderTransform 访问
                 }
                 else
                 {
                     CardSelect.IsVisible = false;
                     CardSelect.Opacity = 0d;
-                    TransSelect.Y = -10;
+                    ((TranslateTransform)CardSelect.RenderTransform).Y = -10; // [port] TransSelect 字段不存在，改经 RenderTransform 访问
                 }
             }
         }));
@@ -1355,7 +1355,7 @@ public partial class PageInstanceCompResource : MyPageRight, IRefreshable
             ModMain.MyMsgBox(
                 Lang.Text("Instance.Resource.Export.Mode.Message"), Lang.Text("Instance.Resource.Export.Mode.Title"), Lang.Text("Instance.Resource.Export.Mode.Txt"), Lang.Text("Instance.Resource.Export.Mode.Csv"), Lang.Text("Common.Action.Cancel"));
 
-        void ExportText(string content, string fileName)
+        async void ExportText(string content, string fileName) // [port] await 在局部函数中需标记 async
         {
             try
             {

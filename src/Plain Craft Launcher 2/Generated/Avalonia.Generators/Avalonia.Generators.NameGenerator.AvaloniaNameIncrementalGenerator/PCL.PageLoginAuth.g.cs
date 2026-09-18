@@ -19,6 +19,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyTextBox TextName;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.TextBox TextPass;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyTextButton BtnLink;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyButton BtnBack;
@@ -45,6 +47,7 @@ namespace PCL
             BtnExit = __thisNameScope__?.Find<global::PCL.MyIconButton>("BtnExit");
             TextServer = __thisNameScope__?.Find<global::PCL.MyComboBox>("TextServer");
             TextName = __thisNameScope__?.Find<global::PCL.MyTextBox>("TextName");
+            TextPass = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("TextPass");
             BtnLink = __thisNameScope__?.Find<global::PCL.MyTextButton>("BtnLink");
             BtnBack = __thisNameScope__?.Find<global::PCL.MyButton>("BtnBack");
             BtnLogin = __thisNameScope__?.Find<global::PCL.MyButton>("BtnLogin");

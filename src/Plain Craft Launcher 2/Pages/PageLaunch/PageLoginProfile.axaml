@@ -41,7 +41,7 @@
         <StackPanel Orientation="Horizontal" Margin="10,3,0,3">
             <local:MyIconButton Height="24" Margin="0,0.5,9,0" x:Name="BtnNew"
                                  Click="BtnNew_Click"
-                                 ToolTip="{DynamicResource Launch.Account.Profile.Create}" ToolTip.Placement="Center" ToolTip.VerticalOffset="35"
+                                 ToolTip.Tip="{DynamicResource Launch.Account.Profile.Create}" ToolTip.Placement="Center" ToolTip.VerticalOffset="35"
                                 ToolTip.HorizontalOffset="1"
                                 LogoScale="1.08"
                                 SvgIcon="lucide/user-plus" />

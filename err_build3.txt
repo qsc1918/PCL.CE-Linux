@@ -1,0 +1,13 @@
+﻿
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\ModBase.cs(2937,30): error CS1061: “IClipboard”未包含“GetTextA
+sync”的定义，并且找不到可接受第一个“IClipboard”类型参数的可访问扩展方法“GetTextAsync”(是否缺少 using 指令或程序集引用?) [D:\a\j\PCL.CE-Linux\src\Plain Craft L
+auncher 2\Plain Craft Launcher 2.csproj]
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\ModBase.cs(3349,24): error CS0029: 无法将类型“void”隐式转换为“object”
+ [D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj]
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\ModBase.cs(2937,30): error CS1061: “IClipboard”未包含“GetTextA
+sync”的定义，并且找不到可接受第一个“IClipboard”类型参数的可访问扩展方法“GetTextAsync”(是否缺少 using 指令或程序集引用?) [D:\a\j\PCL.CE-Linux\src\Plain Craft L
+auncher 2\Plain Craft Launcher 2.csproj]
+D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Modules\Base\ModBase.cs(3349,24): error CS0029: 无法将类型“void”隐式转换为“object”
+ [D:\a\j\PCL.CE-Linux\src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj]
+
+

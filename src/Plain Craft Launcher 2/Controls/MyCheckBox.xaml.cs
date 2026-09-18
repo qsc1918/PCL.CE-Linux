@@ -65,7 +65,8 @@ public partial class MyCheckBox : Grid
         PointerReleased += (_, _) => Checkbox_PointerReleased();
         PointerPressed += (_, _) => Checkbox_MouseDown();
         PointerExited += (_, _) => Checkbox_PointerExited();
-        IsEnabledChanged += (_, _) => Checkbox_IsEnabledChanged();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) Checkbox_IsEnabledChanged(); };
         PointerEntered += (_, _) => Checkbox_PointerEnteredAnimation();
         PointerExited += (_, _) => Checkbox_PointerExitedAnimation();
     }
@@ -312,11 +313,11 @@ public partial class MyCheckBox : Grid
                 // 不可用
                 ModAnimation.AniStart(
                     ModAnimation.AaColor(ShapeBorder, Border.BorderBrushProperty,
-                        ThemeManager.colorGray4 - ShapeBorder.BorderBrush, animationTimeOfMouseOut),
+                        ThemeManager.colorGray4 - new ModBase.MyColor(ShapeBorder.BorderBrush), animationTimeOfMouseOut),
                     "MyCheckBox BorderColor " + Uuid);
                 ModAnimation.AniStart(
                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                        ThemeManager.colorGray4 - LabText.Foreground, animationTimeOfMouseOut),
+                        ThemeManager.colorGray4 - new ModBase.MyColor(LabText.Foreground), animationTimeOfMouseOut),
                     "MyCheckBox TextColor " + Uuid);
             }
         }

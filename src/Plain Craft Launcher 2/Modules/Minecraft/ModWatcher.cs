@@ -53,20 +53,21 @@ public static class ModWatcher
         ModLaunch.McLaunchLog("[全局] 已无运行中的 Minecraft");
         hasRunningMinecraft = false;
         ModMain.frmMain.BtnExtraShutdown.ShowRefresh();
+        // [port] 音乐播放（ModMusic，C2）与视频背景（ModVideoBack，C1）已按用户指示暂缓移植，相关调用在 Linux 停用。
         // 音乐播放
-        if (Config.Preference.Music.StopInGame)
-            ModBase.RunInUi(() =>
-            {
-                if (ModMusic.MusicResume()) ModBase.Log("[Music] 已根据设置，在结束后开始音乐播放");
-            });
-        else if (Config.Preference.Music.StartInGame)
-            ModBase.RunInUi(() =>
-            {
-                if (ModMusic.MusicPause()) ModBase.Log("[Music] 已根据设置，在结束后暂停音乐播放");
-            });
-        // 开始视频背景播放
-        ModVideoBack.IsGaming = false;
-        ModVideoBack.VideoPlay();
+        // if (Config.Preference.Music.StopInGame)
+        //     ModBase.RunInUi(() =>
+        //     {
+        //         if (ModMusic.MusicResume()) ModBase.Log("[Music] 已根据设置，在结束后开始音乐播放");
+        //     });
+        // else if (Config.Preference.Music.StartInGame)
+        //     ModBase.RunInUi(() =>
+        //     {
+        //         if (ModMusic.MusicPause()) ModBase.Log("[Music] 已根据设置，在结束后暂停音乐播放");
+        //     });
+        // // 开始视频背景播放
+        // ModVideoBack.IsGaming = false;
+        // ModVideoBack.VideoPlay();
         // 启动器可见性
         switch (Config.Launch.LauncherVisibility)
         {
@@ -709,33 +710,34 @@ public static class ModWatcher
                 HintService.Hint(Lang.Text("Watcher.Crash.Hint"));
 
                 ModBase.FeedbackInfo();
-                ModBase.RunInNewThread(() =>
-                {
-                    try
-                    {
-                        Thread.Sleep(2000);
-                        WatcherLog(Lang.Text("Watcher.Crash.AnalysisStart"));
-                        var analyzer = new CrashAnalyzer(pid);
-                        analyzer.Collect(version.PathIndie, latestLog.ToList());
-                        analyzer.Prepare();
-                        analyzer.Analyze(version);
-                        analyzer.Output(
-                            false,
-                            [
-                                version.PathInstance + version.Name + ".json",
-                                LogWrapper.CurrentLogger.CurrentLogFiles.Last(),
-                                ModBase.exePath + @"PCL\LatestLaunch.bat"
-                            ]);
-                    }
-                    catch (Exception ex)
-                    {
-                        ModBase.Log(
-                            ex,
-                            "崩溃分析失败",
-                            ModBase.LogLevel.Feedback,
-                            userSummary: Lang.Text("Crash.Analysis.Error.Failed"));
-                    }
-                }, "Crash Analyzer");
+                // [port] 崩溃分析（Modules/Minecraft/CrashAnalysis/**，含 CrashAnalyzer）已按用户指示暂缓移植（csproj 排除），Linux 停用。
+                // ModBase.RunInNewThread(() =>
+                // {
+                //     try
+                //     {
+                //         Thread.Sleep(2000);
+                //         WatcherLog(Lang.Text("Watcher.Crash.AnalysisStart"));
+                //         var analyzer = new CrashAnalyzer(pid);
+                //         analyzer.Collect(version.PathIndie, latestLog.ToList());
+                //         analyzer.Prepare();
+                //         analyzer.Analyze(version);
+                //         analyzer.Output(
+                //             false,
+                //             [
+                //                 version.PathInstance + version.Name + ".json",
+                //                 LogWrapper.CurrentLogger.CurrentLogFiles.Last(),
+                //                 ModBase.exePath + @"PCL\LatestLaunch.bat"
+                //             ]);
+                //     }
+                //     catch (Exception ex)
+                //     {
+                //         ModBase.Log(
+                //             ex,
+                //             "崩溃分析失败",
+                //             ModBase.LogLevel.Feedback,
+                //             userSummary: Lang.Text("Crash.Analysis.Error.Failed"));
+                //     }
+                // }, "Crash Analyzer");
             }
             else
             {

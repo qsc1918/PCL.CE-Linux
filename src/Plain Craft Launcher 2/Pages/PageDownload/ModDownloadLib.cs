@@ -43,7 +43,7 @@ public static class ModDownloadLib
     {
         if (string.IsNullOrWhiteSpace(childFolderName) || childFolderName is "." or ".." ||
             childFolderName.IndexOfAny(new[] { '/', '\\', ':', '*', '?', '"', '<', '>', '|', '\0' }) >= 0 ||
-            Path.IsPathRooted(childFolderName))
+            System.IO.Path.IsPathRooted(childFolderName))
             CancelUnsafeCacheSubfolder(childFolderName, "包含非法路径字符");
 
         var parentFullPath = System.IO.Path.GetFullPath(parentFolder)
@@ -1762,6 +1762,9 @@ public static class ModDownloadLib
             ModBase.Log($"[Download] 开始安装 {loaderName}：" + arguments);
             var process = new Process { StartInfo = info };
             var lastResults = new Queue<string>();
+            // [port] WPF 版在嵌套 using 块中声明等待句柄，转换后声明丢失，这里补回（语义不变）
+            var outputWaitHandle = new AutoResetEvent(false);
+            var errorWaitHandle = new AutoResetEvent(false);
             {
                 {
                     process.OutputDataReceived += (sender, e) =>

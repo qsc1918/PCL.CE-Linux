@@ -57,7 +57,8 @@ public partial class MyIconTextButton : Border
         PointerExited += (_, _) => MyIconTextButton_PointerExited();
         PointerEntered += RefreshColor;
         Loaded += RefreshColor;
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
     }
 
     // 自定义属性
@@ -70,7 +71,7 @@ public partial class MyIconTextButton : Border
             if (ShapeLogo is null) return;
             _hasLegacyLogo = !string.IsNullOrWhiteSpace(value);
             ShapeLogo.Data = _hasLegacyLogo
-                ? (Geometry)new GeometryConverter().ConvertFromString(value)!
+                ? Geometry.Parse(value)
                 : null;
             SvgIconControlHelper.ApplyVisibility(ShapeLogo, ShapeSvgIcon, IsUsingSvgIcon);
             RefreshLogoHostVisibility();
@@ -250,12 +251,12 @@ public partial class MyIconTextButton : Border
                 else if (IsEnabled)
                 {
                     StartForegroundAnimation(GetDefaultForegroundResourceKey(), animationTimeOfMouseOut);
-                    StartBackgroundAnimation(ThemeManager.colorSemiTransparent - Background, animationTimeOfMouseOut);
+                    StartBackgroundAnimation(ThemeManager.colorSemiTransparent - new ModBase.MyColor(Background), animationTimeOfMouseOut);
                 }
                 else
                 {
                     StartForegroundAnimation("ColorBrushGray5", 100);
-                    StartBackgroundAnimation(ThemeManager.colorSemiTransparent - Background, animationTimeOfMouseOut);
+                    StartBackgroundAnimation(ThemeManager.colorSemiTransparent - new ModBase.MyColor(Background), animationTimeOfMouseOut);
                 }
             }
 
@@ -264,7 +265,7 @@ public partial class MyIconTextButton : Border
                 // 不使用动画
                 ModAnimation.AniStop(CheckedAnimationKey);
                 ModAnimation.AniStop(ColorAnimationKey);
-                Background = ThemeManager.colorSemiTransparent;
+                Background = ThemeManager.colorSemiTransparent.ToBrush();
                 var foregroundKey = IsEnabled ? GetDefaultForegroundResourceKey() : "ColorBrushGray5";
                 SvgIconControlHelper.SetIconResource(ShapeLogo, ShapeSvgIcon, IsUsingSvgIcon, foregroundKey);
                 LabText.SetResourceReference(TextBlock.ForegroundProperty, foregroundKey);

@@ -6,23 +6,14 @@
                   Width="200" HorizontalAlignment="Left">
     <Grid.Resources>
         <ResourceDictionary>
-            <!-- [port] WPF TargetType="{x:Type TextBlock}" → Avalonia Selector="TextBlock"；
-                 SnapsToDevicePixels 为 WPF 专属，Avalonia 无此概念，已删除 -->
-            <Style Selector="TextBlock" x:Key="Split">
-                <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="Height" Value="2" />
-                <Setter Property="Margin" Value="25,7" />
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                            <GradientStop Color="{DynamicResource ColorObjectBg1}" Offset="0" />
-                            <GradientStop Color="{DynamicResource ColorObject3}" Offset="0.02" />
-                            <GradientStop Color="{DynamicResource ColorObject3}" Offset="0.98" />
-                            <GradientStop Color="{DynamicResource ColorObjectBg1}" Offset="1" />
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <!-- [port] WPF Style 属性赋值（Style="{DynamicResource Split}"）在 Avalonia 12 无对应（无 Style 属性）
+                 → 将该分割线样式改为等价的画刷资源，使用点内联相同属性（UseLayoutRounding/Height/Margin/Background），视觉不变 -->
+            <LinearGradientBrush x:Key="SplitBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+                <GradientStop Color="{DynamicResource ColorObjectBg1}" Offset="0" />
+                <GradientStop Color="{DynamicResource ColorObject3}" Offset="0.02" />
+                <GradientStop Color="{DynamicResource ColorObject3}" Offset="0.98" />
+                <GradientStop Color="{DynamicResource ColorObjectBg1}" Offset="1" />
+            </LinearGradientBrush>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.RowDefinitions>
@@ -46,18 +37,18 @@
     </Grid.RowDefinitions>
     <TextBlock Text="{DynamicResource Speed.Progress.Total}" Grid.Row="1" HorizontalAlignment="Center" FontSize="14"
                Foreground="{DynamicResource ColorBrush3}" />
-    <TextBlock Grid.Row="2" Style="{DynamicResource Split}" />
+    <TextBlock Grid.Row="2" UseLayoutRounding="True" Height="2" Margin="25,7" Background="{DynamicResource SplitBrush}" />
     <TextBlock Text="00.00 %" Grid.Row="3" Name="LabProgress" HorizontalAlignment="Center" FontSize="20" />
     <TextBlock Text="{DynamicResource Speed.Progress.Speed}" Grid.Row="5" HorizontalAlignment="Center" FontSize="14"
                Foreground="{DynamicResource ColorBrush3}" />
-    <TextBlock Grid.Row="6" Style="{DynamicResource Split}" />
+    <TextBlock Grid.Row="6" UseLayoutRounding="True" Height="2" Margin="25,7" Background="{DynamicResource SplitBrush}" />
     <TextBlock Text="0 B/s" Grid.Row="7" Name="LabSpeed" HorizontalAlignment="Center" FontSize="20" />
     <TextBlock Text="{DynamicResource Speed.Progress.RemainingFiles}" Grid.Row="9" HorizontalAlignment="Center"
                FontSize="14" Foreground="{DynamicResource ColorBrush3}" />
-    <TextBlock Grid.Row="10" Style="{DynamicResource Split}" />
+    <TextBlock Grid.Row="10" UseLayoutRounding="True" Height="2" Margin="25,7" Background="{DynamicResource SplitBrush}" />
     <TextBlock Text="123456789" Grid.Row="11" Name="LabFile" HorizontalAlignment="Center" FontSize="20" />
     <TextBlock Text="{DynamicResource Speed.Progress.RemainingThreads}" Grid.Row="13" HorizontalAlignment="Center"
                FontSize="14" Foreground="{DynamicResource ColorBrush3}" />
-    <TextBlock Grid.Row="14" Style="{DynamicResource Split}" />
+    <TextBlock Grid.Row="14" UseLayoutRounding="True" Height="2" Margin="25,7" Background="{DynamicResource SplitBrush}" />
     <TextBlock Text="123456789" Grid.Row="15" Name="LabThread" HorizontalAlignment="Center" FontSize="20" />
 </local:MyPageLeft>

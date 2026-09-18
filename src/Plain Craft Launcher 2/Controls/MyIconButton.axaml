@@ -14,7 +14,7 @@
                   RenderTransformOrigin="0.5,0.5" />
             <svgIcon:SvgIcon x:Name="ShapeSvgIcon"
                          Stretch="Uniform"
-                         Visibility="Collapsed"
+                         IsVisible="False"
                          IconBrush="{Binding Fill, ElementName=Path}" />
         </Grid>
         <Border.RenderTransform>

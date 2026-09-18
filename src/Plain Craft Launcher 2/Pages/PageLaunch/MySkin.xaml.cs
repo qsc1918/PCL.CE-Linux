@@ -1,22 +1,26 @@
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Input;
+using SkiaSharp;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
 using PCL.Network;
 
 namespace PCL;
 
-public partial class MySkin
+public partial class MySkin : Grid
 {
-    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
+    // [port] WPF 未区分按下/松开 → Avalonia 单击在松开时触发，使用 PointerReleasedEventArgs
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e);
+
+    // [port] Avalonia 命名字段生成器不为 DropShadowEffect（非 Control）生成字段，手动补齐。
+    // BtnSkinSave/BtnSkinRefresh/BtnSkinCape 由命名字段生成器从 axaml 生成（勿手动再声明，否则重复定义）。
+    private DropShadowEffect ShadowSkin;
 
     // 皮肤储存
     private bool isChanging;
@@ -28,13 +32,26 @@ public partial class MySkin
     public MySkin()
     {
         InitializeComponent();
+        // [port] 命名字段生成器不为 ContextMenu 内元素/DropShadowEffect 生成字段（不在本控件命名作用域）→ 手动补齐。
+        var cm = this.ContextMenu as ContextMenu;
+        if (cm is not null)
+            foreach (var it in cm.Items)
+                if (it is MyMenuItem mi)
+                {
+                    if (mi.Name == "BtnSkinSave") BtnSkinSave = mi;
+                    else if (mi.Name == "BtnSkinRefresh") BtnSkinRefresh = mi;
+                    else if (mi.Name == "BtnSkinCape") BtnSkinCape = mi;
+                }
+        // [port] Grid.Effect 中的 DropShadowEffect（x:Name=ShadowSkin）非 Control，不生成字段 → 从 Effect 取回
+        ShadowSkin = (DropShadowEffect)Effect;
+        // [port] Avalonia MenuItem 无 WPF 的 Checked 事件 → 改用 ContextMenu.Opening（菜单打开时刷新保存项的可用状态）
+        cm?.Opening += MySkin_ContextMenu_Opening;
         PointerEntered += PanSkin_PointerEntered;
         PointerExited += PanSkin_PointerExited;
         PointerPressed += PanSkin_PointerPressed;
         PointerReleased += PanSkin_PointerReleased;
         // Handles
         BtnSkinSave.Click += BtnSkinSave_Click;
-        BtnSkinSave.Checked += BtnSkinSave_Checked;
         BtnSkinRefresh.Click += RefreshClick;
         BtnSkinCape.Click += BtnSkinCape_Click;
     }
@@ -45,9 +62,10 @@ public partial class MySkin
         set
         {
             field = value;
-            ToolTip = string.IsNullOrEmpty(field)
+            // [port] WPF ToolTip 实例属性 → Avalonia 静态附加属性 ToolTip.SetTip
+            Avalonia.Controls.ToolTip.SetTip(this, string.IsNullOrEmpty(field)
                 ? Lang.Text("Common.State.Loading")
-                : Lang.Text("Launch.Skin.Change");
+                : Lang.Text("Launch.Skin.Change"));
         }
     }
 
@@ -84,7 +102,7 @@ public partial class MySkin
                 ease: new ModAnimation.AniEaseOutFluent()), "Skin Scale");
     }
 
-    private void PanSkin_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void PanSkin_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         ModAnimation.AniStart(
             ModAnimation.AaScaleTransform(this, 1d - ((ScaleTransform)RenderTransform).ScaleX, 60,
@@ -140,9 +158,9 @@ public partial class MySkin
         }
     }
 
-    private void BtnSkinSave_Checked(object sender, RoutedEventArgs e)
+    private void MySkin_ContextMenu_Opening(object sender, EventArgs e)
     {
-        ((MyMenuItem)sender).IsEnabled = string.IsNullOrEmpty(Address);
+        BtnSkinSave.IsEnabled = string.IsNullOrEmpty(Address);
     }
 
     /// <summary>
@@ -189,9 +207,9 @@ public partial class MySkin
             // 头发层（附加层）
             if (image.pic.Width >= 64 && image.pic.Height >= 32)
             {
-                if (image.pic.GetPixel(1, 1).A == 0 ||
-                    image.pic.GetPixel(image.pic.Width - 1, image.pic.Height - 1).A == 0 ||
-                    image.pic.GetPixel(image.pic.Width - 2, (int)Math.Round(image.pic.Height / 2d - 2d)).A == 0 ||
+                if (image.pic.GetPixel(1, 1).Alpha == 0 ||
+                    image.pic.GetPixel(image.pic.Width - 1, image.pic.Height - 1).Alpha == 0 ||
+                    image.pic.GetPixel(image.pic.Width - 2, (int)Math.Round(image.pic.Height / 2d - 2d)).Alpha == 0 ||
                     (image.pic.GetPixel(1, 1) != image.pic.GetPixel(scale * 41, scale * 9) &&
                      image.pic.GetPixel(image.pic.Width - 1, image.pic.Height - 1) !=
                      image.pic.GetPixel(scale * 41, scale * 9) &&
@@ -199,7 +217,7 @@ public partial class MySkin
                      image.pic.GetPixel(scale * 41, scale * 9))) // 如果图片中有任何透明像素（避免纯色白底）
                     // 或是头部颜色和透明区均不一样
                 {
-                    ImgFore.Source = image.Clip(scale * 40, scale * 8, scale * 8, scale * 8);
+                    ImgFore.Source = (Bitmap)image.Clip(scale * 40, scale * 8, scale * 8, scale * 8);
                     skinHead = image.Clip(scale * 40, scale * 8, scale * 8, scale * 8);
                 }
                 else
@@ -213,33 +231,32 @@ public partial class MySkin
             }
 
             // 脸层
-            ImgBack.Source = image.Clip(scale * 8, scale * 8, scale * 8, scale * 8);
+            ImgBack.Source = (Bitmap)image.Clip(scale * 8, scale * 8, scale * 8, scale * 8);
             // 用于显示档案列表头像的图片
             var skinHeadId = Address.Between(new[] { Address.Contains("Images/Skins/") ? "Skins/" : @"Skin\" }[0],
                 ".png");
             var cachePath = ModBase.pathTemp + $@"Cache\Skin\Head\{skinHeadId}.png";
             ModProfile.selectedProfile.SkinHeadId = skinHeadId;
             ModProfile.SaveProfile();
-            var completeHead = new Bitmap(56, 56);
-            using (var g = Graphics.FromImage(completeHead))
+            // [port] System.Drawing(GDI+) 不可用于 Linux → 改用 SkiaSharp 合成头像（等价：NearestNeighbor 缩放）。
+            var completeHead = new SKBitmap(56, 56);
+            using (var g = new SKCanvas(completeHead))
             {
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.PixelOffsetMode = PixelOffsetMode.Half;
-                using (Bitmap faceBitmap = image.Clip(scale * 8, scale * 8, scale * 8, scale * 8))
-                {
-                    g.DrawImage(faceBitmap, new Rectangle(4, 4, 48, 48));
-                }
-
+                g.Clear(SKColors.Transparent);
+                var paint = new SKPaint { FilterQuality = SKFilterQuality.None, IsAntialias = false };
+                g.DrawBitmap(image.pic, new SKRect(scale * 8, scale * 8, scale * 16, scale * 16),
+                    new SKRect(4, 4, 52, 52), paint);
                 if (ImgFore.Source is not null)
-                {
-                    using Bitmap hairBitmap = image.Clip(scale * 40, scale * 8, scale * 8, scale * 8);
-                    g.DrawImage(hairBitmap, new Rectangle(0, 0, 56, 56));
-                }
+                    g.DrawBitmap(image.pic, new SKRect(scale * 40, scale * 8, scale * 48, scale * 16),
+                        new SKRect(0, 0, 56, 56), paint);
             }
 
             if (!Directory.Exists(ModBase.pathTemp + @"Cache\Skin\Head"))
                 Directory.CreateDirectory(ModBase.pathTemp + @"Cache\Skin\Head");
-            completeHead.Save(cachePath, ImageFormat.Png);
+            using (var img = SKImage.FromBitmap(completeHead))
+            using (var data = img.Encode(SKEncodedImageFormat.Png, 100))
+            using (var fs = new FileStream(cachePath, FileMode.Create))
+                data.SaveTo(fs);
             ModBase.Log("[Skin] 载入头像成功：" + loader.name);
         }
         catch (Exception ex)
@@ -252,17 +269,7 @@ public partial class MySkin
         }
     }
 
-    private object ScaleToSize(Bitmap bitmap, int width, int height)
-    {
-        var scaledBitmap = new Bitmap(width, height);
-        using var g = Graphics.FromImage(scaledBitmap);
-        g.InterpolationMode = InterpolationMode.NearestNeighbor;
-        g.PixelOffsetMode = PixelOffsetMode.Half;
-        g.DrawImage(bitmap, 0, 0, width, height);
-
-        return scaledBitmap;
-    }
-
+    // [port] ScaleToSize 为 System.Drawing(GDI+) 私有辅助且未被调用 → 移除（Linux 无 GDI+）。
     /// <summary>
     ///     清空皮肤。
     /// </summary>
@@ -400,12 +407,20 @@ public partial class MySkin
                     }
 
                     FileDownloader.DownloadByLoader(itemSkin["url"].ToString(), localFile);
-                    var capeFrontRegion = new Rectangle(1, 0, 11, 17);
-                    var capeFront = new Bitmap(capeFrontRegion.Width, capeFrontRegion.Height);
-                    var capeImage = Image.FromFile(localFile);
-                    var gra = Graphics.FromImage(capeFront);
-                    gra.DrawImage(capeImage, capeFrontRegion, capeFrontRegion, GraphicsUnit.Pixel);
-                    capeFront.Save(capeFrontFile);
+                    // [port] System.Drawing(GDI+) → SkiaSharp：截取披风正面 (1,0,11,17) 区域并保存。
+                    var capeFrontSrc = new SKRect(1, 0, 12, 17);
+                    var capeImage = new MyBitmap(localFile);
+                    var capeFront = new SKBitmap(11, 17);
+                    using (var gra = new SKCanvas(capeFront))
+                    {
+                        gra.Clear(SKColors.Transparent);
+                        gra.DrawBitmap(capeImage.pic, capeFrontSrc, new SKRect(0, 0, 11, 17),
+                            new SKPaint { FilterQuality = SKFilterQuality.None });
+                    }
+                    using (var img = SKImage.FromBitmap(capeFront))
+                    using (var data = img.Encode(SKEncodedImageFormat.Png, 100))
+                    using (var fs = new FileStream(capeFrontFile, FileMode.Create))
+                        data.SaveTo(fs);
                     itemSkin["url"] = capeFrontFile;
                 }
 

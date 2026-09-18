@@ -6,6 +6,7 @@ using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Documents;
+using Avalonia.VisualTree;
 using static PCL.ModLoader;
 
 namespace PCL;
@@ -28,7 +29,7 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
     }
 
     private static readonly AvaloniaProperty PanScrollProperty =
-    AvaloniaProperty.Register("PanScroll", typeof(MyScrollViewer), typeof(MyPageRight));
+    AvaloniaProperty.Register<MyPageRight, MyScrollViewer>(nameof(PanScroll));
 
     private bool _panScrollNullWarned;
 
@@ -50,6 +51,9 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
         }
         set => SetValue(PanScrollProperty, value);
     }
+
+    // [port] WPF AdornerDecorator.Child → Avalonia Grid 无 Child；Grid 的唯一直接子元素即“主内容”，用 Children[0] 表达
+    private Control? Child => Children.Count > 0 ? Children[0] : null;
 
     public PageStates PageState
     {
@@ -692,15 +696,18 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
         {
             if (Element is MyScrollViewer Viewer)
             {
-                if (Viewer.ComputedVerticalScrollBarVisibility != true)
+                // [port] WPF ComputedVerticalScrollBarVisibility != true → 竖向无溢出(ScrollBarMaximum<=0)即未显示滚动条
+                // Avalonia ScrollBarMaximum 为 Vector（X 横向 / Y 竖向），竖向比较取 Y 分量
+                if (Viewer.ScrollBarMaximum.Y <= 0d)
                     continue;
                 return Viewer.scrollBar;
             }
 
-            foreach (var Control in LogicalTreeHelper.GetChildren(Element))
+            foreach (var Control in Element.GetVisualChildren())
                 if (Control is MyScrollViewer ChildViewer)
                 {
-                    if (ChildViewer.ComputedVerticalScrollBarVisibility != true)
+                    // [port] WPF ComputedVerticalScrollBarVisibility != true → ScrollBarMaximum<=0 即未显示
+                    if (ChildViewer.ScrollBarMaximum.Y <= 0d)
                         return null;
                     return ChildViewer.scrollBar;
                 }

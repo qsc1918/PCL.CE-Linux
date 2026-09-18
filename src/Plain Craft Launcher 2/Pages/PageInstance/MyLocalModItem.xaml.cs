@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
@@ -16,6 +17,15 @@ namespace PCL;
 
 public partial class MyLocalCompItem : Grid
 {
+    // [port] Avalonia 命名字段生成器不为 ColumnDefinition 生成字段（即使 axaml 写了 x:Name）
+    // → 经所属 Grid 的 ColumnDefinitions 按索引访问。
+    //       ColumnGap 为根网格第 6 列（索引 5，保留给右侧按钮展开的间隙）。
+    private ColumnDefinition ColumnGap => ColumnDefinitions[5];
+    //       ColumnTitle/ColumnSubtitle/ColumnExtend 位于内层网格 PanTitle 的列定义中。
+    private ColumnDefinition ColumnTitle => PanTitle.ColumnDefinitions[0];
+    private ColumnDefinition ColumnSubtitle => PanTitle.ColumnDefinitions[1];
+    private ColumnDefinition ColumnExtend => PanTitle.ColumnDefinitions[3];
+
     private string GetUpdateCompareDescription()
     {
         var currentName = Entry.compFile.FileName.Replace(".jar", "");
@@ -173,7 +183,7 @@ public partial class MyLocalCompItem : Grid
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Bottom
                     };
-                    RenderOptions.SetBitmapScalingMode(imgState, BitmapScalingMode.HighQuality);
+                    // [port] WPF RenderOptions.SetBitmapScalingMode/BitmapScalingMode：Avalonia 无此概念（默认 Quality 抗锯齿），移除。
                     SetColumn(imgState, 1);
                     SetRow(imgState, 1);
                     SetRowSpan(imgState, 2);
@@ -184,7 +194,7 @@ public partial class MyLocalCompItem : Grid
                     // Source="/Images/Icons/Unavailable.png" />
                 }
 
-                imgState.Source = new MyBitmap(ModBase.pathImage + $"Icons/{Entry.State}.png");
+                imgState.Source = (Bitmap)new MyBitmap(ModBase.pathImage + $"Icons/{Entry.State}.png");
             }
 
             // 标签
@@ -266,8 +276,11 @@ public partial class MyLocalCompItem : Grid
     }
 
     // 显示更新日志
-    private void BtnUpdate_PreviewMouseRightButtonUp(object sender, PointerPressedEventArgs e)
+    private void BtnUpdate_PreviewMouseRightButtonUp(object sender, PointerReleasedEventArgs e)
     {
+        // [port] WPF PreviewMouseRightButtonUp → 右键松开检查（Avalonia PointerReleased 不区分按键）
+        if (!e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            return;
         e.Handled = true;
         ShowUpdateLog();
     }
@@ -367,7 +380,7 @@ public partial class MyLocalCompItem : Grid
         {
             case 0:
             {
-                if (ColumnExtend.Bounds.Width < 0.5d)
+                if (ColumnExtend.ActualWidth < 0.5d)
                     newCompressLevel = LabSubtitle.IsVisible == false ? 2 : 1;
                 else
                     return;
@@ -376,7 +389,7 @@ public partial class MyLocalCompItem : Grid
             }
             case 1:
             {
-                if (ColumnSubtitle.Bounds.Width < 0.5d)
+                if (ColumnSubtitle.ActualWidth < 0.5d)
                     newCompressLevel = 2;
                 else if (!LabSubtitle.IsTextTrimmed())
                     newCompressLevel = 0;
@@ -510,7 +523,7 @@ public partial class MyLocalCompItem : Grid
                     Padding = new Thickness(3d, 1d, 3d, 1d),
                     CornerRadius = new CornerRadius(3d),
                     Margin = new Thickness(0d, 0d, 3d, 0d),
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false
                 };
                 var tagTextBlock = new TextBlock
@@ -541,15 +554,16 @@ public partial class MyLocalCompItem : Grid
     // 触发点击事件
     public event ClickEventHandler? Click;
 
-    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e);
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e);
 
     public MyLocalCompItem()
     {
         InitializeComponent();
-        PreviewPointerReleased += Button_PointerReleased;
-        PreviewPointerPressed += Button_MouseDown;
+        // [port] WPF PreviewPointerReleased/PreviewPointerPressed（隧道）→ Avalonia AddHandler + RoutingStrategies.Tunnel
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(Button_PointerReleased), RoutingStrategies.Tunnel, true);
+        AddHandler(InputElement.PointerPressedEvent, new EventHandler<PointerPressedEventArgs>(Button_MouseDown), RoutingStrategies.Tunnel, true);
         PointerExited += Button_PointerExited;
-        PreviewPointerReleased += Button_PointerExited;
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(Button_PointerExited), RoutingStrategies.Tunnel, true);
         PointerPressed += Button_MouseSwipeStart;
         PointerEntered += Button_MouseSwipe;
         PointerExited += Button_MouseSwipe;
@@ -561,12 +575,13 @@ public partial class MyLocalCompItem : Grid
         PointerReleased += RefreshColor;
         Changed += RefreshColor;
         // Handles
-        BtnUpdate.PreviewMouseRightButtonUp += BtnUpdate_PreviewMouseRightButtonUp;
+        // [port] WPF PreviewMouseRightButtonUp → 订阅隧道 PointerReleased 并检查右键
+        BtnUpdate.AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(BtnUpdate_PreviewMouseRightButtonUp), RoutingStrategies.Tunnel, true);
         BtnUpdate.Click += BtnUpdate_Click;
         PanTitle.SizeChanged += PanTitle_SizeChanged;
     }
 
-    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (isMouseDown)
         {
@@ -582,7 +597,8 @@ public partial class MyLocalCompItem : Grid
 
     private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
-        if (!IsMouseDirectlyOver)
+        // [port] WPF IsMouseDirectlyOver → Avalonia IsPointerOver（无 IsMouseDirectlyOver 概念）
+        if (!IsPointerOver)
             return;
         isMouseDown = true;
         if (buttonStack is not null)
@@ -638,12 +654,13 @@ public partial class MyLocalCompItem : Grid
         CurrentSwipe.SwipeToState = !Checked;
     }
 
-    private void Button_MouseSwipe(object sender, object e)
+    private void Button_MouseSwipe(object sender, PointerEventArgs e)
     {
         if (Parent is null)
             return; // Mod 可能已被删除（#3824）
-        // 结束滑动
-        if (Mouse.LeftButton != MouseButtonState.Pressed || !(Mouse.DirectlyOver is MyLocalCompItem)) // #5771
+        // [port] WPF Mouse.LeftButton != Pressed / Mouse.DirectlyOver is MyLocalCompItem → Avalonia 无静态鼠标状态，
+        //       改用指针事件取鼠标按键状态；IsPointerOver 作为“指针是否悬停于本项”的等价判断。
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed || !IsPointerOver) // #5771
         {
             CurrentSwipe.Swiping = false;
             return;
@@ -795,7 +812,7 @@ public partial class MyLocalCompItem : Grid
                     RenderTransform = new ScaleTransform(0.8d, 0.8d),
                     RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative),
                     BorderThickness = new Thickness(ModBase.GetWPFSize(1d)),
-                    SnapsToDevicePixels = true,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     IsHitTestVisible = false,
                     Opacity = 0d
                 };
@@ -836,9 +853,10 @@ public partial class MyLocalCompItem : Grid
             buttonStack = new StackPanel
             {
                 Opacity = 0d,
+                // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                 Margin = new Thickness(0d, 0d, 5d, 0d),
-                SnapsToDevicePixels = false,
-                Orientation = (Orientation)Avalonia.Forms.Orientation.Horizontal,
+                // [port] WPF Avalonia.Forms.Orientation 不存在 → Avalonia 用 Layout.Orientation
+                Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
                 UseLayoutRounding = false
@@ -873,8 +891,8 @@ public partial class MyLocalCompItem : Grid
                     CornerRadius = new CornerRadius(2d, 2d, 2d, 2d),
                     VerticalAlignment = Checked ? VerticalAlignment.Stretch : VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
+                    // [port] WPF SnapsToDevicePixels：Avalonia 无此概念，移除
                     UseLayoutRounding = false,
-                    SnapsToDevicePixels = false,
                     Margin = Checked ? new Thickness(-3, 6d, 0d, 6d) : new Thickness(-3, 0d, 0d, 0d)
                 };
                 field.SetResourceReference(Border.BackgroundProperty, "ColorBrush3");

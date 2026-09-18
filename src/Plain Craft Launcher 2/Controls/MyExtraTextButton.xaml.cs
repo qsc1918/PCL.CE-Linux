@@ -39,11 +39,13 @@ public partial class MyExtraTextButton : Grid
         RefreshIconHostVisibility();
 
         Loaded += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PanClick.PointerPressed += Button_LeftMouseDown;
         PanClick.PointerReleased += Button_LeftPointerReleased;
         PanClick.PointerExited += Button_PointerExited;
-        PanClick.MouseRightButtonUp += Button_RightPointerReleased;
+        // [port] Border 无 MouseRightButtonUp (WPF)：改用 PointerReleased + 判定右键
+        PanClick.PointerReleased += (s, e) => { if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed) Button_RightPointerReleased(s, e); };
         PanClick.PointerEntered += (sender, e) => RefreshColor();
     }
 
@@ -57,7 +59,7 @@ public partial class MyExtraTextButton : Grid
             field = value ?? string.Empty;
             Path.Data = string.IsNullOrWhiteSpace(value)
                 ? null
-                : (Geometry)new GeometryConverter().ConvertFromString(value);
+                : Geometry.Parse(value);
             SvgIconControlHelper.ApplyVisibility(Path, ShapeSvgIcon, IsUsingSvgIcon);
             RefreshIconHostVisibility();
         }
@@ -206,11 +208,12 @@ public partial class MyExtraTextButton : Grid
     }
 
     // 触发点击事件
-    private void Button_LeftPointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_LeftPointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isLeftMouseHeld) return;
         ModBase.Log("[Control] 按下附加图标按钮：" + Text);
-        Click?.Invoke(sender, e);
+        // [port] 原 Click 事件携带 PointerPressedEventArgs；由 PointerReleased 触发时传入 null（与 MyTextButton 保持一致）
+        Click?.Invoke(sender, null);
         e.Handled = true;
         ModMain.RaiseCustomEvent(this);
         Button_LeftPointerReleased();

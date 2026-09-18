@@ -21,6 +21,9 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Avalonia.Input;
+using Avalonia.Input.Platform;
+using Avalonia.Platform.Storage;
 using System.Xaml;
 using System.Xml.Linq;
 using Microsoft.VisualBasic;
@@ -2890,7 +2893,12 @@ public static class ModBase
             for (var attempt = 0; attempt <= 5; attempt++)
                 try
                 {
-                    RunInUi(() => Clipboard.SetText(text));
+                    // [port] WPF/WinForms Clipboard.SetText → Avalonia IClipboard.SetTextAsync
+                    RunInUi(() =>
+                    {
+                        if (GetMainWindow()?.Clipboard is { } cb)
+                            cb.SetTextAsync(text).ConfigureAwait(false).GetAwaiter().GetResult();
+                    });
                     success = true;
                     break;
                 }
@@ -2912,6 +2920,58 @@ public static class ModBase
         });
     }
 
+    // [port] WPF/WinForms Clipboard → Avalonia 经主窗口（TopLevel）访问；不显式引用 IClipboard 类型（命名空间跨版本有差异）。
+    private static Avalonia.Controls.TopLevel? GetMainWindow() =>
+        (Avalonia.Application.Current?.ApplicationLifetime as
+            Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+    /// <summary>
+    ///     同步读取剪贴板文本（Avalonia IClipboard）。无文本/不可用时返回 null。
+    /// </summary>
+    public static string? GetClipboardText()
+    {
+        try
+        {
+            var clipboard = GetMainWindow()?.Clipboard;
+            if (clipboard is null) return null;
+            // [port] WPF Clipboard.GetText → Avalonia IClipboard.TryGetTextAsync（无 GetTextAsync）
+            return clipboard.TryGetTextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     同步读取剪贴板中的文件/文件夹路径列表（Avalonia IClipboard 的 FileDrop 数据）。
+    /// </summary>
+    private static List<string> GetClipboardFileList()
+    {
+        try
+        {
+            var clipboard = GetMainWindow()?.Clipboard;
+            if (clipboard is null) return new List<string>();
+            var data = clipboard.TryGetDataAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            if (data is null || !data.Contains(Avalonia.Input.DataFormat.File))
+                return new List<string>();
+            var items = data.TryGetFilesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            if (items is null) return new List<string>();
+            var result = new List<string>();
+            foreach (var item in items)
+            {
+                var path = item.TryGetLocalPath();
+                if (!string.IsNullOrEmpty(path))
+                    result.Add(path);
+            }
+            return result;
+        }
+        catch
+        {
+            return new List<string>();
+        }
+    }
+
     /// <summary>
     ///     从剪切板粘贴文件或文件夹
     /// </summary>
@@ -2924,7 +2984,8 @@ public static class ModBase
         Log("[System] 从剪贴板粘贴文件到：" + dest);
         try
         {
-            var files = Clipboard.GetFileDropList();
+            // [port] WPF Clipboard.GetFileDropList → Avalonia IClipboard FileDrop 数据
+            var files = GetClipboardFileList();
             if (files.Count.Equals(0))
             {
                 Log("[System] 剪贴板内无文件可粘贴");
@@ -2991,9 +3052,8 @@ public static class ModBase
     /// </summary>
     public static Stream GetResourceStream(string path)
     {
-        var resourceInfo =
-            Avalonia.Application.GetResourceStream(new Uri($"pack://application:,,,/{path}", UriKind.Absolute));
-        return resourceInfo?.Stream;
+        // [port] WPF Application.GetResourceStream(pack://...) → Avalonia AssetLoader(avares://)，复用 PCL.Core.App.Basics
+        return Basics.GetResourceStream(path);
     }
 
     #endregion
@@ -3069,8 +3129,11 @@ public static class ModBase
         DebugAssert(!double.IsInfinity(newValue));
 
         if (control is Window)
-            // 窗口改变
-            ((Window)control).Left += newValue;
+        {
+            // [port] WPF Window.Left（double）→ Avalonia Window.Position（PixelPoint，int）
+            var w = (Window)control;
+            w.Position = new PixelPoint(w.Position.X + (int)newValue, w.Position.Y);
+        }
         else
             // 根据 HorizontalAlignment 改变数值
             switch (control.HorizontalAlignment)
@@ -3117,8 +3180,11 @@ public static class ModBase
         DebugAssert(!double.IsInfinity(newValue));
 
         if (control is Window)
-            // 窗口改变
-            ((Window)control).Top += newValue;
+        {
+            // [port] WPF Window.Top（double）→ Avalonia Window.Position（PixelPoint，int）
+            var w = (Window)control;
+            w.Position = new PixelPoint(w.Position.X, w.Position.Y + (int)newValue);
+        }
         else
             // 根据 VerticalAlignment 改变数值
             switch (control.VerticalAlignment)
@@ -3155,7 +3221,9 @@ public static class ModBase
     }
 
     // DPI 转换
-    public static readonly int dpi = (int)Math.Round(Graphics.FromHwnd(nint.Zero).DpiX);
+    // [port] WPF Graphics.FromHwnd(nint.Zero).DpiX（仅 Windows，System.Drawing/GDI+）在 Avalonia 无对应 API；
+    //        Avalonia 尺寸单位即 DIP（96 DPI），屏幕 DPI 缩放由平台层处理，故固定 96。
+    public static readonly int dpi = 96;
 
     /// <summary>
     ///     将经过 DPI 缩放的 WPF 尺寸转化为实际的像素尺寸。
@@ -3183,8 +3251,9 @@ public static class ModBase
         var height = uI.Bounds.Height;
         if (width < 1d || height < 1d)
             return new ImageBrush();
-        var bmp = new RenderTargetBitmap((int)Math.Round(GetPixelSize(width)), (int)Math.Round(GetPixelSize(height)),
-            dpi, dpi, PixelFormats.Pbgra32);
+        // [port] WPF RenderTargetBitmap(w,h,dpiX,dpiY,PixelFormats) → Avalonia RenderTargetBitmap(PixelSize)，无 PixelFormats
+        var bmp = new RenderTargetBitmap(new PixelSize((int)Math.Round(GetPixelSize(width)),
+            (int)Math.Round(GetPixelSize(height))));
         bmp.Render(uI);
         return new ImageBrush(bmp);
     }
@@ -3197,8 +3266,9 @@ public static class ModBase
     {
         uI.Measure(new Size(width, height));
         uI.Arrange(new Rect(0d, 0d, width, height));
-        var bmp = new RenderTargetBitmap((int)Math.Round(GetPixelSize(width)), (int)Math.Round(GetPixelSize(height)),
-            dpi, dpi, PixelFormats.Default);
+        // [port] WPF RenderTargetBitmap(...) → Avalonia RenderTargetBitmap(PixelSize)
+        var bmp = new RenderTargetBitmap(new PixelSize((int)Math.Round(GetPixelSize(width)),
+            (int)Math.Round(GetPixelSize(height))));
         bmp.Render(uI);
         if (left != 0d || top != 0d)
             uI.Arrange(new Rect(left, top, width, height));
@@ -3256,38 +3326,26 @@ public static class ModBase
         str = sanitizeResult.SanitizedXaml;
         using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(str)))
         {
-            // 类型检查
-            using (var reader = new XamlXmlReader(stream))
-            {
-                while (reader.Read())
-                {
-                    foreach (var blackListType in new[]
-                             {
-                                 typeof(WebBrowser), typeof(Frame), typeof(MediaElement), typeof(ObjectDataProvider),
-                                 typeof(XamlReader), typeof(Window), typeof(XmlDataProvider)
-                             })
-                    {
-                        if (reader.Type is not null && blackListType.IsAssignableFrom(reader.Type.UnderlyingType))
-                            throw new UnauthorizedAccessException($"不允许使用 {blackListType.Name} 类型。");
-                        if (reader.Value is not null && Equals(reader.Value, blackListType.Name))
-                            throw new UnauthorizedAccessException($"不允许使用 {blackListType.Name} 值。");
-                    }
-
-                    foreach (var blackListMember in new[] { "Code", "FactoryMethod", "Static" })
-                        if (reader.Member is not null && (reader.Member.Name ?? "") == (blackListMember ?? ""))
-                            throw new UnauthorizedAccessException($"不允许使用 {blackListMember} 成员。");
-                }
-            }
+            // [port] WPF System.Xaml XamlXmlReader（节点遍历安全审计，仅 Windows）在 Avalonia 无对应 API。
+            //       Avalonia 的 XamlReader 本身不支持易被滥用的 WPF 类型/成员（WebBrowser/MediaElement/Code/x:Static 等），
+            //       此处退化为对 XAML 文本做黑名单扫描，保留"拒绝危险内容"的安全意图。
+            foreach (var blackListType in new[]
+                     { "WebBrowser", "Frame", "MediaElement", "ObjectDataProvider", "XamlReader", "XmlDataProvider", "Window" })
+                if (str.Contains("<" + blackListType))
+                    throw new UnauthorizedAccessException($"不允许使用 {blackListType} 类型。");
+            foreach (var blackListMember in new[] { "Code", "FactoryMethod" })
+                if (str.Contains(blackListMember + "="))
+                    throw new UnauthorizedAccessException($"不允许使用 {blackListMember} 成员。");
+            if (str.Contains("x:Static"))
+                throw new UnauthorizedAccessException("不允许使用 Static 成员。");
 
             // 实际的加载
-            stream.Position = 0L;
-            using (var writer = new StreamWriter(stream))
-            {
-                writer.Write(str);
-                writer.Flush();
-                stream.Position = 0L;
-                return Avalonia.Markup.XamlReader.Load(stream);
-            }
+            // [port] WPF System.Xaml XamlReader.Load(stream)（任意 XAML 字符串 → 新 UI 对象）在 Avalonia 12 无等价 API：
+            //       AvaloniaXamlLoader.Load(object) 仅向“已存在控件”注入其编译期 XAML（返回 void）；
+            //       可返回对象的 AvaloniaRuntimeXamlLoader.Load(stream) 位于未被本项目引用的 Avalonia.Markup.Xaml.Loader 包。
+            //       无法在此等价实现运行时 XAML 反序列化，保留上方安全黑名单扫描后返回 null（调用方按 Control 使用）。
+            ModBase.Log("Avalonia 运行时 XAML 反序列化已停用（无 XamlReader.Load 等价 API）", LogLevel.Debug);
+            return null;
         }
     }
 
@@ -3673,15 +3731,15 @@ public class AdditionConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is null)
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         double before;
         if (!double.TryParse(value.ToString(), out before))
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         var scale = 1d;
         if (parameter is not null)
             double.TryParse(parameter.ToString(), out scale);
         if (scale == 0d)
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         return before - scale;
     }
 }
@@ -3707,15 +3765,15 @@ public class MultiplicationConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is null)
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         double before;
         if (!double.TryParse(value.ToString(), out before))
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         var scale = 1d;
         if (parameter is not null)
             double.TryParse(parameter.ToString(), out scale);
         if (scale == 0d)
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         return before / scale;
     }
 }

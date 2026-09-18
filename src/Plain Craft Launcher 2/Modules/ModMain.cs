@@ -159,8 +159,9 @@ public static class ModMain
                 {
                     if (!frmMain.Hidden)
                     {
-                        if (frmMain.Top < -9000) frmMain.Top = 100d;
-                        if (frmMain.Left < -9000) frmMain.Left = 100d;
+                        // [port] WPF Window.Top/Left（double）→ Avalonia Window.Position（PixelPoint，int）
+                        if (frmMain.Position.Y < -9000) frmMain.Position = new PixelPoint(frmMain.Position.X, 100);
+                        if (frmMain.Position.X < -9000) frmMain.Position = new PixelPoint(100, frmMain.Position.Y);
                     }
                 }); // 窗口拉至最大时 Left = -18.8
             }
@@ -396,12 +397,12 @@ public static class ModMain
                 try
                 {
                     frmMain.DragStop();
-                    ComponentDispatcher.PushModal();
-                    Dispatcher.PushFrame(converter.WaitFrame);
+                    // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
+                    Dispatcher.UIThread.PushFrame(converter.WaitFrame);
                 }
                 finally
                 {
-                    ComponentDispatcher.PopModal();
+                    // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
                 }
             }
 
@@ -491,12 +492,12 @@ public static class ModMain
                 try
                 {
                     frmMain.DragStop();
-                    ComponentDispatcher.PushModal();
-                    Dispatcher.PushFrame(converter.WaitFrame);
+                    // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
+                    Dispatcher.UIThread.PushFrame(converter.WaitFrame);
                 }
                 finally
                 {
-                    ComponentDispatcher.PopModal();
+                    // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
                 }
             }
 
@@ -537,12 +538,12 @@ public static class ModMain
         try
         {
             frmMain?.DragStop();
-            ComponentDispatcher.PushModal();
-            Dispatcher.PushFrame(converter.WaitFrame);
+            // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
+            Dispatcher.UIThread.PushFrame(converter.WaitFrame);
         }
         finally
         {
-            ComponentDispatcher.PopModal();
+            // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
         }
 
         ModBase.Log($"[Control] 输入弹框返回：{converter.Result}");
@@ -574,12 +575,12 @@ public static class ModMain
         {
             if (frmMain is not null)
                 frmMain.DragStop();
-            ComponentDispatcher.PushModal();
-            Dispatcher.PushFrame(converter.WaitFrame);
+            // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
+            Dispatcher.UIThread.PushFrame(converter.WaitFrame);
         }
         finally
         {
-            ComponentDispatcher.PopModal();
+            // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
         }
 
         ModBase.Log($"[Control] 选择弹框返回：{converter.Result ?? "null"}");
@@ -626,7 +627,7 @@ public static class ModMain
                     }
                     case MyMsgBoxType.Markdown:
                     {
-                        frmMain.PanMsg.Children.Add(new MyMsgMarkdown(WaitingMyMsgBox[0]));
+                        // [port] Markdown 公告弹窗（MyMsgMarkdown，B8）已按用户指示暂缓移植（csproj 排除），此处停用。
                         break;
                     }
                 }
@@ -727,42 +728,47 @@ public static class ModMain
             }
 
             // 回到边界
+            // [port] WPF TranslatePoint 返回非空 Point → Avalonia 返回 Point?（可空，无法换算时为空）
+            // 判空后用非空局部 rel 取值；aprilSpeed 为只读 Vector（X/Y 只读），需重建。
             var relative = frmLaunchLeft.BtnLaunch.TranslatePoint(new Point(0d, 0d), frmMain.PanForm);
-            if (relative.X < -buttonWidth * 2d)
+            if (relative is { } rel)
             {
-                frmLaunchLeft.AprilPosTrans.X += frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开左边界
-                aprilSpeed.X -= 80d;
-                if (relative.Y < 0d)
-                    frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
-                else if (relative.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
-                    frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
-            }
-            else if (relative.X > frmMain.PanForm.Bounds.Width)
-            {
-                frmLaunchLeft.AprilPosTrans.X -= frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开右边界
-                aprilSpeed.X += 80d;
-                if (relative.Y < 0d)
-                    frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
-                else if (relative.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
-                    frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
-            }
-            else if (relative.Y < -buttonHeight * 2d)
-            {
-                frmLaunchLeft.AprilPosTrans.Y += frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开上边界
-                aprilSpeed.Y -= 25d;
-                if (relative.X < 0d)
-                    frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
-                else if (relative.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
-                    frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
-            }
-            else if (relative.Y > frmMain.PanForm.Bounds.Height)
-            {
-                frmLaunchLeft.AprilPosTrans.Y -= frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开下边界
-                aprilSpeed.Y += 25d;
-                if (relative.X < 0d)
-                    frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
-                else if (relative.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
-                    frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
+                if (rel.X < -buttonWidth * 2d)
+                {
+                    frmLaunchLeft.AprilPosTrans.X += frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开左边界
+                    aprilSpeed = new Vector(aprilSpeed.X - 80d, aprilSpeed.Y);
+                    if (rel.Y < 0d)
+                        frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
+                    else if (rel.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
+                        frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
+                }
+                else if (rel.X > frmMain.PanForm.Bounds.Width)
+                {
+                    frmLaunchLeft.AprilPosTrans.X -= frmMain.PanForm.Bounds.Width + buttonWidth * 2d; // 离开右边界
+                    aprilSpeed = new Vector(aprilSpeed.X + 80d, aprilSpeed.Y);
+                    if (rel.Y < 0d)
+                        frmLaunchLeft.AprilPosTrans.Y += buttonHeight * 2.5d;
+                    else if (rel.Y > frmMain.PanForm.Bounds.Height - buttonHeight * 2d)
+                        frmLaunchLeft.AprilPosTrans.Y -= buttonHeight * 2.5d;
+                }
+                else if (rel.Y < -buttonHeight * 2d)
+                {
+                    frmLaunchLeft.AprilPosTrans.Y += frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开上边界
+                    aprilSpeed = new Vector(aprilSpeed.X, aprilSpeed.Y - 25d);
+                    if (rel.X < 0d)
+                        frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
+                    else if (rel.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
+                        frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
+                }
+                else if (rel.Y > frmMain.PanForm.Bounds.Height)
+                {
+                    frmLaunchLeft.AprilPosTrans.Y -= frmMain.PanForm.Bounds.Height + buttonHeight * 2d; // 离开下边界
+                    aprilSpeed = new Vector(aprilSpeed.X, aprilSpeed.Y + 25d);
+                    if (rel.X < 0d)
+                        frmLaunchLeft.AprilPosTrans.X += buttonWidth * 2d;
+                    else if (rel.X > frmMain.PanForm.Bounds.Width - buttonWidth * 2d)
+                        frmLaunchLeft.AprilPosTrans.X -= buttonWidth * 2d;
+                }
             }
 
             // 移动

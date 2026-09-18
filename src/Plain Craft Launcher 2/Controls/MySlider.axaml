@@ -9,11 +9,13 @@
         BorderBrush="{DynamicResource ColorBrushBg0}" Name="PanBack"
         Background="{StaticResource ColorBrushSemiTransparent}" Focusable="True">
     <Grid x:Name="PanMain" MinHeight="16" MaxHeight="16" IsHitTestVisible="False">
+        <!-- [port] WPF Line.X1/Y1/X2/Y2 → Avalonia Line.StartPoint/EndPoint -->
         <Line Height="4" Name="LineBack" Stroke="{DynamicResource ColorBrushBg0}" Opacity="0.3" StrokeThickness="1"
-              X2="10000" Y1="2" Y2="2" HorizontalAlignment="Right" Width="0"
+              StartPoint="0,2" EndPoint="10000,2" HorizontalAlignment="Right" Width="0"
               Margin="0,0,1,0" />
+        <!-- [port] WPF Line.X1/Y1/X2/Y2 → Avalonia Line.StartPoint/EndPoint -->
         <Line Height="4" Name="LineFore" Stroke="{Binding ElementName=PanBack, Path=BorderBrush}" StrokeThickness="2"
-              X2="10000" Y1="2" Y2="2" Width="0" HorizontalAlignment="Left" Margin="1,0,0,0" />
+              StartPoint="0,2" EndPoint="10000,2" Width="0" HorizontalAlignment="Left" Margin="1,0,0,0" />
         <Ellipse HorizontalAlignment="Left" Width="10" Height="10"
                  Stroke="{Binding BorderBrush, ElementName=PanBack}" StrokeThickness="1.2"
                  Fill="{DynamicResource ColorBrushBg0}" Name="ShapeDot" VerticalAlignment="Center"
@@ -22,13 +24,13 @@
                 <ScaleTransform />
             </Ellipse.RenderTransform>
         </Ellipse>
-        <Popup Name="Popup" AllowsTransparency="True" IsHitTestVisible="False" PopupAnimation="Fade"
-               VerticalOffset="38" HorizontalOffset="{Binding Margin.Left, ElementName=ShapeDot}" Placement="Center"
-               PlacementRectangle="8,0,0,0">
+        <!-- [port] WPF Popup.AllowsTransparency/PopupAnimation/PlacementRectangle 在 Avalonia 无对应 → 删除（透明度/动画/放置矩形由 Popup 默认处理） -->
+        <Popup Name="Popup" IsHitTestVisible="False"
+               VerticalOffset="38" HorizontalOffset="{Binding Margin.Left, ElementName=ShapeDot}" Placement="Center">
             <Border BorderBrush="{DynamicResource ColorBrush1}" BorderThickness="1.5" CornerRadius="3" MaxWidth="500"
                     Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4">
                 <Border.Effect>
-                    <DropShadowEffect Opacity="0.4" BlurRadius="4" ShadowDepth="2" />
+                    <DropShadowEffect Opacity="0.4" BlurRadius="4" />
                 </Border.Effect>
                 <TextBlock Name="TextHint" TextWrapping="Wrap" Foreground="{DynamicResource ColorBrush1}" Margin="7,5"
                            FontSize="12" />

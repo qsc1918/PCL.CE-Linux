@@ -10,19 +10,13 @@
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled"
                                       x:Name="PanBack">
+                    <!-- [port] WPF SelectableTextBlock 的 BorderThickness/IsReadOnly 与 VirtualizingPanel.* 附加属性在 Avalonia 无对应 → 删除（日志文档模型另行决策，见下文注释） -->
                     <SelectableTextBlock x:Name="PanLog"
                                  FontSize="14"
                                  FontFamily="Consolas"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 IsReadOnly="True"
-                                 VirtualizingPanel.IsVirtualizing="True"
-                                 VirtualizingPanel.VirtualizationMode="Recycling"
-                                 VirtualizingPanel.IsContainerVirtualizable="True"
-                                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                 VirtualizingPanel.ScrollUnit="Pixel" />
+                                 Background="Transparent" />
                 </local:MyScrollViewer>
             </local:MyCard>
         </Grid>
@@ -75,7 +69,7 @@
                     <local:MySlider x:Name="SliderMaxLog" Grid.Column="1" HorizontalAlignment="Stretch"
                                     Change="SliderMaxLog_ValueChanged"
                                     Tag="SystemMaxLog" MaxValue="29" Value="13"
-                                    ToolTip="{DynamicResource LogPage.MaxLines.ToolTip}" />
+                                    ToolTip.Tip="{DynamicResource LogPage.MaxLines.ToolTip}" />
                 </Grid>
             </StackPanel>
         </local:MyCard>

@@ -1,6 +1,6 @@
 <local:MyPageLeft
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:PCL;assembly="
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:PCL;assembly=PCL"
     x:Class="PCL.PageSelectLeft"
     AnimatedControl="{Binding ElementName=PanList, Mode=OneWay}">
     <!-- [port] WPF AdornerDecorator（装饰器层/吸附层）在 Avalonia 无对应元素，等价容器为其内部 Grid，已去掉包装 -->
@@ -11,8 +11,8 @@
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
         <local:MyScrollViewer DeltaMult="0.7" Grid.Row="1" MaxWidth="300" MinWidth="250"
-                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                              Style="{StaticResource ScrollViewerFullMargin}">
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <!-- [port] WPF Style="{StaticResource ScrollViewerFullMargin}" 在 Avalonia 无「控件 Style 属性」→ 删除，改用 MyScrollViewer 默认模板 -->
             <StackPanel x:Name="PanList" />
         </local:MyScrollViewer>
     </Grid>

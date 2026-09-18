@@ -70,6 +70,7 @@ public class MyBitmap
                 else
                 {
                     // [port] 使用这种自己接管 FileStream 的方法加载才能解除文件占用；Skia 原生支持 WebP
+                    using (var picStream = new FileStream(filePathOrResourceName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         pic = SKBitmap.Decode(picStream);
                     }
@@ -77,7 +78,10 @@ public class MyBitmap
             }
             catch (Exception ex)
             {
-                var resource = Avalonia.Application.Current?.TryFindResource(filePathOrResourceName) as Bitmap;
+                var app = Avalonia.Application.Current;
+                Bitmap resource = null;
+                if (app?.TryGetResource(filePathOrResourceName, app.ActualThemeVariant, out var resourceValue) == true)
+                    resource = resourceValue as Bitmap;
                 if (resource is null)
                 {
                     pic = new SKBitmap(1, 1);
@@ -110,7 +114,7 @@ public class MyBitmap
             using var rtb = new RenderTargetBitmap(new PixelSize(width, height));
             using (var ctx = rtb.CreateDrawingContext())
             {
-                image.Draw(ctx, new Rect(0, 0, width, height));
+                image.Draw(ctx, new Rect(0, 0, width, height), new Rect(0, 0, width, height));
             }
             using var ms = new MemoryStream();
             rtb.Save(ms);
@@ -118,7 +122,7 @@ public class MyBitmap
         }
     }
 
-    public MyBitmap(ImageBrush image) : this(image.Source) { }
+    public MyBitmap(ImageBrush image) : this((Avalonia.Media.IImage)image.Source) { }
 
     // 自动类型转换
     // 支持的类：IImage（经构造函数），Bitmap，ImageBrush
@@ -197,6 +201,9 @@ public class MyBitmap
     private Bitmap _ToAvalonia()
     {
         if (_AvaloniaCache is not null) return _AvaloniaCache;
+        using var image = SKImage.FromBitmap(pic);
+        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        using var ms = new MemoryStream();
         data.SaveTo(ms);
         ms.Position = 0;
         _AvaloniaCache = new Bitmap(ms);
@@ -205,6 +212,7 @@ public class MyBitmap
 
     private static SKBitmap _FromAvalonia(Bitmap bitmap)
     {
+        using var ms = new MemoryStream();
         bitmap.Save(ms);
         ms.Position = 0;
         return SKBitmap.Decode(ms);

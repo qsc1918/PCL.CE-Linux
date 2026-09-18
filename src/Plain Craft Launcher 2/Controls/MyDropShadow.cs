@@ -66,7 +66,8 @@ public class MyDropShadow : Decorator
     public override void Render(DrawingContext drawingContext)
     {
         var cornerRadius = CornerRadius;
-        var shadowBounds = new Rect(0d, 0d, RenderSize.Width, RenderSize.Height);
+        // [port] WPF RenderSize → Avalonia 使用 Bounds（Render 方法中无 RenderSize）
+        var shadowBounds = new Rect(0d, 0d, Bounds.Width, Bounds.Height);
         var color = Color;
 
         if (shadowBounds.Width > 0d && shadowBounds.Height > 0d && color.A > 0)
@@ -74,10 +75,12 @@ public class MyDropShadow : Decorator
             var centerWidth = shadowBounds.Right - shadowBounds.Left - 2d * ShadowRadius;
             var centerHeight = shadowBounds.Bottom - shadowBounds.Top - 2d * ShadowRadius;
             var maxRadius = Math.Min(centerWidth * 0.5d, centerHeight * 0.5d);
-            cornerRadius.TopLeft = Math.Min(cornerRadius.TopLeft, maxRadius);
-            cornerRadius.TopRight = Math.Min(cornerRadius.TopRight, maxRadius);
-            cornerRadius.BottomLeft = Math.Min(cornerRadius.BottomLeft, maxRadius);
-            cornerRadius.BottomRight = Math.Min(cornerRadius.BottomRight, maxRadius);
+            // [port] WPF CornerRadius 为可变 struct，Avalonia 为只读；解构后重建
+            cornerRadius = new CornerRadius(
+                Math.Min(cornerRadius.TopLeft, maxRadius),
+                Math.Min(cornerRadius.TopRight, maxRadius),
+                Math.Min(cornerRadius.BottomLeft, maxRadius),
+                Math.Min(cornerRadius.BottomRight, maxRadius));
             var brushes = GetBrushes(color, cornerRadius);
             var centerTop = shadowBounds.Top + ShadowRadius;
             var centerLeft = shadowBounds.Left + ShadowRadius;
@@ -93,11 +96,13 @@ public class MyDropShadow : Decorator
                 centerTop, centerTop + cornerRadius.TopLeft, centerTop + cornerRadius.TopRight,
                 centerBottom - cornerRadius.BottomLeft, centerBottom - cornerRadius.BottomRight, centerBottom
             };
-            drawingContext.PushGuidelineSet(new GuidelineSet(guidelineSetX, guidelineSetY));
-            cornerRadius.TopLeft += ShadowRadius;
-            cornerRadius.TopRight += ShadowRadius;
-            cornerRadius.BottomLeft += ShadowRadius;
-            cornerRadius.BottomRight += ShadowRadius;
+            // [port] GuidelineSet 吸附是 WPF 特有，Avalonia 无对应，移除吸附但保留分段渲染
+            // drawingContext.PushGuidelineSet(new GuidelineSet(guidelineSetX, guidelineSetY));
+            cornerRadius = new CornerRadius(
+                cornerRadius.TopLeft + ShadowRadius,
+                cornerRadius.TopRight + ShadowRadius,
+                cornerRadius.BottomLeft + ShadowRadius,
+                cornerRadius.BottomRight + ShadowRadius);
             var topLeft = new Rect(shadowBounds.Left, shadowBounds.Top, cornerRadius.TopLeft, cornerRadius.TopLeft);
             drawingContext.DrawRectangle(brushes[(int)Placement.TopLeft], null, topLeft);
             var topWidth = guidelineSetX[2] - guidelineSetX[1];
@@ -196,14 +201,17 @@ public class MyDropShadow : Decorator
                 }
 
                 figure.IsClosed = true;
-                figure.Freeze();
+                // [port] WPF PathFigure.Freeze()：Avalonia 几何不可变性由内部管理，无 Freeze API，移除
+                // figure.Freeze();
                 var geometry = new PathGeometry();
                 geometry.Figures.Add(figure);
-                geometry.Freeze();
+                // [port] WPF PathGeometry.Freeze()：Avalonia 无 Freeze API，移除
+                // geometry.Freeze();
                 drawingContext.DrawGeometry(brushes[(int)Placement.Center], null, geometry);
             }
 
-            drawingContext.Pop();
+            // [port] WPF DrawingContext.Pop()：与 PushGuidelineSet 成对；Avalonia 无对应，移除
+            // drawingContext.Pop();
         }
     }
 
@@ -213,37 +221,67 @@ public class MyDropShadow : Decorator
         var gsc = new System.Collections.Generic.List<GradientStop>();
         var stopColor = c;
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.1d + cornerRadius) * gradientScale));
-        stopColor.A = (byte)Math.Round(0.74336d * c.A);
+        // [port] WPF Color.A 可写；Avalonia Color 为只读 struct，需重建
+        stopColor = Color.FromArgb((byte)Math.Round(0.74336d * c.A), stopColor.R, stopColor.G, stopColor.B);
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.3d + cornerRadius) * gradientScale));
-        stopColor.A = (byte)Math.Round(0.38053d * c.A);
+        stopColor = Color.FromArgb((byte)Math.Round(0.38053d * c.A), stopColor.R, stopColor.G, stopColor.B);
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.5d + cornerRadius) * gradientScale));
-        stopColor.A = (byte)Math.Round(0.12389d * c.A);
+        stopColor = Color.FromArgb((byte)Math.Round(0.12389d * c.A), stopColor.R, stopColor.G, stopColor.B);
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.7d + cornerRadius) * gradientScale));
-        stopColor.A = (byte)Math.Round(0.02654d * c.A);
+        stopColor = Color.FromArgb((byte)Math.Round(0.02654d * c.A), stopColor.R, stopColor.G, stopColor.B);
         gsc.Add(new GradientStop(stopColor, (ShadowRadius * 0.9d + cornerRadius) * gradientScale));
-        stopColor.A = 0;
+        stopColor = Color.FromArgb(0, stopColor.R, stopColor.G, stopColor.B);
         gsc.Add(new GradientStop(stopColor, (ShadowRadius + cornerRadius) * gradientScale));
-        gsc.Freeze();
+        // [port] WPF List<GradientStop>.Freeze()：Avalonia 无 Freeze API，移除
         return gsc;
+    }
+
+    // [port] WPF LinearGradientBrush(stops, start, end) / RadialGradientBrush(stops) 构造在 Avalonia 不存在，组装 GradientStops 集合
+    private static GradientStops ToGradientStops(System.Collections.Generic.IEnumerable<GradientStop> stops)
+    {
+        var gs = new GradientStops();
+        gs.AddRange(stops);
+        return gs;
     }
 
     private Brush[] CreateBrushes(Color c, CornerRadius cornerRadius)
     {
         var brushes = new Brush[9];
         brushes[(int)Placement.Center] = new SolidColorBrush(c);
-        brushes[(int)Placement.Center].Freeze();
+        // [port] WPF Brush.Freeze()：Avalonia 画笔不可变，无需冻结，移除
+        // brushes[(int)Placement.Center].Freeze();
         var sideStops = CreateStops(c, 0d);
-        var top = new LinearGradientBrush(sideStops, new Point(0d, 1d), new Point(0d, 0d));
-        top.Freeze();
+        var top = new LinearGradientBrush
+        {
+            GradientStops = ToGradientStops(sideStops),
+            StartPoint = new RelativePoint(0d, 1d, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative)
+        };
+        // top.Freeze();
         brushes[(int)Placement.Top] = top;
-        var left = new LinearGradientBrush(sideStops, new Point(1d, 0d), new Point(0d, 0d));
-        left.Freeze();
+        var left = new LinearGradientBrush
+        {
+            GradientStops = ToGradientStops(sideStops),
+            StartPoint = new RelativePoint(1d, 0d, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative)
+        };
+        // left.Freeze();
         brushes[(int)Placement.Left] = left;
-        var right = new LinearGradientBrush(sideStops, new Point(0d, 0d), new Point(1d, 0d));
-        right.Freeze();
+        var right = new LinearGradientBrush
+        {
+            GradientStops = ToGradientStops(sideStops),
+            StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1d, 0d, RelativeUnit.Relative)
+        };
+        // right.Freeze();
         brushes[(int)Placement.Right] = right;
-        var bottom = new LinearGradientBrush(sideStops, new Point(0d, 0d), new Point(0d, 1d));
-        bottom.Freeze();
+        var bottom = new LinearGradientBrush
+        {
+            GradientStops = ToGradientStops(sideStops),
+            StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0d, 1d, RelativeUnit.Relative)
+        };
+        // bottom.Freeze();
         brushes[(int)Placement.Bottom] = bottom;
         System.Collections.Generic.List<GradientStop> topLeftStops;
 
@@ -252,14 +290,15 @@ public class MyDropShadow : Decorator
         else
             topLeftStops = CreateStops(c, cornerRadius.TopLeft);
 
-        var topLeft = new RadialGradientBrush(topLeftStops)
+        var topLeft = new RadialGradientBrush
         {
-            RadiusX = 1d,
-            RadiusY = 1d,
-            Center = new Point(1d, 1d),
-            GradientOrigin = new Point(1d, 1d)
+            RadiusX = new RelativeScalar(1d, RelativeUnit.Relative),
+            RadiusY = new RelativeScalar(1d, RelativeUnit.Relative),
+            Center = new RelativePoint(1d, 1d, RelativeUnit.Relative),
+            GradientOrigin = new RelativePoint(1d, 1d, RelativeUnit.Relative),
+            GradientStops = ToGradientStops(topLeftStops)
         };
-        topLeft.Freeze();
+        // topLeft.Freeze();
         brushes[(int)Placement.TopLeft] = topLeft;
         System.Collections.Generic.List<GradientStop> topRightStops;
 
@@ -270,14 +309,15 @@ public class MyDropShadow : Decorator
         else
             topRightStops = CreateStops(c, cornerRadius.TopRight);
 
-        var topRight = new RadialGradientBrush(topRightStops)
+        var topRight = new RadialGradientBrush
         {
-            RadiusX = 1d,
-            RadiusY = 1d,
-            Center = new Point(0d, 1d),
-            GradientOrigin = new Point(0d, 1d)
+            RadiusX = new RelativeScalar(1d, RelativeUnit.Relative),
+            RadiusY = new RelativeScalar(1d, RelativeUnit.Relative),
+            Center = new RelativePoint(0d, 1d, RelativeUnit.Relative),
+            GradientOrigin = new RelativePoint(0d, 1d, RelativeUnit.Relative),
+            GradientStops = ToGradientStops(topRightStops)
         };
-        topRight.Freeze();
+        // topRight.Freeze();
         brushes[(int)Placement.TopRight] = topRight;
         System.Collections.Generic.List<GradientStop> bottomLeftStops;
 
@@ -290,14 +330,15 @@ public class MyDropShadow : Decorator
         else
             bottomLeftStops = CreateStops(c, cornerRadius.BottomLeft);
 
-        var bottomLeft = new RadialGradientBrush(bottomLeftStops)
+        var bottomLeft = new RadialGradientBrush
         {
-            RadiusX = 1d,
-            RadiusY = 1d,
-            Center = new Point(1d, 0d),
-            GradientOrigin = new Point(1d, 0d)
+            RadiusX = new RelativeScalar(1d, RelativeUnit.Relative),
+            RadiusY = new RelativeScalar(1d, RelativeUnit.Relative),
+            Center = new RelativePoint(1d, 0d, RelativeUnit.Relative),
+            GradientOrigin = new RelativePoint(1d, 0d, RelativeUnit.Relative),
+            GradientStops = ToGradientStops(bottomLeftStops)
         };
-        bottomLeft.Freeze();
+        // bottomLeft.Freeze();
         brushes[(int)Placement.BottomLeft] = bottomLeft;
         System.Collections.Generic.List<GradientStop> bottomRightStops;
 
@@ -312,14 +353,15 @@ public class MyDropShadow : Decorator
         else
             bottomRightStops = CreateStops(c, cornerRadius.BottomRight);
 
-        var bottomRight = new RadialGradientBrush(bottomRightStops)
+        var bottomRight = new RadialGradientBrush
         {
-            RadiusX = 1d,
-            RadiusY = 1d,
-            Center = new Point(0d, 0d),
-            GradientOrigin = new Point(0d, 0d)
+            RadiusX = new RelativeScalar(1d, RelativeUnit.Relative),
+            RadiusY = new RelativeScalar(1d, RelativeUnit.Relative),
+            Center = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+            GradientOrigin = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+            GradientStops = ToGradientStops(bottomRightStops)
         };
-        bottomRight.Freeze();
+        // bottomRight.Freeze();
         brushes[(int)Placement.BottomRight] = bottomRight;
         return brushes;
     }

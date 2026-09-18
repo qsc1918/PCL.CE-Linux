@@ -86,7 +86,8 @@ public partial class PageSetupUI : MyPageRight
             BackgroundRefresh(false, false);
 
             // 标题栏
-            ((MyRadioBox)FindName("RadioLogoType" + (int)Config.Preference.WindowTitleType))
+            // [port] FindName → FindControl<MyRadioBox>
+            this.FindControl<MyRadioBox>("RadioLogoType" + (int)Config.Preference.WindowTitleType)
                 .Checked = true;
             CheckLogoLeft.IsVisible = RadioLogoType0.Checked ? true : false;
             PanLogoText.IsVisible = RadioLogoType2.Checked ? true : false;
@@ -113,7 +114,8 @@ public partial class PageSetupUI : MyPageRight
                 Config.Preference.Homepage.SelectedPresetConfig.Reset();
             }
 
-            ((MyRadioBox)FindName("RadioCustomType" + Config.Preference.Homepage.Type)).Checked = true;
+            // [port] FindName → FindControl<MyRadioBox>
+            this.FindControl<MyRadioBox>("RadioCustomType" + Config.Preference.Homepage.Type).Checked = true;
             TextCustomNet.Text = Config.Preference.Homepage.CustomUrl;
             ModSetup.UiCustomType(Config.Preference.Homepage.Type);
 
@@ -221,7 +223,8 @@ public partial class PageSetupUI : MyPageRight
             SetByTag(sender.Tag?.ToString(), sender.Checked);
     }
 
-    private void TextBoxChange(object senderRaw, RoutedEventArgs e)
+    // [port] Avalonia MyTextBox.ValidatedTextChanged 为 EventHandler(object,EventArgs)；处理器只取 sender，改签名以匹配
+    private void TextBoxChange(object senderRaw, EventArgs e)
     {
         var sender = (MyTextBox)senderRaw;
         if (ModAnimation.AniControlEnabled == 0)
@@ -317,33 +320,7 @@ public partial class PageSetupUI : MyPageRight
                 .ToList();
 
             // 视频加载异常处理
-
-            EventHandler<ExceptionRoutedEventArgs> videoHandler = (sender, e) =>
-            {
-                var videoEx = e.ErrorException;
-                var videoAddress = ModMain.frmMain.VideoBack.Source.ToString();
-                if (ModMain.frmMain.VideoBack.Source is not null)
-                {
-                    ModVideoBack.VideoStop();
-
-                    if (videoEx.Message.Contains("0xC00D109B"))
-                        ModBase.Log(
-                            $"""
-                             刷新背景内容失败，该视频文件可能并非 H.264（AVC）格式。
-                             你可以尝试使用视频转码工具打开视频文件并设定目标格式为 H.264（AVC），然后转码该视频。
-                             文件：{videoAddress}
-                             """,
-                            ModBase.LogLevel.Msgbox,
-                            userSummary: Lang.Text("Setup.Ui.Error.BackgroundVideoUnsupported"));
-                    else
-                        ModBase.Log(
-                            videoEx,
-                            $"刷新背景内容失败（{videoAddress}）",
-                            ModBase.LogLevel.Msgbox,
-                            userSummary: Lang.Text("Setup.Ui.Error.OperationFailed"));
-                }
-            };
-            ModMain.frmMain.VideoBack.MediaFailed -= videoHandler;
+            // [port] 视频背景暂缓移植：MediaFailed 异常处理移除（VideoBack 未移植）
             ModVideoBack.GamingStateChanged -= ModVideoBack.OnGamingStateChanged;
             ModVideoBack.ForcePlayChanged -= ModVideoBack.OnForcePlayChanged;
             ModVideoBack.GamingStateChanged += ModVideoBack.OnGamingStateChanged;
@@ -381,7 +358,8 @@ public partial class PageSetupUI : MyPageRight
                         ModMain.frmMain.ImgBack.Background = null;
                         ModVideoBack.VideoStop();
                         ModBase.Log("[UI] 加载背景内容：" + address);
-                        ModMain.frmMain.ImgBack.Background = new MyBitmap(address);
+                        // [port] MyBitmap 经 MyBitmap 的隐式 ImageBrush 转换后赋给 IBrush 背景
+                        ModMain.frmMain.ImgBack.Background = (ImageBrush)new MyBitmap(address);
                         _ = Config.Preference.Background.WallpaperSuitMode;
                         ModMain.frmMain.ImgBack.IsVisible = true;
                         if (isHint)
@@ -392,12 +370,11 @@ public partial class PageSetupUI : MyPageRight
                     {
                         try
                         {
-                            ModMain.frmMain.VideoBack.MediaFailed += videoHandler;
+                            // [port] 视频背景暂缓移植：VideoBack.MediaFailed 订阅与 Source 赋值移除
                             ModBase.Log(ex, "[UI] 加载背景图片失败" + address);
                             if (ModBase.modeDebug)
                                 HintService.Hint(Lang.Text("Setup.Ui.Background.ImageLoadFailed", address));
                             ModMain.frmMain.ImgBack.IsVisible = true;
-                            ModMain.frmMain.VideoBack.Source = new Uri(address, UriKind.Absolute);
                             ModVideoBack.VideoPlay();
                             if (isHint)
                             HintService.Hint(Lang.Text("Setup.Ui.Background.Refresh.Success", ModBase.GetFileNameFromPath(address)), HintType.Success,
@@ -744,9 +721,9 @@ public partial class PageSetupUI : MyPageRight
                 ModMain.frmMain.BtnTitleSelect1.IsVisible = !HiddenForceShow && conf.PageDownload
                     ? false
                     : true;
-                ModMain.frmMain.BtnTitleSelect2.Visibility =
+                ModMain.frmMain.BtnTitleSelect2.IsVisible =
                     !HiddenForceShow && conf.PageSetup ? false : true;
-                ModMain.frmMain.BtnTitleSelect3.Visibility =
+                ModMain.frmMain.BtnTitleSelect3.IsVisible =
                     !HiddenForceShow && conf.PageTools ? false : true;
             }
 
@@ -762,9 +739,9 @@ public partial class PageSetupUI : MyPageRight
             // 设置子页面 (FrmSetupLeft)
             if (ModMain.frmSetupLeft is not null)
             {
-                ModMain.frmSetupLeft.ItemLaunch.Visibility =
+                ModMain.frmSetupLeft.ItemLaunch.IsVisible =
                     !HiddenForceShow && conf.SetupLaunch ? false : true;
-                ModMain.frmSetupLeft.ItemUI.Visibility =
+                ModMain.frmSetupLeft.ItemUI.IsVisible =
                     !HiddenForceShow && conf.SetupUi ? false : true;
                 ModMain.frmSetupLeft.ItemLauncherLanguage.IsVisible = !HiddenForceShow && conf.SetupLauncherLanguage
                     ? false
@@ -775,19 +752,19 @@ public partial class PageSetupUI : MyPageRight
                 ModMain.frmSetupLeft.ItemLauncherMisc.IsVisible = !HiddenForceShow && conf.SetupLauncherMisc
                     ? false
                     : true;
-                ModMain.frmSetupLeft.ItemJava.Visibility =
+                ModMain.frmSetupLeft.ItemJava.IsVisible =
                     !HiddenForceShow && conf.SetupJava ? false : true;
-                ModMain.frmSetupLeft.ItemUpdate.Visibility =
+                ModMain.frmSetupLeft.ItemUpdate.IsVisible =
                     !HiddenForceShow && conf.SetupUpdate ? false : true;
                 ModMain.frmSetupLeft.ItemGameLink.IsVisible = !HiddenForceShow && conf.SetupGameLink
                     ? false
                     : true;
-                ModMain.frmSetupLeft.ItemAbout.Visibility =
+                ModMain.frmSetupLeft.ItemAbout.IsVisible =
                     !HiddenForceShow && conf.SetupAbout ? false : true;
                 ModMain.frmSetupLeft.ItemFeedback.IsVisible = !HiddenForceShow && conf.SetupFeedback
                     ? false
                     : true;
-                ModMain.frmSetupLeft.ItemLog.Visibility =
+                ModMain.frmSetupLeft.ItemLog.IsVisible =
                     !HiddenForceShow && conf.SetupLog ? false : true;
 
                 var categories = new[]
@@ -832,7 +809,7 @@ public partial class PageSetupUI : MyPageRight
                     setupCount += 1;
                 if (!conf.SetupLog)
                     setupCount += 1;
-                ModMain.frmSetupLeft.PanItem.Visibility =
+                ModMain.frmSetupLeft.PanItem.IsVisible =
                     setupCount < 2 && !HiddenForceShow ? false : true;
             }
 
@@ -842,7 +819,7 @@ public partial class PageSetupUI : MyPageRight
                 ModMain.frmToolsLeft.ItemGameLink.IsVisible = !HiddenForceShow && conf.ToolsGameLink
                     ? false
                     : true;
-                ModMain.frmToolsLeft.ItemTest.Visibility =
+                ModMain.frmToolsLeft.ItemTest.IsVisible =
                     !HiddenForceShow && conf.ToolsTest ? false : true;
                 
                 // 处理分类标题
@@ -860,7 +837,7 @@ public partial class PageSetupUI : MyPageRight
                     toolsCount += 1;
                 if (!conf.ToolsTest)
                     toolsCount += 1;
-                ModMain.frmToolsLeft.PanItem.Visibility =
+                ModMain.frmToolsLeft.PanItem.IsVisible =
                     toolsCount < 2 && !HiddenForceShow ? false : true;
             }
 

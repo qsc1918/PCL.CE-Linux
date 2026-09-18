@@ -71,7 +71,7 @@ public partial class PageComp : MyScrollViewer
             }
 
             // 强制返回顶部
-            ScrollToTop();
+            ScrollToHome(); // [port] WPF ScrollViewer.ScrollToTop → Avalonia ScrollToHome
         }
         catch (Exception ex)
         {
@@ -162,9 +162,12 @@ public partial class PageComp : MyScrollViewer
     /// <summary>
     ///     用于 XAML 快速设置的 Tag 下拉框列表。
     /// </summary>
+    // [port] WPF 类级 [ContentProperty("SearchTags")] → Avalonia 12 属性级 [Content]
+    [Content]
     public ItemCollection SearchTags => ComboSearchTag.Items;
 
-    public static readonly AvaloniaProperty SupportCurseForgeProperty =
+    // [port] Avalonia 编译绑定要求字段为强类型 StyledProperty<bool>，非泛型 AvaloniaProperty 无法用于 {Binding}
+    public static readonly StyledProperty<bool> SupportCurseForgeProperty =
         AvaloniaProperty.Register<PageComp, bool>("SupportCurseForge", true);
 
     public bool SupportCurseForge
@@ -173,7 +176,7 @@ public partial class PageComp : MyScrollViewer
         set => SetValue(SupportCurseForgeProperty, value);
     }
 
-    public static readonly AvaloniaProperty SupportModrinthProperty =
+    public static readonly StyledProperty<bool> SupportModrinthProperty =
         AvaloniaProperty.Register<PageComp, bool>("SupportModrinth", true);
 
     public bool SupportModrinth
@@ -230,7 +233,8 @@ public partial class PageComp : MyScrollViewer
         loader = new ModLoader.LoaderTask<ModComp.CompProjectRequest, int>(Lang.Text("Download.Comp.List.Source.ResourceFetch", "XXX"), ModComp.CompProjectsGet,
             LoaderInput) { reloadTimeout = 60 * 1000 };
         Loaded += PageCompControls_Inited;
-        IsVisibleChanged += PageComp_IsVisibleChanged;
+        // [port] WPF IsVisibleChanged 事件 → Avalonia 用 PropertyChanged 监听 IsVisibleProperty
+        PropertyChanged += (_, e) => { if (e.Property == IsVisibleProperty) PageComp_IsVisibleChanged(this, e); };
         InitializeComponent();
         Load.StateChanged += Load_State;
         BtnPageFirst.Click += BtnPageFirst_Click;

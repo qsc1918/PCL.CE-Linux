@@ -119,7 +119,7 @@ public partial class PageSelectRight : MyPageRight
             autoRun: false);
     }
 
-    private void Load_Click(object sender, PointerPressedEventArgs e)
+    private void Load_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModInstanceList.mcInstanceListLoader.State == ModBase.LoadState.Failed)
             ModLoader.LoaderFolderRun(ModInstanceList.mcInstanceListLoader, ModFolder.mcFolderSelected,

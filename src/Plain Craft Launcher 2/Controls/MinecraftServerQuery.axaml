@@ -26,11 +26,12 @@
         </local:MyTextBox.ValidateRules>
     </local:MyTextBox>
     <local:MyButton x:Name="BtnServerQuery" Text="{DynamicResource Tools.ServerQuery.Action.Query}" Width="60" Grid.Column="1" />
-    <Border x:Name="ServerInfo" Margin="0,7,0,0" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2"
+    <Border x:Name="ServerInfo" Margin="0,7,0,0" IsVisible="False" Grid.Row="1" Grid.ColumnSpan="2"
             CornerRadius="5" BorderThickness="2" BorderBrush="{DynamicResource ColorBrush5}">
         <Border.Background>
-            <ImageBrush ImageSource="/Plain Craft Launcher 2;component/Images/Backgrounds/server_bg.png"
-                        Stretch="Uniform" TileMode="Tile" Viewport="0,0,124,124" ViewportUnits="Absolute" />
+            <!-- [port] ImageBrush：ImageSource→Source；WPF Viewport/ViewportUnits（Absolute 平铺）Avalonia 无对应，删除；pack URI→avares:// -->
+            <ImageBrush Source="avares://PCL/Images/Backgrounds/server_bg.png"
+                        Stretch="Uniform" TileMode="Tile" />
         </Border.Background>
         <local:MinecraftServer x:Name="PanMcServer" />
     </Border>

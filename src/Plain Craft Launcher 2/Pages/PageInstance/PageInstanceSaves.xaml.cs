@@ -9,6 +9,8 @@ using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App.Localization;
@@ -256,13 +258,17 @@ public partial class PageInstanceSaves : MyPageRight, IRefreshable
                         SvgIcon = "lucide/copy",
                         ToolTip = Lang.Text("Common.Action.Copy")
                     };
-                    btnCopy.Click += (_, _) =>
+                    btnCopy.Click += async (_, _) =>
                     {
                         try
                         {
                             if (Directory.Exists(tmpCurFolder))
                             {
-                                Clipboard.SetFileDropList(new StringCollection { tmpCurFolder });
+                                var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+                                var provider = TopLevel.GetTopLevel(this)?.StorageProvider;
+                                var folder = provider is null ? null : await provider.TryGetFolderFromPathAsync(tmpCurFolder);
+                                if (clipboard is not null && folder is not null)
+                                    await clipboard.SetFilesAsync(new[] { folder }); // [port] Clipboard.SetFileDropList→Clipboard.SetFilesAsync
                                 HintService.Hint(Lang.Text("Instance.Saves.CopiedToClipboard"));
                                 HintService.Hint(Lang.Text("Instance.Saves.CopyPasteWarning"));
                             }
@@ -393,7 +399,10 @@ public partial class PageInstanceSaves : MyPageRight, IRefreshable
 
     private void BtnPaste_Click(object sender, PointerPressedEventArgs e)
     {
-        var files = Clipboard.GetFileDropList();
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        var files = (clipboard is null ? Array.Empty<IStorageItem>() : clipboard.TryGetFilesAsync().GetAwaiter().GetResult() ?? Array.Empty<IStorageItem>())
+            .Where(i => i is not null).Select(i => i!.TryGetLocalPath())
+            .Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).ToList(); // [port] Clipboard.GetFileDropList→Clipboard.TryGetFilesAsync
         var loaders = new List<ModLoader.LoaderBase>();
         loaders.Add(new ModLoader.LoaderTask<int, int>("Copy saves", _ =>
         {

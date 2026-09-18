@@ -1,10 +1,10 @@
 <local:MyPageRight
     x:Class="PCL.PageHomepageNewsView"
+    x:CompileBindings="False"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:core="clr-namespace:PCL.Core.UI.Controls;assembly=PCL.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:PCL"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:PCL.Core.ViewModel.Homepage;assembly=PCL.Core"
@@ -23,10 +23,7 @@
                         ColumnSpacing="14"
                         LayoutMode="AutoFit"
                         MaxItemWidth="240"
-                        RowSpacing="14"
-                        VirtualizingPanel.CacheLengthUnit="Item"
-                        VirtualizingPanel.IsVirtualizing="True"
-                        VirtualizingPanel.VirtualizationMode="Recycling" />
+                        RowSpacing="14" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -50,7 +47,7 @@
                                 CornerRadius="6"
                                 Source="{Binding Image}"
                                 Stretch="UniformToFill"
-                                ToolTip="{Binding ImageAltText}"
+                                ToolTip.Tip="{Binding ImageAltText}"
                                 UseLayoutRounding="True" />
 
                             <!-- 标题 -->
@@ -99,16 +96,10 @@
                                 Margin="0,5,5,0"
                                 HorizontalAlignment="Right"
                                 Foreground="{DynamicResource ColorBrushGray2}"
-                                Text="{DynamicResource Launch.Homepage.News.ViewDetail}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction
-                                            Command="{Binding DataContext.OpenReadCommand, 
-                                                    RelativeSource={RelativeSource AncestorType=local:MyPageRight}}"
-                                            CommandParameter="{Binding Url}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </local:MyTextButton>
+                                Text="{DynamicResource Launch.Homepage.News.ViewDetail}"
+                                Click="ReadMore_Click" />
+                            <!-- [port] Avalonia 12 无 Avalonia.Xaml.Behaviors：删除 i:Interaction.Triggers/EventTrigger/InvokeCommandAction，
+                                 改为事件处理器 ReadMore_Click 触发 DataContext.OpenReadCommand(Url) -->
                         </Grid>
                     </local:MyCard>
                 </DataTemplate>
@@ -118,13 +109,13 @@
         <TextBlock
             Foreground="{DynamicResource ColorBrushRedLight}"
             Text="{Binding ErrorMessage}"
-            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}" />
+            IsVisible="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}" />
 
         <local:MyCard
             Margin="32"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            IsVisible="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <local:MyLoading Text="{DynamicResource Launch.Homepage.News.Loading}" x:Name="Load" Margin="20,20,20,17" />
         </local:MyCard>
     </Grid>

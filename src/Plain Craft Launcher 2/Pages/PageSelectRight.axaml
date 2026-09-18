@@ -11,7 +11,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <local:MySearchBox x:Name="PanVerSearchBox" Margin="25,15,25,12" VerticalAlignment="Top"
-                                Grid.Row="0" ToolTip="{DynamicResource Select.Instance.Search.ToolTip}" />
+                                Grid.Row="0" ToolTip.Tip="{DynamicResource Select.Instance.Search.ToolTip}" />
             <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                   x:Name="PanBack" Grid.Row="1">
                 <StackPanel Name="PanMain" Margin="25,2,25,10" Grid.IsSharedSizeScope="True" />

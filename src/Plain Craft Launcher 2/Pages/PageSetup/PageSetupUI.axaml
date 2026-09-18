@@ -70,7 +70,7 @@
                                            Change="CheckBoxChange" />
                         <StackPanel x:Name="PanelBlur" Margin="0,0,0,10">
                             <local:MyCheckBox Text="{DynamicResource Setup.Ui.Basic.AdvancedMaterial}" Height="22" x:Name="CheckBlur" Tag="UiBlur"
-                                              ToolTip="{DynamicResource Setup.Ui.Basic.AdvancedMaterial.ToolTip}"
+                                              ToolTip.Tip="{DynamicResource Setup.Ui.Basic.AdvancedMaterial.ToolTip}"
                                               Change="CheckBoxChange" />
                             <Grid x:Name="PanBlurValue" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
@@ -89,22 +89,22 @@
                                 <local:MySlider Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
                                                 x:Name="SliderBlurValue" Tag="UiBlurValue" MaxValue="40"
                                                 ValueByKey="10" Change="SliderChange"
-                                                ToolTip="{DynamicResource Setup.Ui.Basic.BlurRadius.ToolTip}" />
+                                                ToolTip.Tip="{DynamicResource Setup.Ui.Basic.BlurRadius.ToolTip}" />
                                 <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
                                            HorizontalAlignment="Center" Text="{DynamicResource Setup.Ui.Basic.BlurSamplingRate}" />
                                 <local:MySlider Grid.Row="2" Grid.Column="3" x:Name="SliderBlurSamplingRate"
                                                 Tag="UiBlurSamplingRate" MaxValue="100" ValueByKey="5"
                                                 Change="SliderChange"
-                                                ToolTip="{DynamicResource Setup.Ui.Basic.BlurSamplingRate.ToolTip}" />
+                                                ToolTip.Tip="{DynamicResource Setup.Ui.Basic.BlurSamplingRate.ToolTip}" />
                                 <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                                            HorizontalAlignment="Left" Text="{DynamicResource Setup.Ui.Basic.BlurMethod}" />
                                 <local:MyComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboBlurType" Tag="UiBlurType"
-                                                  Height="28" MinWidth="100" ToolTip="{DynamicResource Setup.Ui.Basic.BlurMethod.ToolTip}"
+                                                  Height="28" MinWidth="100" ToolTip.Tip="{DynamicResource Setup.Ui.Basic.BlurMethod.ToolTip}"
                                                   SelectionChanged="ComboChange">
                                     <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Basic.BlurMethod.Gaussian}"
-                                                          ToolTip="{DynamicResource Setup.Ui.Basic.BlurMethod.Gaussian.ToolTip}" />
+                                                          ToolTip.Tip="{DynamicResource Setup.Ui.Basic.BlurMethod.Gaussian.ToolTip}" />
                                     <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Basic.BlurMethod.Box}"
-                                                          ToolTip="{DynamicResource Setup.Ui.Basic.BlurMethod.Box.ToolTip}" />
+                                                          ToolTip.Tip="{DynamicResource Setup.Ui.Basic.BlurMethod.Box.ToolTip}" />
                                 </local:MyComboBox>
                             </Grid>
                         </StackPanel>
@@ -124,11 +124,11 @@
                         <RowDefinition SharedSizeGroup="FontSelector" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource Setup.Ui.Font.Global}" />
-                    <local:FontSelector Grid.Row="0" Grid.Column="2" x:Name="ComboUiFont" Tooltip="{DynamicResource Setup.Ui.Font.Global.ToolTip}"
+                    <local:FontSelector Grid.Row="0" Grid.Column="2" x:Name="ComboUiFont" ToolTip.Tip="{DynamicResource Setup.Ui.Font.Global.ToolTip}"
                                         SelectionChanged="ComboFontChange" />
                     <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource Setup.Ui.Font.Motd}" />
                     <local:FontSelector Grid.Row="2" Grid.Column="2" x:Name="ComboUiMotdFont"
-                                        Tooltip="{DynamicResource Setup.Ui.Font.Motd.ToolTip}" SelectionChanged="ComboMotdFontChange" />
+                                        ToolTip.Tip="{DynamicResource Setup.Ui.Font.Motd.ToolTip}" SelectionChanged="ComboMotdFontChange" />
                 </Grid>
             </local:MyCard>
             <local:MyCard x:Name="CardBackground" Margin="0,0,0,15" Title="{DynamicResource Setup.Ui.Background.TitleDefault}">
@@ -142,10 +142,10 @@
                                    Margin="0,0,25,0" />
                         <local:MyComboBox x:Name="ComboBackgroundSuit" Tag="UiBackgroundSuit" Grid.Column="1"
                                           SelectionChanged="ComboChange">
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Smart}" IsSelected="True" ToolTip="{DynamicResource Setup.Ui.Background.Suit.Smart.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Smart}" IsSelected="True" ToolTip.Tip="{DynamicResource Setup.Ui.Background.Suit.Smart.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Center}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Fit}" ToolTip="{DynamicResource Setup.Ui.Background.Suit.Fit.ToolTip}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Stretch}" ToolTip="{DynamicResource Setup.Ui.Background.Suit.Stretch.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Fit}" ToolTip.Tip="{DynamicResource Setup.Ui.Background.Suit.Fit.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Stretch}" ToolTip.Tip="{DynamicResource Setup.Ui.Background.Suit.Stretch.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.Tile}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.TopLeft}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Ui.Background.Suit.TopRight}" />
@@ -170,11 +170,11 @@
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Ui.Background.Blur}" Margin="0,0,25,0" />
                         <local:MySlider x:Name="SliderBackgroundBlur" Tag="UiBackgroundBlur" MaxValue="40"
                                         Grid.Column="1" Change="SliderChange"
-                                         ToolTip="{DynamicResource Setup.Ui.Background.Blur.ToolTip}" />
+                                         ToolTip.Tip="{DynamicResource Setup.Ui.Background.Blur.ToolTip}" />
                     </Grid>
                     <local:MyCheckBox Text="{DynamicResource Setup.Ui.Background.PauseVideo}" Margin="-1,0,0,8" Height="22"
                                       x:Name="CheckAutoPauseVideo" Tag="UiAutoPauseVideo" Change="CheckBoxChange"
-                                      ToolTip="{DynamicResource Setup.Ui.Background.PauseVideo.ToolTip}" IsEnabled="True" />
+                                      ToolTip.Tip="{DynamicResource Setup.Ui.Background.PauseVideo.ToolTip}" IsEnabled="True" />
                     <local:MyCheckBox Text="{DynamicResource Setup.Ui.Background.ColorOverlay}" Margin="-1,0,0,8" Height="22" x:Name="CheckBackgroundColorful"
                                       Tag="UiBackgroundColorful" Change="CheckBoxChange" />
                     <Grid Height="35" Margin="0,2,0,0">
@@ -185,10 +185,10 @@
                         </Grid.ColumnDefinitions>
                         <local:MyButton x:Name="BtnBackgroundOpen" MinWidth="140" Text="{DynamicResource Common.Action.OpenFolder}" Padding="13,0"
                                         Margin="0,0,20,0" Click="BtnUIBgOpen_Click"
-                                        ToolTip="{DynamicResource Setup.Ui.Background.OpenFolder.ToolTip}" />
+                                        ToolTip.Tip="{DynamicResource Setup.Ui.Background.OpenFolder.ToolTip}" />
                         <local:MyButton x:Name="BtnBackgroundRefresh" MinWidth="140" Text="{DynamicResource Setup.Ui.Background.Refresh}" Padding="13,0"
                                         Margin="0,0,20,0" Click="BtnBackgroundRefresh_Click"
-                                        ToolTip="{DynamicResource Setup.Ui.Background.Refresh.ToolTip}"
+                                        ToolTip.Tip="{DynamicResource Setup.Ui.Background.Refresh.ToolTip}"
                                         Grid.Column="1" />
                         <local:MyButton x:Name="BtnBackgroundClear" MinWidth="140" Text="{DynamicResource Setup.Ui.Background.Clear}" IsVisible="False"
                                         Padding="13,0" Margin="0,0,20,0" ColorType="Red"
@@ -218,7 +218,7 @@
                                           x:Name="CheckMusicStop" Tag="UiMusicStop" Change="CheckMusicStop_OnChange" />
                         <local:MyCheckBox Text="{DynamicResource Setup.Ui.Music.Smtc}" Margin="0,0,0,5" Height="22"
                                           x:Name="CheckMusicSMTC" Tag="UiMusicSMTC" Change="CheckBoxChange"
-                                          ToolTip="{DynamicResource Setup.Ui.Music.Smtc.ToolTip}" />
+                                          ToolTip.Tip="{DynamicResource Setup.Ui.Music.Smtc.ToolTip}" />
                     </StackPanel>
                     <Grid Height="35">
                         <Grid.ColumnDefinitions>
@@ -228,10 +228,10 @@
                         </Grid.ColumnDefinitions>
                         <local:MyButton x:Name="BtnMusicOpen" Text="{DynamicResource Common.Action.OpenFolder}" MinWidth="140" Padding="13,0"
                                         Margin="0,0,20,0" Click="BtnMusicOpen_Click"
-                                        ToolTip="{DynamicResource Setup.Ui.Music.OpenFolder.ToolTip}" />
+                                        ToolTip.Tip="{DynamicResource Setup.Ui.Music.OpenFolder.ToolTip}" />
                         <local:MyButton x:Name="BtnMusicRefresh" Text="{DynamicResource Setup.Ui.Music.Refresh}" MinWidth="140" Padding="13,0"
                                         Margin="0,0,20,0" Click="BtnMusicRefresh_Click"
-                                        ToolTip="{DynamicResource Setup.Ui.Music.Refresh.ToolTip}" Grid.Column="1" />
+                                        ToolTip.Tip="{DynamicResource Setup.Ui.Music.Refresh.ToolTip}" Grid.Column="1" />
                         <local:MyButton x:Name="BtnMusicClear" Text="{DynamicResource Setup.Ui.Music.Clear}" MinWidth="140" IsVisible="False"
                                         Padding="13,0" Margin="0,0,20,0" ColorType="Red" Click="BtnMusicClear_Click"
                                         Grid.Column="2" />
@@ -462,14 +462,14 @@
                         <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Ui.FeatureHide.SpecificFeature}" />
                         <local:MyCheckBox Height="22" VerticalAlignment="Center" Grid.Row="7" Grid.Column="2"
                                           Text="{DynamicResource Setup.Ui.FeatureHide.Item.InstanceSelect}" x:Name="CheckHiddenFunctionSelect" Tag="UiHiddenFunctionSelect"
-                                          ToolTip="{DynamicResource Setup.Ui.FeatureHide.Item.InstanceSelect.ToolTip}" Change="CheckBoxChange" />
+                                          ToolTip.Tip="{DynamicResource Setup.Ui.FeatureHide.Item.InstanceSelect.ToolTip}" Change="CheckBoxChange" />
                         <local:MyCheckBox Height="22" VerticalAlignment="Center" Grid.Row="7" Grid.Column="3"
                                           Text="{DynamicResource Setup.Ui.FeatureHide.Item.ModUpdate}" x:Name="CheckHiddenFunctionModUpdate"
-                                          Tag="UiHiddenFunctionModUpdate" ToolTip="{DynamicResource Setup.Ui.FeatureHide.Item.ModUpdate.ToolTip}"
+                                          Tag="UiHiddenFunctionModUpdate" ToolTip.Tip="{DynamicResource Setup.Ui.FeatureHide.Item.ModUpdate.ToolTip}"
                                           Change="CheckBoxChange" />
                         <local:MyCheckBox Height="22" VerticalAlignment="Center" Grid.Row="7" Grid.Column="4"
                                           Text="{DynamicResource Setup.Ui.FeatureHide.Item.FeatureHide}" x:Name="CheckHiddenFunctionHidden" Tag="UiHiddenFunctionHidden"
-                                          ToolTip="{DynamicResource Setup.Ui.FeatureHide.Item.FeatureHide.ToolTip}"
+                                          ToolTip.Tip="{DynamicResource Setup.Ui.FeatureHide.Item.FeatureHide.ToolTip}"
                                           Change="CheckBoxChange" />
                     </Grid>
                 </StackPanel>

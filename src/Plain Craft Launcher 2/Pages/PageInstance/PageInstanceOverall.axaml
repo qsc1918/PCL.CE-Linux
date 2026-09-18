@@ -58,7 +58,7 @@
                         <local:MyComboBox Grid.Column="1" Grid.Row="2" x:Name="ComboDisplayType">
                             <local:MyComboBoxItem Content="{DynamicResource Common.Option.Auto}" IsSelected="True" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Category.Hidden}"
-                                                  ToolTip="{DynamicResource Instance.Overall.Category.Hidden.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Instance.Overall.Category.Hidden.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Category.Modable}" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Category.Regular}" />
                             <local:MyComboBoxItem Content="{DynamicResource Instance.Overall.Category.LessUsed}" />
@@ -110,11 +110,11 @@
                                         Height="35" />
                         <local:MyButton x:Name="BtnManageCheck" Text="{DynamicResource Instance.Overall.Manage.RepairFiles}" MinWidth="140" Padding="13,0"
                                         Margin="0,7,20,0"
-                                        ToolTip="{DynamicResource Instance.Overall.Manage.RepairFiles.ToolTip}"
+                                        ToolTip.Tip="{DynamicResource Instance.Overall.Manage.RepairFiles.ToolTip}"
                                         Height="35" />
                         <local:MyButton x:Name="BtnManageRestore" Text="{DynamicResource Common.Action.Reset}" MinWidth="140" Padding="13,0"
                                         Margin="0,7,20,0"
-                                        ToolTip="{DynamicResource Instance.Overall.Manage.Reinstall.ToolTip}"
+                                        ToolTip.Tip="{DynamicResource Instance.Overall.Manage.Reinstall.ToolTip}"
                                         Height="35" />
                         <local:MyButton x:Name="BtnManageDelete" Text="{DynamicResource Instance.Overall.Manage.Delete}" MinWidth="140" Padding="13,0"
                                         Margin="0,7,20,0"

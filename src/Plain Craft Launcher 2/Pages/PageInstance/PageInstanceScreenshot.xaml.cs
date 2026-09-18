@@ -7,6 +7,7 @@ using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Media.Imaging;
 using Microsoft.VisualBasic.FileIO;
 using PCL.Core.App;
@@ -118,7 +119,7 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
 
     private void RequireAppend(object sender, ScrollChangedEventArgs e)
     {
-        if (fileList.Count != 0 && !_AppendLock && PanBack.VerticalOffset + PanBack.ViewportHeight >= PanBack.ExtentHeight)
+        if (fileList.Count != 0 && !_AppendLock && PanBack.Offset.Y + PanBack.Viewport.Height >= PanBack.Extent.Height) // [port] VerticalOffset/ViewportHeight/ExtentHeight → Offset/Viewport/Extent
         {
             Dispatcher.InvokeAsync(new Func<Task>(async () => await ListAppendAsync()));
         }
@@ -157,9 +158,9 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
                 var myCard = new MyCard
                 {
                     Margin = new Thickness(7),
-                    Tag = i,
-                    ToolTip = i.Replace(screenshotPath, "") // 适配高清截图模组
+                    Tag = i
                 };
+                ToolTip.SetTip(myCard, i.Replace(screenshotPath, "")); // [port] ToolTip->SetTip 适配高清截图模组
                 var grid = new Grid();
                 myCard.Children.Add(grid);
 
@@ -171,20 +172,12 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
                 var image = new Image();
                 image.Source = await Task.Run(() =>
                 {
-                    var bitmapImage = new BitmapImage();
                     var loadSource = i;
                     using (var fs = new FileStream(loadSource, FileMode.Open, FileAccess.Read))
                     {
-                        bitmapImage.BeginInit();
-                        bitmapImage.DecodePixelHeight = 200;
-                        bitmapImage.DecodePixelWidth = 400;
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = fs;
-                        bitmapImage.EndInit();
-                        bitmapImage.Freeze();
+                        // [port] Avalonia Bitmap 无 BeginInit/DecodePixelWidth/Height/CacheOption/Freeze，改为直接由流构造
+                        return new Bitmap(fs);
                     }
-
-                    return bitmapImage;
                 });
                 image.Stretch = Stretch.Uniform; // 使图片自适应控件大小
                 image.Cursor = Cursor.Parse("hand");
@@ -316,7 +309,9 @@ public partial class PageInstanceScreenshot : MyPageRight, IRefreshable
                 try
                 {
                     ModBase.Log("[Screenshot] 尝试复制" + imagePath + "到剪贴板");
-                    Clipboard.SetImage(new BitmapImage(new Uri(imagePath)));
+                    var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+                    if (clipboard is not null)
+                        clipboard.SetBitmapAsync(new Bitmap(imagePath)).GetAwaiter().GetResult(); // [port] Clipboard.SetImage→TopLevel.Clipboard.SetBitmapAsync
                     HintService.Hint(Lang.Text("Instance.Screenshot.CopiedToClipboard"));
                     tryTime = 6;
                     return;

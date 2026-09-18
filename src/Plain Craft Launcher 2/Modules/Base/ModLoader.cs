@@ -19,9 +19,19 @@ public static class ModLoader
         UpdateOnly
     }
 
+    // [port] WPF System.Windows.Shell.TaskbarItemProgressState（Windows 任务栏进度，Linux 无对应 API，C4）在
+    //       Avalonia 无此类型；保留本机私有枚举以维持"进度变化 → 刷新下载按钮"的触发逻辑（任务栏进度本身不显示）。
+    public enum TaskbarItemProgressState
+    {
+        None,
+        Indeterminate,
+        Normal
+    }
+
     // 任务栏进度条
     public static ModBase.SafeList<LoaderBase> loaderTaskbar = new();
     public static double loaderTaskbarProgress; // 平滑后的进度
+    private static TaskbarItemProgressState loaderTaskbarProgressLast;
 
     // 文件夹刷新类委托
     private static readonly Dictionary<LoaderBase, LoaderFolderDictionaryEntry> loaderFolderDictionary = new();

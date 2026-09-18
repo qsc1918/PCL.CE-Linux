@@ -4,6 +4,8 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Avalonia.Data;
+using Avalonia.Controls.Templates;
 using Path = Avalonia.Controls.Shapes.Path;
 using Humanizer;
 using PCL.Core.App.Localization;
@@ -14,7 +16,8 @@ using PCL.Core.UI;
 
 namespace PCL;
 
-public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
+// [port] XAML 根为 MyPageRight，基类应为 MyPageRight
+public partial class PageInstanceSavesInfo : MyPageRight, IRefreshable
 {
     /// <summary>无状态服务，线程安全，所有实例可共享。</summary>
     private static readonly SaveManager SaveManager = new();
@@ -58,7 +61,7 @@ public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
 
             var save = await SaveManager.LoadSaveAsync(PageInstanceSavesLeft.currentSave, ct);
 
-            ModMain.frmInstanceSavesLeft.ItemDatapack.Visibility =
+            ModMain.frmInstanceSavesLeft.ItemDatapack.IsVisible =
                 save.VersionId is null or < DataVersionBoundaries._17w47a ? false : true;
 
             if (save.VersionName is null)
@@ -125,9 +128,11 @@ public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
         var combo = new MyComboBox
         {
             Width = 100d, HorizontalAlignment = HorizontalAlignment.Left,
-            ToolTip = Lang.Text("Instance.Saves.Info.Modify.BeforeSave"),
-            SelectedValuePath = "Value", DisplayMemberPath = "Display",
+            // [port] WPF SelectedValuePath/DisplayMemberPath → Avalonia SelectedValueBinding/ItemTemplate（匿名项 Display 属性 + Value 属性）
+            SelectedValueBinding = new Binding("Value"),
+            ItemTemplate = new FuncDataTemplate<object>((_, _) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Display") }),
         };
+        Avalonia.Controls.ToolTip.SetTip(combo, Lang.Text("Instance.Saves.Info.Modify.BeforeSave")); // [port] ToolTip -> SetTip
         combo.Items.Add(new { Value = 0, Display = Lang.Text("Instance.Saves.Info.AllowCommands.NotAllowed") });
         combo.Items.Add(new { Value = 1, Display = Lang.Text("Instance.Saves.Info.AllowCommands.Allowed") });
         combo.SelectedValue = allowCommands ? 1 : 0;
@@ -173,9 +178,11 @@ public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
         var combo = new MyComboBox
         {
             Width = 100d, HorizontalAlignment = HorizontalAlignment.Left,
-            ToolTip = Lang.Text("Instance.Saves.Info.Modify.BeforeSave"),
-            SelectedValuePath = "Value", DisplayMemberPath = "Display",
+            // [port] WPF SelectedValuePath/DisplayMemberPath → Avalonia SelectedValueBinding/ItemTemplate（匿名项 Display 属性 + Value 属性）
+            SelectedValueBinding = new Binding("Value"),
+            ItemTemplate = new FuncDataTemplate<object>((_, _) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Display") }),
         };
+        Avalonia.Controls.ToolTip.SetTip(combo, Lang.Text("Instance.Saves.Info.Modify.BeforeSave")); // [port] ToolTip -> SetTip
         combo.Items.Add(new { Value = 0, Display = Lang.Text("Instance.Saves.Info.Difficulty.Peaceful") });
         combo.Items.Add(new { Value = 1, Display = Lang.Text("Instance.Saves.Info.Difficulty.Easy") });
         combo.Items.Add(new { Value = 2, Display = Lang.Text("Instance.Saves.Info.Difficulty.Normal") });
@@ -185,11 +192,11 @@ public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
         var lockCheckBox = new MyCheckBox
         {
             Text = Lang.Text("Instance.Saves.Info.LockDifficulty"),
-            ToolTip = Lang.Text("Instance.Saves.Info.LockDifficulty"),
             VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10d, 0d, 0d, 0d),
             Checked = isLocked,
-            Visibility = isHardcore ? false : true,
+            IsVisible = isHardcore ? false : true,
         };
+        Avalonia.Controls.ToolTip.SetTip(lockCheckBox, Lang.Text("Instance.Saves.Info.LockDifficulty")); // [port] ToolTip -> SetTip
 
         var panel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Left };
         panel.Children.Add(combo);
@@ -283,8 +290,8 @@ public partial class PageInstanceSavesInfo : MyPageLeft, IRefreshable
                 SvgIcon = "lucide/external-link",
                 Width = 22d,
                 Height = 22d,
-                ToolTip = Lang.Text("Instance.Saves.Info.Chunkbase"),
             };
+            Avalonia.Controls.ToolTip.SetTip(chunkbaseBtn, Lang.Text("Instance.Saves.Info.Chunkbase")); // [port] ToolTip -> SetTip
             chunkbaseBtn.Click += (_, _) => OpenChunkbase(content, versionName);
             contentStack.Children.Add(chunkbaseBtn);
         }

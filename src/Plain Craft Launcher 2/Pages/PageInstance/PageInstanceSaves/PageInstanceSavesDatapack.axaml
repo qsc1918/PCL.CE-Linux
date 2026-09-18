@@ -20,7 +20,7 @@
                             <local:MyButton x:Name="BtnManageSelectAll" MinWidth="110" Text="{DynamicResource Instance.Resource.SelectAll}" Padding="13,7"
                                             Margin="0,7,15,0" HorizontalAlignment="Left" />
                             <local:MyButton x:Name="BtnManageInfoExport" MinWidth="110" Text="{DynamicResource Instance.Resource.ExportInfo}" Padding="13,7"
-                                            Margin="0,7,15,0" HorizontalAlignment="Left" ToolTip="{DynamicResource Instance.Resource.Datapack.ExportInfo.ToolTip}" />
+                                            Margin="0,7,15,0" HorizontalAlignment="Left" ToolTip.Tip="{DynamicResource Instance.Resource.Datapack.ExportInfo.ToolTip}" />
                         </WrapPanel>
                     </local:MyCard>
                     <local:MyCard x:Name="PanListBack" VerticalAlignment="Top" Opacity="0" Margin="0,0,0,14" Title=" "
@@ -74,7 +74,7 @@
         <local:MyCard x:Name="CardSelect" IsVisible="False" Opacity="0"
                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="25,25,25,0" UseAnimation="False">
             <local:MyCard.RenderTransform>
-                <TranslateTransform x:Name="TransSelect" Y="-10" />
+                <TranslateTransform Y="-10" />
             </local:MyCard.RenderTransform>
             <TextBlock x:Name="LabSelect" Text="" HorizontalAlignment="Center" VerticalAlignment="Top"
                        Margin="9" Foreground="{DynamicResource ColorBrush2}" />

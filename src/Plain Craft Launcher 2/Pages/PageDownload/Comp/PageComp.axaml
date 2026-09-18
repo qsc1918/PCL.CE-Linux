@@ -7,12 +7,11 @@
                      
                       DataContext="{Binding RelativeSource={RelativeSource Self}}"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-    <local:MyScrollViewer.Resources>
-        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
-    </local:MyScrollViewer.Resources>
+    <!-- [port] Avalonia 12 无 BooleanToVisibilityConverter；Visibility→IsVisible 布尔直绑。
+         MySearchBox 无 SearchButtonIsVisible 属性，搜索按钮默认显示，删除该属性。 -->
     <StackPanel Orientation="Vertical" Margin="25">
         <StackPanel x:Name="PanAlways">
-            <local:MySearchBox x:Name="PanSearchBox" Margin="0,0,0,15" SearchButtonIsVisible="True" HintText="{DynamicResource Download.Comp.Search.Hint}" />
+            <local:MySearchBox x:Name="PanSearchBox" Margin="0,0,0,15" HintText="{DynamicResource Download.Comp.Search.Hint}" />
             <local:MyCard Margin="0,0,0,15">
                 <Grid Margin="7" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -36,9 +35,9 @@
                     <local:MyComboBox x:Name="ComboSearchSource" Grid.Row="0" Grid.Column="1">
                         <local:MyComboBoxItem Content="{DynamicResource Common.Option.All}" Tag="3" IsSelected="True" />
                         <local:MyComboBoxItem Content="CurseForge" Tag="1"
-                                              Visibility="{Binding SupportCurseForge, Converter={StaticResource VisibilityConverter}}" />
+                                              IsVisible="{Binding SupportCurseForge}" />
                         <local:MyComboBoxItem Content="Modrinth" Tag="2"
-                                              Visibility="{Binding SupportModrinth, Converter={StaticResource VisibilityConverter}}" />
+                                              IsVisible="{Binding SupportModrinth}" />
                     </local:MyComboBox>
                     <!--Tags-->
                     <TextBlock x:Name="LabTag" VerticalAlignment="Center" Grid.Column="2" HorizontalAlignment="Left"
@@ -96,7 +95,7 @@
                                               IsSelected="True" />
                         <local:MyComboBoxItem Content="{DynamicResource Download.Comp.Filter.Loader.VanillaAvailable}"
                                               Tag="/vanilla"
-                                              ToolTip="{DynamicResource Download.Comp.Filter.Loader.VanillaAvailable.ToolTip}" />
+                                              ToolTip.Tip="{DynamicResource Download.Comp.Filter.Loader.VanillaAvailable.ToolTip}" />
                         <local:MyComboBoxItem Content="{DynamicResource Common.Installation.Iris}" Tag="/iris" />
                         <local:MyComboBoxItem Content="{DynamicResource Common.Installation.OptiFine}" Tag="/optifine" />
                     </local:MyComboBox>
@@ -104,12 +103,12 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="6">
                         <local:MyIconButton x:Name="BtnSearchReset"
                                             SvgIcon="lucide/rotate-ccw"
-                                            ToolTip="{DynamicResource Download.Comp.Filter.Reset}" LogoScale="0.9"
+                                            ToolTip.Tip="{DynamicResource Download.Comp.Filter.Reset}" LogoScale="0.9"
                                             Margin="3,0,0,0" />
                         <local:MyIconButton x:Name="BtnSearchInstallModPack"
                                             SvgIcon="lucide/download"
                                             IsVisible="False"
-                                            ToolTip="{DynamicResource Download.Comp.Filter.InstallModpack.ToolTip}"
+                                            ToolTip.Tip="{DynamicResource Download.Comp.Filter.InstallModpack.ToolTip}"
                                             LogoScale="0.9"
                                             ToolTip.HorizontalOffset="-55" ToolTip.VerticalOffset="5" />
                     </StackPanel>

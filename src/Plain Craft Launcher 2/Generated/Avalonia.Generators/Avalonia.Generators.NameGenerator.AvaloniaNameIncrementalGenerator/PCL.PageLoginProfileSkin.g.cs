@@ -11,6 +11,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanData;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::PCL.MySkin Skin;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock TextName;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock TextType;
@@ -39,6 +41,7 @@ namespace PCL
 
             var __thisNameScope__ = this.FindNameScope();
             PanData = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanData");
+            Skin = __thisNameScope__?.Find<global::PCL.MySkin>("Skin");
             TextName = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TextName");
             TextType = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TextType");
             PanButtons = __thisNameScope__?.Find<global::PCL.MyCard>("PanButtons");

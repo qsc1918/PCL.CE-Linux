@@ -15,7 +15,18 @@ public class MyVirtualizingElement<T> : Control where T : Control
     public MyVirtualizingElement(Func<T> initializer)
     {
         _initializer = initializer;
-        this.EnableLazyLoad(() => Init());
+        // [port] LazyLoadBehavior.cs 被延期排除（DeferredExcludes），EnableLazyLoad 不可用，
+        // 此处用 EffectiveViewportChanged 内联实现懒加载：控件滚动进入可视区域时一次性实例化。
+        // 原 WPF 的 RenderSize / TransformToAncestor / VisualTreeHelper 在 Avalonia 12 均不存在。
+        EffectiveViewportChanged += OnEffectiveViewportChanged;
+    }
+
+    private void OnEffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
+    {
+        if (e.EffectiveViewport.Width <= 0 || e.EffectiveViewport.Height <= 0)
+            return;
+        EffectiveViewportChanged -= OnEffectiveViewportChanged;
+        Init();
     }
 
     /// <summary>
@@ -51,7 +62,17 @@ public class MyVirtualizingElement : Control
     public MyVirtualizingElement(Func<Control> initializer)
     {
         _initializer = initializer;
-        this.EnableLazyLoad(() => Init());
+        // [port] LazyLoadBehavior.cs 被延期排除（DeferredExcludes），EnableLazyLoad 不可用，
+        // 此处用 EffectiveViewportChanged 内联实现懒加载，见上方泛型类注释。
+        EffectiveViewportChanged += OnEffectiveViewportChanged;
+    }
+
+    private void OnEffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
+    {
+        if (e.EffectiveViewport.Width <= 0 || e.EffectiveViewport.Height <= 0)
+            return;
+        EffectiveViewportChanged -= OnEffectiveViewportChanged;
+        Init();
     }
 
     /// <summary>

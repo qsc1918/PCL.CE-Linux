@@ -2902,11 +2902,12 @@ public static class ModLaunch
         {
             case GameWindowSizeMode.Launcher: // 与启动器尺寸一致
             {
-                Size result;
+                Size result = default;
                 ModBase.RunInUiWait(() => result = new Size(ModBase.GetPixelSize(ModMain.frmMain.PanForm.Bounds.Width),
                     ModBase.GetPixelSize(ModMain.frmMain.PanForm.Bounds.Height)));
                 gameSize = result;
-                gameSize.Height -= 29.5d * ModBase.dpi / 96d; // 标题栏高度
+                // [port] Avalonia Size 为不可变结构（Width/Height 只读），改为整体构造新 Size
+                gameSize = new Size(gameSize.Width, gameSize.Height - 29.5d * ModBase.dpi / 96d); // 标题栏高度
                 break;
             }
             case GameWindowSizeMode.Custom: // 自定义
@@ -2930,8 +2931,8 @@ public static class ModLaunch
         {
             // 修复 #3463：1.12.2-，JRE 8u200~321 下窗口大小为设置大小的 DPI% 倍
             McLaunchLog($"已应用窗口大小过大修复（{mcLaunchJavaSelected.Installation.Version.Revision}）");
-            gameSize.Width /= ModBase.dpi / 96d;
-            gameSize.Height /= ModBase.dpi / 96d;
+            // [port] Avalonia Size 为不可变结构（Width/Height 只读），改为整体构造新 Size
+            gameSize = new Size(gameSize.Width / (ModBase.dpi / 96d), gameSize.Height / (ModBase.dpi / 96d));
         }
 
         gameArguments.Add("${resolution_width}", Math.Round(gameSize.Width).ToString(CultureInfo.InvariantCulture));
@@ -3630,20 +3631,21 @@ public static class ModLaunch
     {
         McLaunchLog("开始启动结束处理");
 
-        // 暂停或开始音乐播放
-        if (Config.Preference.Music.StopInGame)
-            ModBase.RunInUi(() =>
-            {
-                if (ModMusic.MusicPause()) ModBase.Log("[Music] 已根据设置，在启动后暂停音乐播放");
-            });
-        else if (Config.Preference.Music.StartInGame)
-            ModBase.RunInUi(() =>
-            {
-                if (ModMusic.MusicResume()) ModBase.Log("[Music] 已根据设置，在启动后开始音乐播放");
-            });
-        // 暂停视频背景播放
-        ModVideoBack.IsGaming = true;
-        ModVideoBack.VideoPause();
+        // [port] 音乐播放（ModMusic，C2）与视频背景（ModVideoBack，C1）已按用户指示暂缓移植（csproj 排除），相关调用在 Linux 停用。
+        // // 暂停或开始音乐播放
+        // if (Config.Preference.Music.StopInGame)
+        //     ModBase.RunInUi(() =>
+        //     {
+        //         if (ModMusic.MusicPause()) ModBase.Log("[Music] 已根据设置，在启动后暂停音乐播放");
+        //     });
+        // else if (Config.Preference.Music.StartInGame)
+        //     ModBase.RunInUi(() =>
+        //     {
+        //         if (ModMusic.MusicResume()) ModBase.Log("[Music] 已根据设置，在启动后开始音乐播放");
+        //     });
+        // // 暂停视频背景播放
+        // ModVideoBack.IsGaming = true;
+        // ModVideoBack.VideoPause();
         // 启动器可见性
         McLaunchLog(
             "启动器可见性：" + Config.Launch.LauncherVisibility);

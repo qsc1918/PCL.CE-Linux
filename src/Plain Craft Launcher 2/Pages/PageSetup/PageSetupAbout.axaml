@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:app="clr-namespace:PCL.Core.App;assembly=PCL.Core"
     xmlns:local="clr-namespace:PCL"
+    x:CompileBindings="False"
     DataContext="{Binding Source={x:Static app:Basics.Metadata}}"
-    PanScroll="{Binding ElementName=PanBack}"
-    RenderOptions.BitmapScalingMode="LowQuality">
+    PanScroll="{Binding ElementName=PanBack}">
     <local:MyScrollViewer
         x:Name="PanBack"
         HorizontalScrollBarVisibility="Disabled"
@@ -101,10 +101,10 @@
                 </Grid>
             </local:MyCard>
             <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Setup.About.SpecialThanks.Title}">
-                <Grid Margin="21,40,21,16">
+                <Grid Margin="21,40,21,16" x:Name="GridAboutThanks">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="45" />
-                        <RowDefinition x:Name="RowMcmod" Height="45" />
+                        <RowDefinition Height="45" />
                         <RowDefinition Height="45" />
                         <RowDefinition Height="45" />
                         <RowDefinition Height="45" />
@@ -315,7 +315,6 @@
                                         Width="36"
                                         Height="36"
                                         CornerRadius="18"
-                                        RenderOptions.BitmapScalingMode="HighQuality"
                                         Source="{Binding AvatarUrl}" />
                                     <local:MyTextButton
                                         MaxWidth="90"
@@ -325,7 +324,7 @@
                                         local:CustomEventService.EventData="{Binding HtmlUrl}"
                                         local:CustomEventService.EventType="OpenUrl"
                                         Text="{Binding Login}"
-                                        ToolTip="{Binding Login}" />
+                                        ToolTip.Tip="{Binding Login}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

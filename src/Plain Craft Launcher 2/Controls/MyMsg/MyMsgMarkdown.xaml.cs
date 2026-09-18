@@ -17,11 +17,19 @@ public partial class MyMsgMarkdown : Grid
     private readonly ModMain.MyMsgBoxConverter myConverter;
     private readonly int uuid = ModBase.GetUuid();
 
+    // [port] Avalonia 的名称生成器不会为 Transform 生成字段（其非 Control），
+    //       故在 axaml 中 x:Name 的 TransformPos/TransformRotate 无法被引用，需手动补齐。
+    private TranslateTransform TransformPos;
+    private RotateTransform TransformRotate;
+
     public MyMsgMarkdown(ModMain.MyMsgBoxConverter converter)
     {
         try
         {
             InitializeComponent();
+            // [port] 从 RenderTransform 的 TransformGroup 中取回 x:Name 的变换对象
+            TransformPos = (TranslateTransform)((TransformGroup)RenderTransform).Children[1];
+            TransformRotate = (RotateTransform)((TransformGroup)RenderTransform).Children[0];
             AppendUniqueNameSuffix(Btn1);
             AppendUniqueNameSuffix(Btn2);
             AppendUniqueNameSuffix(Btn3);
@@ -82,7 +90,7 @@ public partial class MyMsgMarkdown : Grid
                 ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground, BlurBorder.BackgroundProperty,
                     (myConverter.IsWarn
                         ? new ModBase.MyColor(140d, 80d, 0d, 0d)
-                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - ModMain.frmMain.PanMsgBackground.Background, 200),
+                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200),
                 "PanMsgBackground Background");
             ModAnimation.AniStart(
                 new[]
@@ -122,7 +130,7 @@ public partial class MyMsgMarkdown : Grid
                 if (!ModMain.WaitingMyMsgBox.Any())
                     ModAnimation.AniStart(ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground,
                         BlurBorder.BackgroundProperty,
-                        new ModBase.MyColor(0d, 0d, 0d, 0d) - ModMain.frmMain.PanMsgBackground.Background, 200,
+                        new ModBase.MyColor(0d, 0d, 0d, 0d) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
             }, 30),
             ModAnimation.AaOpacity(this, -Opacity, 80, 20),
@@ -188,7 +196,7 @@ public partial class MyMsgMarkdown : Grid
         {
             if (e is not null && e.GetCurrentPoint(ShapeLine).Properties.IsLeftButtonPressed)
                 if (e.GetPosition(ShapeLine).Y <= 2d)
-                    ModMain.frmMain.DragMove();
+                    ModMain.frmMain.BeginMoveDrag(e); // [port] DragMove() → BeginMoveDrag(e)
         }
         catch (Exception ex)
         {

@@ -1,4 +1,9 @@
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Input;
 
 namespace PCL;
 
@@ -8,14 +13,22 @@ public class MyScrollBar : ScrollBar
 
     public int Uuid = ModBase.GetUuid();
 
+    private bool _isMouseCaptured;
+
     public MyScrollBar()
     {
-        IsEnabledChanged += (_, _) => RefreshColor();
-        GotMouseCapture += (_, _) => RefreshColor();
-        LostMouseCapture += (_, _) => RefreshColor();
+        // [port] WPF IsEnabledChanged / IsVisibleChanged / GotMouseCapture / LostMouseCapture 在 Avalonia 无同名事件；
+        // 用 PropertyChanged（监听 IsEnabled/IsVisible）+ 指针按下状态近似实现相同刷新时机
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == IsEnabledProperty || e.Property == IsVisibleProperty)
+                RefreshColor();
+        };
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
-        IsVisibleChanged += (_, _) => RefreshColor();
+        PointerPressed += (_, _) => { _isMouseCaptured = true; RefreshColor(); };
+        PointerReleased += (_, _) => { _isMouseCaptured = false; RefreshColor(); };
+        PointerCaptureLost += (_, _) => { _isMouseCaptured = false; RefreshColor(); };
     }
 
     // 指向动画
@@ -34,7 +47,8 @@ public class MyScrollBar : ScrollBar
                 time = 20; // 防止错误的尺寸判断导致闪烁
                 newColor = "ColorBrush4";
             }
-            else if (IsMouseCaptureWithin)
+            // [port] WPF IsMouseCaptureWithin → Avalonia 无直接属性，用指针按下状态近似
+            else if (_isMouseCaptured)
             {
                 newOpacity = 1d;
                 newColor = "ColorBrush4";
@@ -68,7 +82,7 @@ public class MyScrollBar : ScrollBar
             {
                 // 无动画
                 ModAnimation.AniStop("MyScrollBar Color " + Uuid);
-                SetResourceReference(ForegroundProperty, newColor);
+                this.SetResourceReference(ForegroundProperty, newColor);
                 Opacity = newOpacity;
             }
         }

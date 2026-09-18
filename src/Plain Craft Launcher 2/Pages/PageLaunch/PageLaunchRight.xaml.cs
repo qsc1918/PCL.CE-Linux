@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
+using Avalonia.VisualTree;
 using Avalonia.Threading;
 using PCL.Core.App;
 using PCL.Core.Logging;
@@ -672,6 +673,7 @@ public partial class PageLaunchRight : MyPageRight, IRefreshable
             try
             {
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                using var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
             }
             catch (Exception ex)
@@ -867,21 +869,13 @@ public partial class PageLaunchRight : MyPageRight, IRefreshable
             string.Equals(element.Tag?.ToString(), tag, StringComparison.OrdinalIgnoreCase))
             yield return element;
 
-        int count;
-        try
-        {
-            count = VisualTreeHelper.GetChildrenCount(root);
-        }
-        catch
-        {
+        // [port] WPF VisualTreeHelper.GetChildrenCount/GetChild → Avalonia VisualExtensions.GetVisualChildren
+        if (root is not Visual visual)
             yield break;
-        }
 
-        for (var i = 0; i < count; i++)
-        {
-            foreach (var child in _FindElementsByTag(VisualTreeHelper.GetChild(root, i), tag))
-                yield return child;
-        }
+        foreach (var child in visual.GetVisualChildren())
+            foreach (var childElement in _FindElementsByTag(child, tag))
+                yield return childElement;
     }
 
     private static string? _TryGetString(JsonObject obj, params string[] names)

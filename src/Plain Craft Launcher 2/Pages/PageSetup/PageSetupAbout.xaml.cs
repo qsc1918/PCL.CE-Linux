@@ -46,7 +46,8 @@ public partial class PageSetupAbout : MyPageRight
             ItemMcmod.IsVisible = false;
             BtnMcmod.IsVisible = false;
             ImgMcmod.IsVisible = false;
-            RowMcmod.Height = new GridLength(0);
+            // [port] Avalonia 不为 RowDefinition 生成命名字段 → 通过所属 Grid RowDefinitions 索引访问
+            GridAboutThanks.RowDefinitions[1].Height = new GridLength(0);
         }
 
         LoadContributersAsync();

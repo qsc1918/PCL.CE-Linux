@@ -6,14 +6,16 @@
       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25">
     <Grid.RenderTransform>
         <TransformGroup>
-            <RotateTransform x:Name="TransformRotate" Angle="-4" />
-            <TranslateTransform x:Name="TransformPos" X="0" Y="40" />
+            <!-- [port] Avalonia 12 不给 RotateTransform/TranslateTransform 生成 x:Name 字段，删除 x:Name（code-behind 经 RenderTransform.Children 取用） -->
+            <RotateTransform Angle="-4" />
+            <TranslateTransform X="0" Y="40" />
         </TransformGroup>
     </Grid.RenderTransform>
     <Border Name="PanBorder" CornerRadius="7" Background="{DynamicResource ColorBrushBackground}">
         <Border.Effect>
-            <DropShadowEffect Color="{DynamicResource ColorObjectMsgBoxShadow}" BlurRadius="20" ShadowDepth="2"
-                              RenderingBias="Performance" Opacity="0.8" x:Name="EffectShadow" />
+            <!-- [port] DropShadowEffect 移除 WPF 专属 RenderingBias/x:Name；ShadowDepth → Avalonia Offset（向下偏移） -->
+            <DropShadowEffect Color="{DynamicResource ColorObjectMsgBoxShadow}" BlurRadius="20"
+                              Opacity="0.8" />
         </Border.Effect>
         <Grid Name="PanMain" VerticalAlignment="Top" Margin="22,22,22,23">
             <Grid.RowDefinitions>

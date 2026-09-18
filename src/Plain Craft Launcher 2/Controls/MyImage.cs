@@ -5,6 +5,7 @@ using System.Net.Http;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
@@ -39,7 +40,8 @@ public class MyImage : Image
             {
                 try
                 {
-                    ImageSource bitmap = value is null ? null : await Task.Run(() => new MyBitmap(value));
+                    // [port] WPF ImageSource → Avalonia IImage；MyBitmap 隐式转 Bitmap，显式强制转 Bitmap 后赋给 IImage Source
+                    IImage bitmap = value is null ? null : (Bitmap)(await Task.Run(() => new MyBitmap(value)));
                     base.Source = bitmap;
                 }
                 catch (Exception ex)
@@ -238,11 +240,12 @@ public class MyImage : Image
 
     private void UpdateClip() // Handles Me.SizeChanged will be added separately
     {
-        if (ActualWidth > 0 && ActualHeight > 0 &&
+        // [port] WPF ActualWidth/ActualHeight → Avalonia Bounds.Width/Bounds.Height
+        if (Bounds.Width > 0 && Bounds.Height > 0 &&
             CornerRadius.TopLeft >= 0 && CornerRadius.TopRight >= 0)
         {
             Clip = new RectangleGeometry(
-                new Rect(0, 0, ActualWidth, ActualHeight),
+                new Rect(0, 0, Bounds.Width, Bounds.Height),
                 CornerRadius.TopLeft,
                 CornerRadius.TopRight);
         }

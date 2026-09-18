@@ -23,6 +23,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.ToolTip ToolTipInfo;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid PanBottomBar;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.Core.UI.Controls.SvgIcon.SvgIcon SvgIconVersion;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabVersion;
@@ -67,6 +69,7 @@ namespace PCL
             PanTags = __thisNameScope__?.Find<global::Avalonia.Controls.StackPanel>("PanTags");
             LabInfo = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabInfo");
             ToolTipInfo = __thisNameScope__?.Find<global::Avalonia.Controls.ToolTip>("ToolTipInfo");
+            PanBottomBar = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanBottomBar");
             SvgIconVersion = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.SvgIcon.SvgIcon>("SvgIconVersion");
             LabVersion = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabVersion");
             SvgIconDownload = __thisNameScope__?.Find<global::PCL.Core.UI.Controls.SvgIcon.SvgIcon>("SvgIconDownload");

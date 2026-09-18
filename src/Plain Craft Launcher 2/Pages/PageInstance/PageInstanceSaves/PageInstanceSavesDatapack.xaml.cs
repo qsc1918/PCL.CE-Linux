@@ -21,9 +21,14 @@ using PCL.Core.App.Localization;
 
 namespace PCL;
 
-public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
+// [port] XAML 根为 MyPageRight 且用到 PageExit/PageLoaderInit（MyPageRight 成员），基类应为 MyPageRight
+public partial class PageInstanceSavesDatapack : MyPageRight, IRefreshable
 {
     #region 数据包信息缓存
+
+    // [port] Avalonia 命名字段生成器不为 Transform 生成字段（即使 axaml 写 x:Name="TransSelect"）
+    // → 经 CardSelect.RenderTransform 取 TranslateTransform（该元素渲染变换即单 TranslateTransform）。
+    private TranslateTransform TransSelect => (TranslateTransform)CardSelect.RenderTransform;
 
     private readonly Dictionary<string, (DateTime CreationTime, long Length)> datapackFileInfoCache = new();
 
@@ -79,7 +84,8 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
         BtnHintDownload.Click += BtnManageDownload_Click;
         BtnManageInfoExport.Click += BtnManageInfoExport_Click;
         Load.StateChanged += (_, _, _) => UnselectedAllWithAnimation();
-        SearchBox.PreviewKeyDown += SearchBox_PreviewKeyDown;
+        // [port] WPF PreviewKeyDown（隧道）→ Avalonia 用 KeyDown；MySearchBox 无 PreviewKeyDown
+        SearchBox.KeyDown += SearchBox_PreviewKeyDown;
         BtnFilterAll.Check += ChangeFilter;
         BtnFilterCanUpdate.Check += ChangeFilter;
         BtnFilterDisabled.Check += ChangeFilter;
@@ -174,7 +180,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
             _ => LoadUIFromLoaderOutput(), () => ModComp.CompType.DataPack, false);
     }
 
-    private void Load_Click(object sender, PointerPressedEventArgs e)
+    private void Load_Click(object sender, PointerReleasedEventArgs e)
     {
         if (ModLocalComp.compResourceListLoader.State == ModBase.LoadState.Failed)
             LoaderRun(ModLoader.LoaderFolderRunType.ForceRun);
@@ -253,7 +259,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
             ModAnimation.AniControlEnabled += 1;
             var newItem = new MyLocalCompItem
             {
-                SnapsToDevicePixels = true,
+                // [port] WPF SnapsToDevicePixels 在 Avalonia 无对应属性，删除
                 Entry = entry,
                 buttonHandler = BuildLocalCompItemBtnHandler,
                 Checked = selectedDatapacks.Contains(entry.RawPath)
@@ -299,7 +305,11 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
         ToolTip.SetVerticalOffset(btnCont, 30d);
         ToolTip.SetHorizontalOffset(btnCont, 2d);
         btnCont.Click += Info_Click;
-        sender.MouseRightButtonUp += Info_Click;
+        // [port] WPF MouseRightButtonUp → Avalonia PointerReleased，并只响应右键
+        sender.PointerReleased += (s, e) =>
+        {
+            if (e.InitialPressMouseButton == MouseButton.Right) Info_Click(s, e);
+        };
 
         var btnDelete = new MyIconButton { LogoScale = 1d, SvgIcon = "lucide/trash-2", Tag = sender };
         Avalonia.Controls.ToolTip.SetTip(btnDelete, Lang.Text("Common.Action.Delete")); // [port] ToolTip -> SetTip
@@ -686,7 +696,7 @@ public partial class PageInstanceSavesDatapack : MyPageLeft, IRefreshable
                 Lang.Text("Instance.Saves.Datapack.Export.Mode.Message"),
                 Lang.Text("Instance.Resource.Export.Mode.Title"), Lang.Text("Instance.Resource.Export.Mode.Txt"), Lang.Text("Instance.Resource.Export.Mode.Csv"), Lang.Text("Common.Action.Cancel"));
 
-        void ExportText(string content, string fileName)
+        async void ExportText(string content, string fileName)
         {
             try
             {

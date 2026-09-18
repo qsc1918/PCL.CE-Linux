@@ -139,11 +139,11 @@ public partial class PageLogLeft : MyPageLeft
                         }
                     }
 
-                    while (flowDocuments[uuid].Blocks.Count > (decimal)maxLog)
+                    while (flowDocuments[uuid].Inlines.Count > (decimal)maxLog)
                     {
-                        // [port] FlowDocument.FirstBlock 在 Avalonia 无对应，取第一个块移除
-                        var firstBlock = flowDocuments[uuid].Blocks.FirstOrDefault();
-                        if (firstBlock is not null) flowDocuments[uuid].Blocks.Remove(firstBlock);
+                        // [port] WPF FlowDocument.FirstBlock 在 Avalonia 无对应，取第一个 Inline 移除
+                        var firstBlock = flowDocuments[uuid].Inlines.FirstOrDefault();
+                        if (firstBlock is not null) flowDocuments[uuid].Inlines.Remove(firstBlock);
                     }
                 });
                 return;

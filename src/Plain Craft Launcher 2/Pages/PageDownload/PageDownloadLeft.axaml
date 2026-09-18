@@ -2,8 +2,8 @@
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:local="clr-namespace:PCL">
-    <local:MyScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                          Style="{StaticResource ScrollViewerFullMargin}">
+    <local:MyScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <!-- [port] Avalonia 12 不支持 Style="{StaticResource ...}" 属性语法（属性无法解析），滚动条样式交由全局隐式样式 -->
         <StackPanel Margin="0,12,0,0" Name="PanItem">
 
             <local:MyListItem x:Name="ItemInstall" Checked="True" IsScaleAnimationEnabled="False" Type="RadioBox"
@@ -12,12 +12,10 @@
                               Title="{DynamicResource Download.Left.Minecraft}"
                               SvgIcon="lucide/boxes">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="1" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="1" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -30,12 +28,10 @@
                               LogoScale="0.97"
                               SvgIcon="lucide/puzzle">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="2" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="2" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -46,12 +42,10 @@
                               LogoScale="0.98"
                               SvgIcon="lucide/package">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="3" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="3" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemDataPack" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="4"
@@ -61,12 +55,10 @@
                               LogoScale="0.96"
                               SvgIcon="lucide/file-archive">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="4" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="4" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemResourcePack" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="5"
@@ -76,12 +68,10 @@
                               LogoScale="0.81"
                               SvgIcon="lucide/layers">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="5" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="5" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemShader" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="6"
@@ -91,12 +81,10 @@
                               LogoScale="1.04"
                               SvgIcon="lucide/sparkles">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="6" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="6" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemWorld" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="7"
@@ -106,12 +94,10 @@
                               LogoScale="0.85"
                               SvgIcon="lucide/globe">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="7" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="7" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemFavorites" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="8"
@@ -120,12 +106,10 @@
                               Title="{DynamicResource Download.Left.Favorites}"
                               SvgIcon="lucide/heart">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="8" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="8" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -137,12 +121,10 @@
                               LogoScale="0.98"
                               SvgIcon="lucide/package">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="9" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="9" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemOptiFine" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="10"
@@ -152,12 +134,10 @@
                               LogoScale="1.00"
                               SvgIcon="lucide/gauge">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="10" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="10" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemForge" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="11"
@@ -167,12 +147,10 @@
                               LogoScale="1.00"
                               SvgIcon="lucide/anvil">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="11" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="11" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemNeoForge" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="12"
@@ -182,12 +160,10 @@
                               LogoScale="0.95"
                               SvgIcon="lucide/cat">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="12" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="12" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemCleanroom" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="13"
@@ -197,12 +173,10 @@
                               LogoScale="0.95"
                               SvgIcon="lucide/flask-conical">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="13" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="13" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemFabric" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="14"
@@ -212,12 +186,10 @@
                               LogoScale="1.02"
                               SvgIcon="lucide/scroll">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="14" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="14" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemLegacyFabric" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="18"
@@ -227,12 +199,10 @@
                               LogoScale="1.02"
                               SvgIcon="lucide/scroll">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="18" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="18" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemLabyMod" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="17"
@@ -242,12 +212,10 @@
                               LogoScale="1.02"
                               SvgIcon="lucide/box">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="17" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="17" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemLiteLoader" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="16"
@@ -257,12 +225,10 @@
                               LogoScale="1.06"
                               SvgIcon="lucide/egg">
                 <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Tag="16" ToolTip="{DynamicResource Common.Action.Refresh}"
+                        <local:MyIconButton Tag="16" ToolTip.Tip="{DynamicResource Common.Action.Refresh}"
                                             ToolTip.Placement="Right" Click="RefreshButton_Click" ToolTip.VerticalOffset="-1"
                                             LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
-                    </x:Array>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
         </StackPanel>

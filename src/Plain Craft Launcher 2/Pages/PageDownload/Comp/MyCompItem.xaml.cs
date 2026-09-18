@@ -11,6 +11,15 @@ namespace PCL;
 
 public partial class MyCompItem : Grid
 {
+    // [port] Avalonia 命名字段生成器不为 ColumnDefinition 生成字段（即使 axaml 写了 x:Name）
+    // → 经底部栏 Grid（PanBottomBar）的 ColumnDefinitions 按索引访问。
+    public ColumnDefinition ColumnVersion1 => PanBottomBar.ColumnDefinitions[0];
+    public ColumnDefinition ColumnVersion2 => PanBottomBar.ColumnDefinitions[1];
+    public ColumnDefinition ColumnVersion3 => PanBottomBar.ColumnDefinitions[2];
+    public ColumnDefinition ColumnTime1 => PanBottomBar.ColumnDefinitions[6];
+    public ColumnDefinition ColumnTime2 => PanBottomBar.ColumnDefinitions[7];
+    public ColumnDefinition ColumnTime3 => PanBottomBar.ColumnDefinitions[8];
+
     private string stateLast;
 
     /// <summary>
@@ -408,7 +417,8 @@ public partial class MyCompItem : Grid
         var isClickOnLabInfo = false;
         if (LabInfo.IsVisible == true)
         {
-            var labInfoBounds = new Rect(LabInfo.TranslatePoint(new Point(0d, 0d), this), LabInfo.Bounds.Size);
+            // [port] WPF TranslatePoint 返回 Point → Avalonia TranslatePoint 返回 Point?，取 .Value
+            var labInfoBounds = new Rect(LabInfo.TranslatePoint(new Point(0d, 0d), this).Value, LabInfo.Bounds.Size);
             isClickOnLabInfo = labInfoBounds.Contains(clickPosition);
         }
 
@@ -424,7 +434,8 @@ public partial class MyCompItem : Grid
     private bool _IsClickOnActionButton(Control button, Point clickPosition)
     {
         if (button is null || button.IsVisible != true) return false;
-        var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this), button.Bounds.Size);
+        // [port] WPF TranslatePoint 返回 Point → Avalonia TranslatePoint 返回 Point?，取 .Value
+        var bounds = new Rect(button.TranslatePoint(new Point(0d, 0d), this).Value, button.Bounds.Size);
         return bounds.Contains(clickPosition);
     }
 

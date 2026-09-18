@@ -45,7 +45,7 @@ public class MyCard : AnimatedBackgroundGrid
         mainGrid = new Grid();
         Children.Add(mainGrid);
         // 设置背景色
-        SetResourceReference(BackgroundBrushProperty, "ColorBrushTransparentBackground");
+        this.SetResourceReference(BackgroundBrushProperty, "ColorBrushTransparentBackground");
         Loaded += (_, _) => Init();
         PointerEntered += MyCard_PointerEntered;
         PointerExited += MyCard_PointerExited;
@@ -132,7 +132,8 @@ public class MyCard : AnimatedBackgroundGrid
                 IsHitTestVisible = false
             };
             MainTextBlock.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush1");
-            MainTextBlock.SetBinding(TextBlock.TextProperty,
+            // [port] WPF SetBinding → Avalonia Bind
+            MainTextBlock.Bind(TextBlock.TextProperty,
                 new Binding("Title") { Source = this, Mode = BindingMode.OneWay });
             mainGrid.Children.Add(MainTextBlock);
         }
@@ -145,8 +146,7 @@ public class MyCard : AnimatedBackgroundGrid
             {
                 HorizontalAlignment = HorizontalAlignment.Right, Stretch = Stretch.Uniform, Height = 6d, Width = 10d,
                 VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0d, 17d, 16d, 0d),
-                Data =
-                    (Geometry)new GeometryConverter().ConvertFromString("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
+                Data = Geometry.Parse("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
                 RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative)
             };
             MainSwap.SetResourceReference(Shape.FillProperty, "ColorBrush1");
@@ -245,7 +245,7 @@ public class MyCard : AnimatedBackgroundGrid
             return;
         var deltaHeight = (IsSwapped ? SwapedHeight : e.NewSize.Height) - e.PreviousSize.Height;
         // 卡片的进入时动画已被页面通用切换动画替代
-        if (e.PreviousSize.Height == 0d || isHeightAnimating || Math.Abs(deltaHeight) < 1d || ActualHeight == 0d)
+        if (e.PreviousSize.Height == 0d || isHeightAnimating || Math.Abs(deltaHeight) < 1d || Bounds.Height == 0d)
             return;
         StartHeightAnimation(deltaHeight, e.PreviousSize.Height, false);
     }
@@ -411,16 +411,16 @@ public class MyCard : AnimatedBackgroundGrid
 
     private void MyCard_PointerPressed(object sender, PointerPressedEventArgs e)
     {
-        double pos = Mouse.GetPosition(this).Y;
-        if (!IsSwapped && (pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsMouseDirectlyOver)))
+        double pos = e.GetPosition(this).Y;
+        if (!IsSwapped && (pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsPointerOver)))
             return;
         isCustomMouseDown = true;
-        if (!IsSwapped && (SwapControl is null || pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsMouseDirectlyOver)))
+        if (!IsSwapped && (SwapControl is null || pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsPointerOver)))
             return;
         isSwapMouseDown = true;
     }
 
-    private void MyCard_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void MyCard_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isCustomMouseDown) return;
         isCustomMouseDown = false;
@@ -429,8 +429,8 @@ public class MyCard : AnimatedBackgroundGrid
         if (!isSwapMouseDown) return;
         isSwapMouseDown = false;
 
-        double pos = Mouse.GetPosition(this).Y;
-        if (!IsSwapped && (SwapControl is null || pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsMouseDirectlyOver)))
+        double pos = e.GetPosition(this).Y;
+        if (!IsSwapped && (SwapControl is null || pos > (IsSwapped ? SwapedHeight : SwapedHeight - 6) || (pos == 0 && !IsPointerOver)))
             return; // 检测点击位置；或已经不在可视树上的误判
 
         var e2 = new ModBase.RouteEventArgs(true);

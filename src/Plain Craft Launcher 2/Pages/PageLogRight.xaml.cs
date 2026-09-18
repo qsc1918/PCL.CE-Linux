@@ -94,7 +94,8 @@ public partial class PageLogRight : MyPageRight
             };
         });
         // 绑定日志输出
-        PanLog.Document = ModMain.frmLogLeft.flowDocuments[ModMain.frmLogLeft.currentUuid];
+        // [port] WPF RichTextBox.Document（FlowDocument）→ Avalonia SelectableTextBlock.Inlines
+        PanLog.Inlines = ModMain.frmLogLeft.flowDocuments[ModMain.frmLogLeft.currentUuid].Inlines;
         // 绑定事件
         ModMain.frmLogLeft.currentLog.LogOutput += OnLogOutput;
         ModMain.frmLogLeft.currentLog.GameExit += OnGameExit;
@@ -118,7 +119,7 @@ public partial class PageLogRight : MyPageRight
         {
             if (ModMain.frmLogLeft.currentLog is not null)
             {
-                if (CheckAutoScroll.Checked == true) PanBack.ScrollToBottom();
+                if (CheckAutoScroll.Checked == true) PanBack.ScrollToEnd(); // [port] WPF ScrollViewer.ScrollToBottom → Avalonia ScrollToEnd
                 RefreshLabText();
             }
         });
@@ -141,7 +142,7 @@ public partial class PageLogRight : MyPageRight
 
     private void BtnOperationClear_Click(object sender, ModBase.RouteEventArgs e)
     {
-        ModMain.frmLogLeft.flowDocuments[ModMain.frmLogLeft.currentUuid].Blocks.Clear();
+        ModMain.frmLogLeft.flowDocuments[ModMain.frmLogLeft.currentUuid].Inlines.Clear(); // [port] WPF FlowDocument.Blocks.Clear → Avalonia Inlines.Clear
     }
 
     private async void BtnOperationExport_Click(object sender, ModBase.RouteEventArgs e)

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
@@ -31,7 +31,8 @@ public partial class PageInstanceServer : MyPageRight
     {
         InitializeComponent();
         Loaded += PageLoaded;
-        IsVisibleChanged += PageInstanceServer_IsVisibleChanged;
+        // [port] WPF IsVisibleChanged 事件 → Avalonia 用 PropertyChanged 监听 IsVisibleProperty
+        PropertyChanged += (_, e) => { if (e.Property == IsVisibleProperty) PageInstanceServer_IsVisibleChanged(this, e); };
     }
 
     private async void PageLoaded(object e, RoutedEventArgs sender)

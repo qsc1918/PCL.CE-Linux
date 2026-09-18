@@ -3,7 +3,7 @@
     x:Name="PanBack"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PCL;assembly="
+    xmlns:local="clr-namespace:PCL;assembly=PCL"
     Height="44"
     Background="{StaticResource ColorBrushSemiTransparent}"
     RenderTransformOrigin="0.5,0.5">
@@ -13,7 +13,8 @@
         <ColumnDefinition Width="7" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="1*" />
-        <ColumnDefinition x:Name="ColumnPaddingRight" Width="4" />
+        <!-- [port] ColumnDefinition 的 x:Name 不能生成字段，删除 x:Name（code-behind 经 ColumnDefinitions 索引访问） -->
+        <ColumnDefinition Width="4" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
         <RowDefinition Height="1*" />
@@ -34,7 +35,7 @@
         CornerRadius="6"
         FallbackSource="avares://PCL/Images/Icons/NoIcon.png"
         IsHitTestVisible="False"
-        RenderOptions.BitmapScalingMode="HighQuality" />
+        RenderOptions.BitmapInterpolationMode="HighQuality" />
     <!-- 标题 -->
     <Grid
         x:Name="PanTitle"
@@ -44,10 +45,11 @@
         Margin="0,1,0,0"
         VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="ColumnTitle" Width="Auto" />
-            <ColumnDefinition x:Name="ColumnSubtitle" Width="Auto" />
+            <!-- [port] ColumnDefinition x:Name 不生成字段，删除（code-behind 经 PanTitle.ColumnDefinitions 索引访问） -->
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition x:Name="ColumnExtend" Width="1*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <TextBlock
             x:Name="LabTitle"

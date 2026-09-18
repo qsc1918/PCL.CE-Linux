@@ -57,12 +57,14 @@ public class MyTextBox : TextBox
     {
         Loaded += (_, _) => Validate();
         TextChanged += (a, b) => MyTextBox_TextChanged((MyTextBox)a, b);
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] Avalonia 无 IsEnabledChanged 事件 → 用 PropertyChanged 监听 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
         GotFocus += (_, _) => RefreshColor();
         LostFocus += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshTextColor();
+        // [port] Avalonia 无 IsEnabledChanged 事件 → 用 PropertyChanged 监听 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshTextColor(); };
     }
 
     // 自定义属性
@@ -368,8 +370,8 @@ public class MyTextBox : TextBox
             {
                 // 无动画
                 ModAnimation.AniStop("MyTextBox Color " + Uuid);
-                SetResourceReference(BorderBrushProperty, foreColorName);
-                SetResourceReference(BackgroundProperty, backColorName);
+                this.SetResourceReference(BorderBrushProperty, foreColorName);
+                this.SetResourceReference(BackgroundProperty, backColorName);
             }
         }
 
@@ -398,7 +400,7 @@ public class MyTextBox : TextBox
         {
             // 无动画
             ModAnimation.AniStop("MyTextBox TextColor " + Uuid);
-            Foreground = newColor;
+            Foreground = newColor.ToBrush(); // [port] MyColor→IBrush 需经由 ToBrush() 显式转换
         }
     }
 

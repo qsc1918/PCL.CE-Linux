@@ -105,7 +105,7 @@ public partial class PageLoginProfile : Grid
     #region 控件
 
     // [port] PointerPressedEventArgs → PointerPressedEventArgs
-    private void SelectProfile(object sender, PointerPressedEventArgs e)
+    private void SelectProfile(object sender, PointerReleasedEventArgs e)
     {
         var item = (MyListItem)sender;
         var tag = (ModProfile.McProfile)item.Tag;

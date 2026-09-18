@@ -60,7 +60,7 @@ public partial class PageSetupLauncherMisc : MyPageRight
         TextSystemHttpProxy.Text = Config.Network.HttpProxy.CustomAddress;
         TextSystemHttpProxyCustomUsername.Text = Config.Network.HttpProxy.CustomUsername;
         TextSystemHttpProxyCustomPassword.Text = Config.Network.HttpProxy.CustomPassword;
-        ((MyRadioBox)FindName($"RadioHttpProxyType{Config.Network.HttpProxy.Type}")).SetChecked(true, false);
+        ((MyRadioBox)this.FindControl<MyRadioBox>($"RadioHttpProxyType{Config.Network.HttpProxy.Type}")).SetChecked(true, false); // [port] WPF FindName → Avalonia FindControl<MyRadioBox>
         CheckNetDohEnable.Checked = Config.Network.EnableDoH;
 
         // 调试选项

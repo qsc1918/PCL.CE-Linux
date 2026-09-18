@@ -23,7 +23,7 @@
                                                       DropDownWidthSync="False" />
                                     <local:MyIconButton LogoScale="1.1" Margin="4,8,5,8" VerticalAlignment="Center"
                                                         x:Name="Btn_ManageTargetFav"
-                                                        ToolTip="{DynamicResource Download.Comp.Favorites.Manage}" />
+                                                        ToolTip.Tip="{DynamicResource Download.Comp.Favorites.Manage}" />
                                 </StackPanel>
                             </local:MyCard>
                         </Grid>
@@ -71,7 +71,7 @@
                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="25,25,25,0" UseAnimation="False"
                       HasMouseAnimation="False">
             <local:MyCard.RenderTransform>
-                <TranslateTransform x:Name="TransSelect" Y="-10" />
+                <TranslateTransform Y="-10" />
             </local:MyCard.RenderTransform>
             <TextBlock x:Name="LabSelect" Text="{DynamicResource Download.Comp.Favorites.Selection.Placeholder}"
                        HorizontalAlignment="Center" VerticalAlignment="Top"

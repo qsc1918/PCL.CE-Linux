@@ -20,11 +20,19 @@ public partial class MyMsgSelect : Grid
 
     private int selectedIndex = -1;
 
+    // [port] Avalonia 的名称生成器不会为 Transform 生成字段（其非 Control），
+    //       故在 axaml 中 x:Name 的 TransformPos/TransformRotate 无法被引用，需手动补齐。
+    private TranslateTransform TransformPos;
+    private RotateTransform TransformRotate;
+
     public MyMsgSelect(ModMain.MyMsgBoxConverter converter)
     {
         try
         {
             InitializeComponent();
+            // [port] 从 RenderTransform 的 TransformGroup 中取回 x:Name 的变换对象
+            TransformPos = (TranslateTransform)((TransformGroup)RenderTransform).Children[1];
+            TransformRotate = (RotateTransform)((TransformGroup)RenderTransform).Children[0];
             AppendUniqueNameSuffix(Btn1);
             AppendUniqueNameSuffix(Btn2);
             myConverter = converter;
@@ -115,7 +123,7 @@ public partial class MyMsgSelect : Grid
                 ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground, BlurBorder.BackgroundProperty,
                     (myConverter.IsWarn
                         ? new ModBase.MyColor(140d, 80d, 0d, 0d)
-                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - ModMain.frmMain.PanMsgBackground.Background, 200),
+                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200),
                 "PanMsgBackground Background");
             ModAnimation.AniStart(
                 new[]
@@ -145,7 +153,7 @@ public partial class MyMsgSelect : Grid
     {
         // 结束线程阻塞
         myConverter.WaitFrame.Continue = false;
-        ComponentDispatcher.PopModal();
+        // [port] ComponentDispatcher.PopModal() 已移除：Avalonia 无 ComponentDispatcher（WPF 模态消息环）。
         // 动画
         ModAnimation.AniStart(new[]
         {
@@ -154,7 +162,7 @@ public partial class MyMsgSelect : Grid
                 if (!ModMain.WaitingMyMsgBox.Any())
                     ModAnimation.AniStart(ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground,
                         BlurBorder.BackgroundProperty,
-                        new ModBase.MyColor(0d, 0d, 0d, 0d) - ModMain.frmMain.PanMsgBackground.Background, 200,
+                        new ModBase.MyColor(0d, 0d, 0d, 0d) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
             }, 30),
             ModAnimation.AaOpacity(this, -Opacity, 80, 20),
@@ -194,9 +202,9 @@ public partial class MyMsgSelect : Grid
     {
         try
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                 if (e.GetPosition(ShapeLine).Y <= 2d)
-                    ModMain.frmMain.DragMove();
+                    ModMain.frmMain.BeginMoveDrag(e);
         }
         catch (Exception ex)
         {

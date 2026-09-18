@@ -48,14 +48,17 @@ public class MyTextButton : Label
 
     public MyTextButton()
     {
-        SetResourceReference(ForegroundProperty, "ColorBrush1");
-        Background = ThemeManager.colorSemiTransparent;
-        PreviewPointerPressed += MyTextButton_PointerPressed;
+        this.SetResourceReference(ForegroundProperty, "ColorBrush1");
+        Background = ThemeManager.colorSemiTransparent.ToBrush();
+        // [port] PreviewPointerPressed (WPF tunnel) -> Avalonia AddHandler(Tunnel)
+        AddHandler(InputElement.PointerPressedEvent, new EventHandler<PointerPressedEventArgs>(MyTextButton_PointerPressed), RoutingStrategies.Tunnel, true);
         PointerExited += (_, _) => MyTextButton_PointerExited();
-        PreviewPointerReleased += MyTextButton_PointerReleased;
+        // [port] PreviewPointerReleased (WPF tunnel) -> Avalonia AddHandler(Tunnel)
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(MyTextButton_PointerReleased), RoutingStrategies.Tunnel, true);
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerPressed += (_, _) => RefreshColor();
         PointerReleased += (_, _) => RefreshColor();
     }
@@ -90,7 +93,7 @@ public class MyTextButton : Label
         isMouseDown = false;
     }
 
-    private void MyTextButton_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void MyTextButton_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown) return;
         isMouseDown = false;
