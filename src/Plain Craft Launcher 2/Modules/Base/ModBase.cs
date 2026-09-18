@@ -211,10 +211,11 @@ public static class ModBase
                 g = 255d;
                 b = 255d;
             }
-            else if (obj is SolidColorBrush)
+            else if (obj is ISolidColorBrush)
             {
-                // 避免反复获取 Color 对象造成性能下降
-                var color = ((SolidColorBrush)obj).Color;
+                // [port] Avalonia 资源画刷常为 ImmutableSolidColorBrush（非 SolidColorBrush），
+                // 统一经 ISolidColorBrush 接口取 Color（避免 dynamic 访问失败）
+                var color = ((ISolidColorBrush)obj).Color;
                 a = color.A;
                 r = color.R;
                 g = color.G;

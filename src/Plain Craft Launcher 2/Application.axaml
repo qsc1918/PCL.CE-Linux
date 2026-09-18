@@ -375,7 +375,7 @@
                 <Setter Property="RenderTransform" Value="rotate(0deg)" />
                 <Setter Property="Transitions">
                     <Transitions>
-                        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CircleEaseOut" />
+                        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CircularEaseOut" />
                     </Transitions>
                 </Setter>
             </Style>

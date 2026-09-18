@@ -11,8 +11,8 @@ namespace PCL;
 public class AnimatedBackgroundGrid : Grid
 {
     // [port] WPF 式 Register + PropertyMetadata(默认值, 回调) → Avalonia Register<TOwner,TValue> + Changed 钩子
-    public static readonly StyledProperty<SolidColorBrush> BackgroundBrushProperty =
-        AvaloniaProperty.Register<AnimatedBackgroundGrid, SolidColorBrush>(
+    public static readonly StyledProperty<IBrush> BackgroundBrushProperty =
+        AvaloniaProperty.Register<AnimatedBackgroundGrid, IBrush>(
             "BackgroundBrush", new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)));
 
     private readonly AvaloniaProperty _animatableBrushProperty;
@@ -36,9 +36,9 @@ public class AnimatedBackgroundGrid : Grid
 
     protected virtual Control AnimatableElement => this;
 
-    protected virtual SolidColorBrush AnimatableBrush
+    protected virtual IBrush AnimatableBrush
     {
-        get => (SolidColorBrush)Background;
+        get => Background;
         set => Background = value;
     }
 
@@ -48,16 +48,16 @@ public class AnimatedBackgroundGrid : Grid
         private set => field = value;
     }
 
-    public SolidColorBrush BackgroundBrush
+    public IBrush BackgroundBrush
     {
-        get => (SolidColorBrush)GetValue(BackgroundBrushProperty);
+        get => GetValue(BackgroundBrushProperty);
         set => SetValue(BackgroundBrushProperty, value);
     }
 
     private static void _BackgroundBrushChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
     {
         var grid = (AnimatedBackgroundGrid)d;
-        var brush = (SolidColorBrush)e.NewValue;
+        var brush = (IBrush)e.NewValue;
         if (!(grid.IsLoaded && grid.IsVisible))
         {
             grid.AnimatableBrush = brush;
@@ -72,7 +72,7 @@ public class AnimatedBackgroundGrid : Grid
                 new[]
                 {
                     ModAnimation.AaColor(grid.AnimatableElement, grid._animatableBrushProperty,
-                        new ModBase.MyColor(brush) - grid.AnimatableBrush, 300)
+                        new ModBase.MyColor(brush) - new ModBase.MyColor(grid.AnimatableBrush), 300)
                 }, "MyCard Theme " + grid.uuid);
             await Task.Delay(300);
             grid.AnimatableBrush = brush;
