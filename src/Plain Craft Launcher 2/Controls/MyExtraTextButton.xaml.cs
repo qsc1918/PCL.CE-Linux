@@ -129,7 +129,9 @@ public partial class MyExtraTextButton : Grid
     } = 1d;
 
     // 显示文本
-    [Content] // [port] WPF 绫荤骇 [ContentProperty("Inlines")] 鈫?Avalonia 12 灞炴€х骇 [Content]
+    // [port] WPF 类级 [ContentProperty("Inlines")] 在 Avalonia 会按实例类型路由根 XAML 子元素到 Inlines，
+    // 而此时 LabText/LabTitle 等命名字段尚未初始化 → 填充期 NullReferenceException。
+    // WPF 中根标签 <Border>/<Grid> 按基类内容属性(Child/Children)路由，故此处移除 [Content] 以还原该语义。
     public InlineCollection Inlines => LabText.Inlines;
 
     public string Text
