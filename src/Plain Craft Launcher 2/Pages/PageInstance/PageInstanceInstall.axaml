@@ -54,8 +54,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Image x:Name="ImgMinecraft" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear" />
+                                <Image x:Name="ImgMinecraft" Margin="0,0,7,0" Height="18" />
                                 <TextBlock x:Name="LabMinecraft" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                                 <Path
@@ -82,13 +81,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgForge" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Anvil.png" />
                                 <TextBlock x:Name="LabForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnForgeClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Forge_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="Forge_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnForgeClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -111,13 +109,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgCleanroom" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Cleanroom.png" />
                                 <TextBlock x:Name="LabCleanroom" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnCleanroomClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Cleanroom_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="Cleanroom_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnCleanroomClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -140,13 +137,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgNeoForge" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/NeoForge.png" />
                                 <TextBlock x:Name="LabNeoForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnNeoForgeClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="NeoForge_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="NeoForge_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnNeoForgeClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -168,13 +164,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabric" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="Fabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="Fabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -197,13 +192,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabric" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLegacyFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="LegacyFabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="LegacyFabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLegacyFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -226,13 +220,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabricApi" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnFabricApiClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="FabricApi_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="FabricApi_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnFabricApiClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -255,13 +248,13 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabricApi" Margin="0,0,7,0"
-                                       Height="18" RenderOptions.BitmapScalingMode="Linear"
+                                       Height="18"
                                        Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLegacyFabricApiClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="LegacyFabricApi_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="LegacyFabricApi_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLegacyFabricApiClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -284,13 +277,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLabyMod" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/LabyMod.png" />
                                 <TextBlock x:Name="LabLabyMod" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLabyModClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  PointerReleased="LabyMod_Clear"
+                                  PointerPressed="LabyMod_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLabyModClearInner" Height="10" Width="10" Stretch="Uniform"
@@ -316,13 +308,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFine" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/GrassPath.png" />
                                 <TextBlock x:Name="LabOptiFine" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnOptiFineClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  PointerReleased="OptiFine_Clear"
+                                  PointerPressed="OptiFine_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnOptiFineClearInner" Height="10" Width="10" Stretch="Uniform"
@@ -346,13 +337,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFabric" Margin="0,0,7,0" Height="18"
-                                       RenderOptions.BitmapScalingMode="HighQuality"
                                        Source="avares://PCL/Images/Blocks/OptiFabric.png" />
                                 <TextBlock x:Name="LabOptiFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnOptiFabricClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerReleased="OptiFabric_Clear"
+                                  VerticalAlignment="Top" Margin="0,5,32,0" PointerPressed="OptiFabric_Clear"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnOptiFabricClearInner" Height="10" Width="10" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" HorizontalAlignment="Center"
@@ -375,13 +365,12 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLiteLoader" Margin="-1,0,6,0" Height="20"
-                                       RenderOptions.BitmapScalingMode="Linear"
                                        Source="avares://PCL/Images/Blocks/Egg.png" />
                                 <TextBlock x:Name="LabLiteLoader" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
                             <Grid x:Name="BtnLiteLoaderClear" Height="30" Width="30" HorizontalAlignment="Right"
-                                  PointerReleased="LiteLoader_Clear"
+                                  PointerPressed="LiteLoader_Clear"
                                   VerticalAlignment="Top" Margin="0,5,32,0"
                                   Background="{StaticResource ColorBrushSemiTransparent}">
                                 <Path x:Name="BtnLiteLoaderClearInner" Height="10" Width="10" Stretch="Uniform"

@@ -242,17 +242,18 @@ public class ModSetup
     // 视频背景
     public static void UiAutoPauseVideo(bool value)
     {
-        if (!value)
-        {
-            ModVideoBack.ForcePlay = true;
-            ModVideoBack.VideoPlay();
-        }
-        else
-        {
-            ModVideoBack.ForcePlay = false;
-            if (ModVideoBack.IsGaming)
-                ModVideoBack.VideoPause();
-        }
+        // [port] 视频背景（ModVideoBack，C1）已按用户指示暂缓移植（csproj 排除），本方法在 Linux 停用。
+        // if (!value)
+        // {
+        //     ModVideoBack.ForcePlay = true;
+        //     ModVideoBack.VideoPlay();
+        // }
+        // else
+        // {
+        //     ModVideoBack.ForcePlay = false;
+        //     if (ModVideoBack.IsGaming)
+        //         ModVideoBack.VideoPause();
+        // }
     }
 
     // 背景图片
@@ -267,12 +268,18 @@ public class ModSetup
         ModMain.frmMain.ImgBack.Margin = new Thickness(-(value + 1) / 1.8d);
     }
 
+    // [port] WPF ImageSource.RenderSize → Avalonia 的 ImageBrush.Source 是 IImageBrushSource（无 Size）；
+    // 仅其中的 IImage 提供 Size，故经 IImage 取图片尺寸，取不到时返回默认尺寸。
+    private static Avalonia.Size UiBackgroundImageSize(ImageBrush brush)
+        => brush.Source is IImage img ? img.Size : default;
+
     public static void UiBackgroundSuit(int value)
     {
         if (ModMain.frmMain.ImgBack.Background is null)
             return;
-        var width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-        var height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+        var imgSize = UiBackgroundImageSize((ImageBrush)ModMain.frmMain.ImgBack.Background);
+        var width = imgSize.Width;
+        var height = imgSize.Height;
         if (value == 0)
         {
             // 智能：当图片较小时平铺，较大时适应
@@ -283,8 +290,9 @@ public class ModSetup
         }
 
         ((ImageBrush)ModMain.frmMain.ImgBack.Background).TileMode = TileMode.None;
-        ((ImageBrush)ModMain.frmMain.ImgBack.Background).Viewport = new Rect(0d, 0d, 1d, 1d);
-        ((ImageBrush)ModMain.frmMain.ImgBack.Background).ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+        // [port] Avalonia ImageBrush 无 WPF 的 Viewport/ViewportUnits（BrushMappingMode），移除；平铺尺寸取图片原始尺寸（等效）。
+        // ((ImageBrush)ModMain.frmMain.ImgBack.Background).Viewport = new Rect(0d, 0d, 1d, 1d);
+        // ((ImageBrush)ModMain.frmMain.ImgBack.Background).ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
         switch (value)
         {
             case 1: // 居中
@@ -292,8 +300,8 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.HorizontalAlignment = HorizontalAlignment.Center;
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Center;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
-                ModMain.frmMain.ImgBack.Width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-                ModMain.frmMain.ImgBack.Height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+                ModMain.frmMain.ImgBack.Width = imgSize.Width;
+                ModMain.frmMain.ImgBack.Height = imgSize.Height;
                 break;
             }
             case 2: // 适应
@@ -320,10 +328,11 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Stretch;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).TileMode = TileMode.Tile;
-                ((ImageBrush)ModMain.frmMain.ImgBack.Background).Viewport = new Rect(0d, 0d,
-                    ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width,
-                    ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height);
-                ((ImageBrush)ModMain.frmMain.ImgBack.Background).ViewportUnits = BrushMappingMode.Absolute;
+                // [port] Avalonia ImageBrush 无 Viewport/ViewportUnits（BrushMappingMode），移除；平铺尺寸取图片原始尺寸（等效）。
+                // ((ImageBrush)ModMain.frmMain.ImgBack.Background).Viewport = new Rect(0d, 0d,
+                //     imgSize.Width,
+                //     imgSize.Height);
+                // ((ImageBrush)ModMain.frmMain.ImgBack.Background).ViewportUnits = BrushMappingMode.Absolute;
                 ModMain.frmMain.ImgBack.Width = double.NaN;
                 ModMain.frmMain.ImgBack.Height = double.NaN;
                 break;
@@ -333,8 +342,8 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.HorizontalAlignment = HorizontalAlignment.Left;
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Top;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
-                ModMain.frmMain.ImgBack.Width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-                ModMain.frmMain.ImgBack.Height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+                ModMain.frmMain.ImgBack.Width = imgSize.Width;
+                ModMain.frmMain.ImgBack.Height = imgSize.Height;
                 break;
             }
             case 6: // 右上
@@ -342,8 +351,8 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.HorizontalAlignment = HorizontalAlignment.Right;
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Top;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
-                ModMain.frmMain.ImgBack.Width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-                ModMain.frmMain.ImgBack.Height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+                ModMain.frmMain.ImgBack.Width = imgSize.Width;
+                ModMain.frmMain.ImgBack.Height = imgSize.Height;
                 break;
             }
             case 7: // 左下
@@ -351,8 +360,8 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.HorizontalAlignment = HorizontalAlignment.Left;
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Bottom;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
-                ModMain.frmMain.ImgBack.Width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-                ModMain.frmMain.ImgBack.Height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+                ModMain.frmMain.ImgBack.Width = imgSize.Width;
+                ModMain.frmMain.ImgBack.Height = imgSize.Height;
                 break;
             }
             case 8: // 右下
@@ -360,8 +369,8 @@ public class ModSetup
                 ModMain.frmMain.ImgBack.HorizontalAlignment = HorizontalAlignment.Right;
                 ModMain.frmMain.ImgBack.VerticalAlignment = VerticalAlignment.Bottom;
                 ((ImageBrush)ModMain.frmMain.ImgBack.Background).Stretch = Stretch.None;
-                ModMain.frmMain.ImgBack.Width = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Width;
-                ModMain.frmMain.ImgBack.Height = ((ImageBrush)ModMain.frmMain.ImgBack.Background).ImageSource.Height;
+                ModMain.frmMain.ImgBack.Width = imgSize.Width;
+                ModMain.frmMain.ImgBack.Height = imgSize.Height;
                 break;
             }
         }
@@ -406,7 +415,7 @@ public class ModSetup
                 ModMain.frmSetupUI.PanCustomLocal.IsVisible = true;
                 ModMain.frmSetupUI.PanCustomNet.IsVisible = false;
                 ModMain.frmSetupUI.HintCustom.IsVisible = true;
-                ModMain.frmSetupUI.HintCustomWarn.Visibility =
+                ModMain.frmSetupUI.HintCustomWarn.IsVisible =
                     States.Hint.UntrustedHomepage ? false : true;
                 ModMain.frmSetupUI.HintCustom.Text =
                     Lang.Text("Setup.Ui.Homepage.LocalFile.Hint");
@@ -419,7 +428,7 @@ public class ModSetup
                 ModMain.frmSetupUI.PanCustomLocal.IsVisible = false;
                 ModMain.frmSetupUI.PanCustomNet.IsVisible = true;
                 ModMain.frmSetupUI.HintCustom.IsVisible = true;
-                ModMain.frmSetupUI.HintCustomWarn.Visibility =
+                ModMain.frmSetupUI.HintCustomWarn.IsVisible =
                     States.Hint.UntrustedHomepage ? false : true;
                 ModMain.frmSetupUI.HintCustom.Text =
                     Lang.Text("Setup.Ui.Homepage.NetUpdate.Hint");
@@ -464,7 +473,8 @@ public class ModSetup
 
     public static void UiBlurType(int value)
     {
-        Avalonia.Application.Current.Resources["BlurType"] = (KernelType)value;
+        // [port] KernelType（WPF HLSL 着色器模糊枚举，PCL.Core/UI/Effects/**）已按用户指示跳过特效，改存整数值
+        Avalonia.Application.Current.Resources["BlurType"] = value;
     }
 
     // 顶部栏

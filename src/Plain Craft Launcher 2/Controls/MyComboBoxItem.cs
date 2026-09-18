@@ -24,12 +24,13 @@ public class MyComboBoxItem : ComboBoxItem
 
     public MyComboBoxItem()
     {
-        Style = (Style)FindResource("MyComboBoxItem");
-        Unselected += (_, _) => RefreshColor();
-        MouseMove += (_, _) => RefreshColor();
+        // [port] WPF 框架样式/触发器块移除：视觉状态由 RefreshColor 经资源引用/IsSelected/IsEnabled 实现
+        // [port] WPF 的 Selected/Unselected 事件 -> Avalonia 的 IsSelectedProperty 变更
+        this.PropertyChanged += (_, e) => { if (e.Property == IsSelectedProperty) RefreshColor(); };
+        PointerMoved += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
-        Selected += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerReleased += MyComboBoxItem_PointerReleased;
     }
 
@@ -83,7 +84,7 @@ public class MyComboBoxItem : ComboBoxItem
         {
             // 无动画
             ModAnimation.AniStop("ComboBoxItem Color " + Uuid);
-            SetResourceReference(BackgroundProperty, backColorName);
+            this.SetResourceReference(BackgroundProperty, backColorName);
             Opacity = fontOpacity;
         }
     }
@@ -98,7 +99,7 @@ public class MyComboBoxItem : ComboBoxItem
         return value.Content?.ToString() ?? "";
     }
 
-    private void MyComboBoxItem_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void MyComboBoxItem_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         ModBase.Log("[Control] 选择下拉列表项：" + ToString());
     }

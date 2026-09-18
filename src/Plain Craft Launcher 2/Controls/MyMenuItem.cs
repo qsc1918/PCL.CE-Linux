@@ -7,6 +7,8 @@ using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using Avalonia.VisualTree;
+using PCL.Core.App; // [port] WPF 静态 Config 类 → PCL.Core.App.Config（此前缺 using，名称未找到）
 using PCL.Core.UI.Controls.SvgIcon;
 
 namespace PCL;
@@ -42,7 +44,8 @@ public class MyMenuItem : MenuItem
         Loaded += MyMenuItem_Loaded;
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] WPF IsEnabledChanged → Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
     }
 
     public string SvgIcon
@@ -63,12 +66,13 @@ public class MyMenuItem : MenuItem
     private void MyMenuItem_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateTemplateIcon();
+        // [port] Config = PCL.Core.App.Config（补 using PCL.Core.App 后可用；Avalonia 无额外等价物，数值来源一致）
         ((ContextMenu)Parent).Opacity = Config.Preference.Theme.WindowOpacity / 1000.0 + 0.4;
     }
 
     private void UpdateTemplateIcon()
     {
-        var iconControl = (Path)GetTemplateChild("Icon");
+        var iconControl = (Path)Template.FindName("Icon", this);
         if (iconControl is null)
             return;
 
@@ -85,7 +89,7 @@ public class MyMenuItem : MenuItem
         if (Icon is null) return;
 
         iconControl.IsVisible = true;
-        iconControl.Data = (Geometry)new GeometryConverter().ConvertFromString(Icon.ToString());
+        iconControl.Data = Geometry.Parse(Icon.ToString());
     }
 
     private void EnsureSvgIconControl(Path iconControl)
@@ -101,12 +105,15 @@ public class MyMenuItem : MenuItem
             Height = iconControl.Height,
             Width = iconControl.Width,
             IsHitTestVisible = false,
-            Visibility = false
+            // [port] WPF Visibility → Avalonia IsVisible
+            IsVisible = false
         };
-        _svgIconControl.SetBinding(Core.UI.Controls.SvgIcon.SvgIcon.IconBrushProperty,
+        // [port] WPF SetBinding(prop, binding) → Avalonia Bind(prop, binding)
+        _svgIconControl.Bind(Core.UI.Controls.SvgIcon.SvgIcon.IconBrushProperty,
             new Binding(nameof(Foreground)) { Source = this });
 
-        if (VisualTreeHelper.GetParent(iconControl) is not Grid grid) return;
+        // [port] WPF VisualTreeHelper.GetParent → Avalonia GetVisualParent
+        if (iconControl.GetVisualParent() is not Grid grid) return;
 
         Grid.SetColumn(_svgIconControl, Grid.GetColumn(iconControl));
         Grid.SetRow(_svgIconControl, Grid.GetRow(iconControl));
@@ -136,8 +143,8 @@ public class MyMenuItem : MenuItem
         {
             // 无动画
             ModAnimation.AniStop("MyMenuItem Color " + Uuid);
-            SetResourceReference(BackgroundProperty, backName);
-            SetResourceReference(ForegroundProperty, foreName);
+            this.SetResourceReference(BackgroundProperty, backName);
+            this.SetResourceReference(ForegroundProperty, foreName);
         }
     }
 

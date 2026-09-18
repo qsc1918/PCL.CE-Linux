@@ -67,7 +67,7 @@ public partial class MyIconButton : Border
         set
         {
             if (Path is null) return;
-            Path.Data = (Geometry)new GeometryConverter().ConvertFromString(value);
+            Path.Data = Geometry.Parse(value);
             SvgIconControlHelper.ApplyVisibility(Path, ShapeSvgIcon, IsUsingSvgIcon);
         }
     }
@@ -147,10 +147,10 @@ public partial class MyIconButton : Border
 
     private void EnsureBaseBrushes()
     {
-        PanBack.Background ??= GetTransparentBackground();
+        PanBack.Background ??= GetTransparentBackground().ToBrush();
         var baseFill = GetBaseFillColor();
         if (baseFill is not null && !IsUsingSvgIcon)
-            Path.Fill ??= baseFill;
+            Path.Fill ??= baseFill.ToBrush();
     }
 
     private void AnimateActiveSvgIconBrush(string resourceKey, int duration)
@@ -198,7 +198,7 @@ public partial class MyIconButton : Border
                 animations.Add(ModAnimation.AaColor(
                     PanBack,
                     BackgroundProperty,
-                    new ModBase.MyColor(50d, 255d, 255d, 255d) - PanBack.Background,
+                    new ModBase.MyColor(50d, 255d, 255d, 255d) - new ModBase.MyColor(PanBack.Background),
                     animationColorIn));
                 break;
             }
@@ -212,7 +212,7 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path,
                         Shape.FillProperty,
-                        new ModBase.MyColor(255d, 76d, 76d) - Path.Fill,
+                        new ModBase.MyColor(255d, 76d, 76d) - new ModBase.MyColor(Path.Fill),
                         animationColorIn));
                 break;
             }
@@ -227,7 +227,7 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path,
                         Shape.FillProperty,
-                        blackHoverColor - Path.Fill,
+                        blackHoverColor - new ModBase.MyColor(Path.Fill),
                         animationColorIn));
                 break;
             }
@@ -240,7 +240,7 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path,
                         Shape.FillProperty,
-                        customHoverColor - Path.Fill,
+                        customHoverColor - new ModBase.MyColor(Path.Fill),
                         animationColorIn));
                 break;
             }
@@ -265,7 +265,7 @@ public partial class MyIconButton : Border
                         "ColorBrush4",
                         animationColorOut));
 
-                PanBack.Background = GetTransparentBackground();
+                PanBack.Background = GetTransparentBackground().ToBrush();
                 break;
             }
             case Themes.White:
@@ -283,7 +283,7 @@ public partial class MyIconButton : Border
                 animations.Add(ModAnimation.AaColor(
                     PanBack,
                     BackgroundProperty,
-                    GetTransparentBackground() - PanBack.Background,
+                    GetTransparentBackground() - new ModBase.MyColor(PanBack.Background),
                     animationColorOut));
                 break;
             }
@@ -296,10 +296,10 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path,
                         Shape.FillProperty,
-                        redNormalColor - Path.Fill,
+                        redNormalColor - new ModBase.MyColor(Path.Fill),
                         animationColorOut));
 
-                PanBack.Background = GetTransparentBackground();
+                PanBack.Background = GetTransparentBackground().ToBrush();
                 break;
             }
             case Themes.Black:
@@ -313,10 +313,10 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path, 
                         Shape.FillProperty,
-                        blackNormalColor - Path.Fill,
+                        blackNormalColor - new ModBase.MyColor(Path.Fill),
                         animationColorOut));
 
-                PanBack.Background = GetTransparentBackground();
+                PanBack.Background = GetTransparentBackground().ToBrush();
                 break;
             }
             case Themes.Custom:
@@ -328,10 +328,10 @@ public partial class MyIconButton : Border
                     animations.Add(ModAnimation.AaColor(
                         Path,
                         Shape.FillProperty,
-                        customNormalColor - Path.Fill,
+                        customNormalColor - new ModBase.MyColor(Path.Fill),
                         animationColorOut));
 
-                PanBack.Background = GetTransparentBackground();
+                PanBack.Background = GetTransparentBackground().ToBrush();
                 break;
             }
         }
@@ -362,10 +362,10 @@ public partial class MyIconButton : Border
                 break;
         }
 
-        PanBack.Background = GetTransparentBackground();
+        PanBack.Background = GetTransparentBackground().ToBrush(); // [port] MyColor 隐式转 Brush，但 Background 是 IBrush，需 ToBrush()
     }
 
-    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;

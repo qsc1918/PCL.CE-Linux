@@ -17,6 +17,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyComboBox ComboSystemUpdateMode;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.TextBox TextMirrorCDK;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyButton BtnGetMirrorCDK;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyCard CardUpdate;
@@ -74,6 +76,7 @@ namespace PCL
             PanMain = __thisNameScope__?.Find<global::Avalonia.Controls.StackPanel>("PanMain");
             ComboSystemUpdateChannel = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboSystemUpdateChannel");
             ComboSystemUpdateMode = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboSystemUpdateMode");
+            TextMirrorCDK = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("TextMirrorCDK");
             BtnGetMirrorCDK = __thisNameScope__?.Find<global::PCL.MyButton>("BtnGetMirrorCDK");
             CardUpdate = __thisNameScope__?.Find<global::PCL.MyCard>("CardUpdate");
             ImgUpdateIcon = __thisNameScope__?.Find<global::PCL.MyImage>("ImgUpdateIcon");

@@ -27,7 +27,7 @@
                     <local:MyComboBox x:Name="ComboSystemActivity" Tag="SystemSystemActivity" Grid.Column="1"
                                       Grid.Row="0"
                                       SelectionChanged="ComboSystemActivity_OnSelectionChanged">
-                        <local:MyComboBoxItem Content="{DynamicResource Setup.Misc.System.Announcement.All}" ToolTip="{DynamicResource Setup.Misc.System.Announcement.All.ToolTip}" />
+                        <local:MyComboBoxItem Content="{DynamicResource Setup.Misc.System.Announcement.All}" ToolTip.Tip="{DynamicResource Setup.Misc.System.Announcement.All.ToolTip}" />
                         <local:MyComboBoxItem Content="{DynamicResource Setup.Misc.System.Announcement.ImportantOnly}" />
                         <local:MyComboBoxItem Content="{DynamicResource Setup.Misc.System.Announcement.Disabled}" />
                     </local:MyComboBox>
@@ -35,13 +35,13 @@
                                Margin="0,0,25,0" />
                     <local:MySlider x:Name="SliderAniFPS" Grid.Row="2" Tag="UiAniFPS" MaxValue="59" Value="59"
                                     Grid.Column="1"
-                                     ToolTip="{DynamicResource Setup.Misc.System.MaxFps.ToolTip}"
+                                     ToolTip.Tip="{DynamicResource Setup.Misc.System.MaxFps.ToolTip}"
                                     Change="SliderChange" />
                     <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Misc.System.MaxLogLines}"
                                Margin="0,0,25,0" />
                     <local:MySlider x:Name="SliderMaxLog" Grid.Row="4" Tag="SystemMaxLog" MaxValue="29" Value="13"
                                     Grid.Column="1"
-                                     ToolTip="{DynamicResource Setup.Misc.System.MaxLogLines.ToolTip}"
+                                     ToolTip.Tip="{DynamicResource Setup.Misc.System.MaxLogLines.ToolTip}"
                                     Change="SliderChange" />
                     <Grid Grid.Row="6" Grid.ColumnSpan="5">
                         <Grid.ColumnDefinitions>
@@ -55,7 +55,7 @@
                         </Grid.RowDefinitions>
                         <local:MyCheckBox Grid.Row="0" Grid.Column="0" Text="{DynamicResource Setup.Misc.System.DisableHardwareAcceleration}" x:Name="CheckSystemDisableHardwareAcceleration" Tag="SystemDisableHardwareAcceleration" Change="CheckSystemDisableHardwareAcceleration_OnChange"/>
                         <local:MyCheckBox Grid.Row="0" Grid.Column="1" Text="{DynamicResource Setup.Misc.System.Telemetry}" x:Name="CheckSystemTelemetry" Tag="SystemTelemetry" Change="CheckBoxChange"
-                          ToolTip="{DynamicResource Setup.Misc.System.Telemetry.ToolTip}"/>
+                          ToolTip.Tip="{DynamicResource Setup.Misc.System.Telemetry.ToolTip}"/>
                     </Grid>
                     <Grid Grid.Row="8" Grid.ColumnSpan="5">
                         <Grid.ColumnDefinitions>
@@ -95,7 +95,7 @@
                     </Grid.RowDefinitions>
                     <local:MyCheckBox x:Name="CheckNetDohEnable" Tag="SystemNetEnableDoH" Grid.Row="0"
                                       Grid.ColumnSpan="2" Text="{DynamicResource Setup.Misc.Network.DoH}"
-                                      ToolTip="{DynamicResource Setup.Misc.Network.DoH.ToolTip}"
+                                      ToolTip.Tip="{DynamicResource Setup.Misc.Network.DoH.ToolTip}"
                                       Change="CheckBoxChange" />
                     <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Misc.Network.HttpProxy}"
                                Margin="0,0,25,0" />
@@ -116,8 +116,9 @@
                                           Tag="SystemHttpProxyType/2" Grid.Column="2"
                                           Check="RadioBoxChange" />
                     </Grid>
+                    <!-- [port] Avalonia 12 无 BooleanToVisibilityConverter；Checked(bool)→IsVisible(bool) 直绑 -->
                     <Grid Grid.Row="4" Grid.Column="1" x:Name="HttpProxyCustom"
-                          IsVisible="{Binding ElementName=RadioHttpProxyType2,Path=Checked,Converter={StaticResource BooleanToVisibilityConverter}}">
+                          IsVisible="{Binding ElementName=RadioHttpProxyType2,Path=Checked}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28" />
                             <RowDefinition Height="9" />
@@ -135,7 +136,7 @@
                         <local:MyHint Text="{DynamicResource Setup.Misc.Network.Proxy.UntrustedWarning}" Grid.Row="0" Grid.ColumnSpan="5" Theme="Yellow" />
                         <local:MyTextBox x:Name="TextSystemHttpProxy" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
                                          Tag="SystemHttpProxy" HintText="比如 http://127.0.0.1:1080/"
-                                         ToolTip="{DynamicResource Setup.Misc.Network.Proxy.InvalidWarning}" />
+                                         ToolTip.Tip="{DynamicResource Setup.Misc.Network.Proxy.InvalidWarning}" />
                         <TextBlock Grid.Column="0" Grid.Row="4" Text="{DynamicResource Setup.Misc.Network.Proxy.Username}" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Margin="0,0,5,0" />
                         <local:MyTextBox Grid.Column="1" Grid.Row="4" HintText="{DynamicResource Setup.Misc.Network.Proxy.Optional}" Tag="SystemHttpProxyCustomUsername"
@@ -169,14 +170,14 @@
                         </Grid.ColumnDefinitions>
                         <local:MyCheckBox Grid.Column="0" Text="{DynamicResource Setup.Misc.Debug.SkipCopy}" Height="22"
                                           x:Name="CheckDebugSkipCopy" Tag="SystemDebugSkipCopy"
-                                          ToolTip="{DynamicResource Setup.Misc.Debug.SkipCopy.ToolTip}"
+                                          ToolTip.Tip="{DynamicResource Setup.Misc.Debug.SkipCopy.ToolTip}"
                                           Change="CheckBoxChange" />
                         <local:MyCheckBox Grid.Column="1" Text="{DynamicResource Setup.Misc.Debug.Mode}" Height="22" x:Name="CheckDebugMode"
-                                          Tag="SystemDebugMode" ToolTip="{DynamicResource Setup.Misc.Debug.Mode.ToolTip}"
+                                          Tag="SystemDebugMode" ToolTip.Tip="{DynamicResource Setup.Misc.Debug.Mode.ToolTip}"
                                           Change="CheckDebugMode_OnChange" />
                         <local:MyCheckBox Grid.Column="2" Text="{DynamicResource Setup.Misc.Debug.Delay}" Height="22" x:Name="CheckDebugDelay"
                                           Tag="SystemDebugDelay"
-                                          ToolTip="{DynamicResource Setup.Misc.Debug.Delay.ToolTip}"
+                                          ToolTip.Tip="{DynamicResource Setup.Misc.Debug.Delay.ToolTip}"
                                           Change="CheckBoxChange" />
                     </Grid>
                 </StackPanel>

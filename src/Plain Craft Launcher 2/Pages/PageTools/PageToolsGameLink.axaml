@@ -7,7 +7,7 @@
     mc:Ignorable="d" x:Class="PCL.PageToolsGameLink"
     d:DesignWidth="800" d:DesignHeight="800">
     <Grid>
-        <Grid x:Name="PanLoad" Visibility="Collapsed">
+        <Grid x:Name="PanLoad" IsVisible="False">
             <local:MyCard HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="CardLoad"
                           MouseLeftButtonUp="CardLoad_MouseLeftButtonUp"
                           SizeChanged="CardResized">
@@ -46,7 +46,7 @@
                                         Click="CancelLoad"
                                         VerticalAlignment="Top"
                                         Theme="Black" Opacity="0.5"
-                                        ToolTip="{DynamicResource Common.Action.Cancel}"
+                                        ToolTip.Tip="{DynamicResource Common.Action.Cancel}"
                                         ToolTip.Placement="Right"
                                         LogoScale="0.72"
                                         SvgIcon="lucide/x" />
@@ -104,7 +104,7 @@
                             <StackPanel Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
                                         MouseLeftButtonUp="BtnNetTest_Click"
-                                        ToolTip="{DynamicResource Tools.GameLink.Nat.Title}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Nat.Title}"
                                         ToolTip.Placement="Center"
                                         ToolTip.VerticalOffset="-35">
                                 <svgIcon:SvgIcon IsHitTestVisible="False"
@@ -121,7 +121,7 @@
                         <local:MyCard x:Name="BtnNatayarkUserName">
                             <StackPanel Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
-                                        ToolTip="{DynamicResource Tools.GameLink.Natayark.Account}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Natayark.Account}"
                                         ToolTip.Placement="Center" ToolTip.VerticalOffset="-35">
                                 <svgIcon:SvgIcon IsHitTestVisible="False"
                                              Width="14" Stretch="Uniform"
@@ -159,7 +159,7 @@
                             </DockPanel>
                         </StackPanel>
                     </local:MyCard>
-                    <!--<local:MyHint IsWarn="True" Text="这是错误文本。" x:Name="HintTypeError" Visibility="Collapsed" Grid.ColumnSpan="5" Grid.RowSpan="5" Margin="15,15,15,0" VerticalAlignment="Top" />-->
+                    <!--<local:MyHint IsWarn="True" Text="这是错误文本。" x:Name="HintTypeError" IsVisible="False" Grid.ColumnSpan="5" Grid.RowSpan="5" Margin="15,15,15,0" VerticalAlignment="Top" />-->
                     <local:MyCard x:Name="BtnSelectCreate" Margin="10"
                                   Title="{DynamicResource Tools.GameLink.Create.Title}" CanSwap="True">
                         <StackPanel Margin="10,30,10,10">
@@ -213,7 +213,7 @@
                         </StackPanel>
                     </StackPanel>
                 </local:MyCard>
-                <Grid x:Name="PanFinish" Visibility="Collapsed" Grid.Row="1">
+                <Grid x:Name="PanFinish" IsVisible="False" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -230,7 +230,7 @@
                                 Grid.ColumnSpan="2">
                         <local:MyHint Margin="0,0,0,16" x:Name="HintEasyTierVersion"
                                       Text="{DynamicResource Tools.GameLink.EasyTierVersion}" Theme="Yellow"
-                                      Visibility="Collapsed" />
+                                      IsVisible="False" />
                     </StackPanel>
                     <!--大厅信息栏-->
                     <local:MyCard x:Name="PanNetInfo" Title="{DynamicResource Tools.GameLink.Finish.InfoTitle}"
@@ -238,7 +238,7 @@
                         <StackPanel Orientation="Vertical" Margin="10,35,10,10">
                             <StackPanel x:Name="BtnFinishQuality" Margin="5" Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.ConnectionStatus}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.ConnectionStatus}"
                                         ToolTip.Placement="MousePoint" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Width="14" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="0,0,7,0"
@@ -249,8 +249,8 @@
                                            Margin="0,0,12,0" />
                             </StackPanel>
                             <StackPanel x:Name="BtnFinishPing" Margin="5" Orientation="Horizontal"
-                                        Background="{StaticResource ColorBrushSemiTransparent}" Visibility="Collapsed"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.PingToHost}"
+                                        Background="{StaticResource ColorBrushSemiTransparent}" IsVisible="False"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.PingToHost}"
                                         ToolTip.Placement="MousePoint" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Width="14" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="0,0,7,0"
@@ -261,7 +261,7 @@
                             </StackPanel>
                             <StackPanel x:Name="BtnFinishId" Margin="5" Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.LobbyId}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.LobbyId}"
                                         ToolTip.Placement="MousePoint" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Width="14" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="0,0,7,0"
@@ -271,8 +271,8 @@
                                            Margin="0,0,12,0" />
                             </StackPanel>
                             <StackPanel x:Name="BtnConnectType" Margin="5" Orientation="Horizontal"
-                                        Background="{StaticResource ColorBrushSemiTransparent}" Visibility="Collapsed"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.ConnectionType}"
+                                        Background="{StaticResource ColorBrushSemiTransparent}" IsVisible="False"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.ConnectionType}"
                                         ToolTip.Placement="MousePoint" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Width="14" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="0,0,7,0"
@@ -289,7 +289,7 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel x:Name="BtnConnectUserName" Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.UserName}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.UserName}"
                                         ToolTip.Placement="Center" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Width="14" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="12,0,7,0"
@@ -307,7 +307,7 @@
                             </TextBlock>
                             <StackPanel x:Name="BtnConnectUserType" Orientation="Horizontal"
                                         Background="{StaticResource ColorBrushSemiTransparent}"
-                                        ToolTip="{DynamicResource Tools.GameLink.Finish.UserType}"
+                                        ToolTip.Tip="{DynamicResource Tools.GameLink.Finish.UserType}"
                                         ToolTip.Placement="Center" ToolTip.VerticalOffset="-35">
                                 <Path IsHitTestVisible="False" Height="13" Width="13" Stretch="Uniform"
                                       Fill="{StaticResource ColorBrushGray1}" Margin="12,0,7,0"

@@ -20,6 +20,9 @@ using PCL.Core.UI.Controls;
 using PCL.Core.Utils;
 using PCL.Core.Utils.OS;
 
+// [port] 将 PCL 命名空间注册到默认 Avalonia XML 命名空间 URI，使 Avalonia 12 的样式选择器（Selector="MyTextButton" 等）能解析本程序集的控件类型
+[assembly: Avalonia.Metadata.XmlnsDefinition("https://github.com/avaloniaui", "PCL")]
+
 namespace PCL;
 
 public partial class Application : Avalonia.Application
@@ -38,6 +41,9 @@ public partial class Application : Avalonia.Application
     public override void Initialize()
     {
         Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
+        // [port] Avalonia 12 无 WPF BooleanToVisibilityConverter；Avalonia 用 IsVisible(bool)，故注册 bool→bool 恒等转换器
+        Resources["BooleanToVisibilityConverter"] =
+            new Avalonia.Data.Converters.FuncValueConverter<bool, bool>(b => b);
     }
 
     /// <summary>

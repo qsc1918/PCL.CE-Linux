@@ -387,7 +387,7 @@ public partial class PageDownloadCompDetail : MyPageRight
 
                 // 获取文件名并弹窗
                 var fileName = ModComp.CompFileNameGet(_project, file);
-                ModBase.RunInUi(() =>
+                ModBase.RunInUi(async () =>
                 {
                     var target = await SystemDialogs.SelectSaveFileAsync(Lang.Text("Download.Comp.Detail.SelectSaveLocation"),
                         fileName, Lang.Text("Download.Comp.Detail.ResourceFile.Filter", desc) + "|" +

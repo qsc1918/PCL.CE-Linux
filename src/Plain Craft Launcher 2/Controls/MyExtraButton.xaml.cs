@@ -11,9 +11,9 @@ namespace PCL;
 
 public partial class MyExtraButton : Grid
 {
-    public delegate void ClickEventHandler(object sender, PointerPressedEventArgs e); // 自定义事件
+    public delegate void ClickEventHandler(object sender, PointerReleasedEventArgs e); // 自定义事件
 
-    public delegate void RightClickEventHandler(object sender, PointerPressedEventArgs e);
+    public delegate void RightClickEventHandler(object sender, PointerReleasedEventArgs e);
 
     public delegate bool ShowCheckDelegate();
 
@@ -30,11 +30,29 @@ public partial class MyExtraButton : Grid
     // 自定义属性
     public int Uuid = ModBase.GetUuid();
 
+    // [port] Avalonia 不为此 XAML Clip 内 RectangleGeometry 生成命名字段，改经名称作用域获取
+    private RectangleGeometry RectProgress;
+
+    // [port] WPF ToolTip property -> Avalonia ToolTip.SetTip wrapper（对象初始化器 new MyExtraButton { ToolTip = "x" }）
+    public object ToolTip
+    {
+        get => Avalonia.Controls.ToolTip.GetTip(this);
+        set => Avalonia.Controls.ToolTip.SetTip(this, value);
+    }
+
     public MyExtraButton()
     {
         Loaded += (_, _) => RefreshColor();
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         InitializeComponent();
+        // [port] Avalonia 不为此 XAML Clip 内 RectangleGeometry 生成命名字段，改经名称作用域获取
+        RectProgress = this.FindNameScope()?.Find("RectProgress") as RectangleGeometry;
+        // [port] WPF MouseLeft/RightButtonDown/Up 与 MouseEnter/Leave（独立事件）→ Avalonia 统一指针事件，在此重新接线
+        PanClick.PointerPressed += Button_PointerPressed;
+        PanClick.PointerReleased += Button_PointerReleased;
+        PanClick.PointerEntered += PanClick_MouseEvent;
+        PanClick.PointerExited += PanClick_MouseEvent;
         PanClick.PointerExited += (_, _) => Button_PointerExited();
     }
 
@@ -66,7 +84,7 @@ public partial class MyExtraButton : Grid
             if ((value ?? "") == (field ?? ""))
                 return;
             field = value;
-            Path.Data = (Geometry)new GeometryConverter().ConvertFromString(value);
+            Path.Data = Geometry.Parse(value);
             SvgIconControlHelper.ApplyVisibility(Path, ShapeSvgIcon, IsUsingSvgIcon);
         }
     } = "";
@@ -114,7 +132,7 @@ public partial class MyExtraButton : Grid
                 if (value)
                 {
                     // 有了
-                    Visibility = true;
+                    IsVisible = true;
                     ModAnimation.AniStart(
                         new[]
                         {
@@ -135,7 +153,7 @@ public partial class MyExtraButton : Grid
                             ModAnimation.AaScaleTransform(this, -((ScaleTransform)RenderTransform).ScaleX, 100,
                                 ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
                             ModAnimation.AaHeight(this, -Height, 400, 100, new ModAnimation.AniEaseOutFluent()),
-                            ModAnimation.AaCode(() => Visibility = false, after: true)
+                            ModAnimation.AaCode(() => IsVisible = false, after: true)
                         }, "MyExtraButton MainScale " + Uuid);
                 }
 
@@ -184,7 +202,7 @@ public partial class MyExtraButton : Grid
     }
 
     // 触发点击事件
-    private void Button_LeftPointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_LeftPointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (isLeftMouseHeld)
         {
@@ -196,7 +214,7 @@ public partial class MyExtraButton : Grid
         }
     }
 
-    private void Button_RightPointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_RightPointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (isRightMouseHeld)
         {
@@ -206,6 +224,24 @@ public partial class MyExtraButton : Grid
             e.Handled = true;
             Button_RightPointerReleased();
         }
+    }
+
+    // [port] WPF MouseLeftButtonDown/MouseRightButtonDown（独立事件）→ Avalonia 统一 PointerPressed，按按下按钮分发
+    private void Button_PointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            Button_RightMouseDown(sender, e);
+        else
+            Button_LeftMouseDown(sender, e);
+    }
+
+    // [port] WPF MouseLeftButtonUp/MouseRightButtonUp（独立事件）→ Avalonia 统一 PointerReleased，按释放按钮分发
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
+    {
+        if (e.InitialPressMouseButton == MouseButton.Right)
+            Button_RightPointerReleased(sender, e);
+        else
+            Button_LeftPointerReleased(sender, e);
     }
 
     private void Button_LeftMouseDown(object sender, PointerPressedEventArgs e)

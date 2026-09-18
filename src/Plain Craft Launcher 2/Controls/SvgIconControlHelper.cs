@@ -78,7 +78,8 @@ internal static class SvgIconControlHelper
 
     private static NColor ResolveResourceColor(string resourceKey)
     {
-        if (!ThemeManager.AppResources.Contains(resourceKey))
+        // [port] WPF ResourceDictionary.Contains(key) → Avalonia ContainsKey(key)
+        if (!ThemeManager.AppResources.ContainsKey(resourceKey))
             return new NColor(resourceKey);
 
         var resource = ThemeManager.AppResources[resourceKey];

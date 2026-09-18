@@ -85,7 +85,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
 
                 // 添加菜单项
                 void AddMenuItem(string name, string header, string svgIcon = null, Thickness? padding = null,
-                    RoutedEventHandler clickHandler = null)
+                    EventHandler<RoutedEventArgs> clickHandler = null) // [port] WPF RoutedEventHandler → Avalonia EventHandler<RoutedEventArgs>
                 {
                     var item = new MyMenuItem
                     {
@@ -235,10 +235,10 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
                     Type = MyListItem.CheckType.Clickable,
                     Title = Lang.Text("Select.Folder.CreateNew.Title"),
                     Height = 34,
-                    ToolTip = Lang.Text("Select.Folder.CreateNew"),
                     LogoScale = 0.9,
                     SvgIcon = "lucide/folder-plus"
                 };
+                ToolTip.SetTip(itemCreate, Lang.Text("Select.Folder.CreateNew")); // [port] ToolTip -> SetTip
                 ToolTip.SetPlacement(itemCreate, PlacementMode.Right);
                 itemCreate.Click += (_, _) => ModMain.frmSelectLeft.Create_Click();
                 ModMain.frmSelectLeft.PanList.Children.Add(itemCreate);
@@ -251,9 +251,9 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
                 Type = MyListItem.CheckType.Clickable,
                 Title = Lang.Text("Select.Folder.AddExisting.Title"),
                 Height = 34,
-                ToolTip = Lang.Text("Select.Folder.AddExisting"),
                 SvgIcon = "lucide/folder-input"
             };
+            ToolTip.SetTip(itemAdd, Lang.Text("Select.Folder.AddExisting")); // [port] ToolTip -> SetTip
             ToolTip.SetPlacement(itemAdd, PlacementMode.Right);
             itemAdd.Click += (_, _) => ModMain.frmSelectLeft.Add_Click();
             ModMain.frmSelectLeft.PanList.Children.Add(itemAdd);
@@ -265,9 +265,9 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
                 Type = MyListItem.CheckType.Clickable,
                 Title = Lang.Text("Select.Folder.ImportModpack.Title"),
                 Height = 34,
-                ToolTip = Lang.Text("Select.Folder.ImportModpack"),
                 SvgIcon = "lucide/package-plus"
             };
+            ToolTip.SetTip(itemInstall, Lang.Text("Select.Folder.ImportModpack")); // [port] ToolTip -> SetTip
             ToolTip.SetPlacement(itemInstall, PlacementMode.Right);
             itemInstall.Click += (_, _) => ModModpack.ModpackInstall();
             ModMain.frmSelectLeft.PanList.Children.Add(itemInstall);
@@ -775,7 +775,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
     {
         try
         {
-            if (e.Data.Contains(McFolderFormat))
+            if (e.DataTransfer.Contains(McFolderFormat))
             {
                 // [port] WPF e.Effects → Avalonia e.DragEffects
                 e.DragEffects = DragDropEffects.Move;
@@ -801,7 +801,7 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
     {
         try
         {
-            e.DragEffects = e.Data.Contains(McFolderFormat)
+            e.DragEffects = e.DataTransfer.Contains(McFolderFormat)
                 ? DragDropEffects.Move
                 : DragDropEffects.None;
         }
@@ -842,13 +842,13 @@ public partial class PageSelectLeft : MyPageLeft, IRefreshable
             targetItem.Opacity = 1.0d;
 
             // 检查数据有效性
-            if (!e.Data.Contains(McFolderFormat))
+            if (!e.DataTransfer.Contains(McFolderFormat))
             {
                 e.Handled = true;
                 return;
             }
 
-            var sourceFolder = e.Data.TryGetValue(McFolderFormat);
+            var sourceFolder = ((IAsyncDataTransfer)e.DataTransfer).TryGetValueAsync(McFolderFormat).GetAwaiter().GetResult();
             if (sourceFolder is null)
             {
                 e.Handled = true;

@@ -7,6 +7,7 @@ using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
 using Avalonia.Animation;
+using Avalonia.VisualTree;
 using PCL.Core.App;
 using PCL.Core.UI.Theme;
 
@@ -45,14 +46,19 @@ public partial class MyToast : Border
     private double _progressStartWidth;
     private double _progressTotalMs;
 
+    // [port] 指针捕获（WPF CaptureMouse/ReleaseMouseCapture → Avalonia pointer.Capture）
+    private IPointer? _capturedPointer;
+
     public MyToast()
     {
         InitializeComponent();
         BtnClose.Click += (_, _) => Dismiss();
-        PreviewPointerPressed += Toast_PreviewPointerPressed;
-        PreviewMouseMove += Toast_PreviewMouseMove;
-        PreviewPointerReleased += Toast_PreviewPointerReleased;
-        LostMouseCapture += Toast_LostMouseCapture;
+        // [port] WPF Preview(隧道)鼠标事件 → Avalonia AddHandler(..., Tunnel, handledEventsToo:true)
+        AddHandler(InputElement.PointerPressedEvent, new EventHandler<PointerPressedEventArgs>(Toast_PreviewPointerPressed), RoutingStrategies.Tunnel, true);
+        AddHandler(InputElement.PointerMovedEvent, new EventHandler<PointerEventArgs>(Toast_PreviewMouseMove), RoutingStrategies.Tunnel, true);
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(Toast_PreviewPointerReleased), RoutingStrategies.Tunnel, true);
+        // [port] WPF LostMouseCapture → Avalonia PointerCaptureLost
+        PointerCaptureLost += Toast_LostMouseCapture;
         Loaded += (_, _) =>
         {
             UpdateColors();
@@ -68,7 +74,8 @@ public partial class MyToast : Border
             ModAnimation.AniStop($"Toast Dismiss {Uuid}");
             ModAnimation.AniStop($"Toast Emphasize {Uuid}");
             ModAnimation.AniStop($"Toast Drag Return {Uuid}");
-            ProgressBar.BeginAnimation(WidthProperty, null);
+            // [port] WPF BeginAnimation(WidthProperty, null) 停止动画 → 停止项目动画框架
+            ModAnimation.AniStop($"Toast Progress {Uuid}");
         };
     }
 
@@ -95,14 +102,14 @@ public partial class MyToast : Border
     {
         if (Parent is not Panel)
             return;
-        if (Avalonia.Application.Current.MainWindow is not null)
-            MaxWidth = Avalonia.Application.Current.MainWindow.Bounds.Width * 0.9;
+        if (ModMain.frmMain is not null)
+            MaxWidth = ModMain.frmMain.Bounds.Width * 0.9;
         Margin = new Thickness(0, 0, 16, 4);
         Opacity = 0;
 
         Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
         Arrange(new Rect(0, 0, DesiredSize.Width, DesiredSize.Height));
-        _targetHeight = Math.Max(ActualHeight, 45d);
+        _targetHeight = Math.Max(Bounds.Height, 45d);
         Height = 0;
 
         RenderTransform = new TranslateTransform(60, 0);
@@ -125,7 +132,8 @@ public partial class MyToast : Border
         ModAnimation.AniStop($"Toast Hide {Uuid}");
         ModAnimation.AniStop($"Toast Emphasize {Uuid}");
         ModAnimation.AniStop($"Toast Drag Return {Uuid}");
-        ProgressBar.BeginAnimation(WidthProperty, null);
+        // [port] WPF BeginAnimation(null) → 停止进度动画
+        ModAnimation.AniStop($"Toast Progress {Uuid}");
         if (RenderTransform is TranslateTransform tt) tt.X = 0;
         Opacity = 1;
         Height = _targetHeight;
@@ -166,12 +174,13 @@ public partial class MyToast : Border
         IsDismissing = true;
         _isDragging = false;
         _dragPending = false;
-        if (IsMouseCaptured) ReleaseMouseCapture();
+        if (_capturedPointer is not null) { _capturedPointer.Capture(null); _capturedPointer = null; }
         ModAnimation.AniStop($"Toast Show {Uuid}");
         ModAnimation.AniStop($"Toast Hide {Uuid}");
         ModAnimation.AniStop($"Toast Emphasize {Uuid}");
         ModAnimation.AniStop($"Toast Drag Return {Uuid}");
-        ProgressBar.BeginAnimation(WidthProperty, null);
+        // [port] WPF BeginAnimation(null) → 停止进度动画
+        ModAnimation.AniStop($"Toast Progress {Uuid}");
         ModAnimation.AniStart(new List<ModAnimation.AniData>
         {
             ModAnimation.AaTranslateX(this, 60, 150, ease: new ModAnimation.AniEaseInFluent()),
@@ -195,8 +204,11 @@ public partial class MyToast : Border
         ProgressBar.Width = w;
         _progressStartWidth = w;
         _progressTotalMs = totalMs;
-        var anim = new DoubleAnimation(w, 0d, TimeSpan.FromMilliseconds(totalMs));
-        ProgressBar.BeginAnimation(WidthProperty, anim);
+        // [port] WPF DoubleAnimation + BeginAnimation → 项目动画框架
+        ModAnimation.AniStart(new List<ModAnimation.AniData>
+        {
+            ModAnimation.AaWidth(ProgressBar, -w, totalMs)
+        }, $"Toast Progress {Uuid}");
     }
 
     private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -238,7 +250,7 @@ public partial class MyToast : Border
         _dragPending = false;
         if (IsDismissing)
             return;
-        if (IsDescendantOf(e.OriginalSource as AvaloniaObject, BtnClose))
+        if (IsDescendantOf(e.Source as AvaloniaObject, BtnClose))
             return;
         _dragReference = Parent as Control;
         if (_dragReference is null)
@@ -252,11 +264,11 @@ public partial class MyToast : Border
     {
         if (_isDragging)
         {
-            if (Mouse.LeftButton != MouseButtonState.Pressed || _dragReference is null)
+            if (_dragReference is null || !e.GetCurrentPoint(_dragReference).Properties.IsLeftButtonPressed)
             {
                 _isDragging = false;
                 _dragPending = false;
-                if (IsMouseCaptured) ReleaseMouseCapture();
+                if (_capturedPointer is not null) { _capturedPointer.Capture(null); _capturedPointer = null; }
                 ReturnFromDrag();
                 return;
             }
@@ -268,7 +280,7 @@ public partial class MyToast : Border
 
         if (!_dragPending)
             return;
-        if (Mouse.LeftButton != MouseButtonState.Pressed || _dragReference is null)
+        if (_dragReference is null || !e.GetCurrentPoint(_dragReference).Properties.IsLeftButtonPressed)
         {
             _dragPending = false;
             return;
@@ -280,10 +292,10 @@ public partial class MyToast : Border
         if (delta < DragDeadzone)
             return;
 
-        BeginDrag(delta);
+        BeginDrag(delta, e.Pointer);
     }
 
-    private void Toast_PreviewPointerReleased(object sender, PointerPressedEventArgs e)
+    private void Toast_PreviewPointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (_dragPending && !_isDragging)
         {
@@ -298,8 +310,7 @@ public partial class MyToast : Border
         _dragPending = false;
         e.Handled = true;
 
-        if (IsMouseCaptured)
-            ReleaseMouseCapture();
+        if (_capturedPointer is not null) { _capturedPointer.Capture(null); _capturedPointer = null; }
 
         var currentX = (RenderTransform as TranslateTransform)?.X ?? 0d;
         if (currentX - _dragStartTranslateX >= GetDismissThreshold())
@@ -311,7 +322,7 @@ public partial class MyToast : Border
         ReturnFromDrag();
     }
 
-    private void Toast_LostMouseCapture(object sender, PointerEventArgs e)
+    private void Toast_LostMouseCapture(object sender, PointerCaptureLostEventArgs e)
     {
         if (!_isDragging)
             return;
@@ -320,7 +331,7 @@ public partial class MyToast : Border
         ReturnFromDrag();
     }
 
-    private void BeginDrag(double initialDelta)
+    private void BeginDrag(double initialDelta, IPointer pointer)
     {
         _isDragging = true;
         _dragPending = false;
@@ -335,7 +346,8 @@ public partial class MyToast : Border
         Height = _targetHeight;
         _dragStartTranslateX = (RenderTransform as TranslateTransform)?.X ?? 0d;
 
-        CaptureMouse();
+        _capturedPointer = pointer;
+        pointer.Capture(this);
 
         UpdateDragPosition(initialDelta);
     }
@@ -381,13 +393,13 @@ public partial class MyToast : Border
     {
         if (translateX <= 0d)
             return 1d;
-        var width = ActualWidth > 0 ? ActualWidth : 1d;
+        var width = Bounds.Width > 0 ? Bounds.Width : 1d;
         return Math.Max(DragOpacityFloor, 1d - (translateX / width) * (1d - DragOpacityFloor));
     }
 
     private double GetDismissThreshold()
     {
-        return Math.Max(DismissThresholdMin, ActualWidth * DismissThresholdRatio);
+        return Math.Max(DismissThresholdMin, Bounds.Width * DismissThresholdRatio);
     }
 
     private static bool IsDescendantOf(AvaloniaObject? descendant, AvaloniaObject ancestor)
@@ -396,7 +408,7 @@ public partial class MyToast : Border
         {
             if (ReferenceEquals(descendant, ancestor))
                 return true;
-            descendant = VisualTreeHelper.GetParent(descendant);
+            descendant = (descendant as Avalonia.Visual)?.GetVisualParent();
         }
         return false;
     }
@@ -408,7 +420,8 @@ public partial class MyToast : Border
     private void PauseProgress()
     {
         var currentWidth = ProgressBar.Width;
-        ProgressBar.BeginAnimation(WidthProperty, null);
+        // [port] WPF BeginAnimation(null) → 停止进度动画
+        ModAnimation.AniStop($"Toast Progress {Uuid}");
         ProgressBar.Width = currentWidth;
     }
 
@@ -419,8 +432,11 @@ public partial class MyToast : Border
         var currentWidth = ProgressBar.Width;
         if (currentWidth <= 0)
             return;
-        var anim = new DoubleAnimation(currentWidth, 0d, TimeSpan.FromMilliseconds(remainingMs));
-        ProgressBar.BeginAnimation(WidthProperty, anim);
+        // [port] WPF DoubleAnimation + BeginAnimation → 项目动画框架
+        ModAnimation.AniStart(new List<ModAnimation.AniData>
+        {
+            ModAnimation.AaWidth(ProgressBar, -currentWidth, (int)Math.Round(remainingMs))
+        }, $"Toast Progress {Uuid}");
     }
 
     private double GetProgressRemainingMs()

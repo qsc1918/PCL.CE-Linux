@@ -1,7 +1,7 @@
 <Application x:Class="PCL.Application"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:PCL"
+             xmlns:local="clr-namespace:PCL;assembly=PCL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:PCL.Core.UI.Controls;assembly=PCL.Core"
              xmlns:cvt="clr-namespace:PCL.Core.UI.Converters;assembly=PCL.Core"
@@ -20,7 +20,8 @@
             <local:MultiplicationConverter x:Key="MultiplicationConverter" />
             <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
             <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-            <x:Static x:Key="BooleanToVisibilityConverter" Member="Avalonia.Controls.BooleanConverters.True" />
+            <!-- [port] Avalonia 12 无 WPF BooleanToVisibilityConverter，且 x:Static 静态转换器对象元素形式在 Avalonia 12 无效 → 改在 Application.xaml.cs 用 FuncValueConverter<bool,bool> 注册该资源键 -->
+            <!-- <x:Static x:Key="BooleanToVisibilityConverter" Member="Avalonia.Data.Converters.BoolConverters.True" /> -->
             <cvt:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <localization:LocalizationFormatConverter x:Key="LocalizationFormatConverter" />
 
@@ -84,6 +85,18 @@
             <SolidColorBrush x:Key="ColorBrushInfo">#000000</SolidColorBrush>
             <SolidColorBrush x:Key="ColorBrushDebug">#95a5a6</SolidColorBrush>
         </ResourceDictionary>
+        <!-- [port] 从 Application.Styles 移入 Resources：Avalonia 的 Styles 集合不能容纳带 x:Key 的 DataTemplate（键控资源须在 Resources） -->
+        <DataTemplate x:Key="ComboBoxItemTemplateWithDelete">
+            <local:MyListItem Title="{Binding}" FontSize="13" MaxHeight="26" IsScaleAnimationEnabled="False"
+                              Margin="-3,0,0,0">
+                <local:MyListItem.Buttons>
+                    <!-- [port] WPF x:Array（Type 属性）在 Avalonia 无对应 → MyListItem.Buttons(IEnumerable<MyIconButton>) 直接内联子元素 -->
+                    <local:MyIconButton Height="20" Width="20" VerticalAlignment="Center" Tag="{Binding}"
+                                        Click="_MyIconButtonClick"
+                                        SvgIcon="lucide/x" />
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+        </DataTemplate>
     </Application.Resources>
     <Application.Styles>
         <!-- [port] WPF 隐式样式 → Avalonia 选择器样式；OverridesDefaultStyle/SnapsToDevicePixels 为 WPF 专属已移除 -->
@@ -102,7 +115,7 @@
                 </ControlTemplate>
             </Setter>
         </Style>
-        <Style Selector="local:MyTextButton">
+        <Style Selector="MyTextButton">
             <Setter Property="Padding" Value="0" />
             <Setter Property="Template">
                 <ControlTemplate>
@@ -131,27 +144,14 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
             <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
         </Style>
-        <!-- [port] WPF x:Key 隐式查找 {x:Type TextBlock} 的 BasedOn 用法 → Avalonia 键控样式 -->
-        <Style Selector="TextBlock" x:Key="BasedOnTextBlock">
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
-            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-            <Setter Property="FontFamily" Value="{DynamicResource LaunchFontFamily}" />
-        </Style>
+        <!-- [port] WPF x:Key 隐式查找 {x:Type TextBlock} 的 BasedOn 用法 → Avalonia 键控样式
+             注意：Avalonia 的 Application.Styles 只能放选择器样式（无 x:Key），
+             上方 Selector="TextBlock.BasedOnTextBlock" 已提供等价样式，故此处键控样式删除。 -->
 
         <!-- 滚动条（MyScrollBar / MyScrollViewer / PageComp 的基础） -->
         <!-- [port] WPF Track/RepeatButton 模板 → Avalonia ScrollBar 模板结构（Track 概念不同）；
              视觉保持：细滚动条(8px) + 半透明滑块 + CornerRadius 3 -->
-        <Style x:Key="MyThumb" Selector="Thumb">
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Border Background="{DynamicResource ColorBrushSemiTransparent}">
-                        <Border Background="{TemplateBinding Foreground}" CornerRadius="3" Margin="2" />
-                    </Border>
-                </ControlTemplate>
-            </Setter>
-        </Style>
-        <Style Selector="local:MyScrollBar">
+        <Style Selector="MyScrollBar">
             <Setter Property="MinWidth" Value="8" />
             <Setter Property="Width" Value="8" />
             <Setter Property="Template">
@@ -161,21 +161,31 @@
                                Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}"
                                Value="{TemplateBinding Value}" ViewportSize="{TemplateBinding ViewportSize}">
                             <Track.DecreaseButton>
-                                <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" />
+                                <!-- [port] WPF RoutedCommand（ScrollBar.PageUpCommand）在 Avalonia 无对应；
+                                     Avalonia 的 ScrollBar 通过 TemplatePart 名（PART_PageUpButton/PART_PageDownButton）内部处理翻页 -->
+                                <RepeatButton Name="PART_PageUpButton" Opacity="0" />
                             </Track.DecreaseButton>
                             <Track.IncreaseButton>
-                                <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" />
+                                <RepeatButton Name="PART_PageDownButton" Opacity="0" />
                             </Track.IncreaseButton><!-- 不能删，删了点击 Thumb 以外的部分就不能翻页了 -->
                             <Track.Thumb>
-                                <Thumb Style="{DynamicResource MyThumb}"
-                                       Foreground="{TemplateBinding Foreground}" />
+                                <!-- [port] WPF Style="{DynamicResource MyThumb}"（键控样式应用到控件）→ Avalonia 无控件 Style 属性，改为内联 Template -->
+                                <Thumb Foreground="{TemplateBinding Foreground}">
+                                    <Thumb.Template>
+                                        <ControlTemplate>
+                                            <Border Background="{DynamicResource ColorBrushSemiTransparent}">
+                                                <Border Background="{TemplateBinding Foreground}" CornerRadius="3" Margin="2" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
                             </Track.Thumb>
                         </Track>
                     </Border>
                 </ControlTemplate>
             </Setter>
         </Style>
-        <Style Selector="local:MyScrollViewer">
+        <Style Selector="MyScrollViewer">
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid>
@@ -183,68 +193,22 @@
                                                 Content="{TemplateBinding Content}"
                                                 ContentTemplate="{TemplateBinding ContentTemplate}"
                                                 Margin="{TemplateBinding Padding}" />
+                        <!-- [port] WPF VerticalScrollBarMaximum/Value/ViewportSize → Avalonia ScrollViewer 用 ScrollBarMaximum(Size)/Offset(Vector)/Viewport(Size) -->
                         <local:MyScrollBar x:Name="PART_VerticalScrollBar"
                                            Grid.Column="1" HorizontalAlignment="Right"
-                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
-                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
+                                           Maximum="{Binding ScrollBarMaximum.Y, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Value="{Binding Offset.Y, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           ViewportSize="{Binding Viewport.Height, RelativeSource={RelativeSource TemplatedParent}}"
                                            Foreground="{TemplateBinding Foreground}"
                                            Background="{TemplateBinding Background}" />
                     </Grid>
                 </ControlTemplate>
             </Setter>
         </Style>
-        <Style Selector="is:local:PageComp" />
-        <Style Selector="ScrollViewer" x:Key="ScrollViewerFullMargin">
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Grid Margin="{TemplateBinding Padding}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
-                                                Content="{TemplateBinding Content}"
-                                                ContentTemplate="{TemplateBinding ContentTemplate}" />
-                        <local:MyScrollBar Margin="2,1,1,1" x:Name="PART_VerticalScrollBar"
-                                           AutomationProperties.AutomationId="VerticalScrollBar"
-                                           Grid.Column="1"
-                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
-                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           Background="{TemplateBinding Background}" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter>
-        </Style>
-        <Style Selector="ScrollViewer" x:Key="ScrollViewerNoMargin">
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Grid Margin="{TemplateBinding Padding}" Cursor="Arrow">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
-                                                Content="{TemplateBinding Content}"
-                                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                Cursor="{TemplateBinding Cursor}" />
-                        <local:MyScrollBar x:Name="PART_VerticalScrollBar"
-                                           AutomationProperties.AutomationId="VerticalScrollBar"
-                                           Grid.Column="1"
-                                           Maximum="{TemplateBinding VerticalScrollBarMaximum}"
-                                           Value="{Binding VerticalScrollBarValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                           ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           Background="{TemplateBinding Background}" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter>
-        </Style>
+        <!-- [port] 删除 <Style Selector="is:local:PageComp" />：空的键控/选择器样式在 Avalonia 引发 "is" 无效前缀错误，且无 Setter 无实际作用 -->
 
         <!-- 文本框（MyTextBox） -->
-        <Style Selector="local:MyTextBox">
+        <Style Selector="MyTextBox">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
             <Setter Property="FontSize" Value="13" />
@@ -257,7 +221,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ColorBrushBg0}" />
             <Setter Property="Template">
                 <ControlTemplate>
-                    <Grid ToolTip="{TemplateBinding ToolTip}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition MinHeight="28" />
                             <RowDefinition Height="Auto" />
@@ -266,9 +230,42 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="{TemplateBinding CornerRadius}">
-                            <ScrollViewer x:Name="PART_ScrollViewer"
-                                          Style="{DynamicResource ScrollViewerNoMargin}"
-                                          Margin="5,0,0,0" Cursor="IBeam" />
+                            <!-- [port] WPF Style="{DynamicResource ScrollViewerNoMargin}" → Avalonia 无控件 Style 属性，内联模板 -->
+                            <ScrollViewer x:Name="PART_ScrollViewer" Margin="5,0,0,0" Cursor="IBeam">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate>
+                                        <Grid Margin="{TemplateBinding Padding}" Cursor="Arrow">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                                                                    Content="{TemplateBinding Content}"
+                                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                    Cursor="{TemplateBinding Cursor}" />
+                                            <local:MyScrollBar x:Name="PART_VerticalScrollBar"
+                                                               AutomationProperties.AutomationId="VerticalScrollBar"
+                                                               Grid.Column="1"
+                                                               Maximum="{Binding ScrollBarMaximum.Y, RelativeSource={RelativeSource TemplatedParent}}"
+                                                               Value="{Binding Offset.Y, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                               ViewportSize="{Binding Viewport.Height, RelativeSource={RelativeSource TemplatedParent}}"
+                                                               Foreground="{TemplateBinding Foreground}"
+                                                               Background="{TemplateBinding Background}" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <!-- [port] Avalonia 的 TextBox 要求模板内含 TextPresenter(PART_TextPresenter) 承载文本编辑
+                                     （WPF 由 PART_ContentHost 隐式创建，Avalonia 无此机制） -->
+                                <TextPresenter x:Name="PART_TextPresenter"
+                                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                                               PasswordChar="{TemplateBinding PasswordChar}"
+                                               RevealPassword="{TemplateBinding RevealPassword}"
+                                               SelectionStart="{TemplateBinding SelectionStart, Mode=TwoWay}"
+                                               SelectionEnd="{TemplateBinding SelectionEnd, Mode=TwoWay}"
+                                               CaretIndex="{TemplateBinding CaretIndex, Mode=TwoWay}"
+                                               TextAlignment="{TemplateBinding TextAlignment}"
+                                               TextWrapping="{TemplateBinding TextWrapping}" />
+                            </ScrollViewer>
                         </Border>
                         <Border Margin="{TemplateBinding Padding}" IsHitTestVisible="False"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -288,7 +285,8 @@
             <!-- [port] behaviors:ClipboardInterceptor.EnableSafeClipboard 暂缓（WinForms 剪贴板依赖） -->
         </Style>
         <!-- 密码框（视觉与 MyTextBox 对齐） -->
-        <Style Selector="PasswordBox">
+        <!-- [port] Avalonia 12 已移除 PasswordBox → 改用 TextBox PasswordChar="●"。此处选择器改为 TextBox.Password（类）以保模板可编译，且不影响普通 TextBox -->
+        <Style Selector="TextBox.Password">
             <Setter Property="FontSize" Value="13" />
             <Setter Property="SelectionBrush" Value="{DynamicResource ColorBrush3}" />
             <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
@@ -302,10 +300,7 @@
                         <TextPresenter x:Name="PART_TextPresenter" Margin="4.5,4.5,0,4.5"
                                        Text="{TemplateBinding Text}"
                                        PasswordChar="{TemplateBinding PasswordChar}"
-                                       RevealPassword="{TemplateBinding RevealPassword}"
-                                       FontFamily="{TemplateBinding FontFamily}"
-                                       FontSize="{TemplateBinding FontSize}"
-                                       Foreground="{TemplateBinding Foreground}" />
+                                       RevealPassword="{TemplateBinding RevealPassword}" />
                     </Border>
                 </ControlTemplate>
             </Setter>
@@ -324,19 +319,7 @@
         </Style>
 
         <!-- ComboBox -->
-        <DataTemplate x:Key="ComboBoxItemTemplateWithDelete">
-            <local:MyListItem Title="{Binding}" FontSize="13" MaxHeight="26" IsScaleAnimationEnabled="False"
-                              Margin="-3,0,0,0">
-                <local:MyListItem.Buttons>
-                    <x:Array Type="local:MyIconButton">
-                        <local:MyIconButton Height="20" Width="20" VerticalAlignment="Center" Tag="{Binding}"
-                                            Click="_MyIconButtonClick"
-                                            SvgIcon="lucide/x" />
-                    </x:Array>
-                </local:MyListItem.Buttons>
-            </local:MyListItem>
-        </DataTemplate>
-        <Style Selector="local:MyComboBox">
+        <Style Selector="MyComboBox">
             <Setter Property="Foreground" Value="{DynamicResource ColorBrushBg0}" />
             <Setter Property="Background" Value="{DynamicResource ColorBrushHalfWhite}" />
             <Setter Property="FontSize" Value="13" />
@@ -355,7 +338,7 @@
                                           Content="{TemplateBinding SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
                         <Popup x:Name="PART_Popup" VerticalOffset="-1.5"
-                               PlacementMode="Bottom"
+                               Placement="Bottom"
                                IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <Grid x:Name="PanPopup">
                                 <Border Background="{DynamicResource ColorBrushWhite}" CornerRadius="3" />
@@ -363,11 +346,10 @@
                                         BorderBrush="{TemplateBinding Foreground}" BorderThickness="1"
                                         Width="{TemplateBinding Width}"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <!-- [port] WPF Style="{DynamicResource ScrollViewerFullMargin}" → Avalonia 无控件 Style 属性，删除（用 MyScrollViewer 默认模板） -->
                                     <local:MyScrollViewer x:Name="DropDownScrollViewer"
-                                                          Style="{DynamicResource ScrollViewerFullMargin}"
                                                           VerticalScrollBarVisibility="Auto">
-                                        <ItemsPresenter x:Name="ItemsPresenter"
-                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        <ItemsPresenter x:Name="ItemsPresenter" />
                                     </local:MyScrollViewer>
                                 </Border>
                             </Grid>
@@ -401,17 +383,6 @@
                 <Setter Property="RenderTransform" Value="rotate(180deg)" />
             </Style>
         </Style>
-        <Style Selector="ComboBoxItem" x:Key="MyComboBoxItem">
-            <Setter Property="Background" Value="{DynamicResource ColorBrushTransparent}" />
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Border x:Name="ItemBorder" Padding="6,4"
-                            Background="{TemplateBinding Background}">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter>
-        </Style>
         <Style Selector="ComboBoxItem">
             <Setter Property="Template">
                 <ControlTemplate>
@@ -436,7 +407,7 @@
             </Setter>
         </Style>
         <!-- MenuItem -->
-        <Style Selector="local:MyMenuItem">
+        <Style Selector="MyMenuItem">
             <Setter Property="Foreground" Value="{DynamicResource ColorBrush1}" />
             <Setter Property="Template">
                 <ControlTemplate>

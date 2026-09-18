@@ -21,6 +21,10 @@ public partial class MySlider : Border
     private int _Value;
     private bool changeByKey;
 
+    // [port] WPF CaptureMouse/ReleaseMouseCapture → Avalonia IPointer.Capture；Mouse.GetPosition(PanMain) → 指针事件位置
+    private IPointer? pointer;
+    private Point lastPointerPanPoint;
+
     // 拖动
 
     public Delegate getHintText;
@@ -34,7 +38,8 @@ public partial class MySlider : Border
         InitializeComponent();
         SizeChanged += RefreshWidth;
         PointerPressed += DragStart;
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] WPF IsEnabledChanged → Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
         PointerEntered += (_, _) => MySlider_PointerEntered();
@@ -81,11 +86,11 @@ public partial class MySlider : Border
 
                 if (IsLoaded && ModAnimation.AniControlEnabled == 0)
                 {
-                    if (ActualWidth < ShapeDot.Width)
+                    if (Bounds.Width < ShapeDot.Width)
                         return;
-                    var newWidth = _Value / (double)MaxValue * (ActualWidth - ShapeDot.Width);
+                    var newWidth = _Value / (double)MaxValue * (Bounds.Width - ShapeDot.Width);
                     var deltaProcess =
-                        Math.Abs(LineFore.Width / (ActualWidth - ShapeDot.Width) - _Value / (double)MaxValue);
+                        Math.Abs(LineFore.Width / (Bounds.Width - ShapeDot.Width) - _Value / (double)MaxValue);
                     var time = (1d - Math.Pow(1d - deltaProcess, 3d)) * 300d + (changeByKey ? 100 : 0);
                     ModAnimation.AniStart(
                         new[]
@@ -98,8 +103,8 @@ public partial class MySlider : Border
                                     : new ModAnimation.AniEaseLinear()),
                             ModAnimation.AaWidth(LineBack,
                                 Math.Max(0d,
-                                    ActualWidth - ShapeDot.Width - newWidth +
-                                    (ActualWidth - ShapeDot.Width - newWidth < 0.5d ? 0d : 0.5d)) - LineBack.Width,
+                                    Bounds.Width - ShapeDot.Width - newWidth +
+                                    (Bounds.Width - ShapeDot.Width - newWidth < 0.5d ? 0d : 0.5d)) - LineBack.Width,
                                 (int)Math.Round(time),
                                 ease: time > 50d
                                     ? new ModAnimation.AniEaseOutFluent()
@@ -141,17 +146,21 @@ public partial class MySlider : Border
         if (e is not null)
             PanMain.Width = e.NewSize.Width;
         ModAnimation.AniStop("MySlider Progress " + Uuid);
-        var newWidth = _Value / (double)MaxValue * (ActualWidth - ShapeDot.Width);
+        var newWidth = _Value / (double)MaxValue * (Bounds.Width - ShapeDot.Width);
         LineFore.Width = Math.Max(0d, newWidth + (newWidth < 0.5d ? 0d : 0.5d));
         LineBack.Width = Math.Max(0d,
-            ActualWidth - ShapeDot.Width - newWidth + (ActualWidth - ShapeDot.Width - newWidth < 0.5d ? 0d : 0.5d));
+            Bounds.Width - ShapeDot.Width - newWidth + (Bounds.Width - ShapeDot.Width - newWidth < 0.5d ? 0d : 0.5d));
         ModBase.SetLeft(ShapeDot, newWidth);
     }
 
     private void DragStart(object sender, PointerPressedEventArgs e)
     {
-        CaptureMouse();
-        MouseMove += OnDragMouseMove;
+        // [port] WPF CaptureMouse → Avalonia pointer.Capture(this)
+        pointer = e.Pointer;
+        pointer.Capture(this);
+        // [port] WPF Mouse.GetPosition(PanMain) → Avalonia e.GetPosition(PanMain)（存入字段，供外部 DragDoing 调用）
+        lastPointerPanPoint = e.GetPosition(PanMain);
+        PointerMoved += OnDragMouseMove;
         e.Handled = true; // 防止 ScrollViewer 失焦问题
         ModMain.dragControl = this;
         RefreshColor();
@@ -166,7 +175,7 @@ public partial class MySlider : Border
     public void DragDoing()
     {
         var percent =
-            ModBase.MathClamp((Mouse.GetPosition(PanMain).X - ShapeDot.Width / 2d) / (ActualWidth - ShapeDot.Width), 0d,
+            ModBase.MathClamp((lastPointerPanPoint.X - ShapeDot.Width / 2d) / (Bounds.Width - ShapeDot.Width), 0d,
                 1d);
         var newValue = (int)Math.Round(percent * MaxValue);
         if (newValue != Value) Value = newValue;
@@ -175,13 +184,15 @@ public partial class MySlider : Border
     
     private void OnDragMouseMove(object sender, PointerEventArgs e)
     {
+        lastPointerPanPoint = e.GetPosition(PanMain);
         DragDoing();
     }
     
     public void DragStop()
     {
-        MouseMove -= OnDragMouseMove;
-        if (IsMouseCaptured) ReleaseMouseCapture();
+        PointerMoved -= OnDragMouseMove;
+        // [port] WPF IsMouseCaptured/ReleaseMouseCapture → Avalonia pointer.Captured/pointer.Capture(null)
+        if (pointer is not null && pointer.Captured is not null) pointer.Capture(null);
         RefreshColor();
         ModAnimation.AniStart(
             ModAnimation.AaScaleTransform(ShapeDot, 1d - ((ScaleTransform)ShapeDot.RenderTransform).ScaleX, 200,
@@ -196,8 +207,9 @@ public partial class MySlider : Border
         Popup.Open();
         TextHint.Text = getHintText.DynamicInvoke(Value)?.ToString() ?? "";
         var typeface = new Typeface(TextHint.FontFamily, TextHint.FontStyle, TextHint.FontWeight, TextHint.FontStretch);
+        // [port] WPF FormattedText 7 参构造 → Avalonia 6 参构造（去掉像素密度参数 ModBase.dpi）
         var formattedText = new FormattedText(TextHint.Text, Thread.CurrentThread.CurrentCulture,
-            TextHint.FlowDirection, typeface, TextHint.FontSize, TextHint.Foreground, ModBase.dpi);
+            TextHint.FlowDirection, typeface, TextHint.FontSize, TextHint.Foreground);
         TextHint.Width = formattedText.Width; // 使用手动测量的宽度修复 #1057
     }
 
@@ -248,7 +260,7 @@ public partial class MySlider : Border
             {
                 // 无动画
                 ModAnimation.AniStop("MySlider Color " + Uuid);
-                SetResourceReference(BorderBrushProperty, foregroundName);
+                this.SetResourceReference(BorderBrushProperty, foregroundName);
                 ShapeDot.SetResourceReference(Shape.FillProperty, dotFillName);
             }
         }

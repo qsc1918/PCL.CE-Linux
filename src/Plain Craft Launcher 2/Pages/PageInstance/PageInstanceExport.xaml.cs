@@ -9,6 +9,7 @@ using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
+using Avalonia.Platform.Storage;
 using DotNet.Globbing;
 using PCL.Core.App;
 using PCL.Core.UI;
@@ -19,12 +20,12 @@ namespace PCL;
 
 public class ExportOption : AvaloniaObject
 {
-    public static readonly AvaloniaProperty TitleProperty = AvaloniaProperty.Register(
-        nameof(Title), typeof(string), typeof(ExportOption)
+    public static readonly AvaloniaProperty TitleProperty = AvaloniaProperty.Register<ExportOption, string>(
+        nameof(Title), string.Empty
     );
 
-    public static readonly AvaloniaProperty DescriptionProperty = AvaloniaProperty.Register(
-        nameof(Description), typeof(string), typeof(ExportOption)
+    public static readonly AvaloniaProperty DescriptionProperty = AvaloniaProperty.Register<ExportOption, string>(
+        nameof(Description), string.Empty
     );
 
     public string Title
@@ -86,7 +87,7 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
     public void RefreshAll()
     {
         ModBase.Log("[Export] 刷新导出页面");
-        HintOptiFine.Visibility =
+        HintOptiFine.IsVisible =
             PageInstanceLeft.McInstance.Info.HasOptiFine ? true : false;
         currentVersion = PageInstanceLeft.McInstance.PathInstance;
         TextExportName.Text = "";
@@ -402,7 +403,7 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
             CheckBox.Inlines.Clear();
             CheckBox.Inlines.Add(new Run(targetOption.Title));
             if (!string.IsNullOrEmpty(targetOption.Description))
-                CheckBox.Inlines.Add(new Run("   " + targetOption.Description) { Foreground = ThemeManager.colorGray5 });
+                CheckBox.Inlines.Add(new Run("   " + targetOption.Description) { Foreground = ThemeManager.colorGray5.ToBrush() }); // [port] MyColor→IBrush
             // 可见性、默认勾选
             if (string.IsNullOrEmpty(targetOption.Rules) && string.IsNullOrEmpty(targetOption.ShowRules))
             {
@@ -755,18 +756,20 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
         if (e.DataTransfer.Contains(DataFormat.File))
         {
             // 获取拖入的文件路径数组
-            var files = (string[])e.Data.GetData(DataFormat.File);
+            var files = e.DataTransfer.TryGetFiles()
+                .Where(i => i is not null).Select(i => i!.TryGetLocalPath())
+                .Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).ToArray(); // [port] Data.GetData→DataTransfer.TryGetFiles
 
             // 验证：仅允许单个.txt文件
             if (files.Length == 1 &&
                 files[0].EndsWithF(".txt", true))
-                e.Effects = DragDropEffects.Copy; // 设置拖放效果为“复制”
+                e.DragEffects = DragDropEffects.Copy; // [port] Effects→DragEffects 设置拖放效果为“复制”
             else
-                e.Effects = DragDropEffects.None; // 不允许拖放
+                e.DragEffects = DragDropEffects.None; // [port] 不允许拖放
         }
         else
         {
-            e.Effects = DragDropEffects.None;
+            e.DragEffects = DragDropEffects.None;
         }
 
         e.Handled = true;
@@ -780,7 +783,9 @@ public partial class PageInstanceExport : MyPageRight, IRefreshable
         // 获取拖入的文件路径
         if (e.DataTransfer.Contains(DataFormat.File))
         {
-            var files = (string[])e.Data.GetData(DataFormat.File);
+            var files = e.DataTransfer.TryGetFiles()
+                .Where(i => i is not null).Select(i => i!.TryGetLocalPath())
+                .Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).ToArray(); // [port] Data.GetData→DataTransfer.TryGetFiles
             var configPath = files[0];
 
             // 调用核心读取逻辑

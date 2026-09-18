@@ -176,7 +176,7 @@ public partial class ServerCard : MyCard
     {
         try
         {
-            Clipboard.SetText(server.Address);
+            ModBase.ClipboardSet(server.Address, false); // [port] WPF Clipboard.SetText → ModBase.ClipboardSet（Avalonia 剪贴板为异步，改用统一封装）
             HintService.Hint(Lang.Text("Instance.Server.Card.AddressCopied", server.Address), HintType.Success);
         }
         catch (Exception ex)

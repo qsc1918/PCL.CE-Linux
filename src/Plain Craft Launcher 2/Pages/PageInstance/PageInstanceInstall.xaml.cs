@@ -300,28 +300,28 @@ public partial class PageInstanceInstall : MyPageRight
                 if (isFirstLoaded)
                     return;
                 isFirstLoaded = true;
-                BtnOptiFineClearInner.SetBinding(Shape.FillProperty,
+                BtnOptiFineClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardOptiFine.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnLiteLoaderClearInner.SetBinding(Shape.FillProperty,
+                BtnLiteLoaderClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardLiteLoader.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnForgeClearInner.SetBinding(Shape.FillProperty,
+                BtnForgeClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardForge.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnLegacyFabricClearInner.SetBinding(Shape.FillProperty,
+                BtnLegacyFabricClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardLegacyFabric.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnNeoForgeClearInner.SetBinding(Shape.FillProperty,
+                BtnNeoForgeClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardNeoForge.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnCleanroomClearInner.SetBinding(Shape.FillProperty,
+                BtnCleanroomClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardCleanroom.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnFabricClearInner.SetBinding(Shape.FillProperty,
+                BtnFabricClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardFabric.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnLegacyFabricApiClearInner.SetBinding(Shape.FillProperty,
+                BtnLegacyFabricApiClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground")
                         { Source = CardLegacyFabricApi.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnFabricApiClearInner.SetBinding(Shape.FillProperty,
+                BtnFabricApiClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardFabricApi.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnLabyModClearInner.SetBinding(Shape.FillProperty,
+                BtnLabyModClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardLabyMod.MainTextBlock, Mode = BindingMode.OneWay });
-                BtnOptiFabricClearInner.SetBinding(Shape.FillProperty,
+                BtnOptiFabricClearInner.Bind(Shape.FillProperty,
                     new Binding("Foreground") { Source = CardOptiFabric.MainTextBlock, Mode = BindingMode.OneWay });
             }, after: true)
         }, "FrmInstanceInstall SelectPageSwitch", true);
@@ -359,7 +359,8 @@ public partial class PageInstanceInstall : MyPageRight
     }
 
     // 页面切换触发
-    public void MinecraftSelected(MyListItem sender, PointerPressedEventArgs e)
+    // [port] 该回调由 MyListItem.ClickEventHandler（Avalonia PointerReleased）触发，参数改用 PointerReleasedEventArgs
+    public void MinecraftSelected(MyListItem sender, PointerReleasedEventArgs e)
     {
         _vanillaName = sender.Title;
         _vanillaData = (JsonObject)sender.Tag;
@@ -463,9 +464,9 @@ public partial class PageInstanceInstall : MyPageRight
         }
 
         // Minecraft
-        ImgMinecraft.Source = new MyBitmap(_vanillaIcon);
+        ImgMinecraft.Source = (Avalonia.Media.Imaging.Bitmap)new MyBitmap(_vanillaIcon); // [port] MyBitmap→IImage 需先经 MyBitmap 的隐式 Bitmap 转换再赋值
         LabMinecraft.Text = _vanillaName;
-        LabMinecraft.Foreground = ThemeManager.colorGray1;
+        LabMinecraft.Foreground = ThemeManager.colorGray1.ToBrush();
         // OptiFine
         if (!McVersionComparer.CompareVersionGe(_vanillaName, "1.7.2"))
         {
@@ -484,14 +485,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnOptiFineClear.IsVisible = false;
                 ImgOptiFine.IsVisible = false;
                 LabOptiFine.Text = optiFineError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabOptiFine.Foreground = ThemeManager.colorGray4;
+                LabOptiFine.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnOptiFineClear.IsVisible = true;
                 ImgOptiFine.IsVisible = true;
                 LabOptiFine.Text = selectedOptiFine.DisplayName.Replace(_vanillaName + " ", "");
-                LabOptiFine.Foreground = ThemeManager.colorGray1;
+                LabOptiFine.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -515,14 +516,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnLiteLoaderClear.IsVisible = false;
                 ImgLiteLoader.IsVisible = false;
                 LabLiteLoader.Text = liteLoaderError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabLiteLoader.Foreground = ThemeManager.colorGray4;
+                LabLiteLoader.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnLiteLoaderClear.IsVisible = true;
                 ImgLiteLoader.IsVisible = true;
                 LabLiteLoader.Text = selectedLiteLoader.Inherit;
-                LabLiteLoader.Foreground = ThemeManager.colorGray1;
+                LabLiteLoader.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -545,14 +546,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnForgeClear.IsVisible = false;
                 ImgForge.IsVisible = false;
                 LabForge.Text = forgeError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabForge.Foreground = ThemeManager.colorGray4;
+                LabForge.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnForgeClear.IsVisible = true;
                 ImgForge.IsVisible = true;
                 LabForge.Text = selectedForge.VersionName;
-                LabForge.Foreground = ThemeManager.colorGray1;
+                LabForge.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -570,14 +571,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnCleanroomClear.IsVisible = false;
                 ImgCleanroom.IsVisible = false;
                 LabCleanroom.Text = cleanroomError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabCleanroom.Foreground = ThemeManager.colorGray4;
+                LabCleanroom.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnCleanroomClear.IsVisible = true;
                 ImgCleanroom.IsVisible = true;
                 LabCleanroom.Text = selectedCleanroom.VersionName;
-                LabCleanroom.Foreground = ThemeManager.colorGray1;
+                LabCleanroom.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
         else
@@ -603,14 +604,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnNeoForgeClear.IsVisible = false;
                 ImgNeoForge.IsVisible = false;
                 LabNeoForge.Text = neoForgeError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabNeoForge.Foreground = ThemeManager.colorGray4;
+                LabNeoForge.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnNeoForgeClear.IsVisible = true;
                 ImgNeoForge.IsVisible = true;
                 LabNeoForge.Text = selectedNeoForge.VersionName;
-                LabNeoForge.Foreground = ThemeManager.colorGray1;
+                LabNeoForge.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -633,14 +634,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnFabricClear.IsVisible = false;
                 ImgFabric.IsVisible = false;
                 LabFabric.Text = fabricError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabFabric.Foreground = ThemeManager.colorGray4;
+                LabFabric.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnFabricClear.IsVisible = true;
                 ImgFabric.IsVisible = true;
                 LabFabric.Text = selectedFabric.Replace("+build", "");
-                LabFabric.Foreground = ThemeManager.colorGray1;
+                LabFabric.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -662,7 +663,7 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnFabricApiClear.IsVisible = false;
                 ImgFabricApi.IsVisible = false;
                 LabFabricApi.Text = fabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabFabricApi.Foreground = ThemeManager.colorGray4;
+                LabFabricApi.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
@@ -670,7 +671,7 @@ public partial class PageInstanceInstall : MyPageRight
                 ImgFabricApi.IsVisible = true;
                 LabFabricApi.Text = selectedFabricApi.DisplayName.Split("]")[1].Replace("Fabric API ", "")
                     .Replace(" build ", ".").Split("+").First().Trim();
-                LabFabricApi.Foreground = ThemeManager.colorGray1;
+                LabFabricApi.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -683,7 +684,7 @@ public partial class PageInstanceInstall : MyPageRight
         {
             CardLegacyFabric.IsVisible = true;
             var legacyFabricError = LoadLegacyFabricGetError();
-            CardLegacyFabric.MainSwap.Visibility =
+            CardLegacyFabric.MainSwap.IsVisible =
                 legacyFabricError is null ? true : false;
             if (legacyFabricError is not null)
                 CardLegacyFabric.IsSwapped = true;
@@ -693,14 +694,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnLegacyFabricClear.IsVisible = false;
                 ImgLegacyFabric.IsVisible = false;
                 LabLegacyFabric.Text = legacyFabricError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabLegacyFabric.Foreground = ThemeManager.colorGray4;
+                LabLegacyFabric.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnLegacyFabricClear.IsVisible = true;
                 ImgLegacyFabric.IsVisible = true;
                 LabLegacyFabric.Text = selectedLegacyFabric.Replace("+build", "");
-                LabLegacyFabric.Foreground = ThemeManager.colorGray1;
+                LabLegacyFabric.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -713,7 +714,7 @@ public partial class PageInstanceInstall : MyPageRight
         {
             CardLegacyFabricApi.IsVisible = true;
             var legacyFabricApiError = LoadLegacyFabricApiGetError();
-            CardLegacyFabricApi.MainSwap.Visibility =
+            CardLegacyFabricApi.MainSwap.IsVisible =
                 legacyFabricApiError is null ? true : false;
             if (legacyFabricApiError is not null || selectedLegacyFabric is null)
                 CardLegacyFabricApi.IsSwapped = true;
@@ -723,14 +724,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnLegacyFabricApiClear.IsVisible = false;
                 ImgLegacyFabricApi.IsVisible = false;
                 LabLegacyFabricApi.Text = legacyFabricApiError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabLegacyFabricApi.Foreground = ThemeManager.colorGray4;
+                LabLegacyFabricApi.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnLegacyFabricApiClear.IsVisible = true;
                 ImgLegacyFabricApi.IsVisible = true;
                 LabLegacyFabricApi.Text = selectedLegacyFabricApi.DisplayName.Replace("Legacy Fabric API ", "");
-                LabLegacyFabricApi.Foreground = ThemeManager.colorGray1;
+                LabLegacyFabricApi.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -753,14 +754,14 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnLabyModClear.IsVisible = false;
                 ImgLabyMod.IsVisible = false;
                 LabLabyMod.Text = labyModError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabLabyMod.Foreground = ThemeManager.colorGray4;
+                LabLabyMod.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
                 BtnLabyModClear.IsVisible = true;
                 ImgLabyMod.IsVisible = true;
                 LabLabyMod.Text = selectedLabyModVersion;
-                LabLabyMod.Foreground = ThemeManager.colorGray1;
+                LabLabyMod.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 
@@ -782,7 +783,7 @@ public partial class PageInstanceInstall : MyPageRight
                 BtnOptiFabricClear.IsVisible = false;
                 ImgOptiFabric.IsVisible = false;
                 LabOptiFabric.Text = optiFabricError ?? Lang.Text("Download.Install.State.CanAdd");
-                LabOptiFabric.Foreground = ThemeManager.colorGray4;
+                LabOptiFabric.Foreground = ThemeManager.colorGray4.ToBrush();
             }
             else
             {
@@ -790,7 +791,7 @@ public partial class PageInstanceInstall : MyPageRight
                 ImgOptiFabric.IsVisible = true;
                 LabOptiFabric.Text = selectedOptiFabric.DisplayName.ToLower().Replace("optifabric-", "")
                     .Replace(".jar", "").Trim().TrimStart('v');
-                LabOptiFabric.Foreground = ThemeManager.colorGray1;
+                LabOptiFabric.Foreground = ThemeManager.colorGray1.ToBrush();
             }
         }
 

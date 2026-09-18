@@ -38,22 +38,22 @@
                         <local:MyComboBox x:Name="ComboArgumentIndieV2" Grid.Row="0" Grid.ColumnSpan="2"
                                           Tag="LaunchArgumentIndieV2" Grid.Column="1"
                                           SelectionChanged="ComboArgumentIndie_OnSelectionChanged"
-                                          ToolTip="{DynamicResource Setup.Launch.Options.InstanceIsolation.ToolTip}">
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Options.InstanceIsolation.ToolTip}">
                             <local:MyComboBoxItem Content="{DynamicResource Common.Action.Close}"
-                                                  ToolTip="{DynamicResource Setup.Launch.Options.InstanceIsolation.None.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Setup.Launch.Options.InstanceIsolation.None.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.InstanceIsolation.ModdedOnly}" IsSelected="True"
-                                                  ToolTip="{DynamicResource Setup.Launch.Options.InstanceIsolation.ModdedOnly.ToolTip}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.InstanceIsolation.NonRelease}" ToolTip="{DynamicResource Setup.Launch.Options.InstanceIsolation.NonRelease.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Setup.Launch.Options.InstanceIsolation.ModdedOnly.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.InstanceIsolation.NonRelease}" ToolTip.Tip="{DynamicResource Setup.Launch.Options.InstanceIsolation.NonRelease.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.InstanceIsolation.ModdedAndNonRelease}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.InstanceIsolation.All}"
-                                                  ToolTip="{DynamicResource Setup.Launch.Options.InstanceIsolation.All.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Setup.Launch.Options.InstanceIsolation.All.ToolTip}" />
                         </local:MyComboBox>
                         <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Launch.Options.WindowTitle.Label}"
                                    Margin="0,0,25,0" />
                         <local:MyComboBox x:Name="TextArgumentTitle" Grid.Row="2" Grid.ColumnSpan="2"
                                           Tag="LaunchArgumentTitle" Grid.Column="1" IsEditable="True"
                                           IsTextSearchEnabled="False" TextChanged="TextArgumentTitle_OnTextChanged"
-                                          ToolTip="{DynamicResource Setup.Launch.Options.WindowTitle.ToolTip}"
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Options.WindowTitle.ToolTip}"
                                           HintText="{DynamicResource Common.Option.Default}">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowTitle.SampleFormat}" />
                         </local:MyComboBox>
@@ -62,7 +62,7 @@
                         <local:MyTextBox x:Name="TextArgumentInfo" Grid.Row="4" Grid.ColumnSpan="2"
                                          Tag="LaunchArgumentInfo" Text="PCL" Grid.Column="1"
                                          ValidatedTextChanged="TextBoxChange"
-                                         ToolTip="{DynamicResource Setup.Launch.Options.CustomInfo.ToolTip}">
+                                         ToolTip.Tip="{DynamicResource Setup.Launch.Options.CustomInfo.ToolTip}">
                             <local:MyTextBox.ValidateRules>
                                 <val:BlacklistValidator>
                                     <val:BlacklistValidator.Blacklist>
@@ -87,6 +87,7 @@
                         </local:MyComboBox>
                         <TextBlock VerticalAlignment="Center" Grid.Row="8" HorizontalAlignment="Left" Text="{DynamicResource Setup.Launch.Options.Priority.Label}"
                                    Margin="0,0,25,0" />
+                        <!-- [port] Avalonia 12 无 WPF SelectedValuePath（SelectingItemsControl 改用 SelectedValueBinding，见 MyComboBox） -->
                         <local:MyComboBox x:Name="ComboArgumentPriority" Grid.Row="8" Grid.ColumnSpan="2"
                                           Tag="LaunchArgumentPriority" Grid.Column="1"
                                           SelectionChanged="ComboChange"
@@ -108,11 +109,11 @@
                             </Grid.ColumnDefinitions>
                             <local:MyComboBox x:Name="ComboArgumentWindowType" Tag="LaunchArgumentWindowType"
                                               SelectionChanged="ComboChange"
-                                              ToolTip="{DynamicResource Setup.Launch.Options.WindowSize.ModernUiWarning}">
+                                              ToolTip.Tip="{DynamicResource Setup.Launch.Options.WindowSize.ModernUiWarning}">
                                 <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Fullscreen}" />
                                 <local:MyComboBoxItem Content="{DynamicResource Common.Option.Default}" IsSelected="True" />
                                 <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.SameAsLauncher}" />
-                                <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Custom}" ToolTip="{DynamicResource Setup.Launch.Options.WindowSize.CustomHeightBug.ToolTip}" />
+                                <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Custom}" ToolTip.Tip="{DynamicResource Setup.Launch.Options.WindowSize.CustomHeightBug.ToolTip}" />
                                 <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.WindowSize.Maximized}" />
                             </local:MyComboBox>
                             <local:MyTextBox Padding="0,0,5,0" IsVisible="False" Grid.Column="1" Margin="50,0,0,0"
@@ -129,7 +130,7 @@
                                              HorizontalContentAlignment="Center" x:Name="TextArgumentWindowHeight"
                                              Tag="LaunchArgumentWindowHeight" Text="480"
                                              ValidatedTextChanged="TextBoxChange"
-                                             ToolTip="{DynamicResource Setup.Launch.Options.WindowSize.CustomHeightBug.ToolTip}"
+                                             ToolTip.Tip="{DynamicResource Setup.Launch.Options.WindowSize.CustomHeightBug.ToolTip}"
                                             ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
                                 <local:MyTextBox.ValidateRules>
                                     <val:IntValidator Min="1" Max="9999" />
@@ -138,11 +139,11 @@
                         </Grid>
                         <TextBlock VerticalAlignment="Center" Grid.Row="12" HorizontalAlignment="Left" Text="{DynamicResource Setup.Launch.Options.MsAuth.Label}"
                                    Margin="0,0,25,0"
-                                   ToolTip="{DynamicResource Setup.Launch.Options.MsAuth.ToolTip}" />
+                                   ToolTip.Tip="{DynamicResource Setup.Launch.Options.MsAuth.ToolTip}" />
                         <local:MyComboBox x:Name="ComboMsAuthType" Grid.Row="12" Grid.ColumnSpan="2"
                                           Tag="LoginMsAuthType" Grid.Column="1"
                                           SelectionChanged="ComboChange"
-                                          ToolTip="{DynamicResource Setup.Launch.Options.MsAuth.ToolTip}"
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Options.MsAuth.ToolTip}"
                                           IsEnabled="False">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.MsAuth.WebManager}" IsSelected="True" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.MsAuth.DeviceCode}" />
@@ -152,7 +153,7 @@
                         <local:MyComboBox x:Name="ComboPreferredIpStack" Grid.Row="14" Grid.ColumnSpan="2"
                                           Tag="LaunchPreferredIpStack" Grid.Column="1"
                                           SelectionChanged="ComboChange"
-                                          ToolTip="{DynamicResource Setup.Launch.Options.IpStack.ToolTip}">
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Options.IpStack.ToolTip}">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.IpStack.Ipv4}" IsSelected="True" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.IpStack.JavaDefault}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Launch.Options.IpStack.Ipv6}" />
@@ -180,7 +181,7 @@
                         </Grid.RowDefinitions>
                         <local:MyRadioBox Text="{DynamicResource Setup.Launch.Memory.Auto}" Width="110" Checked="True" x:Name="RadioRamType0"
                                           Tag="LaunchRamType/0" Margin="0,0,20,0" Check="RadioBoxChange"
-                                          ToolTip="{DynamicResource Setup.Launch.Memory.Auto.ToolTip}" ToolTip.Placement="Right"
+                                          ToolTip.Tip="{DynamicResource Setup.Launch.Memory.Auto.ToolTip}" ToolTip.Placement="Right"
                                           ToolTip.HorizontalOffset="-10" ToolTip.VerticalOffset="-3" />
                         <local:MyRadioBox Grid.Row="2" Text="{DynamicResource Common.Option.Customize}" x:Name="RadioRamType1" Tag="LaunchRamType/1"
                                           Margin="0,0,20,0" Check="RadioBoxChange" />
@@ -189,9 +190,9 @@
                     </Grid>
                     <Grid x:Name="PanRamDisplay" Margin="0,11,2,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnRamUsed" Width="4.7*" />
-                            <ColumnDefinition x:Name="ColumnRamGame" Width="2.5*" />
-                            <ColumnDefinition x:Name="ColumnRamEmpty" Width="0.7*" />
+                            <ColumnDefinition Width="4.7*" />
+                            <ColumnDefinition Width="2.5*" />
+                            <ColumnDefinition Width="0.7*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -260,46 +261,46 @@
                         <TextBlock Text="{DynamicResource Setup.Launch.Advanced.JvmHead}" VerticalAlignment="Center" />
                         <local:MyIconButton Height="23" Margin="0,1,0,0" x:Name="BtnAdvanceJvmReset"
                                             VerticalAlignment="Center" Click="BtnAdvanceJvmReset_Click"
-                                            ToolTip="{DynamicResource Setup.Launch.Advanced.JvmHead.Restore}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
+                                            ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.JvmHead.Restore}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
                     </StackPanel>
                     <local:MyTextBox Grid.Row="2" x:Name="TextAdvanceJvm" Grid.ColumnSpan="2" Tag="LaunchAdvanceJvm"
                                      TextChanged="TextAdvanceJvm_TextChanged"
                                      Grid.Column="1" ValidatedTextChanged="TextBoxChange"
-                                     ToolTip="{DynamicResource Setup.Launch.Advanced.JvmHead.ToolTip}"
+                                     ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.JvmHead.ToolTip}"
                                      MaxLength="4000" Height="100" AcceptsReturn="True" TextWrapping="Wrap"
-                                     VerticalContentAlignment="Top" Padding="0,5" VerticalScrollBarVisibility="Auto" />
+                                     VerticalContentAlignment="Top" Padding="0,5" />
                     <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Launch.Advanced.GameTail}"
                                Margin="0,0,25,0" />
                     <local:MyTextBox x:Name="TextAdvanceGame" Grid.Row="4" Grid.ColumnSpan="2" Tag="LaunchAdvanceGame"
                                      Grid.Column="1" ValidatedTextChanged="TextBoxChange"
-                                     ToolTip="{DynamicResource Setup.Launch.Advanced.GameTail.ToolTip}" />
+                                     ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.GameTail.ToolTip}" />
                     <TextBlock Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand}"
                                Margin="0,0,25,0" />
                     <local:MyTextBox x:Name="TextAdvanceRun" Grid.Row="6" Grid.ColumnSpan="2" Tag="LaunchAdvanceRun"
                                      Grid.Column="1" HintText="" ValidatedTextChanged="TextBoxChange"
                                      TextChanged="TextAdvanceRun_TextChanged"
-                                     ToolTip="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.ToolTip}" />
+                                     ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.ToolTip}" />
                     <local:MyCheckBox Grid.Row="7" Grid.Column="1" x:Name="CheckAdvanceRunWait"
                                       Tag="LaunchAdvanceRunWait" IsVisible="False"
                                       Change="CheckBoxChange"
                                       Text="{DynamicResource Setup.Launch.Advanced.PreLaunchCommand.Wait}" Margin="0,8,0,7" />
                     <StackPanel Margin="0,12,0,4" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Left">
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.DisableJlw}" x:Name="CheckAdvanceDisableJLW" Tag="LaunchAdvanceDisableJLW"  Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.DisableJlw.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableJlw.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.DisableLF}" x:Name="CheckAdvanceDisableLF" Tag="LaunchAdvanceDisableLF"  Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLF.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableLF.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.GpuPreference}" x:Name="CheckAdvanceGraphicCard" Tag="LaunchAdvanceGraphicCard"  Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.GpuPreference.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.GpuPreference.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.UseJavaExe}" x:Name="CheckAdvanceNoJavaw" Tag="LaunchAdvanceNoJavaw"  Change="CheckBoxChange"
-                            ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.UseJavaExe.ToolTip}" />
+                            ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.UseJavaExe.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent}" x:Name="CheckAdvanceDisableLwjglUnsafeAgent" Tag="LaunchAdvanceDisableLwjglUnsafeAgent"  Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableLwjglUnsafeAgent.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.DisableCrashAnalysis}" x:Name="CheckAdvanceDisableCrashAnalysis" Tag="LaunchAdvanceDisableCrashAnalysis" Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.DisableCrashAnalysis.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.DisableCrashAnalysis.ToolTip}" />
                         <local:MyCheckBox Height="28" Text="{DynamicResource Setup.Launch.Advanced.LockMemory}" x:Name="CheckAdvanceLockMemory" Tag="LaunchAdvanceLockMemory" Change="CheckBoxChange"
-                                          ToolTip.Placement="Right" ToolTip="{DynamicResource Setup.Launch.Advanced.LockMemory.ToolTip}" />
+                                          ToolTip.Placement="Right" ToolTip.Tip="{DynamicResource Setup.Launch.Advanced.LockMemory.ToolTip}" />
                     </StackPanel>
                     <local:MyHint Text="{DynamicResource Setup.Launch.Advanced.MoreInInstanceSetup}" Margin="0,5,0,10" Theme="Blue" Grid.Row="9"
                                   Grid.ColumnSpan="2"

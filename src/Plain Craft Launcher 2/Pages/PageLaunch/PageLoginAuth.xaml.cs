@@ -54,14 +54,14 @@ public partial class PageLoginAuth : Grid
     {
         TextServer.Text = null;
         TextName.Text = null;
-        TextPass.Password = null;
+        TextPass.Text = null; // [port] WPF PasswordBox.Password → Avalonia TextBox.Text（Avalonia 12 无 PasswordBox）
         ModMain.frmLaunchLeft.RefreshPage(true);
     }
 
     private void BtnLogin_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(TextServer.Text) || string.IsNullOrWhiteSpace(TextName.Text) ||
-            string.IsNullOrWhiteSpace(TextPass.Password))
+            string.IsNullOrWhiteSpace(TextPass.Text))
         {
             HintService.Hint(Lang.Text("Launch.Account.Auth.EmptyFields"), HintType.Error);
             return;
@@ -78,7 +78,7 @@ public partial class PageLoginAuth : Grid
         var loginData = new ModLaunch.McLoginServer(ModLaunch.McLoginType.Auth)
         {
             BaseUrl = TextServer.Text.EndsWithF("/") ? $"{TextServer.Text}authserver" : $"{TextServer.Text}/authserver",
-            UserName = TextName.Text, Password = TextPass.Password, Description = "Authlib-Injector",
+            UserName = TextName.Text, Password = TextPass.Text, Description = "Authlib-Injector",
             LoginType = ModLaunch.McLoginType.Auth
         };
         Dispatcher.InvokeAsync(new Func<Task>(async () =>

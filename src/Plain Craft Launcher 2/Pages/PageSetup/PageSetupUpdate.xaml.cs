@@ -26,7 +26,7 @@ public partial class PageSetupUpdate : MyPageRight
     private void Init()
     {
         ModAnimation.AniControlEnabled += 1;
-        TextMirrorCDK.Password = Config.Update.MirrorChyanKey;
+        TextMirrorCDK.Text = Config.Update.MirrorChyanKey; // [port] WPF PasswordBox.Password → Avalonia TextBox.Text
 
         ComboSystemUpdateChannel.SelectedIndex = (int)Config.Update.UpdateChannel;
         ComboSystemUpdateMode.SelectedIndex = (int)Config.Update.UpdateMode;
@@ -249,9 +249,9 @@ public partial class PageSetupUpdate : MyPageRight
         }
     }
 
-    private void TextMirrorCDK_PasswordChanged(object sender, EventArgs e)
+    private void TextMirrorCDK_PasswordChanged(object sender, TextChangedEventArgs e)
     {
-        Config.Update.MirrorChyanKey = TextMirrorCDK.Password;
+        Config.Update.MirrorChyanKey = TextMirrorCDK.Text;
     }
 
     private void BtnGetMirrorCDK_Click(object sender, PointerPressedEventArgs e)

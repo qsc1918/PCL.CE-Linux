@@ -7,15 +7,15 @@
     xmlns:controls="clr-namespace:PCL.Core.UI.Controls;assembly=PCL.Core"
     mc:Ignorable="d"
     KeyDown="FormMain_KeyDown" PointerPressed="FormMain_MouseDown" SizeChanged="FormMain_SizeChanged"
-    Closing="FormMain_Closing" Drop="FrmMain_Drop" StateChanged="WindowStateChanged"
-    PointerMoved="FormMain_MouseMove"
+    Closing="FormMain_Closing"
+    PointerMoved="FormMain_MouseMove" PointerReleased="FormMain_MouseUp"
     x:Name="WindMain" x:Class="PCL.FormMain"
-    AllowDrop="True" Topmost="True" Title="Plain Craft Launcher Community Edition " MinHeight="470" MinWidth="810"
+    Topmost="True" Title="Plain Craft Launcher Community Edition " MinHeight="470" MinWidth="810"
     ScrollViewer.VerticalScrollBarVisibility="Disabled" Icon="avares://PCL/Images/icon.ico"
-    ResizeMode="CanResize" Background="{x:Null}" d:DesignWidth="870" d:DesignHeight="520" Width="850" Height="500"
+    CanResize="True" Background="{x:Null}" d:DesignWidth="870" d:DesignHeight="520" Width="850" Height="500"
     WindowStartupLocation="CenterScreen"
-    ExtendClientAreaToDecorationsHint="True" ExtendClientAreaChromeHints="PreferSystemChrome"
-    SystemDecorations="Full" TransparencyLevelHint="None">
+    ExtendClientAreaToDecorationsHint="True"
+    WindowDecorations="Full" TransparencyLevelHint="None">
     <!-- [port] Window 装饰区由 WPF WindowChrome 方案改为 Avalonia 方案：
          · WPF WindowStyle="SingleBorderWindow" → 删除，改由 SystemDecorations="Full" 承担。
          · WPF AllowsTransparency="False" → 删除，改由 TransparencyLevelHint="None" 承担。
@@ -28,12 +28,19 @@
            → 改在 code-behind 用 `Activated += FormMain_Activated;` 重新接线。 -->
     <!-- [port] TaskbarItemInfo removed：Avalonia 无任务栏项/缩略图剪裁（ThumbnailClipMargin）相关 API，删除。 -->
     <!-- [port] WindowChrome.WindowChrome removed：见上方说明，装饰改由 Window 上的 ExtendClientArea/SystemDecorations 处理。 -->
-    <Grid UseLayoutRounding="True">
+    <!-- [port] 额外移除：
+         · WPF Window.Drop 事件 → Avalonia 用 DragDrop.AddDropHandler 在 code-behind 重新接线；
+         · WPF Window.StateChanged 事件 → Avalonia 用 PropertyChanged(WindowStateProperty) 在 code-behind 重新接线；
+         · WPF AllowDrop → Avalonia 无该属性（拖拽由 DragDrop.* 处理器承载）；
+         · WPF ResizeMode="CanResize" → Avalonia CanResize="True"；
+         · WPF ExtendClientAreaChromeHints → 删除；Panel.ZIndex（Avalonia 无）→ 依赖子元素声明顺序。 -->
+    <Grid x:Name="RootGrid" UseLayoutRounding="True">
         <!-- [port] 全局：WPF Visibility="Visible/Collapsed" → Avalonia IsVisible="True/False"（Avalonia 无 Visibility 枚举）；本文件所有 Visibility 属性均已按此转换。 -->
         <Grid.RenderTransform>
             <TransformGroup>
-                <RotateTransform x:Name="TransformRotate" Angle="-4" />
-                <TranslateTransform x:Name="TransformPos" X="0" Y="60" />
+                <!-- [port] Avalonia 12 不给 RotateTransform/TranslateTransform 生成 x:Name 字段，删除（code-behind 经 RootGrid.RenderTransform 取回） -->
+                <RotateTransform Angle="-4" />
+                <TranslateTransform X="0" Y="60" />
             </TransformGroup>
         </Grid.RenderTransform>
         <Rectangle Stroke="{x:Null}" StrokeThickness="0.0001" IsHitTestVisible="False" Height="10" VerticalAlignment="Top" Margin="16,0">
@@ -106,7 +113,8 @@
         </Rectangle>
         <Border x:Name="PanBack" Margin="10">
             <Border.Clip>
-                <RectangleGeometry x:Name="RectForm" RadiusX="6" RadiusY="6" />
+                <!-- [port] Avalonia 12 不为 RectangleGeometry 生成 x:Name 字段，删除 -->
+                <RectangleGeometry RadiusX="6" RadiusY="6" />
             </Border.Clip>
             <Grid x:Name="PanForm" UseLayoutRounding="False">
                 <Grid.RowDefinitions>
@@ -114,7 +122,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Canvas x:Name="ImgBack" IsHitTestVisible="False" Grid.Row="1"
-                        RenderOptions.BitmapScalingMode="LowQuality">
+                        RenderOptions.BitmapInterpolationMode="LowQuality">
                     <!-- [port] VideoBack (MediaElement 视频背景) removed；视频背景功能暂缓移植，保留图片背景 ImgBack。 -->
                 </Canvas>
                 <local:AnimatedBackgroundGrid Grid.Row="0" x:Name="PanTitle" Height="48"
@@ -126,7 +134,7 @@
                     <!--         <GradientStop Color="{StaticResource ColorObject4}" Offset="0"/> -->
                     <!--     </LinearGradientBrush> -->
                     <!-- </Grid.Background> -->
-                    <local:MyImage x:Name="ImgTitle" IsHitTestVisible="False" Stretch="UniformToFill" IsEnabled="False" RenderOptions.BitmapScalingMode="LowQuality" />
+                    <local:MyImage x:Name="ImgTitle" IsHitTestVisible="False" Stretch="UniformToFill" IsEnabled="False" RenderOptions.BitmapInterpolationMode="LowQuality" />
                     <local:MyIconButton x:Name="BtnTitleClose" HorizontalAlignment="Right" Height="28" VerticalAlignment="Center" Width="28" Margin="0,0,12,0" Theme="White" Click="BtnTitleClose_Click"
                                         SvgIcon="lucide/x" />
                     <local:MyIconButton x:Name="BtnTitleMin" HorizontalAlignment="Right" Height="28" VerticalAlignment="Center" Width="28" Margin="0,0,44,0" Theme="White" Click="BtnTitleMin_Click"
@@ -145,7 +153,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
-                            <Path Grid.Column="0" x:Name="ShapeTitleLogo" Data="M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M62.5,6.5 a10,11.5 180 1 0 0,18 M71,2.5 v24.5 h13.5" UseLayoutRounding="False" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="19,15.5,0,15.5" Stretch="fill" Stroke="White" StrokeThickness="2.2" Width="39" />
+                            <Path Grid.Column="0" x:Name="ShapeTitleLogo" Data="M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M62.5,6.5 a10,11.5 180 1 0 0,18 M71,2.5 v24.5 h13.5" UseLayoutRounding="False" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="19,15.5,0,15.5" Stretch="Fill" Stroke="White" StrokeThickness="2.2" Width="39" />
                             <Path Grid.Column="0" x:Name="ShapeHMCLTitleLogo" Data="M 60.375 53.406 L 53.625 53.406 L 53.625 0.906 L 63.6 0.906 L 78.15 34.131 L 92.475 0.906 L 102.675 0.906 L 102.675 53.406 L 95.55 53.406 L 95.55 9.981 L 81.525 41.556 L 74.475 41.556 L 60.375 9.981 L 60.375 53.406 Z M 7.125 53.406 L 0 53.406 L 0 0.906 L 7.125 0.906 L 7.125 23.331 L 33 23.331 L 33 0.906 L 40.125 0.906 L 40.125 53.406 L 33 53.406 L 33 29.481 L 7.125 29.481 L 7.125 53.406 Z M 149.85 2.706 L 147.675 8.706 Q 145.35 7.581 142.913 6.906 Q 140.475 6.231 137.175 6.231 Q 132.375 6.231 128.588 8.706 Q 124.8 11.181 122.625 15.831 A 25.755 25.755 0 0 0 120.458 26.263 A 38.963 38.963 0 0 0 120.45 27.081 Q 120.45 33.381 122.588 38.106 Q 124.725 42.831 128.512 45.456 Q 132.3 48.081 137.175 48.081 Q 140.85 48.081 143.55 47.181 Q 146.25 46.281 148.8 44.856 L 150.975 50.781 Q 148.2 52.281 144.638 53.293 Q 141.075 54.306 136.35 54.306 Q 129.525 54.306 124.275 51.043 Q 119.025 47.781 116.1 41.743 A 31.603 31.603 0 0 1 113.201 28.922 A 45.601 45.601 0 0 1 113.175 27.381 Q 113.175 19.356 116.138 13.168 Q 119.1 6.981 124.538 3.493 Q 129.975 0.006 137.25 0.006 Q 141 0.006 144.075 0.718 Q 147.15 1.431 149.85 2.706 Z M 191.925 53.406 L 160.725 53.406 L 160.725 0.906 L 167.85 0.906 L 167.85 47.031 L 191.925 47.031 L 191.925 53.406 Z"
                                 StrokeThickness="0.2" UseLayoutRounding="False" IsHitTestVisible="False" HorizontalAlignment="Left" Height="15" Margin="45,15.5,0,15.5" Stretch="Fill" Stroke="White" Fill="White" Width="52" />
                             <TextBlock Grid.Column="0" x:Name="LabTitleLogo" IsVisible="False" UseLayoutRounding="False" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="White" FontSize="17" VerticalAlignment="Center" />
@@ -210,50 +218,50 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1" Grid.IsSharedSizeScope="True" UseLayoutRounding="True">
-                        <Border x:Name="PanMainRight" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                        <Border x:Name="PanMainRight" RenderOptions.BitmapInterpolationMode="LowQuality"
                                 UseLayoutRounding="False" />
                     </Border>
                     <Border Grid.Column="0" Grid.IsSharedSizeScope="True" UseLayoutRounding="True">
-                        <Border x:Name="PanMainLeft" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                        <Border x:Name="PanMainLeft" RenderOptions.BitmapInterpolationMode="LowQuality"
                                 SizeChanged="PanMainLeft_SizeChanged"
                                 UseLayoutRounding="False" />
                     </Border>
                 </Grid>
                 <StackPanel x:Name="PanHint" UseLayoutRounding="True" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                             Margin="0,0,0,20"
-                            Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1" />
+                            Grid.Row="0" Grid.RowSpan="2" />
                 <StackPanel x:Name="PanExtraButtons" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Margin="15">
                     <local:MyExtraButton x:Name="BtnExtraUpdateRestart" HorizontalAlignment="Right"
                                          Click="BtnExtraUpdateRestart_Click"
-                                         VerticalAlignment="Center" ToolTip="{DynamicResource Main.Extra.UpdateRestart.ToolTip}"
+                                         VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Main.Extra.UpdateRestart.ToolTip}"
                                          IsVisible="False"
                                          SvgIcon="lucide/refresh-cw" />
                     <local:MyExtraButton x:Name="BtnExtraBack" HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Click="BtnExtraBack_Click"
-                                         ToolTip="{DynamicResource Main.Extra.BackToTop.ToolTip}" IsVisible="False"
+                                         ToolTip.Tip="{DynamicResource Main.Extra.BackToTop.ToolTip}" IsVisible="False"
                                          SvgIcon="lucide/arrow-up-to-line" />
                     <local:MyExtraButton x:Name="BtnExtraDownload" HorizontalAlignment="Right"
                                          Click="BtnExtraDownload_Click"
-                                         VerticalAlignment="Center" ToolTip="{DynamicResource Main.Extra.TaskManager.ToolTip}" IsVisible="False"
+                                         VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Main.Extra.TaskManager.ToolTip}" IsVisible="False"
                                          SvgIcon="lucide/download" />
                     <local:MyExtraButton x:Name="BtnExtraApril" HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Click="BtnExtraApril_Click"
-                                         ToolTip="{DynamicResource Main.Extra.GiveUp.ToolTip}" IsVisible="False"
+                                         ToolTip.Tip="{DynamicResource Main.Extra.GiveUp.ToolTip}" IsVisible="False"
                                          SvgIcon="lucide/flag" />
                     <local:MyExtraButton x:Name="BtnExtraShutdown" HorizontalAlignment="Right"
                                          Click="BtnExtraShutdown_Click"
-                                         VerticalAlignment="Center" ToolTip="{DynamicResource Main.Extra.ShutdownMinecraft.ToolTip}" IsVisible="False"
+                                         VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Main.Extra.ShutdownMinecraft.ToolTip}" IsVisible="False"
                                          SvgIcon="lucide/power" />
                     <local:MyExtraButton x:Name="BtnExtraLog" HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Click="BtnExtraLog_Click"
-                                         ToolTip="{DynamicResource Main.Extra.GameLog.ToolTip}" IsVisible="False"
+                                         ToolTip.Tip="{DynamicResource Main.Extra.GameLog.ToolTip}" IsVisible="False"
                                          SvgIcon="lucide/scroll-text" />
                     <local:MyExtraButton x:Name="BtnExtraMusic" HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Click="BtnExtraMusic_Click" RightClick="BtnExtraMusic_RightClick"
                                          IsVisible="False" CanRightClick="True" />
                 </StackPanel>
                 <controls:BlurBorder x:Name="PanMsgBackground" Grid.Row="0" Grid.RowSpan="2" Background="#00000000"
-                                     Panel.ZIndex="2" IsVisible="False">
+                                     IsVisible="False">
                     <Grid x:Name="PanMsg" Background="#00000000" PointerPressed="FormDragMove" />
                 </controls:BlurBorder>
             </Grid>

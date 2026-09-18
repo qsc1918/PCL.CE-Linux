@@ -20,18 +20,18 @@
         <ColumnDefinition Width="50" />
         <ColumnDefinition />
     </Grid.ColumnDefinitions>
-    <!-- [port] Visibility="Hidden" → IsVisible="False" -->
+    <!-- [port] IsVisible="False" → IsVisible="False" -->
     <TextBlock x:Name="TextServerName" Text="{DynamicResource Launch.Account.Auth.ServerLabel}" Grid.Row="0"
                Grid.Column="1" Margin="-40,0,0,0"
                HorizontalAlignment="Center" IsVisible="False" />
-    <local:MyIconButton ToolTip="{DynamicResource Launch.Account.Auth.ChangeProfile}" Grid.Row="4" Height="14"
+    <local:MyIconButton ToolTip.Tip="{DynamicResource Launch.Account.Auth.ChangeProfile}" Grid.Row="4" Height="14"
                         Opacity="0" x:Name="BtnEdit"
                         ToolTip.Placement="Center" ToolTip.VerticalOffset="32"
                         ToolTip.HorizontalOffset="1" Grid.Column="0"
                         HorizontalAlignment="Center"
                         SvgIcon="lucide/pencil"
                         Margin="8,0,0,0" VerticalAlignment="Center" />
-    <local:MyIconButton ToolTip="{DynamicResource Launch.Account.Auth.Logout}" Grid.Row="4" Height="14" Opacity="0"
+    <local:MyIconButton ToolTip.Tip="{DynamicResource Launch.Account.Auth.Logout}" Grid.Row="4" Height="14" Opacity="0"
                         x:Name="BtnExit"
                         ToolTip.Placement="Center" ToolTip.VerticalOffset="32"
                         ToolTip.HorizontalOffset="1" Grid.Column="2"
@@ -43,7 +43,7 @@
     <TextBlock Text="{DynamicResource Launch.Account.Auth.Server}" Grid.Row="2" VerticalAlignment="Center" />
     <local:MyTextBox Grid.Row="4" Grid.Column="1" Height="28" x:Name="TextName" />
     <TextBlock Text="{DynamicResource Launch.Account.Auth.Email}" Grid.Row="4" VerticalAlignment="Center" />
-    <PasswordBox Grid.Row="6" Grid.Column="1" x:Name="TextPass" />
+    <TextBox Grid.Row="6" Grid.Column="1" x:Name="TextPass" PasswordChar="●" />
     <TextBlock Text="{DynamicResource Launch.Account.Auth.Password}" Grid.Row="6" VerticalAlignment="Center" />
     <local:MyTextButton Margin="0,12,2,0" x:Name="BtnLink" Content="{DynamicResource Launch.Account.Auth.Register}"
                         Grid.Row="7" HorizontalAlignment="Right"

@@ -361,7 +361,7 @@ public partial class PageDownloadCompFavorites : MyPageRight
                     new[]
                     {
                         ModAnimation.AaOpacity(CardSelect, 1d - CardSelect.Opacity, 60),
-                        ModAnimation.AaTranslateY(CardSelect, -27 - TransSelect.Y, 120,
+                        ModAnimation.AaTranslateY(CardSelect, -27 - ((TranslateTransform)CardSelect.RenderTransform).Y, 120,
                             ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)),
                         ModAnimation.AaTranslateY(CardSelect, 3d, 150, 120,
                             new ModAnimation.AniEaseInoutFluent(ModAnimation.AniEasePower.Weak)),
@@ -380,7 +380,7 @@ public partial class PageDownloadCompFavorites : MyPageRight
                     new[]
                     {
                         ModAnimation.AaOpacity(CardSelect, -CardSelect.Opacity, 90),
-                        ModAnimation.AaTranslateY(CardSelect, -10 - TransSelect.Y, 90,
+                        ModAnimation.AaTranslateY(CardSelect, -10 - ((TranslateTransform)CardSelect.RenderTransform).Y, 90,
                             ease: new ModAnimation.AniEaseInFluent(ModAnimation.AniEasePower.Weak)),
                         ModAnimation.AaCode(() => CardSelect.IsVisible = false, after: true)
                     }, "CompFavorites Sidebar");
@@ -394,13 +394,13 @@ public partial class PageDownloadCompFavorites : MyPageRight
             {
                 CardSelect.IsVisible = true;
                 CardSelect.Opacity = 1d;
-                TransSelect.Y = -25;
+                ((TranslateTransform)CardSelect.RenderTransform).Y = -25;
             }
             else
             {
                 CardSelect.IsVisible = false;
                 CardSelect.Opacity = 0d;
-                TransSelect.Y = -10;
+                ((TranslateTransform)CardSelect.RenderTransform).Y = -10;
             }
         }
     }
@@ -538,7 +538,7 @@ public partial class PageDownloadCompFavorites : MyPageRight
             // 输入 Ids，输出合适版本
             var getInfoAndDownloadLoader = new List<ModLoader.LoaderBase>();
             getInfoAndDownloadLoader.Add(new ModLoader.LoaderTask<List<string>, List<DownloadFile>>(
-                Lang.Text("Download.Comp.Favorites.LoaderName.QueryInfo"), ts =>
+                Lang.Text("Download.Comp.Favorites.LoaderName.QueryInfo"), async ts =>
             {
                 List<List<ModComp.CompFile>> allFiles = [];
                 List<string> suitVersion = [];

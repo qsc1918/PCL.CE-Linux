@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
@@ -47,6 +48,14 @@ public partial class PageLaunchLeft : MyPageLeft
     // 尺寸改变动画
     private bool isWidthAnimating;
     private double showProgress;
+
+    // [port] AprilScaleTrans/AprilPosTrans 位于 RenderTransform 的 TransformGroup 内，Avalonia 不为其生成命名字段，改为经 PanApril.RenderTransform 访问
+    internal ScaleTransform AprilScaleTrans => (ScaleTransform)((TransformGroup)PanApril.RenderTransform).Children[0];
+    internal TranslateTransform AprilPosTrans => (TranslateTransform)((TransformGroup)PanApril.RenderTransform).Children[1];
+
+    // [port] ProgressLaunchingFinished/Unfinished 为 ColumnDefinition，Avalonia 不为其生成命名字段，改为经 PanProgress.ColumnDefinitions 访问
+    internal ColumnDefinition ProgressLaunchingFinished => (ColumnDefinition)PanProgress.ColumnDefinitions[0];
+    internal ColumnDefinition ProgressLaunchingUnfinished => (ColumnDefinition)PanProgress.ColumnDefinitions[1];
 
     public PageLaunchLeft()
     {
@@ -849,11 +858,8 @@ public partial class PageLaunchLeft : MyPageLeft
     {
         // 清空已有皮肤
         // 如果在输入时清空皮肤，若输入内容一样则不会执行 Load 方法，导致皮肤不被加载
-        ModBase.RunInUi(() =>
-        {
-            if (ModMain.frmLoginProfileSkin is not null && ModMain.frmLoginProfileSkin.Skin is not null)
-                ModMain.frmLoginProfileSkin.Skin.Clear();
-        });
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，清空已有皮肤的调用移除
+        ModBase.RunInUi(() => { });
         // 获取 Url
         var userName = data.input[0];
         var uuid = data.input[1];
@@ -919,10 +925,8 @@ public partial class PageLaunchLeft : MyPageLeft
 
         Finish: ;
 
-        // 刷新显示
-        if (ModMain.frmLoginProfileSkin is not null && ReferenceEquals(ModMain.frmLoginProfileSkin.Skin.loader, data))
-            ModBase.RunInUi(ModMain.frmLoginProfileSkin.Skin.Load);
-        else if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，皮肤刷新逻辑移除；保留未渲染时清空输入的行为
+        if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
             data.input = null; // 清空输入，因为皮肤实际上没有被渲染，如果不清空切换到页面的 Start 会由于输入相同而不渲染
     }
 
@@ -939,16 +943,11 @@ public partial class PageLaunchLeft : MyPageLeft
     private static void SkinLegacyLoad(ModLoader.LoaderTask<ModBase.EqualableList<string>, string> data)
     {
         // 清空已有皮肤
-        ModBase.RunInUi(() =>
-        {
-            if (ModMain.frmLoginProfileSkin is not null && ModMain.frmLoginProfileSkin.Skin is not null)
-                ModMain.frmLoginProfileSkin.Skin.Clear();
-        });
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，清空已有皮肤的调用移除
+        ModBase.RunInUi(() => { });
         data.output = ModBase.pathImage + "Skins/" + ModSkin.McSkinSex(data.input[1]) + ".png";
-        // 刷新显示
-        if (ModMain.frmLoginProfileSkin is not null && ReferenceEquals(ModMain.frmLoginProfileSkin.Skin.loader, data))
-            ModBase.RunInUi(() => ModMain.frmLoginProfileSkin.Skin.Load());
-        else if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，皮肤刷新逻辑移除；保留未渲染时清空输入的行为
+        if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
             data.input = null; // 清空输入，因为皮肤实际上没有被渲染，如果不清空切换到页面的 Start 会由于输入相同而不渲染
     }
 
@@ -967,11 +966,8 @@ public partial class PageLaunchLeft : MyPageLeft
     {
         // 清空已有皮肤
         // 如果在输入时清空皮肤，若输入内容一样则不会执行 Load 方法，导致皮肤不被加载
-        ModBase.RunInUi(() =>
-        {
-            if (ModMain.frmLoginProfileSkin is not null && ModMain.frmLoginProfileSkin.Skin is not null)
-                ModMain.frmLoginProfileSkin.Skin.Clear();
-        });
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，清空已有皮肤的调用移除
+        ModBase.RunInUi(() => { });
         // 获取 Url
         var userName = data.input[0];
         var uuid = data.input[1];
@@ -1026,10 +1022,8 @@ public partial class PageLaunchLeft : MyPageLeft
 
         Finish: ;
 
-        // 刷新显示
-        if (ModMain.frmLoginProfileSkin is not null && ReferenceEquals(ModMain.frmLoginProfileSkin.Skin.loader, data))
-            ModBase.RunInUi(ModMain.frmLoginProfileSkin.Skin.Load);
-        else if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
+        // [port] 皮肤功能暂缓移植：MySkin 已排除，皮肤刷新逻辑移除；保留未渲染时清空输入的行为
+        if (!data.IsAborted) // 如果已经中断，Input 也被清空，就不会再次刷新
             data.input = null; // 清空输入，因为皮肤实际上没有被渲染，如果不清空切换到页面的 Start 会由于输入相同而不渲染
     }
 

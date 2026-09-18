@@ -10,6 +10,8 @@ using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Input;
+// [port] WPF DataFormats/Clipboard 文件拖拽 → Avalonia IDataTransfer + IStorageItem（TryGetFiles/TryGetLocalPath）
+using Avalonia.Platform.Storage;
 // [port] Avalonia.Interop removed
 using PCL.Core.App;
 using PCL.Core.App.IoC;
@@ -36,6 +38,15 @@ public partial class FormMain : Window
     {
         lastMouseArg = e;
     }
+
+    // [port] 左键按下状态跟踪：Avalonia 无 WPF 的静态 Mouse.LeftButton/MouseButtonState 查询；
+    //        DragTick/DragDoing 需在无事件参数时判断左键是否按下，故用指针事件维护该字段。
+    private bool mouseLeftButtonPressed;
+
+    // [port] Avalonia 命名字段生成器不生成 RenderTransform（TransformGroup/Clip）内部的 x:Name 字段；
+    //        TransformRotate/TransformPos 在 InitializeComponent 后由 RootGrid.RenderTransform 取出；先赋默认值避免空引用。
+    private RotateTransform TransformRotate = new();
+    private TranslateTransform TransformPos = new();
 
     #region 基础
 
@@ -97,14 +108,27 @@ public partial class FormMain : Window
 
         _ = Config.Preference.Theme.ThemeSelected;
         // 注册拖拽事件（不能直接加 Handles，否则没用；#6340）
-        AddHandler(DragDrop.DragEnterEvent, new DragEventHandler(HandleDrag), true);
-        AddHandler(DragDrop.DragOverEvent, new DragEventHandler(HandleDrag), true);
+        // [port] WPF AddHandler(DragDrop.DragEnterEvent, new DragEventHandler(...), true) → Avalonia 12 DragDrop.AddDragEnterHandler（无 DragEventHandler 委托；handledEventsToo 由内部注册承载）
+        DragDrop.AddDragEnterHandler(this, HandleDrag);
+        DragDrop.AddDragOverHandler(this, HandleDrag);
+        // [port] WPF Window.Drop 事件 → Avalonia DragDrop.AddDropHandler；WPF Window.StateChanged 事件 → Avalonia PropertyChanged(WindowStateProperty)
+        DragDrop.AddDropHandler(this, FrmMain_Drop);
+        this.PropertyChanged += (_, e) =>
+        {
+            if (e.Property == WindowStateProperty) WindowStateChanged(this, EventArgs.Empty);
+        };
         // 注册 MsgBox 事件
         MsgBoxWrapper.OnShow += ModMain.MsgBoxWrapper_OnShow;
         // 注册 Hint 事件
         HintWrapper.OnShow += HintService.HintWrapper_OnShow;
         // 加载 UI
         InitializeComponent();
+        // [port] Avalonia 命名字段生成器不生成 RenderTransform 内的 x:Name 字段 → 从根 Grid.RenderTransform 手工取出 TransformRotate/TransformPos（Axis: Rotate 在 [0]，Translate 在 [1]）
+        if (RootGrid.RenderTransform is TransformGroup rootTransform)
+        {
+            TransformRotate = (RotateTransform)rootTransform.Children[0];
+            TransformPos = (TranslateTransform)rootTransform.Children[1];
+        }
         // [port] XAML 上已移除 Activated 属性（Avalonia Window 的激活事件由 WindowBase.Activated 承载），改在此处重新接线
         Activated += FormMain_Activated;
         Opacity = 0d;
@@ -141,10 +165,11 @@ public partial class FormMain : Window
         }
 #endif
 
+        // [port] WPF ContentPresenter（Avalonia 12 移至 Avalonia.Controls.Presenters.ContentPresenter）→ 全限定类型；语义不变：清空上一宿主 ContentPresenter 的内容以允许重新挂载
         if (ModMain.frmLaunchLeft.Parent is not null)
-            ModMain.frmLaunchLeft.SetValue(ContentPresenter.ContentProperty, null);
+            ModMain.frmLaunchLeft.SetValue(Avalonia.Controls.Presenters.ContentPresenter.ContentProperty, null);
         if (ModMain.frmLaunchRight.Parent is not null)
-            ModMain.frmLaunchRight.SetValue(ContentPresenter.ContentProperty, null);
+            ModMain.frmLaunchRight.SetValue(Avalonia.Controls.Presenters.ContentPresenter.ContentProperty, null);
         PanMainLeft.Child = ModMain.frmLaunchLeft;
         pageLeft = ModMain.frmLaunchLeft;
         PanMainRight.Child = ModMain.frmLaunchRight;
@@ -186,7 +211,8 @@ public partial class FormMain : Window
             RemoveResizer();
         // PLC 彩蛋
         if (RandomUtils.NextInt(1, 1000) == 233)
-            ShapeTitleLogo.Data = (Geometry)new GeometryConverter().ConvertFromString(
+            // [port] WPF GeometryConverter.ConvertFromString → Avalonia Geometry.Parse（Avalonia 12 无 GeometryConverter）
+            ShapeTitleLogo.Data = Geometry.Parse(
                 "M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M83,6.5 a10,11.5 180 1 0 0,18 M48,2.5 v24.5 h13.5");
         // 加载窗口
 
@@ -205,7 +231,8 @@ public partial class FormMain : Window
         // #End If
         Topmost = false;
         if (ModMain.frmStart is not null)
-            ModMain.frmStart.Close(new TimeSpan(0, 0, 0, 0, (int)Math.Round(400d / ModAnimation.aniSpeed)));
+            // [port] WPF Window.Close(TimeSpan) 在 Avalonia 不存在 → Close() 无参（原 TimeSpan 为关闭延迟，暂缓）
+            ModMain.frmStart.Close();
         // 更改窗口
         // Top = (GetWPFSize(My.Computer.Screen.WorkingArea.Height) - Height) / 2
         // Left = (GetWPFSize(My.Computer.Screen.WorkingArea.Width) - Width) / 2
@@ -224,7 +251,8 @@ public partial class FormMain : Window
                 -TransformRotate.Angle, 500, 100, new ModAnimation.AniEaseOutBack(ModAnimation.AniEasePower.Weak)),
             ModAnimation.AaCode(() =>
             {
-                RenderTransform = null;
+                // [port] WPF this.RenderTransform = null → 清除根 Grid 的 RenderTransform（实际承载该动画的元素）
+                RootGrid.RenderTransform = null;
                 isWindowLoadFinished = true;
                 ModBase.Log(
                     $"[System] DPI：{ModBase.dpi}，系统版本：{Environment.OSVersion.VersionString}，PCL 位置：{Basics.ExecutablePath}");
@@ -522,10 +550,14 @@ public partial class FormMain : Window
                 var transformPos = new TranslateTransform(0d, 0d);
                 var transformRotate = new RotateTransform(0d);
                 var transformScale = new ScaleTransform(1d, 1d);
-                transformScale.CenterX = Width / 2d;
-                transformScale.CenterY = Height / 2d;
-                RenderTransform = new TransformGroup
-                    { Children = new TransformCollection([transformRotate, transformPos, transformScale]) };
+                // [port] WPF ScaleTransform.CenterX/CenterY → Avalonia ScaleTransform 无中心点；用 RenderTransformOrigin=(0.5,0.5) 等价于“以窗口中心缩放”
+                RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative);
+                // [port] WPF TransformGroup { Children = new TransformCollection(...) } → Avalonia 无 TransformCollection，改由 Children.Add 逐个加入
+                var transformGroup = new TransformGroup();
+                transformGroup.Children.Add(transformRotate);
+                transformGroup.Children.Add(transformPos);
+                transformGroup.Children.Add(transformScale);
+                RenderTransform = transformGroup;
                 ModAnimation.AniStart(new[]
                 {
                     ModAnimation.AaOpacity(this, -Opacity, 140, 40,
@@ -612,7 +644,7 @@ public partial class FormMain : Window
     /// </summary>
     public bool isSizeSaveable;
 
-    private void FormMain_SizeChanged(object? sender = null, EventArgs? e = null)
+    private void FormMain_SizeChanged(object? sender = null, SizeChangedEventArgs? e = null)
     {
         if (isSizeSaveable)
         {
@@ -622,7 +654,9 @@ public partial class FormMain : Window
 
         if (PanBack is not null)
         {
-            RectForm.Rect = new Rect(0d, 0d, PanBack.Bounds.Width, PanBack.Bounds.Height);
+            // [port] WPF x:Name="RectForm"（Border.Clip 内的 RectangleGeometry）在 Avalonia 命名字段生成器中不生成字段；由 PanBack.Clip 取用
+            if (PanBack.Clip is RectangleGeometry rectForm)
+                rectForm.Rect = new Rect(0d, 0d, PanBack.Bounds.Width, PanBack.Bounds.Height);
 
             var formWidth = PanBack.Bounds.Width + 0.001d;
             var formHeight = PanBack.Bounds.Height + 0.001d;
@@ -644,12 +678,13 @@ public partial class FormMain : Window
     }
 
     // 标题栏改变大小
-    private void PanTitle_SizeChanged(object sender, EventArgs e)
+    private void PanTitle_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (PanTitleMain.ColumnDefinitions[0].Bounds.Width - 30 <= 0)
+        // [port] WPF ColumnDefinition.Bounds.Width → Avalonia ColumnDefinition.ActualWidth（无 Bounds）
+        if (PanTitleMain.ColumnDefinitions[0].ActualWidth - 30 <= 0)
             PanTitleLeft.ColumnDefinitions[0].MaxWidth = 0;
         else
-            PanTitleLeft.ColumnDefinitions[0].MaxWidth = PanTitleMain.ColumnDefinitions[0].Bounds.Width - 30;
+            PanTitleLeft.ColumnDefinitions[0].MaxWidth = PanTitleMain.ColumnDefinitions[0].ActualWidth - 30;
     }
 
     // 最小化
@@ -694,7 +729,7 @@ public partial class FormMain : Window
                     MyMsgInput input => () => input.Btn1_Click(sender, null),
                     MyMsgSelect select => () => select.Btn1_Click(sender, null),
                     MyMsgText text => () => text.Btn1_Click(sender, null),
-                    MyMsgMarkdown markdown => () => markdown.Btn1_Click(sender, null),
+                    // [port] MyMsgMarkdown 为暂缓功能（且非 Control，模式无法匹配）；Markdown 弹窗暂不支持 Enter 触发
                     MyMsgLogin login => () => login.Btn1_Click(sender, null),
                     _ => null
                 };
@@ -718,11 +753,7 @@ public partial class FormMain : Window
                         : text.Btn2.IsVisible
                             ? () => text.Btn2_Click(sender, null)
                             : () => text.Btn1_Click(sender, null),
-                    MyMsgMarkdown markdown => markdown.Btn3.IsVisible
-                        ? () => markdown.Btn3_Click(sender, null)
-                        : markdown.Btn2.IsVisible
-                            ? () => markdown.Btn2_Click(sender, null)
-                            : () => markdown.Btn1_Click(sender, null),
+                    // [port] MyMsgMarkdown 为暂缓功能（且非 Control，模式无法匹配）；Markdown 弹窗暂不支持 Esc 触发
                     MyMsgLogin login => login.Btn3.IsVisible
                         ? () => login.Btn3_Click(sender, null)
                         : () => login.Btn1_Click(sender, null),
@@ -785,12 +816,20 @@ public partial class FormMain : Window
     // [port] WPF PointerPressedEventArgs/MouseButton.XButton1/2 → Avalonia PointerPressedEventArgs + PointerPointProperties.IsXButton1/2Pressed（侧键判定）
     private void FormMain_MouseDown(object? sender, PointerPressedEventArgs e)
     {
+        // [port] 跟踪左键按下状态（Avalonia 无 WPF 静态 Mouse.LeftButton，供 DragTick/DragDoing 查询）
+        mouseLeftButtonPressed = e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
         // 鼠标侧键返回上一级
         if (ModMain.frmMain!.PanMsg.Children.Count > 0 || ModMain.WaitingMyMsgBox.Any())
             return; // 弹窗中（#5513）
         var props = e.GetCurrentPoint(this).Properties;
         if (props.IsXButton1Pressed || props.IsXButton2Pressed)
             TriggerPageBack();
+    }
+
+    private void FormMain_MouseUp(object? sender, PointerReleasedEventArgs e)
+    {
+        // [port] 释放时清除左键状态（对应 Mouse.LeftButton == Released）
+        mouseLeftButtonPressed = false;
     }
 
     private void TriggerPageBack()
@@ -862,7 +901,7 @@ public partial class FormMain : Window
         }
     }
 
-    private object? _HandleDrag_PrevData; // [port] WPF IDataObject → Avalonia 12 以 object 缓存拖拽数据引用
+    private object? _HandleDrag_PrevData; // [port] WPF IDataObject → Avalonia 12 以 object 缓存 IDataTransfer 引用
     private DragDropEffects _HandleDrag_PrevEffects;
 
     // 文件拖放
@@ -870,34 +909,35 @@ public partial class FormMain : Window
     {
         try
         {
-            if (e.Handled && e.Effects != DragDropEffects.None)
+            if (e.Handled && e.DragEffects != DragDropEffects.None)
                 return;
             // 缓存
             e.Handled = true;
-            if (ReferenceEquals(e.Data, _HandleDrag_PrevData))
+            if (ReferenceEquals(e.DataTransfer, _HandleDrag_PrevData))
             {
-                e.Effects = _HandleDrag_PrevEffects;
+                e.DragEffects = _HandleDrag_PrevEffects;
                 return;
             }
 
             // 确定拖放效果
-            e.Effects = DragDropEffects.None;
-            if (e.Data.GetDataPresent(DataFormat.Text))
+            // [port] WPF IDataObject.GetData/GetDataPresent + e.Effects → Avalonia IDataTransfer（Contains/TryGetText/TryGetFiles）+ e.DragEffects
+            e.DragEffects = DragDropEffects.None;
+            if (e.DataTransfer.Contains(DataFormat.Text))
             {
-                var str = (string)e.Data.GetData(DataFormat.Text);
-                if (str.StartsWithF("authlib-injector:yggdrasil-server:"))
-                    e.Effects = DragDropEffects.Copy;
-                else if (str.StartsWithF("file:///")) e.Effects = DragDropEffects.Copy;
+                var str = e.DataTransfer.TryGetText();
+                if (str is not null && str.StartsWithF("authlib-injector:yggdrasil-server:"))
+                    e.DragEffects = DragDropEffects.Copy;
+                else if (str is not null && str.StartsWithF("file:///")) e.DragEffects = DragDropEffects.Copy;
             }
             else if (e.DataTransfer.Contains(DataFormat.File))
             {
-                var files = (string[])e.Data.GetData(DataFormat.File);
-                if (files is not null && files.Length > 0) e.Effects = DragDropEffects.Link;
+                var files = e.DataTransfer.TryGetFiles();
+                if (files is not null && files.Length > 0) e.DragEffects = DragDropEffects.Link;
             }
 
-            _HandleDrag_PrevData = e.Data;
-            _HandleDrag_PrevEffects = e.Effects;
-            ModBase.Log("[System] 设置拖放类型：" + ModBase.GetStringFromEnum(e.Effects));
+            _HandleDrag_PrevData = e.DataTransfer;
+            _HandleDrag_PrevEffects = e.DragEffects;
+            ModBase.Log("[System] 设置拖放类型：" + ModBase.GetStringFromEnum(e.DragEffects));
         }
         catch (Exception ex)
         {
@@ -913,18 +953,20 @@ public partial class FormMain : Window
     {
         try
         {
-            if (e.Data.GetDataPresent(DataFormat.Text))
+            if (e.DataTransfer.Contains(DataFormat.Text))
             {
                 // 获取文本
+                // [port] WPF e.Data.GetDataPresent + (string)e.Data.GetData → Avalonia 12 e.DataTransfer.Contains + TryGetText()
                 try
                 {
-                    var str = (string)e.Data.GetData(DataFormat.Text);
+                    var str = e.DataTransfer.TryGetText();
+                    if (str is null) return;
                     ModBase.Log("[System] 接受文本拖拽：" + str);
                     if (str.StartsWithF("authlib-injector:yggdrasil-server:"))
                     {
                         // Authlib 拖拽
                         e.Handled = true;
-                        e.Effects = DragDropEffects.Copy;
+                        e.DragEffects = DragDropEffects.Copy;
                         var authlibServer =
                             WebUtility.UrlDecode(str.Substring("authlib-injector:yggdrasil-server:".Length));
                         ModBase.Log("[System] Authlib 拖拽：" + authlibServer);
@@ -952,7 +994,7 @@ public partial class FormMain : Window
                         // 文件拖拽（例如从浏览器下载窗口拖入）
                         var filePath = WebUtility.UrlDecode(str).Substring("file:///".Length).Replace("/", @"\");
                         e.Handled = true;
-                        e.Effects = DragDropEffects.Copy;
+                        e.DragEffects = DragDropEffects.Copy;
                         FileDrag(new List<string> { filePath });
                     }
                 }
@@ -964,7 +1006,8 @@ public partial class FormMain : Window
             else if (e.DataTransfer.Contains(DataFormat.File))
             {
                 // 获取文件并检查
-                var filePathRaw = e.Data.GetData(DataFormat.File);
+                // [port] WPF e.DataTransfer.Contains + e.Data.GetData(string[]) → Avalonia 12 e.DataTransfer.Contains + TryGetFiles()（IStorageItem[]），再映射为本地路径
+                var filePathRaw = e.DataTransfer.TryGetFiles();
                 if (filePathRaw is null) // #2690
                 {
                     HintService.Hint(Lang.Text("Main.FileDrag.ExtractFirst"), HintType.Error);
@@ -972,8 +1015,8 @@ public partial class FormMain : Window
                 }
 
                 e.Handled = true;
-                e.Effects = DragDropEffects.Link;
-                FileDrag((IEnumerable<string>)filePathRaw);
+                e.DragEffects = DragDropEffects.Link;
+                FileDrag(filePathRaw.Select(f => f.TryGetLocalPath()).Where(p => p is not null).Select(p => p!));
             }
         }
         catch (Exception ex)
@@ -1195,6 +1238,9 @@ public partial class FormMain : Window
                 }
             }
 
+            // [port] 错误报告分析（CrashAnalyzer）暂缓移植：CrashAnalysis 模块已从编译目标排除（CS0246），
+            //        保留逻辑但整体跳过，落入下方“未知操作”提示。
+            /*
             // 错误报告分析
             do
             {
@@ -1218,6 +1264,7 @@ public partial class FormMain : Window
                         userSummary: Lang.Text("Main.Error.OperationFailed"));
                 }
             } while (false);
+            */
 
             // 未知操作
             HintService.Hint(Lang.Text("Main.FileDrag.UnknownOperation"));
@@ -1280,16 +1327,17 @@ public partial class FormMain : Window
             if (value)
             {
                 // 隐藏
-                Left -= 10000d;
+                // [port] WPF Window.Left -= n → Avalonia Window.Position（PixelPoint）整体改写；Visibility.Hidden → IsVisible=false
+                Position = new PixelPoint(Position.X - 10000, Position.Y);
                 ShowInTaskbar = false;
-                Visibility = Visibility.Hidden;
-                ModBase.Log("[System] 窗口已隐藏，位置：(" + Left + "," + Top + ")");
+                IsVisible = false;
+                ModBase.Log("[System] 窗口已隐藏，位置：(" + Position.X + "," + Position.Y + ")");
             }
             else
             {
                 // 取消隐藏
-                if (Left < -2000)
-                    Left += 10000d;
+                if (Position.X < -2000)
+                    Position = new PixelPoint(Position.X + 10000, Position.Y);
                 ShowWindowToTop();
             }
         }
@@ -1302,7 +1350,8 @@ public partial class FormMain : Window
         ModBase.RunInUi(() =>
         {
             // 这一坨乱七八糟的，别改，改了指不定就炸了，自己电脑还复现不出来
-            Visibility = Visibility.Visible;
+            // [port] WPF Visibility.Visible → Avalonia IsVisible=true
+            IsVisible = true;
             ShowInTaskbar = true;
             WindowState = WindowState.Normal;
             Hidden = false;
@@ -1310,15 +1359,16 @@ public partial class FormMain : Window
             Topmost = false;
             ModMain.SetForegroundWindow(ModBase.frmHandle);
             Focus();
-            ModBase.Log($"[System] 窗口已置顶，位置：({Left}, {Top}), {Width} x {Height}");
+            ModBase.Log($"[System] 窗口已置顶，位置：({Position.X}, {Position.Y}), {Width} x {Height}");
         });
     }
 
     // 背景视频循环播放
+    // [port] 背景视频（VideoBack 原 MediaElement）暂缓移植：AXAML 已移除该元素，此处理器为遗留死代码；保留签名，实现注释并留待将来接入。
     private void VideoEnded(object sender, RoutedEventArgs e)
     {
-        VideoBack.Position = TimeSpan.Zero;
-        VideoBack.Play();
+        // VideoBack.Position = TimeSpan.Zero;
+        // VideoBack.Play();
     }
 
     // 最小化时暂停背景视频
@@ -1931,10 +1981,11 @@ public partial class FormMain : Window
         ModAnimation.AniStop("PageLeft PageChange"); // 停止左边栏变更导致的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
         ModAnimation.AniControlEnabled += 1;
         // 清除新页面关联性
+        // [port] WPF ContentPresenter → Avalonia.Controls.Presenters.ContentPresenter（Avalonia 12 命名空间移动）
         if (targetLeft.Parent is not null)
-            targetLeft.SetValue(ContentPresenter.ContentProperty, null);
+            targetLeft.SetValue(Avalonia.Controls.Presenters.ContentPresenter.ContentProperty, null);
         if (targetRight is not null && targetRight.Parent is not null)
-            targetRight.SetValue(ContentPresenter.ContentProperty, null);
+            targetRight.SetValue(Avalonia.Controls.Presenters.ContentPresenter.ContentProperty, null);
         pageLeft = (MyPageLeft)targetLeft;
         pageRight = (MyPageRight)targetRight;
         // 触发页面通用动画
@@ -2063,7 +2114,8 @@ public partial class FormMain : Window
     {
         if (ModMain.dragControl is null)
             return;
-        if (!(Mouse.LeftButton == MouseButtonState.Pressed)) DragStop();
+        // [port] WPF Mouse.LeftButton == MouseButtonState.Pressed → Avalonia 无静态鼠标状态查询，改用指针事件维护的 mouseLeftButtonPressed
+        if (!mouseLeftButtonPressed) DragStop();
     }
 
     // 在鼠标移动时调用，以改变 Slider 位置
@@ -2071,7 +2123,7 @@ public partial class FormMain : Window
     {
         if (ModMain.dragControl is null)
             return;
-        if (Mouse.LeftButton == MouseButtonState.Pressed) 
+        if (mouseLeftButtonPressed) 
         {
             ModMain.dragControl.DragDoing();
         }
@@ -2102,7 +2154,7 @@ public partial class FormMain : Window
     #region 附加按钮
 
     // 更新重启
-    private void BtnExtraUpdateRestart_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraUpdateRestart_Click(object sender, PointerReleasedEventArgs e)
     {
         UpdateManager.UpdateRestart(true);
     }
@@ -2113,18 +2165,18 @@ public partial class FormMain : Window
     }
 
     // 音乐
-    private void BtnExtraMusic_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraMusic_Click(object sender, PointerReleasedEventArgs e)
     {
         ModMusic.MusicControlPause();
     }
 
-    private void BtnExtraMusic_RightClick(object sender, PointerPressedEventArgs e)
+    private void BtnExtraMusic_RightClick(object sender, PointerReleasedEventArgs e)
     {
         ModMusic.MusicControlNext();
     }
 
     // 任务管理
-    private void BtnExtraDownload_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraDownload_Click(object sender, PointerReleasedEventArgs e)
     {
         PageChange(PageType.TaskManager);
     }
@@ -2141,13 +2193,15 @@ public partial class FormMain : Window
         {
             HintService.Hint("=D", HintType.Success);
             ModMain.isAprilGiveup = true;
-            ModMain.frmLaunchLeft.AprilScaleTrans.ScaleX = 1d;
-            ModMain.frmLaunchLeft.AprilScaleTrans.ScaleY = 1d;
+            // [port] AprilScaleTrans（PageLaunchLeft 内 RenderTransform 的 x:Name）未被 Avalonia 命名字段生成器生成，
+            //        且 PageLaunchLeft 不在本次可改动范围内，无法在 FormMain 侧复位缩放；此行为暂缓（愚人节“投降”仅不再复位缩放）。
+            // ModMain.frmLaunchLeft.AprilScaleTrans.ScaleX = 1d;
+            // ModMain.frmLaunchLeft.AprilScaleTrans.ScaleY = 1d;
             BtnExtraApril.ShowRefresh();
         }
     }
 
-    private void BtnExtraApril_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraApril_Click(object sender, PointerReleasedEventArgs e)
     {
         AprilGiveup();
     }
@@ -2158,7 +2212,7 @@ public partial class FormMain : Window
     }
 
     // 关闭 Minecraft
-    private void BtnExtraShutdown_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraShutdown_Click(object sender, PointerReleasedEventArgs e)
     {
         try
         {
@@ -2184,7 +2238,7 @@ public partial class FormMain : Window
     }
 
     // 游戏日志
-    private void BtnExtraLog_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraLog_Click(object sender, PointerReleasedEventArgs e)
     {
         PageChange(PageType.GameLog);
     }
@@ -2203,7 +2257,8 @@ public partial class FormMain : Window
     {
         var realScroll = BtnExtraBack_GetRealChild();
         if (realScroll is not null)
-            realScroll.PerformVerticalOffsetDelta(-realScroll.VerticalOffset);
+            // [port] WPF ScrollViewer.VerticalOffset → Avalonia ScrollViewer.Offset.Y（Vector）
+            realScroll.PerformVerticalOffsetDelta(-realScroll.Offset.Y);
         else
             ModBase.Log(
                 "[UI] 无法返回顶部，未找到合适的 RealScroll",
@@ -2211,7 +2266,7 @@ public partial class FormMain : Window
                 userSummary: Lang.Text("Main.Error.ScrollToTopFailed"));
     }
 
-    private void BtnExtraBack_Click(object sender, PointerPressedEventArgs e)
+    private void BtnExtraBack_Click(object sender, PointerReleasedEventArgs e)
     {
         BackToTop();
     }
@@ -2219,8 +2274,9 @@ public partial class FormMain : Window
     private bool BtnExtraBack_ShowCheck()
     {
         var realScroll = BtnExtraBack_GetRealChild();
+        // [port] WPF ScrollViewer.VerticalOffset → Avalonia ScrollViewer.Offset.Y（Vector）
         return realScroll is not null && realScroll.IsVisible &&
-               realScroll.VerticalOffset > Height + (BtnExtraBack.Show ? 0 : 700);
+               realScroll.Offset.Y > Height + (BtnExtraBack.Show ? 0 : 700);
     }
 
     private MyScrollViewer? BtnExtraBack_GetRealChild()

@@ -128,10 +128,12 @@ public partial class MyHint : Border
         }
 
         var s = ThemeService.CurrentTone;
-        Background = new ModBase.MyColor().FromHSL2(hue, 90, s.L7 * 100);
-        BorderBrush = new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100);
-        LabText.Foreground = new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100);
-        BtnClose.Foreground = new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100);
+        // [port] WPF MyColor(隐式转 Brush) → Avalonia 需显式 .ToBrush()
+        Background = new ModBase.MyColor().FromHSL2(hue, 90, s.L7 * 100).ToBrush();
+        BorderBrush = new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100).ToBrush();
+        LabText.Foreground = new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100).ToBrush();
+        // [port] MyIconButton.Foreground 类型为 SolidColorBrush，ToBrush() 返回 Brush，需显式转换
+        BtnClose.Foreground = (SolidColorBrush)new ModBase.MyColor().FromHSL2(hue, 90, s.L2 * 100).ToBrush();
 
         // 根据提示气泡对齐方向刷新边框
         // 此处依赖 HasBorder 的副作用进行范围检查
@@ -142,7 +144,7 @@ public partial class MyHint : Border
     {
         ThemeService.ColorModeChanged += (v, theme) => _ThemeChanged(v, theme);
         if (CanClose && ConfigService.TryGetConfigItemNoType(RelativeSetup, out var item) && item.GetValueNoType() is not null)
-            Visibility = false;
+            IsVisible = false; // [port] WPF Visibility = false → Avalonia IsVisible = false
     }
 
     private void BtnClose_Click(object sender, EventArgs e)
@@ -152,7 +154,7 @@ public partial class MyHint : Border
         ModAnimation.AniDispose(this, false);
     }
 
-    private void MyHint_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void MyHint_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;

@@ -15,10 +15,10 @@
                            FontFamily="{Binding Font}" />
             </DataTemplate>
         </local:MyComboBox.ItemTemplate>
-        <local:MyComboBox.ItemContainerStyle>
-            <Style Selector="local:MyComboBoxItem">
-                <Setter Property="Tag" Value="{Binding Tag}" />
-            </Style>
-        </local:MyComboBox.ItemContainerStyle>
+        <!-- [port] WPF ItemContainerStyle 在 Avalonia 12 无对应（ComboBox 用 ItemContainerTheme）；
+             此处原意是给每个 MyComboBoxItem 容器设 Tag，FontSelector 代码只读取数据项(CustomFontProperties).Tag，
+             未读取容器 Tag，故该样式移除。ItemTemplate 仍正常提供显示。
+        -->
+
     </local:MyComboBox>
 </ContentControl>

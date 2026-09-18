@@ -36,8 +36,10 @@ internal static class ModStyle
             _timer.Tick += _TimerTick;
             UpdateInterval = interval == default ? TimeSpan.FromSeconds(1d) : interval;
             AutoStart = autoStart;
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
+            // [port] Avalonia 的 Run（Inline）无 WPF ContentElement 的 Loaded/Unloaded 事件；
+            //        计时器启停改由调用方直接调用 StartTimer()/StopTimer() 驱动。
+            // Loaded += OnLoaded;
+            // Unloaded += OnUnloaded;
         }
 
         private object _isTimerRunning => _timer is not null && _timer.IsEnabled;
@@ -206,7 +208,8 @@ internal static class ModStyle
                 if (isColorCode)
                 {
                     var prevColor = color;
-                    if (!MotdRenderer.TryGetColorFromCode(c.ToString(), isDarkMode, out color))
+                    // [port] MotdRenderer 桩（PCL.Core.Stubs）无 TryGetColorFromCode，内联其取色逻辑
+                    if (!TryGetColorFromCode(c.ToString(), isDarkMode, out color))
                     {
                         color = prevColor; // out 会将 color 置为 null，统一恢复为之前的颜色
                         switch (c)
@@ -268,7 +271,7 @@ internal static class ModStyle
 
                     curRun.Foreground = new SolidColorBrush(new ModBase.MyColor(color));
                     curRun.FontWeight = hasBlodProperty ? FontWeight.Bold : FontWeight.Normal;
-                    curRun.FontStyle = hasItalicProperty ? FontStyles.Italic : FontStyles.Normal;
+                    curRun.FontStyle = hasItalicProperty ? FontStyle.Italic : FontStyle.Normal;
                     curRun.TextDecorations = hasStrickThroughProperty ? TextDecorations.Strikethrough : null;
                     curRun.TextDecorations = hasDeleteLineProperty ? TextDecorations.Underline : null;
                 }
@@ -302,6 +305,37 @@ internal static class ModStyle
                         }
                     };
                 }
+        }
+
+        // [port] MotdRenderer.TryGetColorFromCode（上游 PCL.Core/UI/Controls/MotdRenderer，已暂缓移植）桩无此方法，
+        //       此处内联其颜色代码 → 十六进制颜色映射，保持与原版一致的取色（含深浅背景两套配色）。
+        private static readonly Dictionary<string, string> _ColorMapWithBlackBackground = new()
+        {
+            { "0", "#000000" }, { "1", "#0000AA" }, { "2", "#00AA00" }, { "3", "#00AAAA" },
+            { "4", "#AA0000" }, { "5", "#AA00AA" }, { "6", "#FFAA00" }, { "7", "#D3D3D3" },
+            { "8", "#A9A9A9" }, { "9", "#0000FF" }, { "a", "#00FF00" }, { "b", "#00FFFF" },
+            { "c", "#FF0000" }, { "d", "#FF00FF" }, { "e", "#FFFF00" }, { "f", "#FFFFFF" }
+        };
+
+        private static readonly Dictionary<string, string> _ColorMapWithWhiteBackground = new()
+        {
+            { "0", "#333333" }, { "1", "#003087" }, { "2", "#008000" }, { "3", "#007A7A" },
+            { "4", "#A10000" }, { "5", "#800080" }, { "6", "#CC7000" }, { "7", "#666666" },
+            { "8", "#444444" }, { "9", "#0044CC" }, { "a", "#009900" }, { "b", "#00A1A1" },
+            { "c", "#CC0000" }, { "d", "#C200C2" }, { "e", "#B3A000" }, { "f", "#888888" }
+        };
+
+        private static bool TryGetColorFromCode(string code, bool isDarkMode, out string? color)
+        {
+            var map = isDarkMode ? _ColorMapWithBlackBackground : _ColorMapWithWhiteBackground;
+            if (map.TryGetValue(code.ToLowerInvariant(), out var hex))
+            {
+                color = hex;
+                return true;
+            }
+
+            color = null;
+            return false;
         }
     }
 }

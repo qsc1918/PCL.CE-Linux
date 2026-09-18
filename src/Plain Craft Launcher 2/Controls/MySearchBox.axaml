@@ -20,7 +20,7 @@
                             LogoScale="0.75" Height="24"
                             SvgIcon="lucide/x"
                             HorizontalAlignment="Right" Theme="Black" />
-        <local:MyButton x:Name="BtnSearch" Click="BtnSearch_Click" Visibility="Collapsed" Margin="0,4,4,4" Text="{DynamicResource Common.Action.Search}" Width="60"
+        <local:MyButton x:Name="BtnSearch" Click="BtnSearch_Click" IsVisible="False" Margin="0,4,4,4" Text="{DynamicResource Common.Action.Search}" Width="60"
                         ColorType="Highlight" HorizontalAlignment="Right" />
     </Grid>
 </local:MyCard>

@@ -25,6 +25,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyCheckBox CheckFixAuthlib;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid GridGameManageCommunity;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyComboBox ComboDownloadMod;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock TextFilenameFormat;
@@ -72,6 +74,7 @@ namespace PCL
             SliderDownloadSpeed = __thisNameScope__?.Find<global::PCL.MySlider>("SliderDownloadSpeed");
             CheckDownloadAutoSelectVersion = __thisNameScope__?.Find<global::PCL.MyCheckBox>("CheckDownloadAutoSelectVersion");
             CheckFixAuthlib = __thisNameScope__?.Find<global::PCL.MyCheckBox>("CheckFixAuthlib");
+            GridGameManageCommunity = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("GridGameManageCommunity");
             ComboDownloadMod = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboDownloadMod");
             TextFilenameFormat = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("TextFilenameFormat");
             ComboDownloadTranslateV2 = __thisNameScope__?.Find<global::PCL.MyComboBox>("ComboDownloadTranslateV2");

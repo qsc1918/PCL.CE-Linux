@@ -69,7 +69,7 @@ public partial class PageSetupLaunch : MyPageRight
             WindowTypeUIRefresh();
 
             // 游戏内存
-            ((MyRadioBox)FindName("RadioRamType" + Config.Launch.MemoryAllocationMode)).Checked = true;
+            this.FindControl<MyRadioBox>("RadioRamType" + Config.Launch.MemoryAllocationMode).Checked = true; // [port] FindName → FindControl<MyRadioBox>
             SliderRamCustom.Value = Config.Launch.CustomMemorySize;
             RamType(Config.Launch.MemoryAllocationMode);
 
@@ -146,7 +146,8 @@ public partial class PageSetupLaunch : MyPageRight
             SetByTag(gotCfg[0], int.Parse(gotCfg[1]));
     }
 
-    private void TextBoxChange(object senderRaw, RoutedEventArgs e)
+    // [port] Avalonia MyTextBox.ValidatedTextChanged 为 EventHandler(object,EventArgs)；处理器只取 sender，改签名以匹配
+    private void TextBoxChange(object senderRaw, EventArgs e)
     {
         var sender = (MyTextBox)senderRaw;
         if (ModAnimation.AniControlEnabled == 0)
@@ -247,7 +248,7 @@ public partial class PageSetupLaunch : MyPageRight
         LabRamGame.Text = $"{Lang.Number(ramGame, "N1")} GiB{(ramGame != ramGameActual ? $" ({Lang.Text("Setup.Launch.Memory.AvailableSuffix", Lang.Number(ramGameActual, "N1"))})" : "")}";
         LabRamUsed.Text = $"{Lang.Number(ramUsed, "N1")} GiB";
         LabRamTotal.Text = $" / {Lang.Number(ramTotal, "N1")} GiB";
-        LabRamWarn.Visibility =
+        LabRamWarn.IsVisible =
             ramGame == 1d && !ModJava.IsGameSet64BitJava() && !SystemInfo.Is32BitSystem && ModJava.Javas.ExistAnyJava()
                 ? true
                 : false;
@@ -255,23 +256,24 @@ public partial class PageSetupLaunch : MyPageRight
         if (showAnim)
         {
             // 宽度动画
+            // [port] Avalonia 不为 ColumnDefinition 生成命名字段 → 通过所属 Grid PanRamDisplay.ColumnDefinitions[index] 访问
             ModAnimation.AniStart(
                 new[]
                 {
-                    ModAnimation.AaGridLengthWidth(ColumnRamUsed, ramUsed - ColumnRamUsed.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[0], ramUsed - PanRamDisplay.ColumnDefinitions[0].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong)),
-                    ModAnimation.AaGridLengthWidth(ColumnRamGame, ramGameActual - ColumnRamGame.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[1], ramGameActual - PanRamDisplay.ColumnDefinitions[1].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong)),
-                    ModAnimation.AaGridLengthWidth(ColumnRamEmpty, ramEmpty - ColumnRamEmpty.Width.Value, 800,
+                    ModAnimation.AaGridLengthWidth(PanRamDisplay.ColumnDefinitions[2], ramEmpty - PanRamDisplay.ColumnDefinitions[2].Width.Value, 800,
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Strong))
                 }, "SetupLaunch Ram Grid");
         }
         else
         {
             // 宽度设置
-            ColumnRamUsed.Width = new GridLength(ramUsed, GridUnitType.Star);
-            ColumnRamGame.Width = new GridLength(ramGameActual, GridUnitType.Star);
-            ColumnRamEmpty.Width = new GridLength(ramEmpty, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[0].Width = new GridLength(ramUsed, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[1].Width = new GridLength(ramGameActual, GridUnitType.Star);
+            PanRamDisplay.ColumnDefinitions[2].Width = new GridLength(ramEmpty, GridUnitType.Star);
         }
     }
 
@@ -542,14 +544,14 @@ public partial class PageSetupLaunch : MyPageRight
 
     private void TextAdvanceRun_TextChanged(object sender, TextChangedEventArgs e)
     {
-        CheckAdvanceRunWait.Visibility =
+        CheckAdvanceRunWait.IsVisible =
             string.IsNullOrEmpty(TextAdvanceRun.Text) ? false : true;
     }
 
     // JVM 参数重设
     private void TextAdvanceJvm_TextChanged(object sender, TextChangedEventArgs e)
     {
-        BtnAdvanceJvmReset.Visibility =
+        BtnAdvanceJvmReset.IsVisible =
             TextAdvanceJvm.Text == Config.Launch.JvmArgsConfig.DefaultValue
                 ? false
                 : true;

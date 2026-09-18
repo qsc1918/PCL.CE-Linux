@@ -43,10 +43,11 @@ public partial class PageSetupGameManage : MyPageRight
             TextModManageStyle.IsVisible = false;
             ComboModLocalNameStyle.IsVisible = false;
             
-            RowFilenameFormat.Height = new GridLength(0);
-            RowFilenameFormatGap.Height = new GridLength(0);
-            RowModManageStyle.Height = new GridLength(0);
-            RowModManageStyleGap.Height = new GridLength(0);
+            // [port] Avalonia 不为 RowDefinition 生成命名字段 → 通过所属 Grid GridGameManageCommunity.RowDefinitions[index] 访问
+            GridGameManageCommunity.RowDefinitions[2].Height = new GridLength(0);
+            GridGameManageCommunity.RowDefinitions[3].Height = new GridLength(0);
+            GridGameManageCommunity.RowDefinitions[4].Height = new GridLength(0);
+            GridGameManageCommunity.RowDefinitions[5].Height = new GridLength(0);
         }
 
         ModAnimation.AniControlEnabled -= 1;

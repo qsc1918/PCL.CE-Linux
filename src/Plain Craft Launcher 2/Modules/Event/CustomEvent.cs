@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using PCL.Core.App;
 using PCL.Core.App.Configuration;
 using PCL.Core.App.Localization;
@@ -185,13 +185,22 @@ namespace PCL
         /// <summary>
         /// 今日人品。
         /// </summary>
-        private static void _DailyFortune(string _, EventType __) => PageToolsTest.Jrrp();
+        private static void _DailyFortune(string _, EventType __)
+        {
+            // [port] 工具页（Pages\PageTools\**）未纳入编译（见 csproj DeferredExcludes），
+            //       PageToolsTest.Jrrp() 暂不可用，暂禁用该自定义事件。
+            // 原逻辑：PageToolsTest.Jrrp();
+        }
 
         /// <summary>
         /// 清理垃圾。异步执行 RubbishClear。
         /// </summary>
-        private static void _ClearTrash(string _, EventType __) =>
-            ModBase.RunInThread(PageToolsTest.RubbishClear);
+        private static void _ClearTrash(string _, EventType __)
+        {
+            // [port] 工具页（Pages\PageTools\**）未纳入编译（见 csproj DeferredExcludes），
+            //       PageToolsTest.RubbishClear 暂不可用，暂禁用该自定义事件。
+            // 原逻辑：ModBase.RunInThread(PageToolsTest.RubbishClear);
+        }
 
         /// <summary>
         /// 弹出消息框。参数：Title|Content[|ButtonText]。
@@ -266,16 +275,19 @@ namespace PCL
             if (!EventSafetyConfirm(Lang.Text("Event.Download.Confirm", args[0])))
                 return;
 
-            try
-            {
-                PageToolsTest.StartCustomDownload(args[0],
-                    args.Length >= 2 ? args[1] : ModBase.GetFileNameFromPath(args[0]),
-                    args.Length >= 3 ? args[2] : null);
-            }
-            catch
-            {
-                PageToolsTest.StartCustomDownload(args[0], Lang.Text("Common.State.Unknown"));
-            }
+            // [port] 工具页（Pages\PageTools\**）未纳入编译（见 csproj DeferredExcludes），
+            //       PageToolsTest.StartCustomDownload 暂不可用，暂禁用下载分支（URL 校验与安全确认保持在上面）。
+            // 原逻辑：
+            // try
+            // {
+            //     PageToolsTest.StartCustomDownload(args[0],
+            //         args.Length >= 2 ? args[1] : ModBase.GetFileNameFromPath(args[0]),
+            //         args.Length >= 3 ? args[2] : null);
+            // }
+            // catch
+            // {
+            //     PageToolsTest.StartCustomDownload(args[0], Lang.Text("Common.State.Unknown"));
+            // }
         }
 
         /// <summary>

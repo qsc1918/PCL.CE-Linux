@@ -638,7 +638,8 @@ public static class ModComp
         public static void GetClipboardResource()
         {
             string? text = null;
-            ModBase.RunInUiWait(() => text = Clipboard.GetText());
+            // [port] WPF/WinForms Clipboard.GetText → Avalonia IClipboard（同步封装见 ModBase.GetClipboardText）
+            ModBase.RunInUiWait(() => text = ModBase.GetClipboardText());
 
             if (string.IsNullOrEmpty(text) || text == currentText) return;
             currentText = text;
@@ -3287,7 +3288,7 @@ public static class ModComp
                     var newItem = new MyListItem
                     {
                         Title = title,
-                        SnapsToDevicePixels = true,
+                        // [port] WPF SnapsToDevicePixels 在 Avalonia 无对应概念（行为默认），移除。
                         Height = 42,
                         Type = MyListItem.CheckType.Clickable,
                         Tag = this,
@@ -3639,8 +3640,9 @@ public static class ModComp
             HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.NoFile"), HintType.Info);
             return;
         }
+        // [port] SystemDialogs 已异步化（StorageProvider），改为同步阻塞等待结果（与 ModModpack 相同模式）
         var saveFolder = ModBase.RunInUiWait(() =>
-            await SystemDialogs.SelectFolderAsync(Lang.Text("Download.Comp.QuickDownload.Hint.SelectFolder")));
+            SystemDialogs.SelectFolderAsync(Lang.Text("Download.Comp.QuickDownload.Hint.SelectFolder")).GetAwaiter().GetResult());
         if (string.IsNullOrWhiteSpace(saveFolder)) return; // 取消
         var target = System.IO.Path.Combine(saveFolder, CompFileNameGet(project, file));
         _StartQuickDownload(file, target);

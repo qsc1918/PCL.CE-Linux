@@ -23,7 +23,7 @@ namespace PCL
         ///     ○ Match '"'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex EventTypeAttributeRegex() => global::System.Text.RegularExpressions.Generated.EventTypeAttributeRegex_0.Instance;
     }
 }
@@ -51,7 +51,7 @@ namespace PCL
         ///     ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex EventTypePropertyElementRegex() => global::System.Text.RegularExpressions.Generated.EventTypePropertyElementRegex_1.Instance;
     }
 }
@@ -79,7 +79,7 @@ namespace PCL
         ///     ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex CustomEventTypePropertyElementRegex() => global::System.Text.RegularExpressions.Generated.CustomEventTypePropertyElementRegex_2.Instance;
     }
 }
@@ -109,7 +109,7 @@ namespace PCL
         ///     ○ Match '"'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex LocalCustomEventTypeAttributeRegex() => global::System.Text.RegularExpressions.Generated.LocalCustomEventTypeAttributeRegex_3.Instance;
     }
 }
@@ -141,7 +141,7 @@ namespace PCL
         /// ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex LocalCustomEventSelfClosingRegex() => global::System.Text.RegularExpressions.Generated.LocalCustomEventSelfClosingRegex_4.Instance;
     }
 }
@@ -171,7 +171,7 @@ namespace PCL
         /// ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex LocalCustomEventOpenTagRegex() => global::System.Text.RegularExpressions.Generated.LocalCustomEventOpenTagRegex_5.Instance;
     }
 }
@@ -218,7 +218,7 @@ namespace PCL
         ///         ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex SetterEventTypePropertyFirstRegex() => global::System.Text.RegularExpressions.Generated.SetterEventTypePropertyFirstRegex_6.Instance;
     }
 }
@@ -265,7 +265,7 @@ namespace PCL
         ///         ○ Match '&gt;'.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
         private static partial global::System.Text.RegularExpressions.Regex SetterEventTypeValueFirstRegex() => global::System.Text.RegularExpressions.Generated.SetterEventTypeValueFirstRegex_7.Instance;
     }
 }
@@ -283,7 +283,7 @@ namespace System.Text.RegularExpressions.Generated
     using System.Threading;
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the EventTypeAttributeRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class EventTypeAttributeRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -479,7 +479,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the EventTypePropertyElementRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class EventTypePropertyElementRegex_1 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -756,7 +756,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the CustomEventTypePropertyElementRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class CustomEventTypePropertyElementRegex_2 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -1033,7 +1033,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the LocalCustomEventTypeAttributeRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class LocalCustomEventTypeAttributeRegex_3 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -1319,7 +1319,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the LocalCustomEventSelfClosingRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class LocalCustomEventSelfClosingRegex_4 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -1646,7 +1646,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the LocalCustomEventOpenTagRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class LocalCustomEventOpenTagRegex_5 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -1926,7 +1926,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the SetterEventTypePropertyFirstRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class SetterEventTypePropertyFirstRegex_6 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -2347,7 +2347,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Custom <see cref="Regex"/>-derived type for the SetterEventTypeValueFirstRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file sealed class SetterEventTypeValueFirstRegex_7 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -2768,7 +2768,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Helper methods used by generated <see cref="Regex"/>-derived implementations.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.37416")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "10.0.14.42308")]
     file static class Utilities
     {
         /// <summary>Default timeout value set in <see cref="AppContext"/>, or <see cref="Regex.InfiniteMatchTimeout"/> if none was set.</summary>

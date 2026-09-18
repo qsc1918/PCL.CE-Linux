@@ -44,15 +44,17 @@ public class MyComboBox : ComboBox
     public MyComboBox()
     {
         _Text = SelectedItem?.ToString() ?? "";
-        PreviewPointerPressed += MyComboBox_PreviewPointerPressed;
-        PreviewPointerReleased += MyComboBox_PreviewPointerReleased;
+        // [port] WPF Preview(MouseDown/MouseUp) 隧道事件 → Avalonia 用 AddHandler(Pointer* , Tunnel, handledEventsToo:true) 捕获已处理事件
+        AddHandler(InputElement.PointerPressedEvent, new EventHandler<PointerPressedEventArgs>(MyComboBox_PreviewPointerPressed), RoutingStrategies.Tunnel, true);
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>(MyComboBox_PreviewPointerReleased), RoutingStrategies.Tunnel, true);
         PointerExited += MyComboBox_PreviewPointerReleased;
-        IsEnabledChanged += (_, _) => RefreshColor();
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerEntered += (_, _) => RefreshColor();
         PointerExited += (_, _) => RefreshColor();
-        PreviewPointerPressed += (_, _) => RefreshColor();
-        PreviewPointerReleased += (_, _) => RefreshColor();
-        GotKeyboardFocus += (_, _) => RefreshColor();
+        AddHandler(InputElement.PointerPressedEvent, new EventHandler<PointerPressedEventArgs>((_, _) => RefreshColor()), RoutingStrategies.Tunnel, true);
+        AddHandler(InputElement.PointerReleasedEvent, new EventHandler<PointerReleasedEventArgs>((_, _) => RefreshColor()), RoutingStrategies.Tunnel, true);
+        // [port] WPF GotKeyboardFocus → Avalonia GotFocus（冒泡）
+        GotFocus += (_, _) => RefreshColor();
         DropDownOpened += MyComboBox_DropDownOpened;
         DropDownClosed += MyComboBox_DropDownClosed;
         TextChanged += MyComboBox_TextChanged;
@@ -105,7 +107,8 @@ public class MyComboBox : ComboBox
         try
         {
             textBox = (MyTextBox)Template.FindName("PART_EditableTextBox", this);
-            textBox.AddHandler(LostFocusEvent, new RoutedEventHandler((_, _) => RefreshColor()));
+            // [port] WPF AddHandler(LostFocusEvent, RoutedEventHandler) → 直接挂冒泡 LostFocus 事件
+            textBox.LostFocus += (_, _) => RefreshColor();
             textBox.changedEventList.Add((sender, e) => TextChanged?.Invoke(sender, (TextChangedEventArgs)e));
             textBox.Tag = Tag; // 有时需要用文本框的 Tag 来写入设置
             if (string.IsNullOrEmpty(Text))
@@ -114,7 +117,7 @@ public class MyComboBox : ComboBox
                 TextChanged?.Invoke(this, null);
             if (HintText.Length > 0)
                 textBox.HintText = HintText;
-            textBox.SetResourceReference(TextBoxBase.CaretBrushProperty, "ColorBrushGray1");
+            textBox.SetResourceReference(TextBox.CaretBrushProperty, "ColorBrushGray1");
         }
         catch (Exception ex)
         {
@@ -187,8 +190,8 @@ public class MyComboBox : ComboBox
         {
             // 无动画
             ModAnimation.AniStop("MyComboBox Color " + Uuid);
-            SetResourceReference(ForegroundProperty, foreColorName);
-            SetResourceReference(BackgroundProperty, backColorName);
+            this.SetResourceReference(ForegroundProperty, foreColorName);
+            this.SetResourceReference(BackgroundProperty, backColorName);
         }
     }
 
@@ -196,13 +199,13 @@ public class MyComboBox : ComboBox
     {
         realWidth = Width;
         if (DropDownWidthSync)
-            Width = ActualWidth;
+            Width = Bounds.Width;
         try
         {
             var popup = (Grid)Template.FindName("PanPopup", this);
             popup.Opacity = ModMain.frmMain.Opacity;
             if (!DropDownWidthSync)
-                popup.MinWidth = ActualWidth;
+                popup.MinWidth = Bounds.Width;
         }
         catch (Exception ex)
         {
@@ -256,5 +259,14 @@ public class MyComboBox : ComboBox
             return false;
         }
         return base.NeedsContainerOverride(item, index, out recycleKey);
+    }
+
+    // [port] WPF SelectedValuePath（属性路径字符串）→ Avalonia 12 用 SelectedValueBinding（IBinding）。
+    // 设置该路径后，SelectedValue 即取选中项（MyComboBoxItem）的该属性，保持原逻辑。
+    private string? selectedValuePath;
+    public string? SelectedValuePath
+    {
+        get => selectedValuePath;
+        set { selectedValuePath = value; SelectedValueBinding = value is null ? null : new Avalonia.Data.Binding(value); }
     }
 }

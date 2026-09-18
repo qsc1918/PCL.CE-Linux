@@ -101,7 +101,7 @@ public partial class MyRadioButton : Border
             if (ShapeLogo is null) return;
             _hasLegacyLogo = !string.IsNullOrWhiteSpace(value);
             ShapeLogo.Data = _hasLegacyLogo
-                ? (Geometry)new GeometryConverter().ConvertFromString(value)
+                ? Geometry.Parse(value)
                 : null;
             SvgIconControlHelper.ApplyVisibility(ShapeLogo, ShapeSvgIcon, IsUsingSvgIcon);
             RefreshLogoHostVisibility();
@@ -341,14 +341,16 @@ public partial class MyRadioButton : Border
                             ModAnimation.AniStart(
                                 new[]
                                 {
-                                    ModAnimation.AaColor(ShapeLogo, Shape.FillProperty, color3 - ShapeLogo.Fill,
+                                    ModAnimation.AaColor(ShapeLogo, Shape.FillProperty,
+                                        color3 - new ModBase.MyColor(ShapeLogo.Fill),
                                         animationTimeOfCheck),
                                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                                        color3 - LabText.Foreground, animationTimeOfCheck)
+                                        color3 - new ModBase.MyColor(LabText.Foreground), animationTimeOfCheck)
                                 }, "MyRadioButton Checked " + Uuid);
                             ModAnimation.AniStart(
                                 ModAnimation.AaColor(this, BackgroundProperty,
-                                    new ModBase.MyColor(255d, 255d, 255d) - Background, animationTimeOfCheck),
+                                    new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(Background),
+                                    animationTimeOfCheck),
                                 "MyRadioButton Color " + Uuid);
                         }
                         else if (isMouseDown)
@@ -357,7 +359,8 @@ public partial class MyRadioButton : Border
                             ModAnimation.AniStart(
                                 ModAnimation.AaColor(this, BackgroundProperty,
                                     new ModBase.MyColor(120d,
-                                        new ModBase.MyColor(ThemeManager.AppResources["ColorObject8"])) - Background, 60),
+                                        new ModBase.MyColor(ThemeManager.AppResources["ColorObject8"])) -
+                                    new ModBase.MyColor(Background), 60),
                                 "MyRadioButton Color " + Uuid);
                         }
                         else if (IsPointerOver)
@@ -367,15 +370,17 @@ public partial class MyRadioButton : Border
                                 new[]
                                 {
                                     ModAnimation.AaColor(ShapeLogo, Shape.FillProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - ShapeLogo.Fill, animationTimeOfMouseIn),
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(ShapeLogo.Fill),
+                                        animationTimeOfMouseIn),
                                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - LabText.Foreground,
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(LabText.Foreground),
                                         animationTimeOfMouseIn)
                                 }, "MyRadioButton Checked " + Uuid);
                             ModAnimation.AniStart(
                                 ModAnimation.AaColor(this, BackgroundProperty,
                                     new ModBase.MyColor(50d,
-                                        new ModBase.MyColor(ThemeManager.AppResources["ColorObject8"])) - Background,
+                                        new ModBase.MyColor(ThemeManager.AppResources["ColorObject8"])) -
+                                    new ModBase.MyColor(Background),
                                     animationTimeOfMouseIn), "MyRadioButton Color " + Uuid);
                         }
                         else
@@ -385,16 +390,17 @@ public partial class MyRadioButton : Border
                                 new[]
                                 {
                                     ModAnimation.AaColor(ShapeLogo, Shape.FillProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - ShapeLogo.Fill,
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(ShapeLogo.Fill),
                                         animationTimeOfMouseOut),
                                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - LabText.Foreground,
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(LabText.Foreground),
                                         animationTimeOfMouseOut)
                                 }, "MyRadioButton Checked " + Uuid);
                             ModAnimation.AniStart(
                                 ModAnimation.AaColor(this, BackgroundProperty,
                                     new ModBase.MyColor(ThemeManager.AppResources["ColorBrushSemiTransparent"]) -
-                                    Background, animationTimeOfMouseOut), "MyRadioButton Color " + Uuid);
+                                    new ModBase.MyColor(Background), animationTimeOfMouseOut),
+                                    "MyRadioButton Color " + Uuid);
                         }
 
                         break;
@@ -408,9 +414,10 @@ public partial class MyRadioButton : Border
                                 new[]
                                 {
                                     ModAnimation.AaColor(ShapeLogo, Shape.FillProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - ShapeLogo.Fill, animationTimeOfCheck),
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(ShapeLogo.Fill),
+                                        animationTimeOfCheck),
                                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                                        new ModBase.MyColor(255d, 255d, 255d) - LabText.Foreground,
+                                        new ModBase.MyColor(255d, 255d, 255d) - new ModBase.MyColor(LabText.Foreground),
                                         animationTimeOfCheck)
                                 }, "MyRadioButton Checked " + Uuid);
                             ModAnimation.AniStart(
@@ -453,7 +460,8 @@ public partial class MyRadioButton : Border
                             ModAnimation.AniStart(
                                 ModAnimation.AaColor(this, BackgroundProperty,
                                     new ModBase.MyColor(ThemeManager.AppResources["ColorBrushSemiTransparent"]) -
-                                    Background, animationTimeOfMouseOut), "MyRadioButton Color " + Uuid);
+                                    new ModBase.MyColor(Background), animationTimeOfMouseOut),
+                                    "MyRadioButton Color " + Uuid);
                         }
 
                         break;
@@ -472,15 +480,15 @@ public partial class MyRadioButton : Border
                     {
                         if (Checked)
                         {
-                            Background = new ModBase.MyColor(255d, 255d, 255d);
+                            Background = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
                             ShapeLogo.SetResourceReference(Shape.FillProperty, "ColorBrush3");
                             LabText.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush3");
                         }
                         else
                         {
                             Background = (Brush)ThemeManager.AppResources["ColorBrushSemiTransparent"];
-                            ShapeLogo.Fill = new ModBase.MyColor(255d, 255d, 255d);
-                            LabText.Foreground = new ModBase.MyColor(255d, 255d, 255d);
+                            ShapeLogo.Fill = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
+                            LabText.Foreground = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
                         }
 
                         break;
@@ -489,9 +497,9 @@ public partial class MyRadioButton : Border
                     {
                         if (Checked)
                         {
-                            SetResourceReference(BackgroundProperty, "ColorBrush3");
-                            ShapeLogo.Fill = new ModBase.MyColor(255d, 255d, 255d);
-                            LabText.Foreground = new ModBase.MyColor(255d, 255d, 255d);
+                            this.SetResourceReference(BackgroundProperty, "ColorBrush3");
+                            ShapeLogo.Fill = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
+                            LabText.Foreground = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
                         }
                         else
                         {

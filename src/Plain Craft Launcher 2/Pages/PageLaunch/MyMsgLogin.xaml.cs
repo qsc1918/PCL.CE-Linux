@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Interactivity;
@@ -24,6 +25,9 @@ public partial class MyMsgLogin : Grid
     public MyMsgLogin()
     {
         InitializeComponent();
+        // [port] 从 RenderTransform 的 TransformGroup 中取回 x:Name 的变换对象
+        TransformPos = (TranslateTransform)((TransformGroup)RenderTransform).Children[1];
+        TransformRotate = (RotateTransform)((TransformGroup)RenderTransform).Children[0];
         // Handles
         Loaded += Load;
         Btn1.Click += Btn1_Click;
@@ -142,11 +146,19 @@ public partial class MyMsgLogin : Grid
     private readonly ModMain.MyMsgBoxConverter myConverter;
     private readonly int uuid = ModBase.GetUuid();
 
+    // [port] Avalonia 的名称生成器不会为 Transform 生成字段（其非 Control），
+    //       故在 axaml 中 x:Name 的 TransformPos/TransformRotate 无法被引用，需手动补齐。
+    private TranslateTransform TransformPos;
+    private RotateTransform TransformRotate;
+
     public MyMsgLogin(ModMain.MyMsgBoxConverter converter)
     {
         try
         {
             InitializeComponent();
+            // [port] 从 RenderTransform 的 TransformGroup 中取回 x:Name 的变换对象
+            TransformPos = (TranslateTransform)((TransformGroup)RenderTransform).Children[1];
+            TransformRotate = (RotateTransform)((TransformGroup)RenderTransform).Children[0];
             Btn1.Name += ModBase.GetUuid();
             Btn2.Name += ModBase.GetUuid();
             Btn3.Name += ModBase.GetUuid();
@@ -178,7 +190,8 @@ public partial class MyMsgLogin : Grid
                 ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground, BlurBorder.BackgroundProperty,
                     (myConverter.IsWarn
                         ? new ModBase.MyColor(140d, 80d, 0d, 0d)
-                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - ModMain.frmMain.PanMsgBackground.Background, 200),
+                        : new ModBase.MyColor(90d, 0d, 0d, 0d)) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200),
+                // [port] MyColor - IBrush → 需包装为 MyColor
                 "PanMsgBackground Background");
             ModAnimation.AniStart(
                 new[]
@@ -213,7 +226,8 @@ public partial class MyMsgLogin : Grid
                 if (!ModMain.WaitingMyMsgBox.Any())
                     ModAnimation.AniStart(ModAnimation.AaColor(ModMain.frmMain.PanMsgBackground,
                         BlurBorder.BackgroundProperty,
-                        new ModBase.MyColor(0d, 0d, 0d, 0d) - ModMain.frmMain.PanMsgBackground.Background, 200,
+                        new ModBase.MyColor(0d, 0d, 0d, 0d) - new ModBase.MyColor(ModMain.frmMain.PanMsgBackground.Background), 200,
+                        // [port] MyColor - IBrush → 需包装为 MyColor
                         ease: new ModAnimation.AniEaseOutFluent(ModAnimation.AniEasePower.Weak)));
             }, 30),
             ModAnimation.AaOpacity(this, -Opacity, 80, 20),
@@ -242,7 +256,7 @@ public partial class MyMsgLogin : Grid
     {
         // On Error Resume Next
         if (e.GetPosition(ShapeLine).Y <= 2d)
-            ModMain.frmMain.DragMove();
+            ModMain.frmMain.BeginMoveDrag(e); // [port] DragMove() → BeginMoveDrag(e)
     }
 
     #endregion

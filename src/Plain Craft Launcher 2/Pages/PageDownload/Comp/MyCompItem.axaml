@@ -27,7 +27,7 @@
         <Border.Clip>
             <RectangleGeometry Rect="0,0,50,50" RadiusX="6" RadiusY="6" />
         </Border.Clip>
-        <local:MyImage x:Name="PathLogo" RenderOptions.BitmapScalingMode="HighQuality"
+        <local:MyImage x:Name="PathLogo"
                        FallbackSource="pack://application:,,,/images/Icons/NoIcon.png" />
     </Border>
     <!-- 标题 -->
@@ -48,27 +48,27 @@
     </StackPanel>
     <TextBlock x:Name="LabInfo" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Margin="0,0,3,0.5"
                TextTrimming="CharacterEllipsis" FontSize="12" Foreground="{StaticResource ColorBrushGray3}"
-               IsHitTestVisible="True" UseLayoutRounding="False"
-               ToolTip.Placement="Relative" ToolTipService.PlacementRectangle="-16,-10,500,10000">
-        <TextBlock.ToolTip>
+               IsHitTestVisible="True" UseLayoutRounding="False">
+        <!-- [port] Avalonia 12 无 PlacementMode.Relative，删除 Place属性设置；WPF <TextBlock.ToolTip> 属性元素 → Avalonia 附加属性 ToolTip.Tip -->
+        <ToolTip.Tip>
             <ToolTip x:Name="ToolTipInfo" />
-        </TextBlock.ToolTip>
+        </ToolTip.Tip>
     </TextBlock>
     <!-- 下边栏 -->
-    <Grid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
+    <Grid x:Name="PanBottomBar" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
           IsHitTestVisible="False" UseLayoutRounding="False">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="ColumnVersion1" Width="Auto" />
-            <ColumnDefinition x:Name="ColumnVersion2" Width="Auto" SharedSizeGroup="CompItemVersion" />
-            <ColumnDefinition x:Name="ColumnVersion3" Width="0.25*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="CompItemVersion" />
+            <ColumnDefinition Width="0.25*" />
 
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" SharedSizeGroup="LabDownload" />
             <ColumnDefinition Width="0.25*" />
 
-            <ColumnDefinition x:Name="ColumnTime1" Width="Auto" />
-            <ColumnDefinition x:Name="ColumnTime2" Width="Auto" MinWidth="57" SharedSizeGroup="CompItemTime" />
-            <ColumnDefinition x:Name="ColumnTime3" Width="0.25*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="57" SharedSizeGroup="CompItemTime" />
+            <ColumnDefinition Width="0.25*" />
 
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" SharedSizeGroup="CompItemSource" />
@@ -134,7 +134,7 @@
         <!-- 快速下载按钮 -->
         <local:MyIconButton x:Name="BtnDownload" Height="25" Width="25" SvgIcon="lucide/download"
                             Margin="0,0,4,0" IsVisible="False"
-                            ToolTip="{DynamicResource Download.Comp.QuickDownload.Btn.ToolTip}" />
+                            ToolTip.Tip="{DynamicResource Download.Comp.QuickDownload.Btn.ToolTip}" />
 
         <!-- 删除收藏按钮 -->
         <local:MyIconButton x:Name="BtnDelete" Height="25" Width="25" SvgIcon="lucide/heart" />

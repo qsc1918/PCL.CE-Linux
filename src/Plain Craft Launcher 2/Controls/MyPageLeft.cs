@@ -11,7 +11,7 @@ namespace PCL;
 public class MyPageLeft : Grid
 {
     public static AvaloniaProperty AnimatedControlProperty =
-        AvaloniaProperty.Register("AnimatedControl", typeof(Control), typeof(MyPageLeft));
+        AvaloniaProperty.Register<MyPageLeft, Control>(nameof(AnimatedControl));
 
     private readonly int uuid = ModBase.GetUuid();
 

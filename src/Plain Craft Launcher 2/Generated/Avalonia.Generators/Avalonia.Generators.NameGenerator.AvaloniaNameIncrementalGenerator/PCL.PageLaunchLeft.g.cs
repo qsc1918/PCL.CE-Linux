@@ -19,6 +19,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanLogin;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid PanApril;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::PCL.MyButton BtnLaunch;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabVersion;
@@ -30,6 +32,8 @@ namespace PCL
         internal global::Avalonia.Controls.TextBlock LabLaunchingTitle;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.TextBlock LabLaunchingName;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid PanProgress;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanLaunchingInfo;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
@@ -71,12 +75,14 @@ namespace PCL
             BtnInstance = __thisNameScope__?.Find<global::PCL.MyButton>("BtnInstance");
             BtnMore = __thisNameScope__?.Find<global::PCL.MyButton>("BtnMore");
             PanLogin = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanLogin");
+            PanApril = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanApril");
             BtnLaunch = __thisNameScope__?.Find<global::PCL.MyButton>("BtnLaunch");
             LabVersion = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabVersion");
             PanLaunching = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanLaunching");
             LoadLaunching = __thisNameScope__?.Find<global::PCL.MyLoading>("LoadLaunching");
             LabLaunchingTitle = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabLaunchingTitle");
             LabLaunchingName = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabLaunchingName");
+            PanProgress = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanProgress");
             PanLaunchingInfo = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanLaunchingInfo");
             LabLaunchingStage = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabLaunchingStage");
             LabLaunchingMethod = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("LabLaunchingMethod");

@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Avalonia.VisualTree;
 using Path = Avalonia.Controls.Shapes.Path;
 using PCL.Core.App;
 using PCL.Core.UI.Theme;
@@ -16,7 +17,7 @@ public static class ThemeManager
 
     public static bool IsDarkMode => ThemeService.IsDarkMode;
 
-    public static ResourceDictionary AppResources => Avalonia.Application.Current.Resources;
+    public static ResourceDictionary AppResources => (ResourceDictionary)Avalonia.Application.Current.Resources;
 
     public static ModBase.MyColor colorGray1 = new(AppResources["ColorObjectGray1"]);
     public static ModBase.MyColor colorGray4 = new(AppResources["ColorObjectGray4"]);
@@ -49,8 +50,9 @@ public static class ThemeManager
         {
             var brush = new LinearGradientBrush
             {
-                EndPoint = new Point(0.1, 1),
-                StartPoint = new Point(0.9, 0)
+                // [port] WPF LinearGradientBrush 端点用 Point → Avalonia 用 RelativePoint
+                EndPoint = new RelativePoint(0.1, 1, RelativeUnit.Relative),
+                StartPoint = new RelativePoint(0.9, 0, RelativeUnit.Relative)
             };
 
             var hue = ThemeService.GetCurrentThemeArgs().Hue;
@@ -71,7 +73,7 @@ public static class ThemeManager
             ModMain.frmMain.PanForm.Background = (Brush)Avalonia.Application.Current.Resources["ColorBrushBackground"];
         }
 
-        ModMain.frmMain.PanForm.Background.Freeze();
+        // [port] WPF IBrush.Freeze() → Avalonia 画刷已不可变，无需冻结
     }
 
     // 通用ContextMenu主题刷新
@@ -81,13 +83,15 @@ public static class ThemeManager
         {
             if (!_contextMenuHandlerRegistered)
             {
-                EventManager.RegisterClassHandler(typeof(ContextMenu), ContextMenu.OpenedEvent,
-                    new RoutedEventHandler(OnContextMenuOpened));
+                // [port] WPF EventManager.RegisterClassHandler + RoutedEventHandler → Avalonia 静态类处理器
+                ContextMenu.OpenedEvent.AddClassHandler<ContextMenu>((o, e) => OnContextMenuOpened(o, e));
                 _contextMenuHandlerRegistered = true;
             }
 
-            foreach (Window window in Avalonia.Application.Current.Windows)
-                RefreshContextMenusInElement(window);
+            // [port] WPF Application.Current.Windows → Avalonia 通过桌面应用生命周期枚举窗口
+            if (Avalonia.Application.Current.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+                foreach (Window window in desktop.Windows)
+                    RefreshContextMenusInElement(window);
         }
         catch (Exception ex)
         {
@@ -101,8 +105,8 @@ public static class ThemeManager
         {
             if (sender is ContextMenu contextMenu)
             {
-                contextMenu.ClearValue(Control.StyleProperty);
-                contextMenu.UpdateDefaultStyle();
+                // [port] WPF ClearValue(Control.StyleProperty)+UpdateDefaultStyle 无 Avalonia 对应；主题自动应用，无需手动刷新
+                _ = contextMenu;
             }
         }
         catch
@@ -120,13 +124,13 @@ public static class ThemeManager
         {
             if (element is Control { ContextMenu: not null } fe)
             {
-                fe.ContextMenu.ClearValue(Control.StyleProperty);
-                fe.ContextMenu.UpdateDefaultStyle();
+                // [port] WPF ClearValue(Control.StyleProperty)+UpdateDefaultStyle 无 Avalonia 对应；主题自动应用，无需手动刷新
+                _ = fe;
             }
 
-            var childrenCount = VisualTreeHelper.GetChildrenCount(element);
-            for (int i = 0; i < childrenCount; i++)
-                RefreshContextMenusInElement(VisualTreeHelper.GetChild(element, i));
+            if (element is Avalonia.Visual visual)
+                foreach (var child in visual.GetVisualChildren())
+                    RefreshContextMenusInElement(child);
         }
         catch
         {

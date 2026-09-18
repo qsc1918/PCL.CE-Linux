@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -776,16 +776,24 @@ public static class ModProfile
             return;
         }
 
+        // [port] 换皮肤（ModSkin）已按用户指示暂缓移植（文件从 csproj 排除），本方法在 Linux 停用。
+        return;
+        /* [port] 以下为实现换皮肤逻辑的 ModSkin 调用，暂缓移植故停用。
         var skinInfo = ModSkin.McSkinSelect();
         if (!skinInfo.IsVaild)
             return;
         HintService.Hint(Lang.Text("Launch.Skin.Change.Starting"));
         _isMsSkinChanging = true;
+        */
         // 开始实际获取
 
         // 获取登录信息
 
         // 获取新皮肤地址
+        // [port] 以下整段位于上面 return; 之后的不可达代码，且依赖已暂缓移植的 ModSkin.McSkinInfo（ModSkin.cs 已从 csproj 排除）。
+        // 为维持编译（返回类型在编译集内不存在）而整段停用；运行时行为不受影响（永不执行）。
+        // 用 #if false 而非 /* */：内含 "*/*" 字符串（含 */）会提前结束块注释。
+#if false // [port] 暂缓移植故停用。
         ModBase.RunInNewThread(() =>
         {
             try
@@ -868,6 +876,7 @@ public static class ModProfile
                 _isMsSkinChanging = false;
             }
         }, "Ms Skin Upload"); // 等待登录结束
+#endif
         // #5309
     }
 

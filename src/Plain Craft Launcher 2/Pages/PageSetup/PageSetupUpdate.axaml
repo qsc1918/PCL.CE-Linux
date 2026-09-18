@@ -5,7 +5,7 @@
     PanScroll="{Binding ElementName=PanBack}">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
         <StackPanel x:Name="PanMain" Margin="25,25,25,10">
-            <local:MyCard Height="Auto">
+            <local:MyCard Height="">
                 <StackPanel Margin="20,15,20,15">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -27,11 +27,11 @@
                                           Grid.ColumnSpan="3" Grid.Row="0"
                                           SelectionChanged="ComboSystemUpdateBranch_SelectionChanged">
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Channel.Release}"
-                                                  ToolTip="{DynamicResource Setup.Update.Channel.Release.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Setup.Update.Channel.Release.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Channel.Beta}"
-                                                  ToolTip="{DynamicResource Setup.Update.Channel.Beta.ToolTip}" />
+                                                  ToolTip.Tip="{DynamicResource Setup.Update.Channel.Beta.ToolTip}" />
                             <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Channel.Dev}"
-                                                  ToolTip="{DynamicResource Setup.Update.Channel.Dev.ToolTip}"
+                                                  ToolTip.Tip="{DynamicResource Setup.Update.Channel.Dev.ToolTip}"
                                                   IsVisible="False" />
                         </local:MyComboBox>
                         <TextBlock Text="{DynamicResource Setup.Update.Auto.Title}" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -39,17 +39,18 @@
                         <local:MyComboBox x:Name="ComboSystemUpdateMode" Tag="SystemUpdateMode" Grid.Column="1"
                                           Grid.ColumnSpan="3" Grid.Row="2"
                                           SelectionChanged="ComboSystemUpdateMode_SelectionChanged">
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.DownloadAndInstall}" ToolTip="{DynamicResource Setup.Update.Auto.DownloadAndInstall.ToolTip}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.DownloadAndNotify}" ToolTip="{DynamicResource Setup.Update.Auto.DownloadAndNotify.ToolTip}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.NotifyOnly}" ToolTip="{DynamicResource Setup.Update.Auto.NotifyOnly.ToolTip}" />
-                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.Disabled}" ToolTip="{DynamicResource Setup.Update.Auto.Disabled.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.DownloadAndInstall}" ToolTip.Tip="{DynamicResource Setup.Update.Auto.DownloadAndInstall.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.DownloadAndNotify}" ToolTip.Tip="{DynamicResource Setup.Update.Auto.DownloadAndNotify.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.NotifyOnly}" ToolTip.Tip="{DynamicResource Setup.Update.Auto.NotifyOnly.ToolTip}" />
+                            <local:MyComboBoxItem Content="{DynamicResource Setup.Update.Auto.Disabled}" ToolTip.Tip="{DynamicResource Setup.Update.Auto.Disabled.ToolTip}" />
                         </local:MyComboBox>
                         <TextBlock Text="{DynamicResource Setup.Update.MirrorChyanCdk.Label}" Grid.Row="4" VerticalAlignment="Center"
                                    HorizontalAlignment="Left" Margin="0,0,25,0" />
-                        <PasswordBox x:Name="TextMirrorCDK"
-                                      ToolTip="{DynamicResource Setup.Update.MirrorChyanCdk.ToolTip}"
+                        <TextBox x:Name="TextMirrorCDK"
+                                      ToolTip.Tip="{DynamicResource Setup.Update.MirrorChyanCdk.ToolTip}"
                                      Grid.Row="4" Grid.Column="1"
-                                     PasswordChanged="TextMirrorCDK_PasswordChanged" />
+                                     PasswordChar="●"
+                                     TextChanged="TextMirrorCDK_PasswordChanged" />
                         <local:MyButton x:Name="BtnGetMirrorCDK" Text="{DynamicResource Setup.Update.MirrorChyanCdk.Get}" Grid.Column="3" Grid.Row="4"
                                         ColorType="Highlight" Click="BtnGetMirrorCDK_Click" />
                     </Grid>

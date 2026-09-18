@@ -58,7 +58,8 @@ public partial class MyRadioBox : Grid, IMyRadio
         PointerReleased += (_, _) => Radiobox_PointerReleased();
         PointerPressed += (_, _) => Radiobox_MouseDown();
         PointerExited += (_, _) => Radiobox_PointerExited();
-        IsEnabledChanged += (_, _) => Radiobox_IsEnabledChanged();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) Radiobox_IsEnabledChanged(); };
         PointerEntered += (_, _) => Radiobox_PointerEnteredAnimation();
         PointerExited += (_, _) => Radiobox_PointerExitedAnimation();
     }
@@ -320,11 +321,11 @@ public partial class MyRadioBox : Grid, IMyRadio
             {
                 // 不可用
                 ModAnimation.AniStart(
-                    ModAnimation.AaColor(ShapeBorder, Shape.StrokeProperty, ThemeManager.colorGray4 - ShapeBorder.Stroke,
+                    ModAnimation.AaColor(ShapeBorder, Shape.StrokeProperty, ThemeManager.colorGray4 - new ModBase.MyColor(ShapeBorder.Stroke),
                         animationTimeOfMouseOut), "MyRadioBox BorderColor " + Uuid);
                 ModAnimation.AniStart(
                     ModAnimation.AaColor(LabText, TextBlock.ForegroundProperty,
-                        ThemeManager.colorGray4 - LabText.Foreground, animationTimeOfMouseOut),
+                        ThemeManager.colorGray4 - new ModBase.MyColor(LabText.Foreground), animationTimeOfMouseOut),
                     "MyRadioBox TextColor " + Uuid);
             }
         }

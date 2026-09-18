@@ -24,7 +24,7 @@ public partial class PageInstanceSavesLeft : MyPageLeft, IRefreshable
         isLoad = true;
     }
 
-    private void BtnOpenFolder_Click(object sender, PointerPressedEventArgs e)
+    private void BtnOpenFolder_Click(object sender, PointerReleasedEventArgs e)
     {
         e.Handled = true;
         ModBase.OpenExplorer($@"{currentSave}\");
@@ -112,7 +112,8 @@ public partial class PageInstanceSavesLeft : MyPageLeft, IRefreshable
     {
         ModAnimation.AniStop("FrmMain PageChangeRight"); // 停止主页面的右页面切换动画，防止它与本动画一起触发多次 PageOnEnter
         if (target.Parent is not null)
-            target.SetValue(ContentPresenter.ContentProperty, null);
+            // [port] ContentPresenter → Avalonia.Controls.Presenters.ContentPresenter
+            target.SetValue(Avalonia.Controls.Presenters.ContentPresenter.ContentProperty, null);
         ModMain.frmMain.pageRight = target;
         ((MyPageRight)ModMain.frmMain.PanMainRight.Child).PageOnExit();
         ModAnimation.AniStart(new[]

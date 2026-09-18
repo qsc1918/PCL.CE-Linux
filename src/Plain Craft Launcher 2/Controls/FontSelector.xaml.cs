@@ -154,25 +154,21 @@ public partial class FontSelector : ContentControl
 
             await Task.Run(() =>
             {
-                foreach (var font in Fonts.SystemFontFamilies)
+                // [port] WPF Fonts.SystemFontFamilies → Avalonia FontManager.Current.SystemFonts
+                foreach (var font in FontManager.Current.SystemFonts)
                     try
                     {
-                        if (font.Source.StartsWith("Global ")) continue;
+                        // [port] WPF FontFamily.Source → Avalonia FontFamily.Name
+                        if (font.Name.StartsWith("Global ")) continue;
 
-                        foreach (var typeface in font.GetTypefaces())
-                        {
-                            if (!typeface.TryGetGlyphTypeface(out var glyph))
-                                throw new NullReferenceException(
-                                    $"字形 {typeface.FaceNames.GetForCurrentUiCulture("(unknown)")} 无法加载");
-
-                            _ = new GlyphTypeface(glyph.FontUri);
-                        }
-
-                        availableFonts.Add((font.FamilyNames.GetForCurrentUiCulture(), font));
+                        // [port] WPF 的 typeface/glyph 校验（GetTypefaces/TryGetGlyphTypeface/GlyphTypeface）与
+                        // FamilyNames.GetForCurrentUiCulture 在 Avalonia FontFamily 中不存在；
+                        // FontManager.Current.SystemFonts 已只返回可用字体，因此直接以字体 Name 加入列表即可。
+                        availableFonts.Add((font.Name, font));
                     }
                     catch (Exception ex)
                     {
-                        LogWrapper.Error(ex, $"发现了一个无法加载的异常的字体：{font.Source}");
+                        LogWrapper.Error(ex, $"发现了一个无法加载的异常的字体：{font.Name}");
                     }
 
                 availableFonts.Sort((l, r) => string.Compare(l.Name, r.Name, StringComparison.Ordinal));
@@ -188,7 +184,7 @@ public partial class FontSelector : ContentControl
 
             foreach (var font in availableFonts)
                 CustomFontCollection.Add(new CustomFontProperties
-                    { Name = font.Name, Font = font.Font, Tag = font.Font.Source });
+                    { Name = font.Name, Font = font.Font, Tag = font.Font.Name });
 
             ComboFont.IsEnabled = true;
 

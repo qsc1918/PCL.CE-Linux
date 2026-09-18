@@ -49,7 +49,7 @@ public class MyCollapseBar : StackPanel
             HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center,
             Stretch = Stretch.Uniform, Height = 6d, Width = 10d, Margin = new Thickness(0d, 0d, 12d, 0d),
             IsHitTestVisible = false,
-            Data = (Geometry)new GeometryConverter().ConvertFromString("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
+            Data = Geometry.Parse("M2,4 l-2,2 10,10 10,-10 -2,-2 -8,8 -8,-8 z"),
             RenderTransform = new RotateTransform(180d), RenderTransformOrigin = new RelativePoint(new Point(0.5d, 0.5d), RelativeUnit.Relative)
         };
         _triangle.SetResourceReference(Shape.FillProperty, "ColorBrush1");
@@ -97,7 +97,7 @@ public class MyCollapseBar : StackPanel
             else
                 ((RotateTransform)_triangle.RenderTransform).Angle = target;
 
-            if (IsLoaded && ActualHeight > 0)
+            if (IsLoaded && Bounds.Height > 0)
             {
                 if (value)
                     CollapseWithAnimation();
@@ -119,7 +119,7 @@ public class MyCollapseBar : StackPanel
         RestoreParentCardOnInterrupt();
         SilenceParentCard();
 
-        var fullHeight = ActualHeight;
+        var fullHeight = Bounds.Height;
         Height = fullHeight;
 
         ModAnimation.AniStart(new List<ModAnimation.AniData>
@@ -143,7 +143,7 @@ public class MyCollapseBar : StackPanel
 
         _contentPanel.IsVisible = true;
         Height = double.NaN;
-        Measure(new Size(ActualWidth, double.PositiveInfinity));
+        Measure(new Size(Bounds.Width, double.PositiveInfinity));
         var fullHeight = DesiredSize.Height;
         Height = HeaderHeight;
 

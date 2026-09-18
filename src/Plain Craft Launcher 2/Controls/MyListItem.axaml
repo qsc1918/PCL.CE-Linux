@@ -7,12 +7,13 @@
         <ScaleTransform ScaleX="1" ScaleY="1" />
     </Grid.RenderTransform>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ColumnCheck" Width="2" />
-        <ColumnDefinition x:Name="ColumnPaddingLeft" Width="0" />
-        <ColumnDefinition x:Name="ColumnLogo" Width="4" />
+        <!-- [port] ColumnDefinition x:Name 不生成字段，删除（code-behind 经 ColumnDefinitions 索引访问） -->
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="0" />
+        <ColumnDefinition Width="4" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="1*" />
-        <ColumnDefinition x:Name="ColumnPaddingRight" Width="4" />
+        <ColumnDefinition Width="4" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
         <RowDefinition Height="1*" />
@@ -27,13 +28,13 @@
                Text="{Binding Title, ElementName=PanBack}" TextTrimming="CharacterEllipsis"
                FontSize="{Binding FontSize, ElementName=PanBack}"
                Foreground="{Binding Foreground, ElementName=PanBack}" Margin="4,0,0,0" />
-    <!--<StackPanel Orientation="Horizontal" x:Name="PanInfo" Grid.Row="2" Grid.Column="3" Visibility="Collapsed" IsHitTestVisible="False">
+    <!--<StackPanel Orientation="Horizontal" x:Name="PanInfo" Grid.Row="2" Grid.Column="3" IsVisible="False" IsHitTestVisible="False">
         <StackPanel x:Name="PanTags" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,-3,0">
             <Border Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0" UseLayoutRounding="False">
                 <TextBlock Text="科技" Foreground="{DynamicResource ColorBrush2}" FontSize="11" />
             </Border>
         </StackPanel>
-        <TextBlock Grid.Row="2" UseLayoutRounding="False" HorizontalAlignment="Left" x:Name="LabInfo" IsHitTestVisible="False" Grid.Column="2" TextTrimming="CharacterEllipsis" Visibility="Collapsed" FontSize="12" Foreground="{StaticResource ColorBrushGray2}" Margin="4,0,0,0" />
+        <TextBlock Grid.Row="2" UseLayoutRounding="False" HorizontalAlignment="Left" x:Name="LabInfo" IsHitTestVisible="False" Grid.Column="2" TextTrimming="CharacterEllipsis" IsVisible="False" FontSize="12" Foreground="{StaticResource ColorBrushGray2}" Margin="4,0,0,0" />
     </StackPanel>-->
     <!--</StackPanel>-->
 </Grid>

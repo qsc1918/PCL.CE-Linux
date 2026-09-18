@@ -21,7 +21,7 @@
                   Fill="White" />
             <svgIcon:SvgIcon x:Name="ShapeSvgIcon"
                          Stretch="Uniform"
-                         Visibility="Collapsed"
+                         IsVisible="False"
                          IconBrush="{Binding Fill, ElementName=ShapeLogo}" />
         </Grid>
         <TextBlock x:Name="LabText"

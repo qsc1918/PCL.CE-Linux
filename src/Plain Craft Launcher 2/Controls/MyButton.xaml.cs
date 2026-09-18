@@ -53,7 +53,8 @@ public partial class MyButton : Border
         PointerEntered += RefreshColor;
         PointerExited += RefreshColor;
         Loaded += RefreshColor;
-        IsEnabledChanged += (_, _) => RefreshColor();
+        // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
+        this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         PointerReleased += Button_PointerReleased;
         PointerPressed += Button_MouseDown;
         PointerEntered += (_, _) => Button_PointerEntered();
@@ -94,7 +95,7 @@ public partial class MyButton : Border
 
     public Transform RealRenderTransform
     {
-        get => PanFore.RenderTransform;
+        get => (Transform)PanFore.RenderTransform;
         set => PanFore.RenderTransform = value;
     }
 
@@ -135,7 +136,7 @@ public partial class MyButton : Border
                         new[]
                         {
                             ModAnimation.AaColor(PanFore, BorderBrushProperty,
-                                ThemeManager.colorGray4 - PanFore.BorderBrush, animationColorOut)
+                                ThemeManager.colorGray4 - new ModBase.MyColor(PanFore.BorderBrush), animationColorOut)
                         }, "MyButton Color " + Uuid);
             }
             else
@@ -144,7 +145,7 @@ public partial class MyButton : Border
                 if (IsEnabled)
                     PanFore.SetResourceReference(BorderBrushProperty, GetBorderBrushResourceKey());
                 else
-                    PanFore.BorderBrush = ThemeManager.colorGray4;
+                    PanFore.BorderBrush = ThemeManager.colorGray4.ToBrush();
             }
         }
         catch (Exception ex)
@@ -155,12 +156,13 @@ public partial class MyButton : Border
 
     // 实现自定义事件
     private bool isMouseDown = false;
-    private void Button_PointerReleased(object sender, PointerPressedEventArgs e)
+    private void Button_PointerReleased(object sender, PointerReleasedEventArgs e)
     {
         if (!isMouseDown)
             return;
         ModBase.Log("[Control] 按下按钮：" + Text);
-        Click?.Invoke(sender, e);
+        // [port] 原 Click 事件携带 PointerPressedEventArgs；由 PointerReleased 触发时传入 null（与 MyTextButton 保持一致）
+        Click?.Invoke(sender, null);
         ModMain.RaiseCustomEvent(this);
     }
 

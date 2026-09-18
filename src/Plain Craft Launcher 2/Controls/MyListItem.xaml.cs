@@ -33,6 +33,10 @@ public partial class MyListItem : Grid, IMyRadio
     // → 经所属 Grid 的 ColumnDefinitions 按索引访问（ColumnGap 为第 6 列，索引 5）。
     // protected 以便派生类（如 MyLocalModItem）复用。
     protected ColumnDefinition ColumnGap => ColumnDefinitions[5];
+    // [port] Avalonia 命名字段生成器不为 ColumnDefinition 生成字段，故为 MyListItem.axaml 其余命名列补访问器。
+    protected ColumnDefinition ColumnCheck => ColumnDefinitions[0];
+    protected ColumnDefinition ColumnPaddingLeft => ColumnDefinitions[1];
+    protected ColumnDefinition ColumnLogo => ColumnDefinitions[2];
 
     public object tag { get; set; }
     public event IMyRadio.CheckEventHandler? Check;
@@ -180,9 +184,9 @@ public partial class MyListItem : Grid, IMyRadio
     private void MyListItem_Loaded(object sender, RoutedEventArgs e)
     {
         if (Checked)
-            SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
+            this.SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
         else
-            SetResourceReference(ForegroundProperty, "ColorBrush1");
+            this.SetResourceReference(ForegroundProperty, "ColorBrush1");
         ColumnGap.Width = new GridLength(MinPaddingRight);
     }
 
@@ -451,8 +455,8 @@ public partial class MyListItem : Grid, IMyRadio
         set => SetValue(TitleProperty, value.Replace("\r", "").Replace("\n", ""));
     }
 
-    public static readonly AvaloniaProperty TitleProperty =
-        // [port] WPF AvaloniaProperty.Register(name, type, owner) 无此非泛型重载 → 泛型 Register<Owner, TValue>
+    public static readonly StyledProperty<string> TitleProperty =
+        // [port] WPF AvaloniaProperty.Register(name, type, owner) 无此非泛型重载 → 泛型 Register<Owner, TValue>；用 StyledProperty<T> 以便 XAML 编译绑定解析
         AvaloniaProperty.Register<MyListItem, string>(nameof(Title), null!);
 
     // 字号
@@ -462,7 +466,8 @@ public partial class MyListItem : Grid, IMyRadio
         set => SetValue(FontSizeProperty, value);
     }
 
-    public static readonly AvaloniaProperty FontSizeProperty =
+    // [port] FontSize 用 StyledProperty<double> 以便 XAML 编译绑定解析
+    public static readonly StyledProperty<double> FontSizeProperty =
         AvaloniaProperty.Register<MyListItem, double>("FontSize", 14d);
 
     // 信息
@@ -976,7 +981,7 @@ public partial class MyListItem : Grid, IMyRadio
                         rectCheck.RenderTransform = null; // 清除缩放
                     }
 
-                    SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
+                    this.SetResourceReference(ForegroundProperty, Height < 40d ? "ColorBrush3" : "ColorBrush2");
                 }
                 else
                 {
@@ -989,7 +994,7 @@ public partial class MyListItem : Grid, IMyRadio
                         rectCheck.RenderTransform = null;
                     }
 
-                    SetResourceReference(ForegroundProperty, "ColorBrush1");
+                    this.SetResourceReference(ForegroundProperty, "ColorBrush1");
                 }
             }
         }
@@ -1006,7 +1011,8 @@ public partial class MyListItem : Grid, IMyRadio
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly AvaloniaProperty ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", (Brush)ThemeManager.AppResources["ColorBrush1"]);
+    // [port] Foreground 用 StyledProperty<Brush> 以便 XAML 编译绑定解析
+    public static readonly StyledProperty<Brush> ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", (Brush)ThemeManager.AppResources["ColorBrush1"]);
 
     // 菜单与按钮绑定
     public Action<MyListItem, EventArgs> ContentHandler { get; set; }

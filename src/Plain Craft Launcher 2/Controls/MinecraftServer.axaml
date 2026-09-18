@@ -13,8 +13,9 @@
     </Grid.ColumnDefinitions>
     <Image Grid.Column="0" Margin="6" x:Name="ImgServerLogo" Width="54" Height="54" />
     <TextBlock Grid.Column="1" Margin="6" x:Name="LabServerDesc" TextWrapping="Wrap" FontSize="15" Foreground="White" />
+    <!-- [port] WPF Height="Auto"（GridLength 字符串）→ Avalonia 控件 Height 为 double，无 "Auto"；删除（默认自适应） -->
     <controls:MotdRenderer Grid.Column="1" x:Name="MotdRenderer" Margin="0,20,3,1"
-                           IsHitTestVisible="False" Width="300" Height="Auto" VerticalAlignment="Center" />
+                           IsHitTestVisible="False" Width="300" VerticalAlignment="Center" />
     <StackPanel Grid.Column="2" Margin="6" HorizontalAlignment="Right">
         <TextBlock x:Name="LabServerPlayer" HorizontalAlignment="Right" TextAlignment="Right"
                    FontSize="12" Foreground="White" />

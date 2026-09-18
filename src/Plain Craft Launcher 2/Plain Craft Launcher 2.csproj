@@ -104,6 +104,9 @@
         <!-- [port] Markdown.axaml 是 Markdown.Avalonia 主题样式（暂缓的 Markdown 公告功能资源），
              Avalonia 12 无法解析其 StyleKey。不仅要排除出 AvaloniaResource，还要从 AvaloniaXaml 编译源移除 -->
         <AvaloniaXaml Remove="Resources\Markdown.axaml" />
+        <!-- [port] PageTools 为暂缓功能（见 DeferredExcludes），其 .cs 已 Compile Remove，
+             但 .axaml 仍会被 AvaloniaXaml 默认 glob 收集并编译（报 Unable to find type PCL.PageTools*），故一并移除 -->
+        <AvaloniaXaml Remove="Pages\PageTools\**" />
         <!-- [port] .cs/.axaml 由 SDK 默认 glob 收集（EnableDefaultItems 必须 true，否则 Avalonia 命名字段生成器失效）；这里只做排除 -->        <AvaloniaResource Include="Images\**" />
         <AvaloniaResource Include="Resources\**" Exclude="Resources\Markdown.axaml" />
         <EmbeddedResource Include="metadata.json" />

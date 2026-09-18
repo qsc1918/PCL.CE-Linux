@@ -11,6 +11,8 @@ namespace PCL
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Window WindMain;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
+        internal global::Avalonia.Controls.Grid RootGrid;
+        [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Border PanBack;
         [global::System.CodeDom.Compiler.GeneratedCode("Avalonia.Generators.NameGenerator.InitializeComponentCodeGenerator", "12.0.4.0")]
         internal global::Avalonia.Controls.Grid PanForm;
@@ -107,6 +109,7 @@ namespace PCL
 
             var __thisNameScope__ = this.FindNameScope();
             WindMain = __thisNameScope__?.Find<global::Avalonia.Controls.Window>("WindMain");
+            RootGrid = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("RootGrid");
             PanBack = __thisNameScope__?.Find<global::Avalonia.Controls.Border>("PanBack");
             PanForm = __thisNameScope__?.Find<global::Avalonia.Controls.Grid>("PanForm");
             ImgBack = __thisNameScope__?.Find<global::Avalonia.Controls.Canvas>("ImgBack");
