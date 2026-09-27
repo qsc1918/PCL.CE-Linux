@@ -1007,14 +1007,15 @@ public partial class MyListItem : Grid, IMyRadio
     }
 
     // 前景色绑定
-    public Brush Foreground
+    public IBrush Foreground
     {
-        get => (Brush)GetValue(ForegroundProperty);
+        get => GetValue(ForegroundProperty);
         set => SetValue(ForegroundProperty, value);
     }
 
-    // [port] Foreground 用 StyledProperty<Brush> 以便 XAML 编译绑定解析
-    public static readonly StyledProperty<Brush> ForegroundProperty = AvaloniaProperty.Register<MyListItem, Brush>("Foreground", (Brush)ThemeManager.AppResources["ColorBrush1"]);
+    // [port] Foreground 用 StyledProperty<IBrush> 以便 XAML 编译绑定解析；
+    // 且资源画刷为不可变实现，不能强转 Brush，统一按 IBrush
+    public static readonly StyledProperty<IBrush> ForegroundProperty = AvaloniaProperty.Register<MyListItem, IBrush>("Foreground", (IBrush)ThemeManager.AppResources["ColorBrush1"]);
 
     // 菜单与按钮绑定
     public Action<MyListItem, EventArgs> ContentHandler { get; set; }
