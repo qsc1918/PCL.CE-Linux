@@ -90,15 +90,16 @@
         <Compile Remove="Utils\OS\DragHelper.cs" />
         <Compile Remove="Utils\Exts\LanguageSpecificStringDictionaryExtensions.cs" />
         <Compile Include="**\*.cs" Exclude="bin\**;obj\**;publish\**;**\*.g.cs;SourceGenerators\**;Utils\WinRT\**;UI\Effects\**;UI\Animation\Core\RunAnimation.cs;UI\Controls\BlurBorder.cs;UI\Controls\MotdRenderer.xaml.cs;UI\Controls\Tooltip.cs;UI\BackgroundPresenter.cs;UI\Media\ImageConverter.cs;UI\ToastNotification.cs;Utils\OS\DragHelper.cs;Utils\Exts\LanguageSpecificStringDictionaryExtensions.cs" />
-        <!-- [port] 本地化语言文件必须"不参与" AvaloniaXaml 编译：编译后 URI 带 Build:/Populate: 前缀，
-             AssetLoader.Open(avares://.../zh-CN.xaml) 会 FileNotFound。
-             这里用显式文件名 Exclude（glob ** 在此处匹配不稳定），再以 AvaloniaResource 纯资源嵌入。 -->
-        <!-- [port] 本地化语言文件必须"不参与" AvaloniaXaml(XamlIl) 编译：编译后 URI 带 Build:/Populate: 前缀，
-             AssetLoader.Open(avares://PCL.Core/App/Localization/Languages/zh-CN.xaml) 会 FileNotFound。
-             MSBuild 在 Windows 上把 ** 展开为反斜杠路径，故 Exclude 用反斜杠显式文件名（glob 在此处不稳定）。 -->
+        <!-- [port] 本地化语言文件：
+             - 尝试"不参与" AvaloniaXaml(XamlIl) 编译（编译后 URI 带 Build:/Populate: 前缀，
+               AssetLoader.Open("avares://.../zh-CN.xaml") 会 FileNotFound）——用反斜杠显式 Exclude；
+             - 同时以 AvaloniaResource 嵌入；
+             - 再以 EmbeddedResource 嵌入一份（LogicalName 稳定），供 LocalizationService 在
+               avares 不可用时按程序集清单名回退读取（Avalonia targets 仍可能自行收集这些 xaml）。 -->
         <AvaloniaXaml Include="**/*.xaml" Exclude="bin/**;obj/**;publish/**;UI/Controls/MotdRenderer.xaml;App\Localization\Languages\zh-CN.xaml;App\Localization\Languages\zh-TW.xaml;App\Localization\Languages\en-US.xaml;App\Localization\Languages\en-GB.xaml;App\Localization\Languages\es-ES.xaml;App\Localization\Languages\fr-FR.xaml;App\Localization\Languages\ja-JP.xaml" />
         <AvaloniaResource Include="UI/Assets/**/*" />
         <AvaloniaResource Include="App/Localization/Languages/**/*.xaml" />
+        <EmbeddedResource Include="App\Localization\Languages\**\*.xaml" LogicalName="PCL.Core.App.Localization.Languages.%(Filename)%(Extension)" />
     </ItemGroup>
     <!-- 项目自定义源生成器 -->
     <ItemGroup>

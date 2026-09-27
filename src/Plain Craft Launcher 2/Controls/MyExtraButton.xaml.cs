@@ -46,8 +46,9 @@ public partial class MyExtraButton : Grid
         // [port] IsEnabledChanged -> Avalonia PropertyChanged 上的 IsEnabledProperty
         this.PropertyChanged += (_, e) => { if (e.Property == IsEnabledProperty) RefreshColor(); };
         InitializeComponent();
-        // [port] Avalonia 不为此 XAML Clip 内 RectangleGeometry 生成命名字段，改经名称作用域获取
-        RectProgress = this.FindNameScope()?.Find("RectProgress") as RectangleGeometry;
+        // [port] Avalonia 不为 XAML Clip 内的 RectangleGeometry 生成命名字段，且几何对象不在名称作用域中，
+        //       故从所属 Border 的 Clip 属性取回（与 MyButton 的 (RectangleGeometry)PanBack.Clip 一致）
+        RectProgress = PanProgress.Clip as RectangleGeometry;
         // [port] WPF MouseLeft/RightButtonDown/Up 与 MouseEnter/Leave（独立事件）→ Avalonia 统一指针事件，在此重新接线
         PanClick.PointerPressed += Button_PointerPressed;
         PanClick.PointerReleased += Button_PointerReleased;
@@ -71,7 +72,9 @@ public partial class MyExtraButton : Grid
             else
             {
                 PanProgress.IsVisible = true;
-                RectProgress.Rect = new Rect(0d, 40d * (1d - value), 40d, 40d * value);
+                // [port] 几何对象为属性取值，初始化时序上可能尚未就绪；加空保护避免刷新时报 NRE
+                if (RectProgress is not null)
+                    RectProgress.Rect = new Rect(0d, 40d * (1d - value), 40d, 40d * value);
             }
         }
     }
