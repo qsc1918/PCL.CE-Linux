@@ -17,7 +17,10 @@ namespace PCL.Core.App.Localization;
 public static class LocalizationFontService
 {
     private const string PclEnglishFont = "./Resources/#PCL English";
-    private static readonly Uri _ApplicationPackUri = new("pack://application:,,,/");
+    // [port] WPF pack://application:,,,/ 是 WPF 专属 URI 方案，Avalonia 的 Uri 解析会抛
+    //        UriFormatException("Invalid port specified")。字体资源在主程序集(PCL)中，
+    //        故改用过 avares://PCL/ 作为基址（与 Application.axaml 的字体写法一致）。
+    private static readonly Uri _ApplicationPackUri = new("avares://PCL/");
 
     private static readonly IReadOnlyDictionary<string, LocalizationFontProfile> _ExactCultureProfiles =
         new Dictionary<string, LocalizationFontProfile>(StringComparer.OrdinalIgnoreCase)

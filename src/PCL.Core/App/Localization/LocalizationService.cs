@@ -286,9 +286,11 @@ public sealed partial class LocalizationService
     {
         // [port] WPF ResourceDictionary.Source → Avalonia 无运行时 Source 加载；
         // 语言资源为纯键值 XAML，直接以 XML 解析构建 ResourceDictionary（键名与文案与上游一致）。
-        var uri = new Uri($"avares://PCL.Core/App/Localization/Languages/{languageCode}.xaml", UriKind.Absolute);
+        // [port] 取流优先 avares；若 Avalonia 把这些 xaml 也 XamlIl 编译了（URI 带 Build:/Populate: 前缀），
+        //       avares 会找不到，则回退到程序集 EmbeddedResource（LogicalName 稳定）。
+        var stream = _OpenLanguageStream(languageCode);
         var dictionary = new ResourceDictionary();
-        using (var stream = Avalonia.Platform.AssetLoader.Open(uri))
+        using (stream)
         using (var reader = System.Xml.XmlReader.Create(stream, new System.Xml.XmlReaderSettings
         {
             DtdProcessing = System.Xml.DtdProcessing.Prohibit,
@@ -305,6 +307,30 @@ public sealed partial class LocalizationService
             }
         }
         return dictionary;
+    }
+
+    /// <summary>
+    ///     按语言代码打开语言资源流：先尝试 Avalonia 资源（avares），失败则回退到程序集嵌入式资源。
+    /// </summary>
+    private static System.IO.Stream _OpenLanguageStream(string languageCode)
+    {
+        try
+        {
+            var uri = new Uri($"avares://PCL.Core/App/Localization/Languages/{languageCode}.xaml", UriKind.Absolute);
+            return Avalonia.Platform.AssetLoader.Open(uri);
+        }
+        catch (Exception ex)
+        {
+            var resourceName = $"PCL.Core.App.Localization.Languages.{languageCode}.xaml";
+            var assembly = typeof(LocalizationService).Assembly;
+            var fallback = assembly.GetManifestResourceStream(resourceName);
+            if (fallback is null)
+            {
+                throw new System.IO.FileNotFoundException(
+                    $"语言资源未找到: {languageCode}（已尝试 avares 与 EmbeddedResource `{resourceName}`）", ex);
+            }
+            return fallback;
+        }
     }
 
     private static string _NormalizeConfigValue(string? value)
