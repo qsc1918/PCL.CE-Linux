@@ -70,7 +70,7 @@ public static class ThemeManager
         }
         else
         {
-            ModMain.frmMain.PanForm.Background = (Brush)Avalonia.Application.Current.Resources["ColorBrushBackground"];
+            ModMain.frmMain.PanForm.Background = (IBrush)Avalonia.Application.Current.Resources["ColorBrushBackground"];
         }
 
         // [port] WPF IBrush.Freeze() → Avalonia 画刷已不可变，无需冻结

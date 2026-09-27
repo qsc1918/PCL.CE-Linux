@@ -168,6 +168,17 @@ public static class ModBase
             b = col.b;
         }
 
+        // [port] 重载：WPF 中 Brush 可直接参与颜色构造，Avalonia 画刷为 IBrush（资源常为不可变实现），
+        // 故增加 IBrush 版本，内部经 ISolidColorBrush 取色，保持调用点零改动。
+        public MyColor(double newA, IBrush brush)
+        {
+            a = newA;
+            var col = (brush as ISolidColorBrush)?.Color ?? Colors.Black;
+            r = col.R;
+            g = col.G;
+            b = col.B;
+        }
+
         public MyColor(double newR, double newG, double newB)
         {
             a = 255d;

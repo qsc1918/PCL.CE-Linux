@@ -28,14 +28,15 @@ public partial class MyLoading : Grid
 
     #region 颜色
 
-    public SolidColorBrush Foreground
+    public IBrush Foreground
     {
-        get => (SolidColorBrush)GetValue(ForegroundProperty);
+        // [port] 资源画刷为不可变实现，不能强转 SolidColorBrush；统一按 IBrush 读取
+        get => GetValue(ForegroundProperty);
         set => SetValue(ForegroundProperty, value);
     }
 
-    public static readonly StyledProperty<SolidColorBrush> ForegroundProperty =
-        AvaloniaProperty.Register<MyLoading, SolidColorBrush>(nameof(Foreground));
+    public static readonly StyledProperty<IBrush> ForegroundProperty =
+        AvaloniaProperty.Register<MyLoading, IBrush>(nameof(Foreground));
 
     public MyLoading()
     {

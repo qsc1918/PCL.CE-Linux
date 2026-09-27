@@ -488,7 +488,7 @@ public partial class MyRadioButton : Border
                         }
                         else
                         {
-                            Background = (Brush)ThemeManager.AppResources["ColorBrushSemiTransparent"];
+                            Background = (IBrush)ThemeManager.AppResources["ColorBrushSemiTransparent"];
                             ShapeLogo.Fill = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
                             LabText.Foreground = new ModBase.MyColor(255d, 255d, 255d).ToBrush();
                         }
@@ -505,7 +505,7 @@ public partial class MyRadioButton : Border
                         }
                         else
                         {
-                            Background = (Brush)ThemeManager.AppResources["ColorBrushSemiTransparent"];
+                            Background = (IBrush)ThemeManager.AppResources["ColorBrushSemiTransparent"];
                             ShapeLogo.SetResourceReference(Shape.FillProperty, "ColorBrush3");
                             LabText.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush3");
                         }

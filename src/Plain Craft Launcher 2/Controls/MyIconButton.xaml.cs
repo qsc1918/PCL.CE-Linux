@@ -110,7 +110,9 @@ public partial class MyIconButton : Border
 
     public Themes Theme { get; set; } = Themes.Color;
 
-    public SolidColorBrush Foreground
+    // [port] Avalonia 资源画刷为不可变实现（ISolidColorBrush/ImmutableSolidColorBrush），
+    // 强转 SolidColorBrush 会 InvalidCastException；Foreground 统一用 IBrush（与 Control.Foreground 一致）
+    public IBrush Foreground
     {
         get;
         set
@@ -120,7 +122,7 @@ public partial class MyIconButton : Border
             RefreshAnim();
             ModAnimation.AniControlEnabled -= 1;
         }
-    } = new(Color.FromRgb(128, 128, 128));
+    } = new SolidColorBrush(Color.FromRgb(128, 128, 128));
 
     private string ColorAnimationKey => "MyIconButton Color " + Uuid;
 
