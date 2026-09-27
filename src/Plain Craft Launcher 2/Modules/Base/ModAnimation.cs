@@ -146,10 +146,16 @@ public static partial class ModAnimation
                             // 如果是去向颜色资源的动画，设置引用
                             // [port] WPF SetResourceReference(obj, prop, key) → Avalonia obj.SetResourceReference(prop, key)：
                             //       此处已是 Avalonia 2 参形式（obj=[0], prop=[1], key=[2]），无需修改。
-                            if (anim.typeMain == AniType.Color &&
-                                !string.Equals(((dynamic)anim.obj)[2] as string, "", StringComparison.Ordinal))
-                                ((dynamic)anim.obj)[0]
-                                    .SetResourceReference(((dynamic)anim.obj)[1], ((dynamic)anim.obj)[2]);
+                            // [port] dynamic 无法解析扩展方法（SetResourceReference 是 ControlResourceHelper 的扩展方法），
+                            //       改为强类型调用：obj = new object[] { 目标控件, 目标属性, 资源键 }
+                            if (anim.typeMain == AniType.Color)
+                            {
+                                var colorTargets = (object[])anim.obj;
+                                var resourceKey = colorTargets[2] as string;
+                                if (!string.IsNullOrEmpty(resourceKey))
+                                    ((AvaloniaObject)colorTargets[0])
+                                        .SetResourceReference((AvaloniaProperty)colorTargets[1], resourceKey);
+                            }
                             // 删除
                             entry.data.RemoveAt(ii);
                             goto NextAni;
