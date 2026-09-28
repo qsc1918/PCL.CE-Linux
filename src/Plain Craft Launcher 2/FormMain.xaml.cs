@@ -187,8 +187,229 @@ public partial class FormMain : Window
         Lifecycle.When(LifecycleState.WindowCreated, FormMain_Loaded);
     }
 
+    // [port][TEMP] 页面实例化自检（移植期诊断用；仅在 --pagetest 时执行，不影响正常流程）。
+    // 覆盖三层，全部在 UI 线程上执行，逐项 try/catch 并写日志（[PageTest] 前缀）：
+    //   1) 直接构造各页面的 Left/Right 控件 —— 捕捉 XAML 填充期异常
+    //      （命名字段为 null、集合属性 MyListItem.Buttons 填充、AvaloniaProperty 字段可见性等）；
+    //   2) 调 Left.PageGet(subType) —— 覆盖由 PageGet 惰性创建的右侧页面；
+    //   3) 真实 PageChange(pageType) 导航 —— 复现用户点击行为（含 PageChangeActual 全链路）。
+    // 用法：PCL.exe --pagetest
+    internal static void RunPageInstantiationSelfTest()
+    {
+        var ok = 0;
+        var fail = 0;
+
+        void Check(string name, Action action)
+        {
+            try
+            {
+                action();
+                ok += 1;
+                ModBase.Log($"[PageTest] OK   {name}");
+            }
+            catch (Exception ex)
+            {
+                fail += 1;
+                ModBase.Log(ex, $"[PageTest] FAIL {name}");
+            }
+        }
+
+        // ---- 1) 直接构造 ----
+        Check("new PageLaunchLeft", static () => _ = new PageLaunchLeft());
+        Check("new PageLaunchRight", static () => _ = new PageLaunchRight());
+        Check("new PageDownloadLeft", static () => _ = new PageDownloadLeft());
+        Check("new PageSetupLeft", static () => _ = new PageSetupLeft());
+        Check("new PageSelectLeft", static () => _ = new PageSelectLeft());
+        Check("new PageSelectRight", static () => _ = new PageSelectRight());
+        Check("new PageSpeedLeft", static () => _ = new PageSpeedLeft());
+        Check("new PageSpeedRight", static () => _ = new PageSpeedRight());
+        Check("new PageInstanceLeft", static () => _ = new PageInstanceLeft());
+        Check("new PageInstanceSavesLeft", static () => _ = new PageInstanceSavesLeft());
+        Check("new PageDownloadCompDetail", static () => _ = new PageDownloadCompDetail());
+        Check("new PageLogLeft", static () => _ = new PageLogLeft());
+        Check("new PageLogRight", static () => _ = new PageLogRight());
+
+        // ---- 2) PageGet：惰性创建右侧页面 ----
+        // 注意：PageSubType 各段（Download*/Setup*/Version*）数值重叠，Enum.ToString() 可能显示同值的
+        // 其它段名字，故标签同时打印数值以便核对。
+        var downloadLeft = new PageDownloadLeft();
+        foreach (var sub in new[]
+                 {
+                     PageSubType.DownloadInstall, PageSubType.DownloadMod, PageSubType.DownloadPack,
+                     PageSubType.DownloadDataPack, PageSubType.DownloadResourcePack, PageSubType.DownloadShader,
+                     PageSubType.DownloadWorld, PageSubType.DownloadCompFavorites, PageSubType.DownloadClient,
+                     PageSubType.DownloadOptiFine, PageSubType.DownloadForge, PageSubType.DownloadNeoForge,
+                     PageSubType.DownloadCleanroom, PageSubType.DownloadFabric, PageSubType.DownloadLiteLoader,
+                     PageSubType.DownloadLabyMod, PageSubType.DownloadLegacyFabric
+                 })
+        {
+            var captured = sub;
+            Check($"PageDownloadLeft.PageGet({(int)sub})", () => _ = downloadLeft.PageGet(captured));
+        }
+
+        var setupLeft = new PageSetupLeft();
+        foreach (var sub in new[]
+                 {
+                     PageSubType.SetupLaunch, PageSubType.SetupUI, PageSubType.SetupGameManage,
+                     PageSubType.SetupLink, PageSubType.SetupAbout, PageSubType.SetupLog,
+                     PageSubType.SetupFeedback, PageSubType.SetupGameLink, PageSubType.SetupUpdate,
+                     PageSubType.SetupJava, PageSubType.SetupLauncherMisc, PageSubType.SetupLauncherLanguage
+                 })
+        {
+            var captured = sub;
+            Check($"PageSetupLeft.PageGet({(int)sub})", () => _ = setupLeft.PageGet(captured));
+        }
+
+        var instanceLeft = new PageInstanceLeft();
+        foreach (var sub in new[]
+                 {
+                     PageSubType.VersionOverall, PageSubType.VersionSetup, PageSubType.VersionExport,
+                     PageSubType.VersionWorld, PageSubType.VersionScreenshot, PageSubType.VersionMod,
+                     PageSubType.VersionModDisabled, PageSubType.VersionResourcePack, PageSubType.VersionShader,
+                     PageSubType.VersionSchematic, PageSubType.VersionInstall, PageSubType.VersionServer
+                 })
+        {
+            var captured = sub;
+            Check($"PageInstanceLeft.PageGet({(int)sub})", () => _ = instanceLeft.PageGet(captured));
+        }
+
+        // ---- 3) 真实导航：复现用户点击的三个动作（CompDetail/VersionSaves 需要 additional 参数，故不在此列）----
+        // 实例设置前必须像 PageLaunchLeft.BtnMore_Click 那样先设置 McInstance，
+        // 否则 PageInstanceOverall.Reload() 会因 instance 为 null 抛 NRE（自检自身的假阳性）。
+        var frm = ModMain.frmMain;
+        foreach (var page in new[]
+                 {
+                     PageType.Launch, PageType.Download, PageType.InstanceSelect, PageType.InstanceSetup
+                 })
+        {
+            var captured = page;
+            Check($"PageChange({page})", () =>
+            {
+                if (captured == PageType.InstanceSetup)
+                {
+                    ModInstanceList.McMcInstanceSelected.Load();
+                    PageInstanceLeft.McInstance = ModInstanceList.McMcInstanceSelected;
+                }
+
+                frm.PageChange(captured);
+            });
+        }
+
+        // ---- 4) 本地化回归：非 UI 线程取文案 ----
+        // Avalonia 的资源宿主仅限 UI 线程，加载线程取文案曾退化为 "!key!"（如启动步骤名、启动成功提示）。
+        Check("Lang.Text on background thread", () =>
+        {
+            var results = new string[3];
+            var thread = new System.Threading.Thread(() =>
+            {
+                results[0] = Lang.Text("Minecraft.Launch.Success", "TestInstance");
+                results[1] = Lang.Text("Minecraft.Launch.Stage.WaitWindow");
+                results[2] = Lang.Text("Common.Option.All");
+            });
+            thread.Start();
+            thread.Join();
+            ModBase.Log($"[PageTest] 后台线程 Lang.Text => {string.Join(" | ", results)}");
+            if (results.Any(r => r.StartsWith('!')))
+                throw new Exception("非 UI 线程本地化失败（取到 !key!）：" + string.Join(" | ", results));
+        });
+
+        // ---- 6) 颜色空间往返（sRGB ↔ scRGB）----
+        // 上游配色链路：Color → LabColor.FromWpfColor → (Lab/OKLCH 运算) → ToWpfColor → Color。
+        // 该链路必须往返无损，否则整站配色会整体偏亮/偏暗（曾因把 scRGB 线性值当 sRGB 用而整体发黑）。
+        Check("LabColor sRGB round-trip", () =>
+        {
+            foreach (var hex in new[] { "#3184E4", "#343D4A", "#FBFBFB", "#0A1225", "#FFFFFF", "#000000", "#1370F3" })
+            {
+                var src = Avalonia.Media.Color.Parse(hex);
+                var back = PCL.Core.UI.Theme.LabColor.FromWpfColor(src).ToWpfColor();
+                var delta = Math.Max(Math.Max(Math.Abs(back.R - src.R), Math.Abs(back.G - src.G)),
+                    Math.Abs(back.B - src.B));
+                ModBase.Log($"[PageTest] 色彩往返 {hex} -> #{back.R:X2}{back.G:X2}{back.B:X2} (Δ={delta})");
+                if (delta > 1)
+                    throw new Exception($"颜色往返偏差过大：{hex} -> #{back.R:X2}{back.G:X2}{back.B:X2}");
+            }
+        });
+
+        // ---- 7) 内嵌资源图片加载（avares:// 必须经 AssetLoader 取流，不能当文件路径打开）----
+        Check("MyBitmap 内嵌资源加载", () =>
+        {
+            foreach (var rel in new[] { "Blocks/Grass.png", "Icons/NoIcon.png", "Heads/Logo-CE.png" })
+            {
+                var bmp = new MyBitmap(ModBase.pathImage + rel);
+                if (bmp.pic is null)
+                    throw new Exception($"加载失败：{rel}");
+                ModBase.Log($"[PageTest] MyBitmap {rel} -> {bmp.pic.Width}x{bmp.pic.Height}");
+            }
+        });
+
+        // ---- 8) 主题/配色诊断（排查主界面发黑）----
+        try
+        {
+            var app = Avalonia.Application.Current;
+            object? Lookup(string k) =>
+                app is not null && app.TryGetResource(k, app.ActualThemeVariant, out var v) ? v : null;
+            ModBase.Log($"[PageTest] 主题: IsDarkMode={ThemeService.IsDarkMode}, " +
+                        $"ColorMode={Config.Preference.Theme.ColorMode}, " +
+                        $"BackgroundColorful={Config.Preference.Background.BackgroundColorful}, " +
+                        $"ThemeSelected={Config.Preference.Theme.ThemeSelected}");
+            ModBase.Log($"[PageTest] Window.Opacity={ModMain.frmMain.Opacity}, Window.Background={ModMain.frmMain.Background}, " +
+                        $"PanForm.Background={ModMain.frmMain.PanForm.Background}, PanBack.Background={ModMain.frmMain.PanBack.Background}");
+            ModBase.Log($"[PageTest] ColorBrushBackground={Lookup("ColorBrushBackground")}, " +
+                        $"ColorBrush1={Lookup("ColorBrush1")}, ColorBrush2={Lookup("ColorBrush2")}, " +
+                        $"ColorBrush3={Lookup("ColorBrush3")}, ColorBrush8={Lookup("ColorBrush8")}, " +
+                        $"ColorBrushSemiTransparent={Lookup("ColorBrushSemiTransparent")}, " +
+                        $"ColorBrushTransparentBackground={Lookup("ColorBrushTransparentBackground")}");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[PageTest] 主题诊断出错");
+        }
+
+        // ---- 9) 渲染主界面到 PNG（移植期目视核对用；沙箱/无头环境下无法截屏时尤其有用）----
+        try
+        {
+            var visual = (Visual)ModMain.frmMain;
+            var size = new PixelSize(
+                Math.Max(1, (int)Math.Round(ModMain.frmMain.Bounds.Width)),
+                Math.Max(1, (int)Math.Round(ModMain.frmMain.Bounds.Height)));
+            using var bitmap = new Avalonia.Media.Imaging.RenderTargetBitmap(size, new Vector(96d, 96d));
+            bitmap.Render(visual);
+            // 注意：本文件 Path 被别名为 Avalonia.Controls.Shapes.Path，故此处用全限定名
+            var dir = System.IO.Path.Combine(Basics.ExecutableDirectory, "PCL", "Log");
+            Directory.CreateDirectory(dir);
+            var file = System.IO.Path.Combine(dir, "ui-render.png");
+            bitmap.Save(file);
+            ModBase.Log($"[PageTest] 已渲染主界面截图：{file}");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[PageTest] 渲染主界面截图失败");
+        }
+
+        ModBase.Log($"[PageTest] 汇总：成功 {ok}，失败 {fail}，共 {ok + fail}");
+    }
+
     private void FormMain_Loaded() // (sender As Object, e As RoutedEventArgs) Handles Me.Loaded
     {
+        // [port][TEMP] --pagetest：延迟到界面稳定后在 UI 线程跑页面实例化自检
+        if (Basics.CommandLineArguments.Contains("--pagetest"))
+        {
+            var timer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(4d) };
+            timer.Tick += (_, _) =>
+            {
+                timer.Stop();
+                try
+                {
+                    RunPageInstantiationSelfTest();
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 自检本身出错");
+                }
+            };
+            timer.Start();
+        }
+
         FormMain_SizeChanged();
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
         // [port] WPF WindowInteropHelper 句柄在 Avalonia 不可用（Win32），注释掉；ModBase.frmHandle 保持默认值
