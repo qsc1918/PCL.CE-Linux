@@ -74,7 +74,7 @@
                             <RowDefinition Height="10" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <!-- <Image Source="/Images/Icons/Tahoe.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center" /> -->
+                        <!-- <Image Source="avares://PCL/Images/Icons/Tahoe.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center" /> -->
                         <local:MyImage x:Name="ImgUpdateIcon" Source="https://www.pclc.cc/img/pcl-ce/icon.webp"
                                        Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Height="50" Width="50"
                                        HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -147,7 +147,7 @@
                             <RowDefinition Height="10" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Image Source="/Images/Icons/Tahoe.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                        <Image Source="avares://PCL/Images/Icons/Tahoe.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
                                Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <!--<local:MyImage x:Name="ImgUpdateIcon" FallbackSource="avares://PCL/Images/icon.ico" Source="https://www.pclc.cc/img/pcl-ce/icon.webp" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
                         <TextBlock x:Name="TextOptionalUpdateName" Text="AquaCL 3.0.0" FontWeight="Bold" FontSize="20"

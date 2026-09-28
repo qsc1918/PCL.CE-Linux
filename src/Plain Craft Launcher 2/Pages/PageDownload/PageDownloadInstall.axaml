@@ -55,7 +55,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgForge" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/Anvil.png" />
+                                       Source="avares://PCL/Images/Blocks/Anvil.png" />
                                 <TextBlock x:Name="LabForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -81,7 +81,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgCleanroom" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/Cleanroom.png" />
+                                       Source="avares://PCL/Images/Blocks/Cleanroom.png" />
                                 <TextBlock x:Name="LabCleanroom" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -107,7 +107,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgNeoForge" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/NeoForge.png" />
+                                       Source="avares://PCL/Images/Blocks/NeoForge.png" />
                                 <TextBlock x:Name="LabNeoForge" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -133,7 +133,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabric" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -159,7 +159,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabric" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -185,7 +185,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgFabricApi" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -212,7 +212,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLegacyFabricApi" Margin="0,0,7,0"
                                        Height="18"
-                                       Source="avares://PCL/images/Blocks/Fabric.png" />
+                                       Source="avares://PCL/Images/Blocks/Fabric.png" />
                                 <TextBlock x:Name="LabLegacyFabricApi" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -238,7 +238,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLabyMod" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/LabyMod.png" />
+                                       Source="avares://PCL/Images/Blocks/LabyMod.png" />
                                 <TextBlock x:Name="LabLabyMod" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -266,7 +266,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFine" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/GrassPath.png" />
+                                       Source="avares://PCL/Images/Blocks/GrassPath.png" />
                                 <TextBlock x:Name="LabOptiFine" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -292,7 +292,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgOptiFabric" Margin="0,0,7,0" Height="18"
-                                       Source="avares://PCL/images/Blocks/OptiFabric.png" />
+                                       Source="avares://PCL/Images/Blocks/OptiFabric.png" />
                                 <TextBlock x:Name="LabOptiFabric" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>
@@ -318,7 +318,7 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Image x:Name="ImgLiteLoader" Margin="-1,0,6,0" Height="20"
-                                       Source="avares://PCL/images/Blocks/Egg.png" />
+                                       Source="avares://PCL/Images/Blocks/Egg.png" />
                                 <TextBlock x:Name="LabLiteLoader" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Grid.Column="1" />
                             </Grid>

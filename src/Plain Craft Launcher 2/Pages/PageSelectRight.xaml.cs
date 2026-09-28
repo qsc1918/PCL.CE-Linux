@@ -420,7 +420,7 @@ public partial class PageSelectRight : MyPageRight
                 ModBase.LogLevel.Hint,
                 userSummary: Lang.Text("Select.Instance.Error.IconLoad"));
             // [port] WPF pack://application → Avalonia avares://PCL（程序集名 PCL）
-            newItem.Logo = "avares://PCL/images/Blocks/RedstoneBlock.png";
+            newItem.Logo = "avares://PCL/Images/Blocks/RedstoneBlock.png";
         }
 
         newItem.ContentHandler = McVersionListContent;
