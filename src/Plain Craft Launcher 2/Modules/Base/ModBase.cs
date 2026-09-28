@@ -80,7 +80,10 @@ public static class ModBase
     /// <summary>
     ///     程序内嵌图片文件夹路径，以“/”结尾。
     /// </summary>
-    public static readonly string pathImage = "pack://application:,,,/Plain Craft Launcher 2;component/Images/";
+    // [port] WPF pack URI "pack://application:,,,/Plain Craft Launcher 2;component/Images/" → Avalonia avares URI。
+    //        该常量被 MyBitmap 用于判定"是否为内嵌资源"（前缀匹配），也被 McInstance 拼接实例图标路径，
+    //        故必须与 MyBitmap 的资源取流方式（AssetLoader.Open）保持一致。
+    public static readonly string pathImage = "avares://PCL/Images/";
 
     /// <summary>
     ///     当前程序的语言。

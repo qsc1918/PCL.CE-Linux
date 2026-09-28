@@ -16,8 +16,9 @@ namespace PCL;
 
 public partial class MinecraftServer : Grid
 {
+    // [port] WPF pack URI → Avalonia avares URI（Avalonia 无法解析 pack://application:,,,/Assembly;component/...）
     private const string fallbackImageUri =
-        "pack://application:,,,/Plain Craft Launcher 2;component/Images/Icons/DefaultServer.png";
+        "avares://PCL/Images/Icons/DefaultServer.png";
 
     public static readonly StyledProperty<string> AddressProperty = AvaloniaProperty.Register<MinecraftServer, string>(
         nameof(Address), string.Empty);

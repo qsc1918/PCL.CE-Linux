@@ -833,21 +833,21 @@ public partial class PageDownloadInstall : MyPageRight
     /// </summary>
     private string GetSelectLogo()
     {
-        if (selectedFabric is not null) return "avares://PCL/images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedFabric is not null) return "avares://PCL/Images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLegacyFabric is not null) return "avares://PCL/images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedLegacyFabric is not null) return "avares://PCL/Images/Blocks/Fabric.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedForge is not null) return "avares://PCL/images/Blocks/Anvil.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedForge is not null) return "avares://PCL/Images/Blocks/Anvil.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedNeoForge is not null) return "avares://PCL/images/Blocks/NeoForge.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedNeoForge is not null) return "avares://PCL/Images/Blocks/NeoForge.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLiteLoader is not null) return "avares://PCL/images/Blocks/Egg.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedLiteLoader is not null) return "avares://PCL/Images/Blocks/Egg.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedOptiFine is not null) return "avares://PCL/images/Blocks/GrassPath.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedOptiFine is not null) return "avares://PCL/Images/Blocks/GrassPath.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedCleanroom is not null) return "avares://PCL/images/Blocks/Cleanroom.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedCleanroom is not null) return "avares://PCL/Images/Blocks/Cleanroom.png"; // [port] WPF 资源路径 → avares://PCL
 
-        if (selectedLabyModVersion is not null) return "avares://PCL/images/Blocks/LabyMod.png"; // [port] WPF 资源路径 → avares://PCL
+        if (selectedLabyModVersion is not null) return "avares://PCL/Images/Blocks/LabyMod.png"; // [port] WPF 资源路径 → avares://PCL
 
         return _vanillaIcon;
     }

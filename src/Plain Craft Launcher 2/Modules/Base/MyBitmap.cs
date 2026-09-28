@@ -60,7 +60,9 @@ public class MyBitmap
                     }
                     else
                     {
-                        using (var picStream = new FileStream(filePathOrResourceName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        // [port] 内嵌资源路径是 avares:// URI，不是文件系统路径，不能 new FileStream；
+                        //        须经 Avalonia AssetLoader 取流（WPF 下由 pack:// 资源系统解析）。
+                        using (var picStream = _OpenResourceStream(filePathOrResourceName))
                         {
                             pic = SKBitmap.Decode(picStream);
                         }
@@ -97,6 +99,17 @@ public class MyBitmap
                 break;
             }
         } while (false);
+    }
+
+    /// <summary>
+    ///     [port] 打开内嵌资源流：avares:// 走 Avalonia AssetLoader，其余按文件系统路径处理。
+    /// </summary>
+    private static Stream _OpenResourceStream(string path)
+    {
+        if (path.StartsWithF("avares://"))
+            return Avalonia.Platform.AssetLoader.Open(new Uri(path, UriKind.Absolute));
+
+        return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
     }
 
     public MyBitmap(IImage image)
