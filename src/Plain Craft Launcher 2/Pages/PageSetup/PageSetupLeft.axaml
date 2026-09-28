@@ -1,6 +1,7 @@
 <local:MyPageLeft
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System.Collections.Generic;assembly=netstandard"
     xmlns:local="clr-namespace:PCL" x:Class="PCL.PageSetupLeft">
     <local:MyScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <!-- [port] Avalonia 12 不支持 Style="{StaticResource ...}" 属性语法（属性无法解析），滚动条样式交由全局隐式样式 -->
@@ -10,19 +11,23 @@
             <local:MyListItem x:Name="ItemLaunch" IsScaleAnimationEnabled="False" Tag="0" MinPaddingRight="35" Height="36" VerticalAlignment="Top" Title="{DynamicResource Setup.Left.Item.Launch}" Type="RadioBox" Check="PageCheck"
                           LogoScale="1" SvgIcon="lucide/rocket">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="0" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
             <local:MyListItem x:Name="ItemJava" IsScaleAnimationEnabled="False" Tag="9" MinPaddingRight="35" Height="36" VerticalAlignment="Top" Title="{DynamicResource Setup.Left.Item.Java}" Type="RadioBox" Check="PageCheck"
               LogoScale="1" SvgIcon="lucide/coffee">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="9" ToolTip.Tip="{DynamicResource Common.Action.Refresh}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Refresh" LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -32,10 +37,12 @@
                               LogoScale="0.95"
                               SvgIcon="lucide/book-marked">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="2" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -46,10 +53,12 @@
                                MinPaddingRight="35" Height="36" VerticalAlignment="Top" Title="{DynamicResource Setup.Left.Item.GameLink}"
                               SvgIcon="lucide/bubbles">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="7" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -61,10 +70,12 @@
                               SvgIcon="lucide/palette"
                               Type="RadioBox">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="1" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -78,10 +89,12 @@
                               LogoScale="0.95"
                               SvgIcon="lucide/earth">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="11" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -91,10 +104,12 @@
                               LogoScale="0.95"
                               SvgIcon="lucide/monitor-cog">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="10" ToolTip.Tip="{DynamicResource Common.Action.Initialize}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Reset"
                                             SvgIcon="lucide/rotate-ccw"
                                             LogoScale="0.9" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
@@ -114,9 +129,11 @@
                               LogoScale="0.9"
                               SvgIcon="lucide/message-circle">
                 <local:MyListItem.Buttons>
+                    <sys:List x:TypeArguments="local:MyIconButton">
                         <local:MyIconButton Tag="6" ToolTip.Tip="{DynamicResource Common.Action.Refresh}" ToolTip.Placement="Right" ToolTip.VerticalOffset="-1"
                                             Click="Refresh" LogoScale="0.85"
                                             SvgIcon="lucide/refresh-cw" />
+                    </sys:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
             <local:MyListItem x:Name="ItemLog" IsScaleAnimationEnabled="False" Tag="5" MinPaddingRight="35" Height="36"

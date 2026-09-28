@@ -28,7 +28,11 @@ public class MyPageRight : Grid // [port] AdornerDecorator 为 WPF 专属 → Gr
         PageExit // 切换页面导致的全部退出动画
     }
 
-    private static readonly AvaloniaProperty PanScrollProperty =
+    // [port] 上游 WPF 为 private static readonly DependencyProperty：WPF 的 XAML 走 CLR 属性 setter（PanScroll = value），
+    //        不直接触碰字段，故 private 可用。Avalonia 的编译期 XAML 会把 PanScroll="{Binding ...}" 直接编译成
+    //        SetValue(MyPageRight.PanScrollProperty, ...)，跨类访问 private 字段 → 运行期 FieldAccessException
+    //        （PageSelectRight/PageDownload* 等页面实例化即崩）。故提升为 public（AvaloniaProperty 字段的惯例可见性）。
+    public static readonly AvaloniaProperty PanScrollProperty =
     AvaloniaProperty.Register<MyPageRight, MyScrollViewer>(nameof(PanScroll));
 
     private bool _panScrollNullWarned;

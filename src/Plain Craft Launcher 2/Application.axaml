@@ -1,6 +1,7 @@
 <Application x:Class="PCL.Application"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sysgen="clr-namespace:System.Collections.Generic;assembly=netstandard"
              xmlns:local="clr-namespace:PCL;assembly=PCL"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:PCL.Core.UI.Controls;assembly=PCL.Core"
@@ -90,10 +91,11 @@
             <local:MyListItem Title="{Binding}" FontSize="13" MaxHeight="26" IsScaleAnimationEnabled="False"
                               Margin="-3,0,0,0">
                 <local:MyListItem.Buttons>
-                    <!-- [port] WPF x:Array（Type 属性）在 Avalonia 无对应 → MyListItem.Buttons(IEnumerable<MyIconButton>) 直接内联子元素 -->
+                    <sysgen:List x:TypeArguments="local:MyIconButton">
                     <local:MyIconButton Height="20" Width="20" VerticalAlignment="Center" Tag="{Binding}"
                                         Click="_MyIconButtonClick"
                                         SvgIcon="lucide/x" />
+                    </sysgen:List>
                 </local:MyListItem.Buttons>
             </local:MyListItem>
         </DataTemplate>

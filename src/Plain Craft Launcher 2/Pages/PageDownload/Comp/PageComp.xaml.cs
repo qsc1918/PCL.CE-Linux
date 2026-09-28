@@ -162,8 +162,13 @@ public partial class PageComp : MyScrollViewer
     /// <summary>
     ///     用于 XAML 快速设置的 Tag 下拉框列表。
     /// </summary>
-    // [port] WPF 类级 [ContentProperty("SearchTags")] → Avalonia 12 属性级 [Content]
-    [Content]
+    // [port] 上游 WPF 在类上标 [ContentProperty("SearchTags")]：WPF 按"根标签类型"路由子元素，
+    //        PageComp.xaml 的根是 <local:MyScrollViewer>，其子元素走 MyScrollViewer.Content，不受影响；
+    //        子类 XAML（<local:PageComp>…</local:PageComp>）的子元素才进入 SearchTags。
+    //        Avalonia 改为按"实例类型"路由：若在 SearchTags 上标 [Content]，PageComp 自身 XAML 的根子元素
+    //        （StackPanel）也会被塞进 SearchTags → 填充期访问尚未初始化的 ComboSearchTag →
+    //        NullReferenceException（PageComp.axaml:12；HANDOVER §7 坑 3 的同类问题）。
+    //        故此处移除 [Content]，并让 6 个子类 XAML 显式写 <local:PageComp.SearchTags>…</local:PageComp.SearchTags>。
     public ItemCollection SearchTags => ComboSearchTag.Items;
 
     // [port] Avalonia 编译绑定要求字段为强类型 StyledProperty<bool>，非泛型 AvaloniaProperty 无法用于 {Binding}
