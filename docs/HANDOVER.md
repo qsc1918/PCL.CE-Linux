@@ -38,8 +38,13 @@
 | Windows 运行 | ✅ 主窗口稳定存活，`responding=True`，日志无任何 FTL/ERR/Exception |
 | 本地化 | ✅ `当前 UI 语言: zh-CN` + `本地化 启动成功` |
 | 生命周期 | ✅ 依赖检查→公告→更新检查→遥测→优雅关闭全走通（最新日志 573 行干净） |
-| 透明窗口问题 | ⚠️ **未验证** — 用户曾在崩溃前看到透明窗口；崩溃已修复，但是否残留渲染问题需用户肉眼确认 |
-| 页面实例化 NRE | ✅ **已修（2026-09-28）** — 根元素 `x:Name="PanBack"` 导致 `PageInstanceLeft` 实例化即崩（点"实例设置"退出）。详见 §7 坑 12 |
+| 透明窗口问题 | ✅ **已确认正常** — 窗口渲染正常（用户截图 + 离屏渲染均正常），原"透明"是崩溃前的瞬时状态 |
+| 页面实例化 NRE | ✅ **已修（2026-09-28）** — 根元素 `x:Name`（坑 12）、集合属性 `x:Array`（坑 13）、`[Content]` 路由（坑 14） |
+| 实例选择/设置崩溃 | ✅ **已修（2026-09-28）** — `AvaloniaProperty` 字段可见性（坑 15）+ 坑 13；`--pagetest` 4 项真实导航全通过 |
+| 本地化 `!key!` | ✅ **已修（2026-09-28）** — 非 UI 线程取不到资源（坑 16） |
+| 配色整体偏暗 | ✅ **已修（2026-09-28）** — scRGB/sRGB 混淆（坑 17）；离屏渲染采样与上游窗口一致 |
+| 内嵌图片加载 | ✅ **已修（2026-09-28）** — avares 大小写 + AssetLoader 取流（坑 18） |
+| 已知未修 | ⚠️ `设置→更新`页（上游缺 `Tahoe.png`，见坑 18）；`联机`页（暂缓功能） |
 | Linux 发布产物 | ✅ **已产出并静态校验**（commit 32985f3）— `dist/linux-x64/PCL`（ELF x86-64 单文件 120MB）+ `dist/linux-x64-flat/`（非单文件 125MB）；WSL 被安全策略拉黑，真机实测待用户 VM |
 | Linux 冒烟测试 | ❌ 未做（WSL headless → self-contained publish → 用户 VM） |
 | 暂缓功能 | ❌ 用户指定的 8 项暂未移植（见 §8） |
@@ -215,6 +220,47 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
     注意：生成器会与同名手写成员冲突（CS0102），所以必须删 x:Name，不能只加手写字段。
     **排查命令**：`for cls in <控件名>; do grep -c "\bPanBack\b" Controls/$cls.xaml.cs; done` — 根元素带 `x:Name` 且 .cs 有引用的控件都可能踩雷（MyListItem 已修；MyIconButton 的 PanBack 是**嵌套** Border，安全）。
 
+13. **Avalonia 没有 `x:Array`（崩溃级，2026-09-28 修复）** — 上游用 `<x:Array Type="{x:Type local:MyIconButton}">` 给 `IEnumerable<MyIconButton>` 属性（`MyListItem.Buttons`）赋值。移植时误判并**删掉了包裹层**，直接把子元素内联进属性元素 → **编译能过，但运行期 `!XamlIlPopulate` 对尚未初始化的集合字段做添加 → NRE**（`PageInstanceLeft.axaml:20`，点"实例设置"即崩）。
+    - Avalonia 至今不支持 `x:Array`（维护者原话："Arrays aren't currently supported. For now you can use `System.Collections.ArrayList` or `System.Collections.Generic.List`"）。
+    - **正确等价写法**（实测）：
+      ```xml
+      xmlns:sys="clr-namespace:System.Collections.Generic;assembly=netstandard"
+      <local:MyListItem.Buttons>
+          <sys:List x:TypeArguments="local:MyIconButton">
+              <local:MyIconButton ... />
+          </sys:List>
+      </local:MyListItem.Buttons>
+      ```
+      ⚠️ `assembly` **必须是 `netstandard`**；写 `System.Runtime` 会报 `Unable to resolve type List from namespace ... assembly=System.Runtime`。`Application.axaml` 已占用 `xmlns:sys`（指向 `System`），故那里改用前缀 `sysgen`。
+    - 修复脚本：`tools/fix-buttons-collection.py`（37 处，5 个文件）。
+    - **诊断手法**：`--pagetest` 自检（见 §12）。反向对照（把包裹层删掉重跑）能精确复现同一 NRE 堆栈。
+
+14. **`[Content]` 按"实例类型"路由（崩溃级，2026-09-28 修复）** — 与坑 3 同源，但这次漏了 `PageComp`。上游 `[ContentProperty("SearchTags")]`，移植版改成属性级 `[Content]`：
+    - WPF 按**根标签类型**路由：`PageComp.xaml` 的根是 `<local:MyScrollViewer>`，其子元素走 `MyScrollViewer.Content`，不受影响；子类 `<local:PageComp>…</local:PageComp>` 的子元素才进 `SearchTags`。
+    - Avalonia 按**实例类型**路由：`[Content]` 一挂，PageComp **自身**根子元素（StackPanel）也被塞进 `SearchTags` → 填充期访问未初始化的 `ComboSearchTag` → NRE（`PageComp.axaml:12`）。
+    - **修法**：删掉 `[Content]`，并让 6 个子类 XAML 显式写 `<local:PageComp.SearchTags>…</local:PageComp.SearchTags>`。脚本：`tools/fix-pagecomp-content.py`。
+    - 全仓 `[Content]` 仅 3 处，另两处（`AnimationGroup.Children`、`CustomEventCollection.Events`）getter 非 null，安全。
+
+15. **AvaloniaProperty 字段必须对 XAML 生成代码可见（崩溃级，2026-09-28 修复）** — 上游 `private static readonly DependencyProperty` 没问题，因为 WPF 的 XAML 走 CLR 属性 setter；**Avalonia 的编译期 XAML 会直接访问 `XxxProperty` 字段**，跨类访问 private → 运行期 `FieldAccessException`（不是编译错误！）。
+    - 实测受害：`MyPageRight.PanScrollProperty`（`PageSelectRight` 实例化即崩 → 点"实例选择"后程序无响应）、`MyImage.CornerRadiusProperty`（`PageHomepageNewsView`/`PageSetupAbout`）。
+    - **修法**：提升为 `public`。**扫描命令**：找非 public 的 `*Property` 字段（排除 getter 非 null 的实例字段）。
+
+16. **非 UI 线程取本地化 → `!key!`（2026-09-28 修复）** — `Lang.Text` 的两条查找路径都经 Avalonia 资源宿主（`Application.Resources`/`ActualThemeVariant`，仅 UI 线程）；加载/启动线程上 `ResourceExtensions` 直接返回 null、`_LifecycleSafeFindResource` 吞掉 VerifyAccess，于是 DEBUG 下退化成 `!key!`（表现为"当前步骤: !Minecraft.Launch.Stage.WaitWindow!"、"启动成功"提示变成 `!Minecraft.Launch.Success!`）。
+    - **修法**：`LocalizationService` 额外维护一份线程安全的 `ConcurrentDictionary<string,string>` 文本快照（语言字典是纯 XML 键值对，跨线程读安全），`Lang.Text` 最后兜底查它。
+    - 注意：**语言键在 zh-CN.xaml 里是存在的**，别去查语言文件——要查的是"为什么查不到"。
+
+17. **scRGB ≠ sRGB（整站配色偏暗，2026-09-28 修复）** — 两处色彩空间误用，合起来让所有主题色比上游暗一截：
+    - `ScRgbCompat.FromScRgb` 把入参当 sRGB 分数直接 `v*255`。但 WPF `Color.FromScRgb` 的入参是 **scRGB 线性值**，须先过"线性→sRGB"传递函数再量化。
+    - `LabColor.FromWpfColor` 传 `(double)color.R/255`，命中的是 `FromRgb(double…)` 重载 = `ColourSpace.RgbLinear`，等于把 sRGB 数值当线性用。上游传的是 `color.ScR`（真线性）。改用语义明确的**字节重载** `FromRgb(byte…)`。
+    - **实测**：标题栏 `ColorBrush3` 从 `#0637C3` → `#2A80E3`；离屏渲染主界面采样内容区 `#0A1225`、侧栏 `#27282C`，与上游窗口的 `#0A1225`/`#27282E` 一致。`Color → LabColor → Color` 往返现在 Δ=0。
+    - **判据**：如果你看到某个颜色 ≈ 原版颜色的"线性化"结果（明显更暗），就是这个问题。
+
+18. **`avares://` 大小写敏感 + 不能用 FileStream 读（2026-09-28 修复）** — Avalonia 按清单资源名**精确匹配**，Windows 文件系统不区分大小写但资源名区分：
+    - 20 处 `avares://PCL/images/...` 而目录是 `Images/` → `FileNotFoundException`。脚本：`tools/check-avares-case.py`（可 `--fix`）。
+    - `ModBase.pathImage` 仍是 `pack://application:,,,/Plain Craft Launcher 2;component/Images/`，且 `MyBitmap` 对它用 `new FileStream(...)` → 必然失败。已改为 `avares://PCL/Images/` + 经 `AssetLoader.Open` 取流（实例方块图标因此恢复正常）。
+    - `PageSetupAbout`/`PageSetupUpdate`/`MinecraftServer` 还有 12 处 WPF pack 语法残留，已转 `avares://PCL/...`。
+    - **已知上游缺口（未改）**：`PageSetupUpdate.axaml:150` 引用 `Images/Icons/Tahoe.png`，**上游仓库里也不存在**（两版 Images 均为 47 个文件）。WPF 对缺失图片静默不渲染，Avalonia 直接抛异常 → "设置 → 更新"页当前实例化失败。属上游数据缺口，改文案会偏离上游，留给用户定夺。
+
 ---
 
 ## 8. 暂缓功能清单（用户指定，文件保留在仓库）
@@ -227,10 +273,10 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
 
 ## 9. 下一步任务（优先级排序）
 
-1. **验证透明窗口问题**（⚠️ 最紧）— 用户曾在启动 ~1s 后看到透明窗口然后崩溃；崩溃链已全部修复，最新日志干净。需要：
-   - 用户肉眼确认现在的窗口是否正常渲染内容；
-   - 若仍透明：查 `FormMain.axaml` 的背景画刷 / `ExtendClientArea*` / `TransparencyLevelHint` / 渲染后端（WinVM/Skia）、页面内容是否实例化（日志已有"实例化：清空主页 UI"、"启动按钮：Minecraft 实例"字样说明有内容）。
-2. **WSL headless 冒烟** — `dotnet publish -r linux-x64 --self-contained`，在 WSL 里无头跑，确认 Linux 上能起来（X11/Wayland 或 headless 检查日志）。
+1. **验证透明窗口问题**（✅ 2026-09-28 已闭环）— 用户已确认窗口正常显示；离屏渲染（`--pagetest` 第 8 项）也正常。原"透明窗口"是崩溃前的瞬时状态。
+2. **用户报告的一批缺陷**（✅ 2026-09-28 已修）— 实例设置崩溃、实例选择无响应、本地化 `!key!`、整站配色偏暗、内嵌图片加载。详见 §7 坑 13~18 与 §12。
+   待用户复测：`PCL.exe` 点「实例选择」「实例设置」「下载→Mod」应均不崩；启动 MC 时步骤名与成功提示应为中文。
+3. **WSL headless 冒烟** — `dotnet publish -r linux-x64 --self-contained`，在 WSL 里无头跑，确认 Linux 上能起来（X11/Wayland 或 headless 检查日志）。
    - ⚠️ **本机 `wsl.exe` 被安全策略拉黑**（Program Blacklist，无法授权/绕过）→ 冒烟只能交给用户 VM。本机可做的替代校验（已验证通过）：
      1. 单文件：`dotnet publish "src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj" -c Release -r linux-x64 --self-contained true -o dist/linux-x64` → 产出 `dist/linux-x64/PCL`（ELF x86-64，120MB，`OutputType=WinExe` + `PublishSingleFile` 使其无 `.exe` 后缀）。
      2. 非单文件（便于 VM 上排查、可用 `DOTNET_` 环境变量）：追加 `-p:PublishSingleFile=false -o dist/linux-x64-flat`。**注意**：不要用 `-p:OutputType=Exe` 全局覆盖，会把 `PCL.Core.SourceGenerators` 也改成 Exe → `CS5001 程序不包含入口点`。
@@ -257,6 +303,38 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
 - 子代理并行分片时：每个只改自己负责的文件，构建由主会话统一跑；子代理提示里必须写明铁律。
 - 新增桩成员先在 Stubs.cs 里 grep 确认不重复。
 - commit 信息用英文短句，一次修复一个 commit。
+- **遇到"页面能编译但一打开就崩"时，先跑 `PCL.exe --pagetest`**（见 §12），不要靠猜。
+
+---
+
+## 12. 移植期自检工具（`--pagetest`，2026-09-28 新增）
+
+**用法**：`PCL.exe --pagetest`（正常启动不受影响；逻辑在 `FormMain.RunPageInstantiationSelfTest`）。
+
+在 UI 线程上依次执行并把结果写入运行日志（`[PageTest]` 前缀）：
+
+| # | 检查项 | 作用 |
+|---|---|---|
+| 1 | 直接构造各页面 Left/Right 控件 | 抓 XAML 填充期异常（命名字段为 null、集合属性填充、字段可见性） |
+| 2 | `Left.PageGet(subType)` 全子类型 | 覆盖惰性创建的右侧页面 |
+| 3 | 真实 `PageChange(pageType)` 导航 | 复现用户点击（含 `PageChangeActual` 全链路） |
+| 4 | 后台线程 `Lang.Text` | 回归 `!key!`（坑 16） |
+| 5 | 7 个颜色 `Color→LabColor→Color` 往返 | 回归 scRGB（坑 17），要求 Δ≤1 |
+| 6 | `MyBitmap` 加载内嵌图片 | 回归 avares 取流（坑 18） |
+| 7 | 打印主题状态与关键画刷 | 排查配色 |
+| 8 | 渲染主界面到 `PCL/Log/ui-render.png` | **目视/像素比对**（无桌面环境时尤其有用） |
+
+**当前基线（2026-09-28，commit 9e00ef6）**：59 项通过 / 2 项失败，两项均为已知上游缺口：
+- `PageSetupLeft.PageGet(3)` = `SetupLink`（联机页，暂缓功能，未实现）
+- `PageSetupLeft.PageGet(8)` = `SetupUpdate`（引用上游也不存在的 `Tahoe.png`，见坑 18）
+
+**注意**：`PageSubType` 各段（Download*/Setup*/Version*）**数值重叠**，`Enum.ToString()` 可能显示同值的其它段名字——日志里同时打印了数值以便核对。
+
+**配套脚本**（都在 `tools/`）：
+- `fix-buttons-collection.py` — 坑 13（x:Array → sys:List）
+- `fix-pagecomp-content.py` — 坑 14（PageComp.SearchTags 显式包裹）
+- `check-avares-case.py` — 坑 18（avares 路径大小写，`--fix` 可写回）
+- `capture-window.py` — 采样活动窗口像素（注意：沙箱进程的桌面与应用不同，普通截屏看不到应用窗口；优先用第 8 项自渲染）
 
 ---
 
