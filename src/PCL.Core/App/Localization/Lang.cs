@@ -97,6 +97,10 @@ public static class Lang
 
         if (Application.Current?.TryFindResource(key) is string text) return text;
         if (_LifecycleSafeFindResource(key) is string fallbackText) return fallbackText;
+        // [port] 上面两条都依赖 Avalonia 资源宿主（Application.Resources/ActualThemeVariant），
+        //        仅 UI 线程可访问：非 UI 线程会抛 VerifyAccess 并被吞成 null，
+        //        导致加载线程取到的文案退化为 "!key!"。这里补一条纯内存、线程安全的语言文本查询。
+        if (LocalizationService.TryGetLanguageText(key, out var localizedText)) return localizedText;
 
 #if DEBUG
         return $"!{key}!";

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -47,6 +49,30 @@ public sealed partial class LocalizationService
     private static ResourceDictionary? _currentLanguageDictionary;
     private static CultureInfo _systemFormatCulture = CultureInfo.CurrentCulture;
     private static CultureInfo _systemUiCulture = CultureInfo.CurrentUICulture;
+
+    // [port] 线程安全语言文本表（键 -> 文案）。
+    // 上游 WPF 的 Application.TryFindResource 可在任意线程调用；Avalonia 的资源宿主是
+    // AvaloniaObject（Application.Resources/ActualThemeVariant 仅限 UI 线程），
+    // 从加载线程调用会抛 InvalidOperationException(VerifyAccess)，被 Lang.Text 吞掉后返回 "!key!"，
+    // 于是启动阶段（Loader 任务名、启动成功提示等）在 DEBUG 下显示成 !Minecraft.Launch.Stage.WaitWindow! 这类原文。
+    // 语言资源本身是从 XML 构建的纯键值对，跨线程读取安全，故另存一份只读快照供任意线程查询。
+    // 优先级：当前语言覆盖默认语言（与 MergedDictionaries 的覆盖顺序一致）。
+    private static readonly ConcurrentDictionary<string, string> _languageTextMap = new(StringComparer.Ordinal);
+
+    /// <summary>
+    ///     线程安全地查询语言文本（供 <see cref="Lang.Text" /> 在非 UI 线程兜底）。
+    /// </summary>
+    internal static bool TryGetLanguageText(string key, [NotNullWhen(true)] out string? text)
+    {
+        if (_languageTextMap.TryGetValue(key, out var value))
+        {
+            text = value;
+            return true;
+        }
+
+        text = null;
+        return false;
+    }
 
     /// <summary>
     ///     当前 UI 语言。
@@ -268,7 +294,7 @@ public sealed partial class LocalizationService
         if (_baseLanguageDictionary is not null) dictionaries.Remove(_baseLanguageDictionary);
         if (_currentLanguageDictionary is not null) dictionaries.Remove(_currentLanguageDictionary);
 
-        _baseLanguageDictionary = _LoadLanguageDictionary(DefaultLanguageCode);
+        _baseLanguageDictionary = _LoadLanguageDictionary(DefaultLanguageCode, out var baseTextMap);
         dictionaries.Add(_baseLanguageDictionary);
 
         if (string.Equals(languageCode, DefaultLanguageCode, StringComparison.OrdinalIgnoreCase))
@@ -277,17 +303,24 @@ public sealed partial class LocalizationService
         }
         else
         {
-            _currentLanguageDictionary = _LoadLanguageDictionary(languageCode);
+            _currentLanguageDictionary = _LoadLanguageDictionary(languageCode, out var currentTextMap);
             dictionaries.Add(_currentLanguageDictionary);
+            // 当前语言覆盖默认语言
+            foreach (var pair in currentTextMap) baseTextMap[pair.Key] = pair.Value;
         }
+
+        // [port] 刷新线程安全文本快照（见 _languageTextMap 说明）
+        _languageTextMap.Clear();
+        foreach (var pair in baseTextMap) _languageTextMap[pair.Key] = pair.Value;
     }
 
-    private static ResourceDictionary _LoadLanguageDictionary(string languageCode)
+    private static ResourceDictionary _LoadLanguageDictionary(string languageCode, out Dictionary<string, string> textMap)
     {
         // [port] WPF ResourceDictionary.Source → Avalonia 无运行时 Source 加载；
         // 语言资源为纯键值 XAML，直接以 XML 解析构建 ResourceDictionary（键名与文案与上游一致）。
         // [port] 取流优先 avares；若 Avalonia 把这些 xaml 也 XamlIl 编译了（URI 带 Build:/Populate: 前缀），
         //       avares 会找不到，则回退到程序集 EmbeddedResource（LogicalName 稳定）。
+        textMap = new Dictionary<string, string>(StringComparer.Ordinal);
         var stream = _OpenLanguageStream(languageCode);
         var dictionary = new ResourceDictionary();
         using (stream)
@@ -304,6 +337,7 @@ public sealed partial class LocalizationService
                 var key = element.Attribute(System.Xml.Linq.XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value;
                 if (string.IsNullOrEmpty(key)) continue;
                 dictionary[key] = element.Value;
+                textMap[key] = element.Value; // [port] 同步写入线程安全文本快照
             }
         }
         return dictionary;
