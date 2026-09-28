@@ -94,10 +94,14 @@ public class LabColor
 
     /// <summary>
     /// Create a <see cref="LabColor"/> instance from <see cref="Avalonia.Media.Color"/>.
-    /// [port] WPF Color.ScR/ScG/ScB/ScA → sRGB 字节分量的浮点表达（R/255）。
+    /// [port] WPF 用 <c>color.ScR/ScG/ScB/ScA</c>（scRGB 线性浮点）走 <c>FromRgb(double…)</c> 的
+    /// <see cref="ColourSpace.RgbLinear"/> 分支；Avalonia 的 Color 只暴露 sRGB 字节分量，
+    /// 故改用语义明确的字节重载 <c>FromRgb(byte…)</c>（<see cref="ColourSpace.Rgb255"/>）——
+    /// 两者描述同一颜色，结果一致。切勿写成 <c>FromRgb((double)color.R / 255.0, …)</c>：
+    /// 那会命中 RgbLinear 分支却传入 sRGB 数值，导致整站配色整体偏暗。
     /// </summary>
     public static LabColor FromWpfColor(Avalonia.Media.Color color)
-        => FromRgb((double)color.R / 255.0, (double)color.G / 255.0, (double)color.B / 255.0, (double)color.A / 255.0);
+        => FromRgb(color.R, color.G, color.B, color.A / 255.0);
 
     public static implicit operator LabColor(Avalonia.Media.Color color) => FromWpfColor(color);
 
