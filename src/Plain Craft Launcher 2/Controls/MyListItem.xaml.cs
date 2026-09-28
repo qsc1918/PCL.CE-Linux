@@ -29,6 +29,13 @@ public partial class MyListItem : Grid, IMyRadio
 
     private string stateLast;
 
+    // [port] 上游 WPF 中根元素 <Grid x:Name="PanBack"> 的生成字段绑定到"控件自身"（PCL.MyListItem），
+    // 因此 PanBack.Children 等价于 this.Children。Avalonia 命名字段生成器会另生成一个 `Grid PanBack` 字段，
+    // 且在 !XamlIlPopulate（Populate 之前、名字作用域尚未建立）赋值 → 恒为 null，而子元素属性 setter
+    // （如 Buttons）会提前访问它 → NullReferenceException。此处以属性形式还原上游语义：PanBack == this
+    // （PanBack.Children 即 this.Children，行为与上游一致）。已同步移除 axaml 根元素上的 x:Name。
+    private MyListItem PanBack => this;
+
     // [port] Avalonia 命名字段生成器不为 ColumnDefinition 生成字段（即使 axaml 写了 x:Name）
     // → 经所属 Grid 的 ColumnDefinitions 按索引访问（ColumnGap 为第 6 列，索引 5）。
     // protected 以便派生类（如 MyLocalModItem）复用。

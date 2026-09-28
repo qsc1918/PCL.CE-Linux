@@ -1,8 +1,16 @@
 <Grid x:Class="PCL.MyListItem"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      x:Name="PanBack"
+      xmlns:local="clr-namespace:PCL"
       RenderTransformOrigin="0.5,0.5" Background="{StaticResource ColorBrushSemiTransparent}" Height="42">
+    <!-- [port] 上游 WPF 中根元素写成 <Grid x:Name="PanBack">，XAML 生成的字段绑定到"控件自身"（PCL.MyListItem），
+         故 PanBack.Children 等价于 this.Children。
+         Avalonia 命名字段生成器不这样处理：它会另生成一个 `Grid PanBack` 字段，且在 !XamlIlPopulate
+         阶段（Populate 之前、名字作用域尚未建立）赋值 → 该字段恒为 null；而子元素声明期的属性 setter
+         （如 MyListItem.Buttons）会触发 code-behind 里的 PanBack.Children.Add → NullReferenceException
+         （崩溃点：PageInstanceLeft.axaml，页面实例化时即崩）。
+         修法：移除根元素 x:Name，改在 code-behind 中以属性形式把 PanBack 指回自身，等价还原上游语义（布局/行为不变）。 -->
+
     <Grid.RenderTransform>
         <ScaleTransform ScaleX="1" ScaleY="1" />
     </Grid.RenderTransform>
@@ -25,9 +33,11 @@
     <!--<StackPanel VerticalAlignment="Center">-->
     <TextBlock Grid.Row="1" UseLayoutRounding="False" HorizontalAlignment="Left"
                x:Name="LabTitle" IsHitTestVisible="False" Grid.Column="3" Grid.ColumnSpan="2"
-               Text="{Binding Title, ElementName=PanBack}" TextTrimming="CharacterEllipsis"
-               FontSize="{Binding FontSize, ElementName=PanBack}"
-               Foreground="{Binding Foreground, ElementName=PanBack}" Margin="4,0,0,0" />
+               Text="{Binding Title, RelativeSource={RelativeSource AncestorType=local:MyListItem}}"
+               TextTrimming="CharacterEllipsis"
+               FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=local:MyListItem}}"
+               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=local:MyListItem}}"
+               Margin="4,0,0,0" />
     <!--<StackPanel Orientation="Horizontal" x:Name="PanInfo" Grid.Row="2" Grid.Column="3" IsVisible="False" IsHitTestVisible="False">
         <StackPanel x:Name="PanTags" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,-3,0">
             <Border Background="{DynamicResource ColorBrush6}" Padding="3,1" CornerRadius="3" Margin="0,0,4,0" UseLayoutRounding="False">
