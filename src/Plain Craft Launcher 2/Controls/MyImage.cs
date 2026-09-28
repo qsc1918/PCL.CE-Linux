@@ -226,7 +226,11 @@ public class MyImage : Image
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
-    private static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
+    // [port] 上游 WPF 为 private static readonly DependencyProperty：WPF 的 XAML 走 CLR 属性 setter（CornerRadius = value），
+    //        不直接触碰字段，故 private 可用。Avalonia 的编译期 XAML 会把 CornerRadius="6" 直接编译成
+    //        SetValue(MyImage.CornerRadiusProperty, ...)，跨类访问 private 字段 → 运行期 FieldAccessException
+    //        （PageHomepageNewsView / PageSetupAbout 等页面实例化即崩）。故提升为 public。
+    public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
         AvaloniaProperty.Register<MyImage, CornerRadius>(
             nameof(CornerRadius),
             new CornerRadius(-1)
