@@ -1,3 +1,7 @@
+> ⚠️ **本文档已过时（2026-08 早期 PCL.Neo 骨架时代的产物）**。
+> 当前项目已放弃"按 PCL-CE 风格重写"的路线，改为**逐字移植上游 PCL-CE 源码**到 Avalonia 12 / .NET 10。
+> PCL.Neo* 项目已废弃（不在编译范围）。当前真实状态见 **`docs/HANDOVER.md`**（权威交接文档）。
+
 ## PCL.CE-Linux 项目启动状态
 
 **项目路径：** `D:\a\j\PCL.CE-Linux`
