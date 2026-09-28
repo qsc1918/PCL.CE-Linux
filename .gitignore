@@ -677,3 +677,13 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# 移植产物：linux-x64 自包含发布输出（116MB，不入库）
+dist/
+
+# 根目录历史调试日志
+app-build*.log
+core-build*.log
+m-build*.log
+dist-smoke.log
+fabric-probe.log

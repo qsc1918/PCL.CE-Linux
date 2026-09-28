@@ -39,6 +39,8 @@
 | 本地化 | ✅ `当前 UI 语言: zh-CN` + `本地化 启动成功` |
 | 生命周期 | ✅ 依赖检查→公告→更新检查→遥测→优雅关闭全走通（最新日志 573 行干净） |
 | 透明窗口问题 | ⚠️ **未验证** — 用户曾在崩溃前看到透明窗口；崩溃已修复，但是否残留渲染问题需用户肉眼确认 |
+| 页面实例化 NRE | ✅ **已修（2026-09-28）** — 根元素 `x:Name="PanBack"` 导致 `PageInstanceLeft` 实例化即崩（点"实例设置"退出）。详见 §7 坑 12 |
+| Linux 发布产物 | ✅ **已产出并静态校验**（commit 32985f3）— `dist/linux-x64/PCL`（ELF x86-64 单文件 120MB）+ `dist/linux-x64-flat/`（非单文件 125MB）；WSL 被安全策略拉黑，真机实测待用户 VM |
 | Linux 冒烟测试 | ❌ 未做（WSL headless → self-contained publish → 用户 VM） |
 | 暂缓功能 | ❌ 用户指定的 8 项暂未移植（见 §8） |
 
@@ -98,6 +100,7 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
 
 **环境事实**：
 - .NET 10 SDK 在 Windows 主机可用；Avalonia 12.0.4 已在 nuget 缓存。
+- **本机 WSL 被安全策略拉黑**（`wsl.exe` 在 Program Blacklist）→ §9.2 的 WSL headless 冒烟**无法在本机执行**，只能用静态校验 + 用户 VM 实测替代（见 §9.2）。
 - pwsh 工具按 GBK 读无 BOM 的 .ps1 → **脚本必须纯 ASCII 或带 BOM**。
 - pwsh 的 `Get-Content` 显示中文为乱码（仅显示问题）；`[System.IO.File]` API 用进程 CWD 而非 PowerShell 位置 → **一律绝对路径**。
 - 上游源文件编码混杂（GBK/UTF-8），改文件前先校验。
@@ -204,6 +207,13 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
 9. **跨线程 VerifyAccess** — Lang.Text 在加载器线程调 TryFindResource → `Application.get_ActualThemeVariant` 抛 InvalidOperationException → ResourceExtensions 非	UI 线程直接返回 null + 缓存。
 10. **Markdown.axaml 792 错** — Markdown.Avalonia 主题样式，必须同时从 AvaloniaResource **和** AvaloniaXaml 排除。
 11. **`Unable to resolve type ... assembly=PCL`** — 空的 `xmlns:local="clr-namespace:PCL;assembly="`（4 个文件）；桩类要放到被引用的程序集（BlurBorder/MotdRenderer → PCL.Core）。
+12. **根元素 `x:Name` 与 WPF 语义不同（2026-09-28 修复，崩溃级）** — WPF 中 `<Grid x:Name="PanBack">`（MyListItem 等控件根元素）生成的字段**绑定到控件自身**（`this.PanBack = target;`，target 即 PCL.MyListItem），故 `PanBack.Children` == `this.Children`。
+    Avalonia 命名字段生成器**另生成一个 `Grid PanBack` 字段**，并在 `!XamlIlPopulate` 阶段（Populate 之前、名字作用域尚未建立）执行 `PanBack = __thisNameScope__?.Find<Grid>("PanBack")` → 该值**恒为 null**。
+    当子元素的属性 setter 在 Populate 期间就访问它（如 `MyListItem.Buttons` 里 `PanBack.Children.Add(...)`），必抛 NullReferenceException。
+    **实测崩溃点**：`PageInstanceLeft.axaml` 实例化（`FormMain.PageChange` ← `PageLaunchLeft.BtnMore_Click`）→ 点"实例设置"即崩、程序退出。
+    **修法（已用）**：从 axaml 根元素**删掉 `x:Name`**，在 code-behind 加属性 `private MyListItem PanBack => this;`（还原上游语义）；同时 axaml 内凡 `ElementName=PanBack` 的绑定改为 `RelativeSource={RelativeSource AncestorType=local:MyListItem}` 并补 `xmlns:local`。
+    注意：生成器会与同名手写成员冲突（CS0102），所以必须删 x:Name，不能只加手写字段。
+    **排查命令**：`for cls in <控件名>; do grep -c "\bPanBack\b" Controls/$cls.xaml.cs; done` — 根元素带 `x:Name` 且 .cs 有引用的控件都可能踩雷（MyListItem 已修；MyIconButton 的 PanBack 是**嵌套** Border，安全）。
 
 ---
 
@@ -221,6 +231,12 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
    - 用户肉眼确认现在的窗口是否正常渲染内容；
    - 若仍透明：查 `FormMain.axaml` 的背景画刷 / `ExtendClientArea*` / `TransparencyLevelHint` / 渲染后端（WinVM/Skia）、页面内容是否实例化（日志已有"实例化：清空主页 UI"、"启动按钮：Minecraft 实例"字样说明有内容）。
 2. **WSL headless 冒烟** — `dotnet publish -r linux-x64 --self-contained`，在 WSL 里无头跑，确认 Linux 上能起来（X11/Wayland 或 headless 检查日志）。
+   - ⚠️ **本机 `wsl.exe` 被安全策略拉黑**（Program Blacklist，无法授权/绕过）→ 冒烟只能交给用户 VM。本机可做的替代校验（已验证通过）：
+     1. 单文件：`dotnet publish "src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj" -c Release -r linux-x64 --self-contained true -o dist/linux-x64` → 产出 `dist/linux-x64/PCL`（ELF x86-64，120MB，`OutputType=WinExe` + `PublishSingleFile` 使其无 `.exe` 后缀）。
+     2. 非单文件（便于 VM 上排查、可用 `DOTNET_` 环境变量）：追加 `-p:PublishSingleFile=false -o dist/linux-x64-flat`。**注意**：不要用 `-p:OutputType=Exe` 全局覆盖，会把 `PCL.Core.SourceGenerators` 也改成 Exe → `CS5001 程序不包含入口点`。
+     3. 静态校验（已通过）：`PCL` 与 `libSkiaSharp.so`/`libHarfBuzzSharp.so`/`libe_sqlite3.so` 全为 ELF machine=62（x86-64）；bundle 内可见 `Avalonia.FreeDesktop`、`Avalonia.Skia`、`PCL.Core.dll`、`App/Localization/Languages/zh-CN.xaml`。
+     4. 入口 `Program.Main` 用 `UsePlatformDetect()` → Linux 上自动选 FreeDesktop 后端，无需改代码。
+   - `dist/` 已入 `.gitignore`（116MB，勿入库）。给用户的目录内含 `run.sh`（`LC_ALL=zh_CN.UTF-8` + `exec ./PCL`）。
 3. **Linux 真机测试** — self-contained publish 交给用户 VM 验证。
 4. **暂缓功能移植**（用户确认优先级后）— PageTools（工具页）大概率是下一个大块。
 5. **清理** — `src\PCL.Neo.Core` / `src\PCL.Neo.UI` 不在编译范围，待用户决定是否删除；`docs/current-errors.txt`、`g4-*.txt`、`g5-*.txt` 是历史调试产物可清理。
