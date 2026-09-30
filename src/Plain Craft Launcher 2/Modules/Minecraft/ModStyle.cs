@@ -181,6 +181,12 @@ internal static class ModStyle
                 return;
             }
 
+            // [port] WPF 的 TextBlock.Text 默认值是 string.Empty，Avalonia 默认值是 null。
+            //        上游依赖该默认值（调用方会直接传 LabInfo.Text 这类可能从未赋值过的文本），
+            //        在 Avalonia 下会传入 null → 下面的 foreach 抛 NullReferenceException
+            //        （表现为"加载 Mod 列表 UI 失败"）。此处把 null 归一为空串以还原上游行为。
+            text ??= string.Empty;
+
             lab.Inlines.Clear();
 
             var hasItalicProperty = false; // 斜体

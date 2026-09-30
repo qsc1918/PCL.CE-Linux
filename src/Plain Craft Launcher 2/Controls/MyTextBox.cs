@@ -78,13 +78,22 @@ public class MyTextBox : TextBox
         set => SetValue(CornerRadiusProperty, value);
     }
 
+    // [port] 模板部件缓存。
+    // Stubs 里的 Template.FindName 垫片是 control.FindNameScope()?.Find(name)，
+    // 在模板刚应用时可能落到外层（页面）的名称作用域，取不到模板内元素并静默返回 null。
+    // 后果：labHint 恒为 null → OnApplyTemplate 直接 NullReferenceException，
+    //       且提示文本（HintText）永远不会显示。
+    // 故改为在 TemplateApplied 时用模板自身的名称作用域取部件并缓存，惰性 getter 仅作兜底。
+    private TextBlock _labWrong;
+    private TextBlock _labHint;
+
     private TextBlock labWrong
     {
         get
         {
             if (Template is null) return null;
-            if (field is null) field = (TextBlock)Template.FindName("labWrong", this);
-            return field;
+            _labWrong ??= Template.FindName("labWrong", this) as TextBlock;
+            return _labWrong;
         }
     }
 
@@ -93,8 +102,8 @@ public class MyTextBox : TextBox
         get
         {
             if (Template is null) return null;
-            if (field is null) field = (TextBlock)Template.FindName("labHint", this);
-            return field;
+            _labHint ??= Template.FindName("labHint", this) as TextBlock;
+            return _labHint;
         }
     }
 
@@ -136,7 +145,12 @@ public class MyTextBox : TextBox
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        if (string.IsNullOrEmpty(HintText) || !string.IsNullOrEmpty(labHint.Text))
+
+        // [port] 用模板自身的名称作用域取模板部件（见 _labHint 处说明）
+        _labWrong = e.NameScope.Find<TextBlock>("labWrong") ?? _labWrong;
+        _labHint = e.NameScope.Find<TextBlock>("labHint") ?? _labHint;
+
+        if (string.IsNullOrEmpty(HintText) || !string.IsNullOrEmpty(labHint?.Text))
             return;
         UpdateHintText();
     }

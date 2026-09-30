@@ -49,8 +49,7 @@ public class MyBitmap
         {
             try
             {
-                filePathOrResourceName =
-                    filePathOrResourceName.Replace("pack://application:,,,/images/", ModBase.pathImage);
+                filePathOrResourceName = _NormalizeImagePath(filePathOrResourceName);
                 if (filePathOrResourceName.StartsWithF(ModBase.pathImage))
                 {
                     if (_Cache.ContainsKey(filePathOrResourceName))
@@ -110,6 +109,33 @@ public class MyBitmap
             return Avalonia.Platform.AssetLoader.Open(new Uri(path, UriKind.Absolute));
 
         return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+    }
+
+    // [port] 历史配置兼容。
+    // 早期移植版本把 ModBase.pathImage 保留为 WPF pack URI
+    // （"pack://application:,,,/Plain Craft Launcher 2;component/Images/"），
+    // 而该值会被持久化进实例配置（States.Instance.LogoPath → versions/<实例>/PCL/config.v1.yml 的 Logo）。
+    // pathImage 改为 avares:// 后，这些旧值不再匹配资源前缀，会被当成文件路径交给 FileStream
+    // → IOException（"文件名、目录名或卷标语法不正确"）→ 从 MyListItem.UpdateLogo 的属性变更回调里逃逸
+    // → 打开实例列表时崩溃。故此处把已知的 WPF pack 前缀统一归一到当前前缀。
+    private static readonly string[] _LegacyImagePackPrefixes =
+    {
+        "pack://application:,,,/Plain Craft Launcher 2;component/Images/",
+        "/Plain Craft Launcher 2;component/Images/",
+        "pack://application:,,,/Images/",
+        "pack://application:,,,/images/"
+    };
+
+    private static string _NormalizeImagePath(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+            return path;
+
+        foreach (var prefix in _LegacyImagePackPrefixes)
+            if (path.StartsWithF(prefix, true))
+                return ModBase.pathImage + path.Substring(prefix.Length);
+
+        return path;
     }
 
     public MyBitmap(IImage image)
