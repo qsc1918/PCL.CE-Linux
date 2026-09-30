@@ -260,6 +260,29 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
     - `ModBase.pathImage` 仍是 `pack://application:,,,/Plain Craft Launcher 2;component/Images/`，且 `MyBitmap` 对它用 `new FileStream(...)` → 必然失败。已改为 `avares://PCL/Images/` + 经 `AssetLoader.Open` 取流（实例方块图标因此恢复正常）。
     - `PageSetupAbout`/`PageSetupUpdate`/`MinecraftServer` 还有 12 处 WPF pack 语法残留，已转 `avares://PCL/...`。
     - **已知上游缺口（未改）**：`PageSetupUpdate.axaml:150` 引用 `Images/Icons/Tahoe.png`，**上游仓库里也不存在**（两版 Images 均为 47 个文件）。WPF 对缺失图片静默不渲染，Avalonia 直接抛异常 → "设置 → 更新"页当前实例化失败。属上游数据缺口，改文案会偏离上游，留给用户定夺。
+    - **补充（2026-09-30）**：历史配置兼容。旧版本把 `pathImage` 存成 pack URI 后写进了实例配置（`versions/<实例>/PCL/config.v1.yml` 的 `Logo`），改成 avares 后这些旧值不再匹配资源前缀 → `MyBitmap` 用 FileStream 打开 pack URI → IOException 从 `MyListItem.UpdateLogo` 的属性变更回调逃逸 → **打开实例列表即崩**（用户报的"加载实例列表失败 + 崩溃"）。修法：`MyBitmap._NormalizeImagePath` 归一化已知 WPF pack 前缀。
+
+19. **同一事件上的多个 Tunnel 处理器是「逆序」调用（点击失效，2026-09-30 修复）** — Avalonia 对同一 `RoutedEvent` + 同一 `RoutingStrategies` 的多个处理器，**后注册的先执行**（实测：注册顺序 1→2，调用顺序 2→1）；WPF 是按注册顺序。
+    - 受害点：`MyListItem` 把「点击处理」`Button_PointerReleased` 与「复位」`Button_PointerExited` 都挂在 `PointerReleasedEvent` 的 Tunnel 上（上游 WPF 依赖"点击先于复位"）。Avalonia 下复位先跑 → `isMouseDown` 被清零 → 点击处理器直接 `return` → **实例设置页左侧所有列表项全部点不动**，日志里连"按下单选列表项"都不会出现。
+    - **修法**：复位改为 `Dispatcher.UIThread.Post` 异步执行，保证点击处理一定先完成。
+    - **排查命令**：`grep -rn "RoutingStrategies.Tunnel" --include=*.cs` — 检查同一事件上是否有多个 Tunnel 处理器且存在顺序依赖。
+
+20. **WPF `IsMouseDirectlyOver` 无 Avalonia 等价物（标题栏按钮全部点不动，2026-09-30 修复）** — 上游 `FormDragMove` 用 `IsMouseDirectlyOver`（**仅元素自身**，不含子元素）决定是否 `DragMove()`。移植版换成了 `IsPointerOver`（**包含子元素**），于是点击标题栏内的选项卡/最小化/关闭/返回按钮时也会命中拖动分支，`BeginMoveDrag` **捕获指针** → 按钮收不到 `PointerReleased` → 点击全部失效（只有按下/悬停动画）。
+    - **修法**：改为 `ReferenceEquals(e.Source, sender)`，还原"直接在标题栏上"的语义。
+
+21. **WPF `TextBlock.Text` 默认 `string.Empty`，Avalonia 默认 `null`（崩溃级，2026-09-30 修复）** — 上游 `ModStyle.SetColorfulTextLab` 只判 `lab is null`，不判 `text`；调用方会直接传 `LabInfo.Text`（该文本可能从未赋值）。Avalonia 下传入 null → `foreach (var c in text)` NRE → **"加载 Mod 列表 UI 失败"**。
+    - **修法**：`text ??= string.Empty;`。**排查方向**：凡是把 `.Text` 当非空字符串用的地方都要留意。
+
+22. **WPF `TextBlock.Padding` 可以超过可用尺寸，Avalonia 会把文字压没（按钮文字空白，2026-09-30 修复）** — 上游 `BtnMore` 是 `Height="35"` 配 `TextPadding="36"`（`TextPadding` 直接映射到 `LabText.Padding`）。WPF 下文字仍居中可见；Avalonia 下内容区高度被压成 0，**文字完全不绘制** → "实例设置按钮文字空白"。
+    - **修法**：`MyButton.ApplyTextPadding()` 按控件实际可用尺寸收敛内边距（至少给文字留 1.5 倍字号），并在 `SizeChanged` 时重算。
+    - **验证手法**：打印 `请求内边距 / 实际内边距 / 文字区尺寸` 即可确认（实测收敛为 `36,7.75,36,7.75`，文字区 124x32）。
+
+23. **滚轮量纲不同（滚动异常缓慢，2026-09-30 修复）** — WPF `MouseWheelEventArgs.Delta` 每格 **±120**；Avalonia `PointerWheelEventArgs.Delta` 每格 **±1**。上游 `PerformVerticalOffsetDelta(-e.Delta)` 直接照用会让滚动距离只有 1/120。
+    - **修法**：`MyScrollViewer` 中换算回 WPF 量纲（`* 120`），`DeltaMult` 语义不变。
+
+24. **`Template.FindName` 垫片不可靠（崩溃级，2026-09-30 修复）** — `Stubs.cs` 里的垫片是 `control.FindNameScope()?.Find(name)`；模板刚应用时可能落到外层（页面）名称作用域，取不到模板内元素并**静默返回 null**。
+    - 受害点：`MyTextBox.labHint` 恒为 null → `OnApplyTemplate` 里 `labHint.Text` NRE，且 `HintText` 提示文本永不显示。
+    - **修法**：在 `OnApplyTemplate` 里用 `e.NameScope.Find<T>(...)` 取部件并缓存（与 `MyScrollViewer` 取 `PART_VerticalScrollBar` 的写法一致），惰性 getter 仅作兜底。
 
 ---
 
@@ -323,6 +346,12 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
 | 6 | `MyBitmap` 加载内嵌图片 | 回归 avares 取流（坑 18） |
 | 7 | 打印主题状态与关键画刷 | 排查配色 |
 | 8 | 渲染主界面到 `PCL/Log/ui-render.png` | **目视/像素比对**（无桌面环境时尤其有用） |
+| 9 | 列表项**逻辑链路**：直接 `SetChecked` | 区分"处理器链路坏"还是"输入投递坏" |
+| 10 | 列表项**输入链路**：合成 `PointerPressed`+`PointerReleased` 投递 | **回归坑 19**（Tunnel 处理器逆序）。修复前 pageID 不变，修复后切换成功 |
+| 11 | 视觉切换检查（`PanMainRight.Child`） | `SetChecked` 只改 pageID，内容替换在延时动画里 |
+| 12 | 按钮文字度量（`BtnMore`） | **回归坑 22**（内边距收敛 + 文字区尺寸） |
+
+⚠️ **不要用 `InputHitTest` 判断控件可点性**：实测它对 `PanForm` / `PanTitleMain` 等子树会误报"不可达"（连能正常点击的启动页按钮也报不可达），与本应用真实指针投递结果不一致。判断可点性请用第 10 项的**合成事件**方式。
 
 **当前基线（2026-09-28，commit 9e00ef6）**：59 项通过 / 2 项失败，两项均为已知上游缺口：
 - `PageSetupLeft.PageGet(3)` = `SetupLink`（联机页，暂缓功能，未实现）
