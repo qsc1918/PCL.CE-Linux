@@ -503,7 +503,14 @@ public partial class MyListItem : Grid, IMyRadio
         AddHandler(PointerPressedEvent, (EventHandler<PointerPressedEventArgs>)Button_MouseDown, RoutingStrategies.Tunnel);
         AddHandler(PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)Button_PointerReleased, RoutingStrategies.Tunnel);
         PointerExited += Button_PointerExited;
-        AddHandler(PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)Button_PointerExited, RoutingStrategies.Tunnel);
+        // [port] 上游把 Button_MouseLeave 也挂在 PreviewMouseLeftButtonUp（隧道）上，
+        //        依赖 WPF"同一事件上按注册顺序调用处理器"，从而保证"先处理点击、再复位按下状态"。
+        //        Avalonia 对同一事件上的多个 Tunnel 处理器是**逆序**调用（实测：后注册的先执行），
+        //        于是复位先跑、把 isMouseDown 清零，Button_PointerReleased 随即 return，
+        //        列表项点击整体失效（日志里连"按下单选列表项"都不会出现）。
+        //        这里改为松开后异步复位，确保点击处理一定先完成。
+        AddHandler(PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)((_, _) =>
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => Button_PointerExited(this, EventArgs.Empty))), RoutingStrategies.Tunnel);
         PointerEntered += RefreshColor;
         PointerExited += RefreshColor;
         PointerPressed += RefreshColor;
@@ -1139,13 +1146,31 @@ public partial class MyListItem : Grid, IMyRadio
 
     private void Button_MouseDown(object sender, PointerPressedEventArgs e)
     {
-        // [port] WPF IsMouseDirectlyOver → Avalonia IsPointerOver（无 IsMouseDirectlyOver 概念）
-        if (IsPointerOver && !(Type == CheckType.None))
-        {
-            isMouseDown = true;
-            if (buttonStack is not null)
-                buttonStack.IsHitTestVisible = false;
-        }
+        // [port] 上游用 WPF 的 IsMouseDirectlyOver：仅当鼠标"直接"位于列表项自身（而非其内部按钮）时置位。
+        //        Avalonia 没有等价属性，而 IsPointerOver 是"含子元素"的近似，并且依赖悬停状态是否已建立
+        //        （指针未先产生 Enter、或控件位于 ScrollViewer/虚拟化容器内时可能仍为 false）。
+        //        一旦为 false，isMouseDown 不会置位，紧接着的松开会被 Button_PointerReleased 直接忽略，
+        //        表现为"列表项完全点不动"。
+        //        这里改为直接判定"事件源是否落在内部按钮区（buttonStack）之外"，语义与上游一致
+        //        （点内部按钮不触发列表项），且不依赖悬停状态。
+        if (Type == CheckType.None)
+            return;
+
+        if (buttonStack is not null && e.Source is Visual source && _IsInSubtree(source, buttonStack))
+            return;
+
+        isMouseDown = true;
+        if (buttonStack is not null)
+            buttonStack.IsHitTestVisible = false;
+    }
+
+    private static bool _IsInSubtree(Visual? node, Visual ancestor)
+    {
+        for (var v = node; v is not null; v = Avalonia.VisualTree.VisualExtensions.GetVisualParent(v))
+            if (ReferenceEquals(v, ancestor))
+                return true;
+
+        return false;
     }
 
     private void Button_PointerExited(object sender, object e)

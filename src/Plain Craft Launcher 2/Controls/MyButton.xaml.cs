@@ -60,6 +60,8 @@ public partial class MyButton : Border
         PointerEntered += (_, _) => Button_PointerEntered();
         PointerReleased += (_, _) => Button_PointerReleased();
         PointerExited += (_, _) => Button_PointerExited();
+        // [port] 尺寸变化后需要按新的可用尺寸重新收敛 TextPadding（见 ApplyTextPadding）
+        SizeChanged += (_, _) => ApplyTextPadding();
     }
     // [port] WPF 类级 [ContentProperty("Inlines")] 在 Avalonia 会按实例类型路由根 XAML 子元素到 Inlines，
     // 而此时 LabText/LabTitle 等命名字段尚未初始化 → 填充期 NullReferenceException。
@@ -75,8 +77,43 @@ public partial class MyButton : Border
 
     public Thickness TextPadding
     {
-        get => LabText.Padding;
-        set => LabText.Padding = value;
+        get => _textPadding;
+        set
+        {
+            _textPadding = value;
+            ApplyTextPadding();
+        }
+    }
+
+    private Thickness _textPadding;
+
+    // [port] WPF 的 TextBlock 在 Padding 超过可用尺寸时文字仍照常居中显示
+    //        （例如 PageLaunchLeft 的 BtnMore：TextPadding="36" 而按钮 Height="35"，WPF 下文字正常可见）；
+    //        Avalonia 的 TextBlock 在同样情况下内容区高度被压成 0，文字完全不绘制
+    //        → 表现为"按钮文字整块空白"。
+    //        这里保留请求值，但按控件实际可用尺寸收敛后再应用到 LabText，使文字始终可见且居中。
+    private void ApplyTextPadding()
+    {
+        if (LabText is null)
+            return;
+
+        // 至少给文字留出 1.5 倍字号的高度，否则会被内边距压没
+        var minText = LabText.FontSize * 1.5d;
+        var width = Bounds.Width;
+        var height = Bounds.Height;
+
+        var maxHorizontal = width > 0d && double.IsFinite(width)
+            ? Math.Max(0d, (width - minText) / 2d)
+            : double.PositiveInfinity;
+        var maxVertical = height > 0d && double.IsFinite(height)
+            ? Math.Max(0d, (height - minText) / 2d)
+            : double.PositiveInfinity;
+
+        LabText.Padding = new Thickness(
+            Math.Min(_textPadding.Left, maxHorizontal),
+            Math.Min(_textPadding.Top, maxVertical),
+            Math.Min(_textPadding.Right, maxHorizontal),
+            Math.Min(_textPadding.Bottom, maxVertical));
     }
 
     public ColorState ColorType
