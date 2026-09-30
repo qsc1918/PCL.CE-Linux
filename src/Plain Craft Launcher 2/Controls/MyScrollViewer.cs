@@ -31,6 +31,13 @@ public class MyScrollViewer : ScrollViewer
 
     public double DeltaMult { get; set; } = 1d;
 
+    // [port] 滚轮量纲换算。
+    // 上游 WPF 的 MouseWheelEventArgs.Delta 以"一格 = ±120"计（WPF 传统单位）；
+    // Avalonia 的 PointerWheelEventArgs.Delta 把一格归一化为 ±1。
+    // 若直接照用，PerformVerticalOffsetDelta 收到的位移只有上游的 1/120，表现为"滚轮几乎滚不动"。
+    // 这里换算回 WPF 量纲，使滚动距离与上游一致（DeltaMult 的语义也保持不变）。
+    private const double WpfWheelDeltaPerNotch = 120d;
+
     private void MyScrollViewer_PreviewMouseWheel(object sender, PointerWheelEventArgs e)
     {
         // [port] WPF e.Delta（int）→ Avalonia Vector，取 Y 分量比较；ScrollableHeight → Extent.Height - Viewport.Height
@@ -51,7 +58,7 @@ public class MyScrollViewer : ScrollViewer
         }
 
         e.Handled = true;
-        PerformVerticalOffsetDelta(-e.Delta.Y);
+        PerformVerticalOffsetDelta(-e.Delta.Y * WpfWheelDeltaPerNotch);
 
         // [port] WPF Tooltip.Dismiss() 在 Avalonia 12 无对应静态方法（无全局 Dismiss API），
         // 且 Avalonia 在滚动/交互时会自动收起工具提示，此处保留为无副作用空操作。

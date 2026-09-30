@@ -365,7 +365,16 @@ public partial class FormMain : Window
             ModBase.Log(ex, "[PageTest] 主题诊断出错");
         }
 
-        // ---- 9) 渲染主界面到 PNG（移植期目视核对用；沙箱/无头环境下无法截屏时尤其有用）----
+        RenderMainWindowToPng();
+
+        ModBase.Log($"[PageTest] 汇总：成功 {ok}，失败 {fail}，共 {ok + fail}");
+    }
+
+    /// <summary>
+    ///     [port][TEMP] 把主窗口离屏渲染成 PNG，供目视/像素比对（沙箱无桌面时尤其有用）。
+    /// </summary>
+    internal static void RenderMainWindowToPng()
+    {
         try
         {
             var visual = (Visual)ModMain.frmMain;
@@ -374,7 +383,6 @@ public partial class FormMain : Window
                 Math.Max(1, (int)Math.Round(ModMain.frmMain.Bounds.Height)));
             using var bitmap = new Avalonia.Media.Imaging.RenderTargetBitmap(size, new Vector(96d, 96d));
             bitmap.Render(visual);
-            // 注意：本文件 Path 被别名为 Avalonia.Controls.Shapes.Path，故此处用全限定名
             var dir = System.IO.Path.Combine(Basics.ExecutableDirectory, "PCL", "Log");
             Directory.CreateDirectory(dir);
             var file = System.IO.Path.Combine(dir, "ui-render.png");
@@ -385,9 +393,64 @@ public partial class FormMain : Window
         {
             ModBase.Log(ex, "[PageTest] 渲染主界面截图失败");
         }
-
-        ModBase.Log($"[PageTest] 汇总：成功 {ok}，失败 {fail}，共 {ok + fail}");
     }
+
+    // [port][TEMP] 交互链路诊断（配合 --pagetest）：验证"列表项点击"是否真的能走通。
+    // 直接构造并投递一次合成的 PointerPressed + PointerReleased，检查子页面是否切换，
+    // 用于定位"控件可见但点击无反应"（事件路由 / 处理器顺序 / 命中测试）。
+    // 注意：不要用 InputHitTest 判断可点性——实测它对 PanForm / PanTitleMain 等子树会误报"不可达"，
+    //      与本应用真实指针投递结果不一致。
+    internal static void RunInteractionDiagnostics()
+    {
+        var left = ModMain.frmInstanceLeft;
+        if (left is null)
+        {
+            ModBase.Log("[PageTest] 交互诊断：frmInstanceLeft 为 null，跳过");
+            return;
+        }
+
+        // 1) 逻辑链路：直接触发 Check（等价于一次"点击成功"）
+        try
+        {
+            var item = left.ItemSetup;
+            ModBase.Log($"[PageTest] 逻辑链路：ItemSetup Type={item.Type} Tag={item.Tag} " +
+                        $"Checked={item.Checked} IsLoaded={item.IsLoaded} IsVisible={item.IsVisible} " +
+                        $"Bounds={item.Bounds.Width:F0}x{item.Bounds.Height:F0}");
+            var before = left.pageID;
+            item.SetChecked(true, true, true);
+            ModBase.Log($"[PageTest] 逻辑链路：SetChecked 后 pageID {before} -> {left.pageID}");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[PageTest] 逻辑链路自检失败");
+        }
+
+        // 2) 输入链路：合成按下 + 松开投递给另一个列表项，验证事件路由与处理器顺序
+        try
+        {
+            var item = left.ItemMod;
+            var root = (Visual)ModMain.frmMain;
+            var pos = item.TranslatePoint(new Point(item.Bounds.Width / 2d, item.Bounds.Height / 2d), root)
+                      ?? new Point(0d, 0d);
+            var pointer = new Pointer(9001, PointerType.Mouse, true);
+            var before = left.pageID;
+
+            item.RaiseEvent(new PointerPressedEventArgs(item, pointer, root, pos, 0UL,
+                new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
+                KeyModifiers.None));
+            item.RaiseEvent(new PointerReleasedEventArgs(item, pointer, root, pos, 0UL,
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
+                KeyModifiers.None, MouseButton.Left));
+
+            ModBase.Log($"[PageTest] 输入链路：合成点击后 pageID {before} -> {left.pageID}" +
+                        $"（期望变为 {(int)PageSubType.VersionMod}）");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[PageTest] 输入链路自检失败");
+        }
+    }
+
 
     private void FormMain_Loaded() // (sender As Object, e As RoutedEventArgs) Handles Me.Loaded
     {
@@ -408,6 +471,80 @@ public partial class FormMain : Window
                 }
             };
             timer.Start();
+
+            // 自检会把界面停在实例设置页；再等一会儿让布局稳定，然后做交互链路诊断
+            var interactionTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(9d) };
+            interactionTimer.Tick += (_, _) =>
+            {
+                interactionTimer.Stop();
+                try
+                {
+                    RunInteractionDiagnostics();
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 交互链路诊断出错");
+                }
+            };
+            interactionTimer.Start();
+
+            // 视觉切换检查（SetChecked 只改 pageID，内容替换在延时动画里）
+            var swapTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(11d) };
+            swapTimer.Tick += (_, _) =>
+            {
+                swapTimer.Stop();
+                try
+                {
+                    var frm = ModMain.frmMain;
+                    ModBase.Log($"[PageTest] 视觉切换：pageRight={frm.pageRight?.GetType().Name ?? "null"}, " +
+                                $"PanMainRight.Child={frm.PanMainRight.Child?.GetType().Name ?? "null"}, " +
+                                $"实例左页 pageID={ModMain.frmInstanceLeft?.pageID.ToString() ?? "null"}");
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 视觉切换检查出错");
+                }
+            };
+            swapTimer.Start();
+
+            // 回到启动页并渲染成图（核对按钮文字等静态外观）
+            var renderTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(15d) };
+            renderTimer.Tick += (_, _) =>
+            {
+                renderTimer.Stop();
+                try
+                {
+                    ModMain.frmMain.PageChange(PageType.Launch);
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 回到启动页失败");
+                }
+            };
+            renderTimer.Start();
+
+            // 等启动页动画结束后再渲染，并核对按钮文字度量
+            var renderTimer2 = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(18d) };
+            renderTimer2.Tick += (_, _) =>
+            {
+                renderTimer2.Stop();
+                try
+                {
+                    var btn = ModMain.frmLaunchLeft?.BtnMore;
+                    if (btn is not null)
+                        ModBase.Log($"[PageTest] 按钮文字度量：BtnMore.Text=\"{btn.Text}\" " +
+                                    $"请求内边距={btn.TextPadding} 实际内边距={btn.LabText.Padding} " +
+                                    $"文字区={btn.LabText.Bounds.Width:F0}x{btn.LabText.Bounds.Height:F0} " +
+                                    $"按钮={btn.Bounds.Width:F0}x{btn.Bounds.Height:F0}");
+
+                    RenderMainWindowToPng();
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 渲染启动页失败");
+                }
+            };
+            renderTimer2.Start();
         }
 
         FormMain_SizeChanged();
@@ -855,7 +992,12 @@ public partial class FormMain : Window
     private void FormDragMove(object? sender, PointerPressedEventArgs e)
     {
         // On Error Resume Next
-        if (((Grid)sender).IsPointerOver)
+        // [port] 上游用 WPF 的 IsMouseDirectlyOver（仅当鼠标位于该元素"自身"、不含子元素时成立）。
+        //        Avalonia 没有 IsMouseDirectlyOver，只能取 IsPointerOver —— 而它"包含子元素"，
+        //        于是点击标题栏里的选项卡/最小化/关闭/返回按钮时也会命中拖动分支，
+        //        BeginMoveDrag 会捕获指针，按钮再也收不到 PointerReleased → 点击全部失效
+        //        （只有按下动画，无任何响应）。故改为判断事件源就是标题栏自身，还原"直接在标题栏上"的语义。
+        if (ReferenceEquals(e.Source, sender) && ((InputElement)sender).IsPointerOver)
             BeginMoveDrag(e);
     }
 
