@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
+using Avalonia.Controls.Primitives; // [port] TemplateAppliedEventArgs / INameScope 取模板部件
 using Path = Avalonia.Controls.Shapes.Path;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
@@ -70,9 +71,22 @@ public class MyMenuItem : MenuItem
         ((ContextMenu)Parent).Opacity = Config.Preference.Theme.WindowOpacity / 1000.0 + 0.4;
     }
 
+    // [port] 缓存模板名称作用域，供 UpdateTemplateIcon 取模板部件（见其说明）
+    private INameScope? _templateNameScope;
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        _templateNameScope = e.NameScope;
+    }
+
     private void UpdateTemplateIcon()
     {
-        var iconControl = (Path)Template.FindName("Icon", this);
+        // [port] Stubs 的 Template.FindName 垫片是 control.FindNameScope()?.Find(name)，
+        //        菜单项此时已在 ContextMenu 树内，可能落到外层名称作用域而取不到模板内的 Icon（静默 null）。
+        //        故优先用 TemplateApplied 缓存的模板名称作用域。
+        var iconControl = _templateNameScope?.Find("Icon") as Path
+                          ?? (Path)Template.FindName("Icon", this);
         if (iconControl is null)
             return;
 

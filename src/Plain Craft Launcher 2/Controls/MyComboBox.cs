@@ -96,17 +96,36 @@ public class MyComboBox : ComboBox
 
     public bool DropDownWidthSync { get; set; } = true;
 
-    public ContentPresenter ContentPresenter => (ContentPresenter)Template.FindName("PART_Content", this);
+    // [port] 模板名称作用域缓存。
+    // Stubs 里的 Template.FindName 垫片是 control.FindNameScope()?.Find(name)，
+    // 模板刚应用时可能落到外层（页面）的名称作用域，取不到模板内元素并静默返回 null。
+    // 后果：textBox 为 null → OnApplyTemplate 里 textBox.LostFocus 直接 NullReferenceException
+    //       （日志表现为"初始化可编辑文本框失败（TextArgumentTitle）"，随后还会连带触发弹窗崩溃）。
+    // 故在 TemplateApplied 时用模板自身的名称作用域取部件。
+    private INameScope? _templateNameScope;
+
+    public ContentPresenter ContentPresenter =>
+        (_templateNameScope?.Find("PART_Content") as ContentPresenter)
+        ?? (ContentPresenter)Template.FindName("PART_Content", this);
+
     public event TextChangedEventHandler? TextChanged;
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+        _templateNameScope = e.NameScope;
         if (!IsEditable)
             return;
         try
         {
-            textBox = (MyTextBox)Template.FindName("PART_EditableTextBox", this);
+            textBox = e.NameScope.Find<MyTextBox>("PART_EditableTextBox");
+            if (textBox is null)
+            {
+                ModBase.Log("[Control] MyComboBox 模板缺少 PART_EditableTextBox，无法初始化可编辑文本框",
+                    ModBase.LogLevel.Developer);
+                return;
+            }
+
             // [port] WPF AddHandler(LostFocusEvent, RoutedEventHandler) → 直接挂冒泡 LostFocus 事件
             textBox.LostFocus += (_, _) => RefreshColor();
             textBox.changedEventList.Add((sender, e) => TextChanged?.Invoke(sender, (TextChangedEventArgs)e));
@@ -149,7 +168,7 @@ public class MyComboBox : ComboBox
         if (IsEnabled)
         {
             if (isMouseDown || IsDropDownOpen ||
-                (IsEditable && ((MyTextBox)Template.FindName("PART_EditableTextBox", this)).IsFocused))
+                (IsEditable && textBox is not null && textBox.IsFocused))
             {
                 foreColorName = "ColorBrush3";
                 backColorName = "ColorBrush7";
@@ -202,7 +221,12 @@ public class MyComboBox : ComboBox
             Width = Bounds.Width;
         try
         {
-            var popup = (Grid)Template.FindName("PanPopup", this);
+            // [port] 同上：改用模板自身的名称作用域取部件
+            var popup = _templateNameScope?.Find("PanPopup") as Grid
+                        ?? (Grid)Template.FindName("PanPopup", this);
+            if (popup is null)
+                return;
+
             popup.Opacity = ModMain.frmMain.Opacity;
             if (!DropDownWidthSync)
                 popup.MinWidth = Bounds.Width;

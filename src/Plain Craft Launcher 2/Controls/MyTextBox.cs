@@ -310,7 +310,11 @@ public class MyTextBox : TextBox
         // 执行输入验证
         foreach (var rule in ValidateRules)
         {
-            var result = rule.Validate(Text);
+            // [port] WPF 的 TextBox.Text 默认值是 string.Empty，Avalonia 默认值是 null。
+            //        FluentValidation 的 Validate 不接受 null 模型（会抛
+            //        "Cannot pass a null model to Validate/ValidateAsync"），
+            //        故这里把 null 归一为空串，还原上游行为。
+            var result = rule.Validate(Text ?? string.Empty);
             stringResult = result.IsValid ? "" : result.Errors[0].ErrorMessage;
         }
 
