@@ -188,7 +188,10 @@ public sealed partial class TelemetryService
                 UpdateChannel.Dev => "Dev",
                 _ => "Unknown"
             },
+            // [port] Microsoft.Win32.Registry 在 Linux 上会抛 PlatformNotSupportedException，
+            //        会让刚打开的窗口立刻因遥测服务启动失败而崩溃。非 Windows 直接按"未使用"处理。
             UsedOfficialPcl =
+                OperatingSystem.IsWindows() &&
                 bool.TryParse(Registry.GetValue(@"HKEY_CURRENT_USER\Software\PCL", "SystemEula", "false") as string,
                     out var officialPcl) && officialPcl,
             UsedHmcl = Directory.Exists(Path.Combine(appDataFolder, ".hmcl")),

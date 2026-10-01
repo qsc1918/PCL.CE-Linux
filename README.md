@@ -4,7 +4,7 @@
 
 <img src="src/Plain Craft Launcher 2/Images/icon.png" alt="Logo" width="96" height="96">
 
-# Plain Craft Launcher CE — Linux 移植版
+# PCL CE Linux
 
 **把 PCL CE 的界面与功能原样移植到 Avalonia / .NET 10，让它在 Linux 上也能跑。**
 
@@ -14,7 +14,7 @@
 
 ## ⚠️ 第三方声明（请先读这一段）
 
-本仓库是**第三方**基于 [PCL](https://github.com/Meloong-Git/PCL)（作者：**龙腾猫跃**）与
+**PCL CE Linux** 是**第三方**基于 [PCL](https://github.com/Meloong-Git/PCL)（作者：**龙腾猫跃**）与
 [PCL-CE](https://github.com/PCL-Community/PCL2-CE)（PCL-Community）**独立进行的二次创作移植版本**。
 
 - **与龙腾猫跃、PCL-Community 及其成员均无从属关系**，他们不参与本项目的开发，也不为本项目的使用做任何担保。

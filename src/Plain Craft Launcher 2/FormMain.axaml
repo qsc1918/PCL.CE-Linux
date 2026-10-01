@@ -10,7 +10,7 @@
     Closing="FormMain_Closing"
     PointerMoved="FormMain_MouseMove" PointerReleased="FormMain_MouseUp"
     x:Name="WindMain" x:Class="PCL.FormMain"
-    Topmost="True" Title="Plain Craft Launcher Community Edition " MinHeight="470" MinWidth="810"
+    Topmost="True" Title="PCL CE Linux" MinHeight="470" MinWidth="810"
     ScrollViewer.VerticalScrollBarVisibility="Disabled" Icon="avares://PCL/Images/icon.ico"
     CanResize="True" Background="{x:Null}" d:DesignWidth="870" d:DesignHeight="520" Width="850" Height="500"
     WindowStartupLocation="CenterScreen"
