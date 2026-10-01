@@ -9,7 +9,11 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="10" />
-        <RowDefinition Height="*" />
+        <!-- [port] WPF 的 Grid 在"可用高度无限"时会把 * 行按内容撑开，Avalonia 则算成 0。
+             本页由 PageLaunchLeft 的 PanLogin（按内容自适应高度的容器）承载，
+             实测该 * 行塌成 0 → MyScrollViewer/ItemsControl 高度 0 → 档案列表一项都不渲染
+             （ItemCount 有值但一条都不显示）。改为 Auto 以还原 WPF 下的可见结果。 -->
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="10" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="20" />
