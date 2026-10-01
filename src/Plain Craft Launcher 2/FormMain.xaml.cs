@@ -545,6 +545,146 @@ public partial class FormMain : Window
                 }
             };
             renderTimer2.Start();
+
+            // 切页扫描：依次进入下载/设置页并停留，用于回归"切页即崩"（下载页 Init 的输入验证、
+            // 设置页 MyComboBox 模板部件等）。任一页抛异常都会在日志里留下 FTL/ERR。
+            var sweepTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(20d) };
+            var sweepPages = new[] { PageType.Download, PageType.Setup, PageType.Launch };
+            var sweepIndex = 0;
+            sweepTimer.Tick += (_, _) =>
+            {
+                if (sweepIndex >= sweepPages.Length)
+                {
+                    sweepTimer.Stop();
+                    ModBase.Log("[PageTest] 切页扫描完成");
+                    return;
+                }
+
+                var target = sweepPages[sweepIndex++];
+                try
+                {
+                    ModMain.frmMain.PageChange(target);
+                    ModBase.Log($"[PageTest] 切页扫描：已切到 {target}");
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, $"[PageTest] 切页扫描失败：{target}");
+                }
+            };
+            sweepTimer.Interval = TimeSpan.FromSeconds(3d);
+            sweepTimer.Start();
+
+            // 档案列表页诊断：把 PageLoginProfile 放进启动页的 PanLogin 并渲染，核对列表是否真的渲染出来
+            var profileTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(32d) };
+            profileTimer.Tick += (_, _) =>
+            {
+                profileTimer.Stop();
+                try
+                {
+                    var page = ModMain.frmLoginProfile ??= new PageLoginProfile();
+                    page.Reload();
+                    ModMain.frmLaunchLeft.PanLogin.Children.Clear();
+                    ModMain.frmLaunchLeft.PanLogin.Children.Add(page);
+
+                    var itemCount = CountDescendants<MyListItem>(page);
+                    ModBase.Log($"[PageTest] 档案页：ProfileCollection={page.ProfileCollection.Count}, " +
+                                $"已实体化 MyListItem={itemCount}, " +
+                                $"页面尺寸={page.Bounds.Width:F0}x{page.Bounds.Height:F0}, " +
+                                $"PanLogin尺寸={ModMain.frmLaunchLeft.PanLogin.Bounds.Width:F0}x{ModMain.frmLaunchLeft.PanLogin.Bounds.Height:F0}");
+                    foreach (var it in page.ProfileCollection)
+                        ModBase.Log($"[PageTest] 档案项：{it.Username} Logo=\"{it.Logo}\" SvgIcon=\"{it.SvgIcon}\" Info=\"{it.Info}\"");
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 档案页诊断失败");
+                }
+            };
+            profileTimer.Start();
+
+            var profileRenderTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(35d) };
+            profileRenderTimer.Tick += (_, _) =>
+            {
+                profileRenderTimer.Stop();
+                try
+                {
+                    var page = ModMain.frmLoginProfile;
+                    if (page is not null)
+                    {
+                        var items = CountDescendants<MyListItem>(page);
+                        var scroll = CountDescendants<MyScrollViewer>(page);
+                        var ics = FindDescendants<ItemsControl>(page).ToList();
+                        ModBase.Log($"[PageTest] 档案页(布局后)：页面尺寸={page.Bounds.Width:F0}x{page.Bounds.Height:F0}, " +
+                                    $"MyListItem={items}, MyScrollViewer={scroll}, " +
+                                    $"PanLogin={ModMain.frmLaunchLeft.PanLogin.Bounds.Width:F0}x{ModMain.frmLaunchLeft.PanLogin.Bounds.Height:F0}, " +
+                                    $"PanLogin子项={ModMain.frmLaunchLeft.PanLogin.Children.Count}");
+                        foreach (var ic in ics)
+                        {
+                            var kids = string.Join(",", Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(ic)
+                                .Take(12).Select(v => v.GetType().Name + (v is Control c && !string.IsNullOrEmpty(c.Name) ? "#" + c.Name : "")));
+                            ModBase.Log($"[PageTest] ItemsControl 视觉子树({Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(ic).Count()}): {kids}");
+                        }
+                        foreach (var ic in ics)
+                            ModBase.Log($"[PageTest] ItemsControl: ItemCount={ic.ItemCount}, " +
+                                        $"ItemsSource={(ic.ItemsSource is null ? "null" : ic.ItemsSource.GetType().Name)}, " +
+                                        $"尺寸={ic.Bounds.Width:F0}x{ic.Bounds.Height:F0}, " +
+                                        $"DataContext={ic.DataContext?.GetType().Name ?? "null"}, 模板={(ic.ItemTemplate is null ? "null" : "有")}");
+                        var sv = FindDescendants<MyScrollViewer>(page).FirstOrDefault();
+                        if (sv is not null)
+                            ModBase.Log($"[PageTest] MyScrollViewer: 尺寸={sv.Bounds.Width:F0}x{sv.Bounds.Height:F0}, " +
+                                        $"Extent={sv.Extent.Width:F0}x{sv.Extent.Height:F0}, Viewport={sv.Viewport.Width:F0}x{sv.Viewport.Height:F0}, " +
+                                        $"Content={sv.Content?.GetType().Name ?? "null"}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 档案页布局后测量失败");
+                }
+
+                RenderMainWindowToPng();
+                ModBase.Log("[PageTest] 档案页渲染完成");
+            };
+            profileRenderTimer.Start();
+
+            // 圆角绑定验证：MyExtraTextButton 的 CornerRadius 应约为自身高度的 40%
+            var radiusTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(38d) };
+            radiusTimer.Tick += (_, _) =>
+            {
+                radiusTimer.Stop();
+                try
+                {
+                    var extraBtn = new MyExtraTextButton { Text = "测试" };
+                    ModMain.frmLaunchLeft.PanLogin.Children.Clear();
+                    ModMain.frmLaunchLeft.PanLogin.Children.Add(extraBtn);
+                    Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                    {
+                        try
+                        {
+                            ModBase.Log($"[PageTest] MyExtraTextButton: 尺寸={extraBtn.Bounds.Width:F0}x{extraBtn.Bounds.Height:F0}, " +
+                                        $"PanClick.CornerRadius={extraBtn.PanClick.CornerRadius}（期望约 20.8）");
+                        }
+                        catch (Exception ex) { ModBase.Log(ex, "[PageTest] 读取圆角失败"); }
+                    }, Avalonia.Threading.DispatcherPriority.Loaded);
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[PageTest] 圆角验证失败");
+                }
+            };
+            radiusTimer.Start();
+        }
+
+        static int CountDescendants<T>(Visual root) where T : Visual
+        {
+            var n = 0;
+            foreach (var v in Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(root))
+                if (v is T) n++;
+            return n;
+        }
+
+        static System.Collections.Generic.IEnumerable<T> FindDescendants<T>(Visual root) where T : Visual
+        {
+            foreach (var v in Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(root))
+                if (v is T t) yield return t;
         }
 
         FormMain_SizeChanged();

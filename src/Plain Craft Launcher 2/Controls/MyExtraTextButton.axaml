@@ -4,19 +4,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svgIcon="clr-namespace:PCL.Core.UI.Controls.SvgIcon;assembly=PCL.Core"
+    xmlns:local="clr-namespace:PCL"
     x:Name="PanBack" mc:Ignorable="d" x:Class="PCL.MyExtraTextButton"
     RenderTransformOrigin="0.5,0.5" ToolTip.Placement="Left" Height="52" Margin="20">
     <Grid.RenderTransform>
         <ScaleTransform ScaleX="0" ScaleY="0" />
     </Grid.RenderTransform>
+    <!-- [port] 上游用 {Binding ActualHeight, ElementName=PanBack} 动态算圆角（ActualHeight * 0.4）。
+         移植版改成 Bounds.Height 后失效：绑定到"根元素 x:Name + 结构体子属性"在 Avalonia 下取不到值
+         （见 HANDOVER §7 坑 12；实测 CornerRadius 恒为 0，按钮显示为方角），
+         改用 $parent[类型] 与 ReflectionBinding 亦无效。
+         本模板根 Grid 的高度是固定值 Height="52"，故上游 ActualHeight * 0.4 恒为 20.8 ——
+         直接写常量与上游渲染结果完全等价。 -->
     <Border x:Name="PanClick" BorderThickness="0.001" Background="{StaticResource ColorBrushSemiTransparent}"
-            CornerRadius="{Binding Bounds.Height, ConverterParameter=0.4, Converter={StaticResource MultiplicationConverter}, ElementName=PanBack, Mode=OneWay}" />
+            CornerRadius="20.8" />
     <Grid x:Name="PanScale" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" Margin="0,10,0,0">
         <Grid.RenderTransform>
             <ScaleTransform />
         </Grid.RenderTransform>
         <Border x:Name="PanColor" BorderThickness="0.001" Background="{DynamicResource ColorBrush3}"
-                CornerRadius="{Binding Bounds.Height, ConverterParameter=0.4, Converter={StaticResource MultiplicationConverter}, ElementName=PanBack, Mode=OneWay}">
+                CornerRadius="20.8">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Opacity="0.2" />
             </Border.Effect>
