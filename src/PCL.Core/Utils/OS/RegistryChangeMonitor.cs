@@ -29,12 +29,23 @@ public partial class RegistryChangeMonitor : IDisposable
     private readonly IntPtr _hKey;
     private readonly ManualResetEvent _stopEvent = new(false);
     private readonly ManualResetEvent _registryEvent = new(false);
-    private readonly Thread _monitorThread;
+    private readonly Thread? _monitorThread;
 
     public event EventHandler? Changed;
 
     public RegistryChangeMonitor(string keyPath)
     {
+        // [port] advapi32.dll 是 Windows 专属，Linux 上加载会抛 DllNotFoundException，
+        //        而 HttpProxyManager 的静态构造函数会创建本类（经 ModSetup.ApplyAll 在启动时调用），
+        //        实测 Linux 日志里表现为 "状态更改事件出错: DllNotFoundException: advapi32.dll"。
+        //        非 Windows 下不做监视：Linux 的系统代理本就不走注册表。
+        if (!OperatingSystem.IsWindows())
+        {
+            _hKey = IntPtr.Zero;
+            _monitorThread = null;
+            return;
+        }
+
         // Open registry key with proper access rights
         var result = _RegOpenKeyEx(HKEY_CURRENT_USER, keyPath, 0, KEY_READ, out _hKey);
         if (result != 0) throw new Win32Exception(result);

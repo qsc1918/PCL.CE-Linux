@@ -90,8 +90,8 @@ public partial class Application : Avalonia.Application
                     }
 
             // 初始化文件结构
-            Directory.CreateDirectory(ModBase.exePath + @"PCL\Pictures");
-            Directory.CreateDirectory(ModBase.exePath + @"PCL\Musics");
+            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Pictures"));
+            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics"));
             Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Cache"));
             Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Download"));
             Directory.CreateDirectory(ModBase.pathAppdata);
