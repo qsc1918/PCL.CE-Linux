@@ -1,0 +1,59 @@
+NOTICE
+======
+
+本仓库是第三方基于上游项目进行的二次创作（移植）版本。
+
+上游项目
+--------
+
+  PCL (Plain Craft Launcher)
+  Copyright © 龙腾猫跃 / 成都瓜皮龙科技有限公司
+  https://github.com/Meloong-Git/PCL
+
+  PCL Community Edition (PCL-CE)
+  Copyright © PCL-Community
+  https://github.com/PCL-Community/PCL2-CE
+
+本仓库基于 PCL-CE 的源码，将其界面与功能从 WPF 移植到 Avalonia 12 / .NET 10。
+本仓库与上述项目的作者及维护组织无从属关系，也未获得其背书。
+
+许可证
+------
+
+  src/Plain Craft Launcher 2/   沿用 PCL 自定义许可，见 src/Plain Craft Launcher 2/LICENCE
+  其余所有目录                  Apache License 2.0，见 LICENSE
+
+本仓库不含任何来自上游的客户端 ID、API 密钥或其他凭据。
+
+对上游文件所做的修改（Apache License 2.0 第 4(b)、4(d) 条要求声明）
+------------------------------------------------------------------
+
+移植过程中对上游源码做了大量修改，主要类型如下：
+
+1. UI 框架替换
+   - XAML 由 WPF 命名空间改为 Avalonia 命名空间；控件、样式与模板改写为 Avalonia 等价实现。
+   - 由于本项目未引入 Avalonia 主题，控件模板集中手写在
+     src/Plain Craft Launcher 2/Application.axaml 中。
+
+2. 框架 API 等价替换
+   - 依赖属性/路由事件/动画/资源查找等改为 Avalonia 对应机制。
+   - WPF 专有 API（如 pack:// URI、System.Drawing、ComponentDispatcher、
+     WindowChrome 等）替换为 Avalonia 或 SkiaSharp 的等价实现。
+
+3. 暂缓功能
+   - 崩溃分析、音乐、视频背景、联机、换肤、工具页、剪贴板行为、懒加载等模块
+     在本移植版中暂缓实现，对应文件被排除出编译或降级为占位实现。
+     详见 docs/HANDOVER.md §8。
+
+4. 缺陷修复
+   - 修复了移植过程中发现的 Avalonia 与 WPF 语义差异导致的问题，
+     逐条记录在 docs/HANDOVER.md §7。
+
+5. 新增文件
+   - 移植适配层（如 ControlResourceHelper.cs、Stubs.cs）、移植文档（docs/）与
+     自检工具（--pagetest / --logintest）为本仓库新增，不属于上游。
+
+除上述改动外，业务逻辑、界面布局、文案与配色均尽量保持与上游一致。
+
+未修改上游 `Plain Craft Launcher 2/LICENCE` 中关于署名、命名、开源与免费分发的要求；
+使用、修改或再分发本仓库时请一并遵守该文件。
