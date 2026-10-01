@@ -73,9 +73,12 @@ public static class ModBase
     /// <summary>
     ///     程序可执行文件所在目录，以“\”结尾。
     /// </summary>
-    public static readonly string exePath = (Basics.ExecutableDirectory.EndsWith(@"\")
+    // [port] 原实现无条件补反斜杠，Linux 上会得到 "/home/x/桌面\" 这种非法路径
+    //        （实测日志里 "Could not find a part of the path '/home/abc/桌面\'"）。
+    //        改用平台分隔符，Windows 行为不变。
+    public static readonly string exePath = (Basics.ExecutableDirectory.EndsWith(System.IO.Path.DirectorySeparatorChar)
         ? Basics.ExecutableDirectory
-        : Basics.ExecutableDirectory + @"\");
+        : Basics.ExecutableDirectory + System.IO.Path.DirectorySeparatorChar);
 
     /// <summary>
     ///     程序内嵌图片文件夹路径，以“/”结尾。
@@ -2414,7 +2417,7 @@ public static class ModBase
 
     private static string GetPureASCIIDir()
     {
-        if (exePath.IsASCII()) return exePath + @"PCL\";
+        if (exePath.IsASCII()) return System.IO.Path.Combine(exePath, "PCL");
 
         if (pathAppdata.IsASCII()) return pathAppdata;
 

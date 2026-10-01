@@ -107,7 +107,7 @@ public static class ModFolder
             // 扫描当前文件夹
             try
             {
-                if (Directory.Exists(ModBase.exePath + @"versions\"))
+                if (Directory.Exists(System.IO.Path.Combine(ModBase.exePath, "versions")))
                     originalMcFolderList.Add(new McFolder
                         { Name = Lang.Text("Select.Folder.CurrentFolder"), Location = ModBase.exePath, type = McFolder.Types.Original });
                 foreach (var folder in new DirectoryInfo(ModBase.exePath).GetDirectories())
@@ -168,9 +168,9 @@ public static class ModFolder
             // 若没有可用文件夹，则创建 .minecraft
             if (!cacheMcFolderList.Any())
             {
-                Directory.CreateDirectory(ModBase.exePath + @".minecraft\versions\");
+                Directory.CreateDirectory(System.IO.Path.Combine(ModBase.exePath, ".minecraft", "versions"));
                 cacheMcFolderList.Add(new McFolder
-                    { Name = Lang.Text("Select.Folder.CurrentFolder"), Location = ModBase.exePath + @".minecraft\", type = McFolder.Types.Original });
+                    { Name = Lang.Text("Select.Folder.CurrentFolder"), Location = System.IO.Path.Combine(ModBase.exePath, ".minecraft"), type = McFolder.Types.Original });
             }
 
             foreach (var Folder in cacheMcFolderList) McFolderLauncherProfilesJsonCreate(Folder.Location);
