@@ -762,13 +762,18 @@ public partial class FormMain : Window
             heart.Start();
         }
 
+        // [port][TEMP] 定位 Loaded 卡点
+        Console.Error.WriteLine("[LoadedProbe] 1 进入 Loaded 主体");
         FormMain_SizeChanged();
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
         // [port] WPF WindowInteropHelper 句柄在 Avalonia 不可用（Win32），注释掉；ModBase.frmHandle 保持默认值
         // ModBase.frmHandle = new WindowInteropHelper(this).Handle;
         // 读取设置
+        Console.Error.WriteLine("[LoadedProbe] 2 即将 BackgroundRefresh");
         PageSetupUI.BackgroundRefresh(false, true);
+        Console.Error.WriteLine("[LoadedProbe] 3 BackgroundRefresh 完成");
         ModMusic.MusicRefreshPlay(false, true);
+        Console.Error.WriteLine("[LoadedProbe] 4 MusicRefreshPlay 完成");
         // 扩展按钮
         BtnExtraUpdateRestart.showCheck = BtnExtraUpdateRestart_ShowCheck;
         BtnExtraDownload.showCheck = BtnExtraDownload_ShowCheck;
@@ -789,8 +794,12 @@ public partial class FormMain : Window
                 "M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M83,6.5 a10,11.5 180 1 0 0,18 M48,2.5 v24.5 h13.5");
         // 加载窗口
 
+        Console.Error.WriteLine("[LoadedProbe] 6 即将 ThemeRefresh");
         ThemeManager.ThemeRefresh();
+        Console.Error.WriteLine("[LoadedProbe] 7 ThemeRefresh 完成");
+        Console.Error.WriteLine("[LoadedProbe] 8 即将 ApplyAll");
         ModSetup.ApplyAll();
+        Console.Error.WriteLine("[LoadedProbe] 9 ApplyAll 完成");
         Lifecycle.CurrentApplication.Resources["BlurSamplingRate"] = Config.Preference.Blur.SamplingRate * 0.01d;
         Lifecycle.CurrentApplication.Resources["BlurType"] = Config.Preference.Blur.KernelType;
         if (Config.Preference.Blur.IsEnabled)
@@ -810,7 +819,9 @@ public partial class FormMain : Window
         // Top = (GetWPFSize(My.Computer.Screen.WorkingArea.Height) - Height) / 2
         // Left = (GetWPFSize(My.Computer.Screen.WorkingArea.Width) - Width) / 2
         isSizeSaveable = true;
+        Console.Error.WriteLine("[LoadedProbe] 10 即将 ShowWindowToTop");
         ShowWindowToTop();
+        Console.Error.WriteLine("[LoadedProbe] 11 ShowWindowToTop 完成");
         // [port] WPF HwndSource 钩子（PresentationSource.FromVisual/HwndSource.AddHook(WndProc)）在 Avalonia 不可用（Win32），注释掉；WndProc 亦在下方 #if WINDOWS 保留
         // var hwndSource = (HwndSource)PresentationSource.FromVisual(this);
         // hwndSource.AddHook(WndProc);
@@ -831,8 +842,10 @@ public partial class FormMain : Window
                     $"[System] DPI：{ModBase.dpi}，系统版本：{Environment.OSVersion.VersionString}，PCL 位置：{Basics.ExecutablePath}");
             }, after: true)
         }, "Form Show");
+        Console.Error.WriteLine("[LoadedProbe] 13 即将 AniStart()");
         // Timer 启动
         ModAnimation.AniStart();
+        Console.Error.WriteLine("[LoadedProbe] 14 AniStart() 完成");
         ModMain.TimerMainStart();
         // 特殊版本提示
         ModBase.RunInNewThread(() =>
