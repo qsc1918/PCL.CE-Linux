@@ -384,6 +384,8 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
 
 **注意**：`PageSubType` 各段（Download*/Setup*/Version*）**数值重叠**，`Enum.ToString()` 可能显示同值的其它段名字——日志里同时打印了数值以便核对。
 
+**另：`--logintest`** —— 单独开关，启动后用当前配置的 `PCL_MS_CLIENT_ID` 真跑一遍正版登录（构造 `new McLoginMs()` 启动 `mcLoginMsLoader`），并打印读到的客户端 ID、加载器状态与 FTL/ERR 计数。用于验证 Azure 应用是否配置正确。注意它会**自动打开浏览器**到 `microsoft.com/link`。已验证：设备码请求返回 200、解析出授权页、无异常。
+
 **配套脚本**（都在 `tools/`）：
 - `fix-buttons-collection.py` — 坑 13（x:Array → sys:List）
 - `fix-pagecomp-content.py` — 坑 14（PageComp.SearchTags 显式包裹）
