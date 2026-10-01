@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -228,9 +229,51 @@ public static partial class KernelInterop
     /// </summary>
     public static (ulong Total, ulong Available) GetPhysicalMemoryBytes()
     {
+        // [port] GlobalMemoryStatusEx 是 kernel32 的 API，Linux 上加载 kernel32.dll 会抛
+        //        DllNotFoundException。而 StartupService（BeforeLoading 阶段最先启动的服务）
+        //        在启动横幅里就会调用本方法 —— Linux 单文件版启动即崩的源头之一。
+        //        Linux 下改从 /proc/meminfo 读取（MemTotal / MemAvailable，单位为 KB）。
+        if (!OperatingSystem.IsWindows())
+        {
+            ulong total = 0, available = 0;
+            try
+            {
+                foreach (var line in File.ReadLines("/proc/meminfo"))
+                {
+                    if (line.StartsWith("MemTotal:", StringComparison.Ordinal))
+                        total = _ParseMemInfoKb(line) * 1024ul;
+                    else if (line.StartsWith("MemAvailable:", StringComparison.Ordinal))
+                        available = _ParseMemInfoKb(line) * 1024ul;
+                }
+            }
+            catch
+            {
+                // 读不到就返回 0，绝不因为统计信息让启动失败
+            }
+
+            return (total, available);
+        }
+
         var status = CreateStatus();
         if (!GlobalMemoryStatusEx(ref status)) _ThrowLastWin32Error();
         return (status.ullTotalPhys, status.ullAvailPhys);
+    }
+
+    // /proc/meminfo 形如 "MemTotal:       16269048 kB"
+    private static ulong _ParseMemInfoKb(string line)
+    {
+        var span = line.AsSpan(line.IndexOf(':', StringComparison.Ordinal) + 1);
+        var digitsStart = -1;
+        var digitsEnd = -1;
+        for (var i = 0; i < span.Length; i++)
+        {
+            if (!char.IsDigit(span[i])) continue;
+            if (digitsStart < 0) digitsStart = i;
+            digitsEnd = i + 1;
+        }
+
+        if (digitsStart < 0) return 0ul;
+        return ulong.TryParse(span[digitsStart..digitsEnd], out var kb) ? kb : 0ul;
     }
 
     /// <summary>
@@ -238,6 +281,14 @@ public static partial class KernelInterop
     /// </summary>
     public static double GetMemoryLoadPercent()
     {
+        // [port] 同上，Linux 上不调用 kernel32；用 /proc/meminfo 计算占用百分比。
+        if (!OperatingSystem.IsWindows())
+        {
+            var (total, available) = GetPhysicalMemoryBytes();
+            if (total == 0ul) return 0d;
+            return (double)(total - available) / total * 100d;
+        }
+
         var status = CreateStatus();
         if (!GlobalMemoryStatusEx(ref status)) _ThrowLastWin32Error();
         return status.dwMemoryLoad;

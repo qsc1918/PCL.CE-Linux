@@ -14,8 +14,32 @@ public class ProcessInterop {
     /// 检查当前程序是否以管理员权限运行。
     /// </summary>
     /// <returns>如果当前用户具有管理员权限，则返回 true；否则返回 false。</returns>
-    public static bool IsAdmin() =>
-        new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+    public static bool IsAdmin()
+    {
+        // [port] WindowsIdentity/WindowsPrincipal 依赖 Windows 身份体系，在 Linux 上
+        //        GetCurrent() 会抛异常（PlatformNotSupportedException / 类型初始化失败）。
+        //        而 StartupService（BeforeLoading 阶段最先启动的服务）在启动横幅里就会
+        //        调用本方法 —— 于是 Linux 上"启动阶段服务实例化失败"直接致命退出（实测
+        //        Linux 单文件版启动即崩的源头之一）。Linux 下等价语义改为判断是否 root。
+        if (!OperatingSystem.IsWindows())
+        {
+            try
+            {
+                return _GetEffectiveUserId() == 0u;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+    }
+
+    [System.Runtime.InteropServices.DllImport("libc", SetLastError = true)]
+    private static extern uint geteuid();
+
+    private static uint _GetEffectiveUserId() => geteuid();
 
     /// <summary>
     /// 获取指定进程 ID 的命令行参数。
