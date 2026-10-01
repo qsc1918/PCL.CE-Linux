@@ -124,7 +124,23 @@ partial class Lifecycle
 
     private static void _FatalExit()
     {
-        ForceShutdown(-1);
+        // [port] 致命错误必须能无条件终止进程。
+        // 原实现走 ForceShutdown(-1) → Shutdown()，而 Shutdown 在 BeforeLoading 状态会直接抛
+        // InvalidOperationException（那个检查是给"正常关闭"用的，见 Shutdown 的异常注释）。
+        // 于是"启动阶段某个服务实例化失败"时，真正的原因被这个异常顶掉，
+        // 用户只能看到一句 "Operation is not valid due to the current state of the object"，
+        // 原始异常则随进程一起消失（Linux 上就是这个现象）。
+        // 这里改为直接走 _Exit（内部有 HasShutdownStarted 幂等保护），并兜底 kill 进程。
+        try
+        {
+            _Exit(-1);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("[Lifecycle] 致命退出流程自身出错，将直接终止进程");
+            Console.Error.WriteLine(ex);
+            _KillCurrentProcess();
+        }
     }
 
     private static void _Exit(int statusCode = 0)

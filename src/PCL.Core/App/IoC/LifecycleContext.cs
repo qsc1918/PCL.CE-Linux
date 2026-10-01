@@ -34,8 +34,20 @@ partial class Lifecycle
         {
             lock (_PendingLogs)
             {
-                if (_logService is null) _PendingLogs.Add(item);
-                else _PushLog(item, _logService);
+                if (_logService is null)
+                {
+                    _PendingLogs.Add(item);
+                    // [port] 启动阶段日志服务尚未就绪，日志只会堆在 _PendingLogs 里。
+                    //        一旦此时发生致命错误，这些内容会随进程一起消失——用户只能看到
+                    //        一句无关的 InvalidOperationException（Linux 启动崩溃就是这个现象）。
+                    //        故把 Error/Fatal 级同时写到标准错误，保证原因一定可见。
+                    if (item.Level >= LogLevel.Error)
+                        Console.Error.WriteLine(item.ComposeMessage());
+                }
+                else
+                {
+                    _PushLog(item, _logService);
+                }
             }
             if (item.ActionLevel == ActionLevel.MsgBoxFatal) _FatalExit();
         },
