@@ -301,7 +301,18 @@ public static class ModMain
         /// </summary>
         public Collection<IValidator<string>> ValidateRules;
 
-        public DispatcherFrame WaitFrame = new(true);
+        // [port] WPF 的 DispatcherFrame 绑定"当前线程"的 Dispatcher，构造函数不做校验；
+        //        Avalonia 的 DispatcherFrame 构造函数会执行 Dispatcher.VerifyAccess()，
+        //        在非 UI 线程 new 会直接抛 InvalidOperationException。
+        //        原实现把它写成字段初始化器，导致任何后台线程调用弹窗（登录、下载报错等）
+        //        在 new MyMsgBoxConverter 这一步就崩溃。故改为首次访问时（在 UI 线程）惰性创建。
+        private DispatcherFrame _waitFrame;
+
+        public DispatcherFrame WaitFrame
+        {
+            get => _waitFrame ??= new DispatcherFrame(true);
+            set => _waitFrame = value;
+        }
     }
 
     public enum MyMsgBoxType
@@ -314,6 +325,47 @@ public static class ModMain
     }
 
     private static string GetDefaultDialogTitle() => Lang.Text("Common.Dialog.Title");
+
+    /// <summary>
+    ///     [port] 泵送弹窗的模态消息帧，并保证弹窗由 UI 线程创建。
+    ///     Avalonia 的 <see cref="DispatcherFrame"/> 构造函数会执行 Dispatcher.VerifyAccess()（WPF 不会），
+    ///     且 <c>PushFrame</c> 只能在 UI 线程调用；弹窗本身（<see cref="MyMsgBoxTick"/>）也必须由 UI 线程创建。
+    ///     所以当调用方不是 UI 线程时（登录、下载等后台线程报错弹窗），
+    ///     这里把"创建弹窗 + 泵送模态帧"整体投递到 UI 线程，并阻塞当前线程直到弹窗关闭。
+    /// </summary>
+    private static void PumpMsgBoxFrame(MyMsgBoxConverter converter)
+    {
+        if (ModBase.RunInUi())
+        {
+            try
+            {
+                MyMsgBoxTick();
+                frmMain?.DragStop();
+                Dispatcher.UIThread.PushFrame(converter.WaitFrame);
+            }
+            catch (Exception ex)
+            {
+                ModBase.Log(ex, "显示弹窗失败");
+            }
+
+            return;
+        }
+
+        ModBase.RunInUiWait(() =>
+        {
+            try
+            {
+                MyMsgBoxTick();
+                frmMain?.DragStop();
+                Dispatcher.UIThread.PushFrame(converter.WaitFrame);
+            }
+            catch (Exception ex)
+            {
+                ModBase.Log(ex, "后台线程显示弹窗失败");
+                converter.WaitFrame.Continue = false;
+            }
+        });
+    }
 
     private static string GetDefaultConfirmText() => Lang.Text("Common.Action.Confirm");
 
@@ -394,20 +446,14 @@ public static class ModMain
             }
             else
             {
-                try
-                {
-                    frmMain.DragStop();
-                    // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
-                    Dispatcher.UIThread.PushFrame(converter.WaitFrame);
-                }
-                finally
-                {
-                    // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
-                }
+                PumpMsgBoxFrame(converter);
             }
 
             ModBase.Log($"[Control] 普通弹框返回：{converter.Result ?? "null"}");
-            return (int)converter.Result;
+            // [port] 弹窗没产生结果时（关闭流程中 PushFrame 直接返回、后台线程投递失败等）Result 为 null。
+            //        上游写的是 (int)converter.Result，但 (int)(object)null 会抛 NullReferenceException 触发 FTL，
+            //        这里按"未选择"返回 0。
+            return converter.Result is int resultCode ? resultCode : 0;
         }
 
         // 不进行等待，直接返回
@@ -489,20 +535,14 @@ public static class ModMain
             }
             else
             {
-                try
-                {
-                    frmMain.DragStop();
-                    // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
-                    Dispatcher.UIThread.PushFrame(converter.WaitFrame);
-                }
-                finally
-                {
-                    // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
-                }
+                PumpMsgBoxFrame(converter);
             }
 
             ModBase.Log($"[Control] 普通弹框返回：{converter.Result ?? "null"}");
-            return (int)converter.Result;
+            // [port] 弹窗没产生结果时（关闭流程中 PushFrame 直接返回、后台线程投递失败等）Result 为 null。
+            //        上游写的是 (int)converter.Result，但 (int)(object)null 会抛 NullReferenceException 触发 FTL，
+            //        这里按"未选择"返回 0。
+            return converter.Result is int resultCode ? resultCode : 0;
         }
 
         // 不进行等待，直接返回
@@ -535,16 +575,7 @@ public static class ModMain
         };
         WaitingMyMsgBox.Add(converter);
         // 虽然我也不知道这是啥但是能用就成了 :)
-        try
-        {
-            frmMain?.DragStop();
-            // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
-            Dispatcher.UIThread.PushFrame(converter.WaitFrame);
-        }
-        finally
-        {
-            // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
-        }
+        PumpMsgBoxFrame(converter);
 
         ModBase.Log($"[Control] 输入弹框返回：{converter.Result}");
         return converter.Result?.ToString();
@@ -571,17 +602,7 @@ public static class ModMain
         };
         WaitingMyMsgBox.Add(converter);
         // 虽然我也不知道这是啥但是能用就成了 :)
-        try
-        {
-            if (frmMain is not null)
-                frmMain.DragStop();
-            // [port] WPF ComponentDispatcher.PushModal()：Avalonia 无模态对话框栈（弹窗为覆盖 Panel），移除。
-            Dispatcher.UIThread.PushFrame(converter.WaitFrame);
-        }
-        finally
-        {
-            // [port] WPF ComponentDispatcher.PopModal()：Avalonia 无模态对话框栈，移除。
-        }
+        PumpMsgBoxFrame(converter);
 
         ModBase.Log($"[Control] 选择弹框返回：{converter.Result ?? "null"}");
         return (int?)converter.Result;

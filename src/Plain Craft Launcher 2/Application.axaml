@@ -396,13 +396,30 @@
             </Setter>
         </Style>
 
+        <!-- [port] 本应用没有引入 Avalonia 主题（FluentTheme/SimpleTheme），控件模板都在本文件里手写。
+             ItemsControl 原先没有模板 → 不会实例化 ItemsPresenter → 一个子项都不渲染
+             （实测：档案列表 ItemCount=4，但 ItemsControl 的视觉子树为 0，界面完全空白；
+               同理影响所有用 ItemsControl 的列表）。此处补上与 WPF 默认模板等价的实现。 -->
+        <Style Selector="ItemsControl">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
         <!-- ContextMenu -->
         <Style Selector="ContextMenu">
             <Setter Property="Template">
                 <ControlTemplate>
+                    <!-- [port] Avalonia 的 BoxShadow 是**空格分隔**：offsetX offsetY blur spread color，
+                         逗号只用于分隔「多个阴影」。写成 "0 2 4 0, #66000000" 会被当成两个阴影，
+                         第一个 "0 2 4 0" 只有 4 个 token → 末位 "0" 被当作颜色 → FormatException。
+                         该模板在首次弹出 ContextMenu 时实例化，于是"右键菜单一出现就崩溃"。 -->
                     <Border BorderBrush="{DynamicResource ColorBrush1}" BorderThickness="1" CornerRadius="3"
                             Background="{DynamicResource ColorBrushWhite}" Margin="0,0,4,4"
-                            BoxShadow="0 2 4 0, #66000000">
+                            BoxShadow="0 2 4 0 #66000000">
                         <ItemsPresenter x:Name="PART_ItemsPresenter" Margin="0.5" />
                     </Border>
                 </ControlTemplate>
