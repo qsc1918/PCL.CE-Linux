@@ -718,8 +718,39 @@ public partial class FormMain : Window
                             $"进度={ModLaunch.mcLoginMsLoader.Progress}, " +
                             $"等待弹窗={ModMain.WaitingMyMsgBox.Count}, " +
                             $"PanMsg 子项={ModMain.frmMain?.PanMsg?.Children.Count}");
+
+                // 复刻 PageLoginMs.BtnLogin_Click 的失败分支（在后台线程按 Msgbox 级别弹窗）
+                var err = ModLaunch.mcLoginMsLoader.Error;
+                if (err is not null)
+                {
+                    ModBase.Log("[LoginTest] 正在按 UI 路径弹窗（后台线程 + LogLevel.Msgbox）");
+                    ModBase.RunInNewThread(() =>
+                    {
+                        ModBase.Log(err, "登录失败", ModBase.LogLevel.Msgbox, userSummary: "登录失败");
+                        ModBase.Log("[LoginTest] Msgbox 调用已返回");
+                    }, "LoginTest MsgBox");
+                }
             };
             loginCheck.Start();
+
+            // 心跳：UI 线程若被卡住，心跳会停止；同时观察各队列长度与托管堆大小
+            var beat = 0;
+            var heart = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(2d) };
+            heart.Tick += (_, _) =>
+            {
+                beat++;
+                if (beat > 18) { heart.Stop(); return; }
+                try
+                {
+                    ModBase.Log($"[LoginTest] 心跳#{beat} 托管堆={GC.GetTotalMemory(false) / 1048576}MB, " +
+                                $"PanMsg子项={ModMain.frmMain?.PanMsg?.Children.Count}, " +
+                                $"等待弹窗={ModMain.WaitingMyMsgBox.Count}, " +
+                                $"PanHint子项={ModMain.frmMain?.PanHint?.Children.Count}, " +
+                                $"PanHint子项={ModMain.frmMain?.PanHint?.Children.Count}");
+                }
+                catch (Exception ex) { ModBase.Log(ex, "[LoginTest] 心跳失败"); }
+            };
+            heart.Start();
         }
 
         FormMain_SizeChanged();
