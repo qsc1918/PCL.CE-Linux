@@ -1,8 +1,7 @@
 # AGENTS.md — PCL-CE → Avalonia/Linux 移植项目
 
 > 本文件是新 AI 代理的**第一入口**。完整交接文档：**`docs/HANDOVER.md`**（必读，含全部踩坑记录与文件清单）。
-> Avalonia 12 实测 API 笔记：`docs/av12-notes.txt`。早期评估报告（A/B/C 分类）：`PORTING_PLAN.md`。
-> `docs/PORTING-STATUS.md`、`STATUS.md` 为历史快照，**已过时**，不要按它们行动。
+> Avalonia 12 实测 API 笔记（权威，比 A11 指南新）：`docs/av12-notes.txt`。早期评估报告（A/B/C 分类）：`PORTING_PLAN.md`。功能清单：`docs/FEATURES.md`。
 
 ## 项目一句话
 

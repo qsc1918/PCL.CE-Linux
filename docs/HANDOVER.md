@@ -6,9 +6,9 @@
 >
 > 配套文档（都在本仓库 docs/ 下）：
 > - `av12-notes.txt` — Avalonia 12 实测 API 更正（权威，与 A11 指南不同）
-> - `PORTING-MAPPING.md` — 早期转换规则（**GBK 编码**，读取需 `Encoding.GetEncoding(936)`）
-> - `PORTING-STATUS.md` — 历史进度快照（2026-08-31，部分内容已过时，以本文档为准）
+> - `PORTING-MAPPING.md` — 转换规则表（**GBK 编码**，读取需 `Encoding.GetEncoding(936)`）
 > - `FEATURES.md` — 功能清单与 P1/P2/P3 优先级（待用户确认）
+> - `port-mapping-g4.md` — 早期分批移植的作业说明
 
 ---
 
@@ -72,12 +72,10 @@ D:\a\j\PCL.CE-Linux\          ← 本仓库（移植工作区）
 ├── src\
 │   ├── Plain Craft Launcher 2\   ← 主工程（AssemblyName=PCL, RootNamespace=PCL）
 │   ├── PCL.Core\                 ← 核心库（EnableDefaultItems=false, 手动 Include）
-│   ├── PCL.Core.SourceGenerators\← 原样保留
-│   ├── PCL.Neo.Core\             ← 旧 Neo 骨架，不在编译范围，待用户决定删除
-│   └── PCL.Neo.UI\               ← 同上
+│   └── PCL.Core.SourceGenerators\← 原样保留
 ├── docs\                         ← 本文档所在地
-├── tools\                        ← 批量修复脚本（fix-axaml-bulk.ps1 等）
-└── 上游基线：D:\a\j\PCL-CE（verbatim 副本，git 根提交 6a525ab）
+├── tools\                        ← 批量修复脚本
+└── 上游基线：PCL-CE 仓库（verbatim 副本，git 根提交 6a525ab）
 
 构建输出：src\Plain Craft Launcher 2\bin\Debug\net10.0\PCL.exe (+ PCL.dll 5.0MB)
 运行日志：同目录 PCL\Log\Launch-*.log（**GBK 编码**）
@@ -333,16 +331,16 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
    - `dist/` 已入 `.gitignore`（116MB，勿入库）。给用户的目录内含 `run.sh`（`LC_ALL=zh_CN.UTF-8` + `exec ./PCL`）。
 3. **Linux 真机测试** — self-contained publish 交给用户 VM 验证。
 4. **暂缓功能移植**（用户确认优先级后）— PageTools（工具页）大概率是下一个大块。
-5. **清理** — `src\PCL.Neo.Core` / `src\PCL.Neo.UI` 不在编译范围，待用户决定是否删除；`docs/current-errors.txt`、`g4-*.txt`、`g5-*.txt` 是历史调试产物可清理。
-6. **更新 PORTING-STATUS.md** 或以本文档为准将其归档。
+5. ~~清理~~ — ✅ 已完成（2026-10-01）：`src/PCL.Neo.Core`、`src/PCL.Neo.UI` 废弃骨架、
+   `STATUS.md`、`docs/PORTING-STATUS.md` 以及全部历史调试产物（`errs*.txt`、`g4-*.txt`、`g5-*.txt`）均已删除。
 
 ## 10. 待用户确认的问题（攒批问）
 
 1. B 类偏差（有 [port] 注释的语义近似）是否接受？
 2. C 类 Linux 降级（如 HLSL 着色器模糊跳过、SystemDialogs 异步化）清单是否接受？
 3. FEATURES.md 的 P1/P2/P3 优先级是否认可？
-4. `PCL.Neo.Core`/`PCL.Neo.UI` 两个废弃骨架是否删除？
-5. 透明窗口现状（需用户跑一眼 `PCL.exe` 看画面）。
+4. ~~`PCL.Neo.Core`/`PCL.Neo.UI` 两个废弃骨架是否删除？~~ → ✅ 已删除（2026-10-01）
+5. ~~透明窗口现状~~ → ✅ 已确认正常（2026-09-28）
 
 ## 11. 工作方法约定（延续）
 

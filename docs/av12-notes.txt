@@ -1,0 +1,49 @@
+# Avalonia 12 实测 API 更正（比 Avalonia 11 指南更新，2026 编译验证）
+
+> 以下为子代理反射核对的 Avalonia 12.0.4 实际 API，与早期按 Avalonia 11 写的 port-mapping 指引不同。
+> 所有后续修复以本文件为准。
+
+## Clipboard
+- `Application.Current.Clipboard` **不存在**。
+- 正确：`TopLevel.GetTopLevel(control)?.Clipboard`（返回 `IClipboard`，命名空间 `Avalonia.Input.Platform`）。
+- 剪贴板扩展方法：`SetBitmapAsync` / `SetFilesAsync` / `TryGetFilesAsync` / `GetTextAsync` / `SetTextAsync`。
+- WPF `StringCollection`（SetFileDropList/GetFileDropList）无等价物 → 用 `IClipboard` + `IStorageItem` 扩展重实现（`[port]`）。
+
+## DragEventArgs / 拖拽
+- 属性：`e.DataTransfer`（类型 `IDataTransfer`，**同步**，非 `IAsyncDataTransfer`）。**没有 `Data`、没有 `Effects`**。
+- `e.DataTransfer.TryGetFiles()` 返回文件集合；`e.DataTransfer.Contains(DataFormat)`。
+- 效果属性：`e.DragEffects`，枚举仍是 `DragDropEffects`（Copy/None 取值不变）。
+- **`e.Operations` / `DragDropOperations` 在 12 不存在**。
+- 注意：有的子代理早期在 PageInstanceExport/PageSelectLeft 用了 `((IAsyncDataTransfer)e.DataTransfer).TryGetFilesAsync()`，**可编译但运行时会抛异常**（对象未实现 IAsyncDataTransfer），应切同步 `TryGetFiles()`。
+- 注册拖拽事件：`DragDrop.AddDragEnterHandler(this, handler)` / `AddDragOverHandler`（不暴露 handledEventsToo=true）。
+
+## ColumnDefinition / RowDefinition
+- Avalonia 命名字段生成器**不为 ColumnDefinition/RowDefinition 生成字段**（即使 axaml 写 `x:Name`）。
+- 正确访问：给所属 Grid 补 `x:Name`，然后 `grid.ColumnDefinitions[index]` / `grid.RowDefinitions[index]`。
+
+## Transform / RenderTransform
+- `RenderTransform` 内 RotateTransform/TranslateTransform 的 `x:Name` **不生成字段**。
+- 正确：给所属元素补 `x:Name`，然后在 code-behind 里从 `element.RenderTransform`(TransformGroup) 按索引取 `[0]=Rotate [1]=Translate`。
+- `TransformCollection` 无 → 用 `TransformGroup.Children.Add(...)`。
+- `ScaleTransform.CenterX/CenterY` 无 → 用 `RenderTransformOrigin = new RelativePoint(new Point(0.5,0.5), RelativeUnit.Relative)`。
+- RelativePoint 构造：`new RelativePoint(new Point(0.5,0.5), RelativeUnit.Relative)`（无 (double,double) 重载）。
+
+## 其他
+- `ContentPresenter` → `Avalonia.Controls.Presenters.ContentPresenter`。
+- `ScrollViewer`：`VerticalOffset` → `Offset.Y`；`ScrollableHeight` → `Extent.Height - Viewport.Height`；`ScrollToVerticalOffset(v)` → `Offset = new Vector(Offset.X, v)`。
+- `ColumnDefinition.ActualWidth` 取代 `Bounds.Width`。
+- `GeometryConverter().ConvertFromString()` → `Geometry.Parse()`。
+- 无 `Mouse.LeftButton` / `MouseButtonState.Pressed` 静态查询 → 用指针事件（PointerPressed/PointerReleased）跟踪私有 bool 字段。
+- `Window.Left/Top` → `Window.Position`（PixelPoint）。
+- `ComponentDispatcher.PushModal/PopModal` 无 → 移除。
+- `PassWordBox`：Avalonia 默认命名空间有（需确认 xmlns 是否带默认 Avalonia 命名空间）。
+- `Microsoft.Win32` / `System.Drawing` / `RenderTargetBitmap(w,h,dpi,dpi,PixelFormats)` → Avalonia `RenderTargetBitmap(new PixelSize(w,h))`。
+- `XamlXmlReader`（System.Xaml，仅 Windows）→ 退化为 XAML 文本扫描 + `Avalonia.Markup.Xaml.XamlReader.Load`。
+
+## 桩 Stubs.cs 说明
+- Stubs.cs 是多个子代理共享修改的文件。已包含：
+  - BlurBorder / MotdRenderer（namespace PCL.Core.UI.Controls）
+  - ModVideoBack / ModMusic / ModSkin（namespace PCL，暂缓功能桩）
+  - MyColorExtensions.ToBrush()/ToColor()（MyColor → IBrush）
+  - ControlTemplateExtensions.FindName()
+- 任何新增桩成员要在文件里保持单一，不要重复（先在文件里 grep 确认）。
