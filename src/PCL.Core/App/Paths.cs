@@ -83,6 +83,12 @@ public static class Paths
         EnvironmentInterop.ReadVariable("PCL_PATH_LOCAL", ref _sharedLocalData);
         EnvironmentInterop.ReadVariable("PCL_PATH_TEMP", ref _temp);
 #endif
+        // [port] Windows 上可执行文件名为 PCL.exe，因此数据目录 <程序目录>\PCL 不会与它冲突；
+        //        Linux 上可执行文件没有扩展名、就叫 PCL，于是 <程序目录>/PCL 正好指向可执行文件本身，
+        //        Directory.CreateDirectory 抛 IOException("The file '...' already exists")。
+        //        实测这就是 Linux 单文件版启动即崩的直接原因。冲突时改用 PCL-Data。
+        if (!OperatingSystem.IsWindows() && File.Exists(_data))
+            _data = Path.Combine(DefaultDirectory, "PCL-Data");
         // create directories
         Directory.CreateDirectory(_data);
         Directory.CreateDirectory(_sharedData);

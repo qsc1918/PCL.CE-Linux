@@ -18,7 +18,10 @@ partial class Lifecycle
         service.OnLog(item);
     }
 
-    public static string PendingLogDirectory { get; set; } = @"PCL\Log";
+    // [port] 原值是字面量 @"PCL\Log"，反斜杠在 Linux 上是合法文件名字符，
+    //        于是会生成名为 "PCL\Log" 的文件而不是 PCL 目录下的 Log 子目录
+    //        （实测 Linux 启动日志落到 .../PCL\Log/）。改用 Path.Combine 以适配两种分隔符。
+    public static string PendingLogDirectory { get; set; } = Path.Combine("PCL", "Log");
     public static string PendingLogFileName { get; set; } = "LastPending.log";
 
     /// <summary>
