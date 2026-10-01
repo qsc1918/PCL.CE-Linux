@@ -19,43 +19,50 @@
 5. 频繁 commit；给用户的问题攒到最后批量问。
 6. 工具约束：pwsh 读中文日志用 `[System.Text.Encoding]::GetEncoding(936)`（GBK）；`[System.IO.File]` 用绝对路径；.ps1 脚本纯 ASCII。
 
-## 当前状态（2026-09-30，第二轮缺陷修复）
+## 当前状态（2026-10-01，第三轮缺陷修复）
 
-- ✅ 编译 0 错误；`PCL.exe --pagetest` 自检 **59 通过 / 2 失败**（2 项为已知上游缺口）
-- ✅ **第一轮（界面/配色）**：整站配色、本地化、内嵌图片、页面实例化崩溃 —— 已修（见下"快速排雷"）
-- ✅ **第二轮（用户报告的交互缺陷，2026-09-30）**：
-  - 实例设置页左侧列表项**全部点不动** → 同一事件多个 Tunnel 处理器在 Avalonia 下**逆序**执行，复位先于点击（坑 19）
-  - 标题栏选项卡 / 最小化 / 关闭 / 返回按钮**点不动**（有动画）→ `IsPointerOver` 含子元素，拖动分支抢走指针（坑 20）
-  - 「实例设置」按钮**文字空白** → `TextPadding=36` 超过按钮高度，Avalonia 把文字压没（坑 22）
-  - 实例设置页**滚轮异常缓慢** → 滚轮量纲 ±120 vs ±1（坑 23）
-  - 点「实例选择」**崩溃**（"加载实例列表失败"）→ 配置里残留旧 `pack://` 图标路径（坑 18 补充）
-  - 连带修复：Mod 页 `SetColorfulTextLab` NRE（坑 21）、`MyTextBox` 提示文本 NRE（坑 24）
-- ⚠️ 已知未修：`设置→更新`页（上游缺 `Tahoe.png`）、`联机`页（暂缓功能）
+- ✅ 编译 0 错误；`PCL.exe --pagetest` 自检 **59 通过 / 2 失败**（2 项为已知上游缺口），**0 FTL / 0 ERR**
+- ✅ **第三轮（用户报告的 13 项，2026-10-01）**：
+  - 点**下载**选项卡约 1 秒崩溃 → `MyTextBox` 给 FluentValidation 传 null 模型（坑 31）
+  - 点**设置**选项卡整个 UI 冻结 → `MyComboBox` 模板部件 NRE + 弹窗系统损坏（坑 30 / 28 / 29）
+  - 右键菜单（实例文件夹列表）一出现就崩溃 → `BoxShadow` 语法错（坑 27）
+  - 弹窗"继续/取消"点不动、关不掉 → `PanMsg` 上的拖动抢指针（**上一轮 FormDragMove 修复已覆盖**）
+  - 点"测试游戏"/正版验证弹出**致命异常窗口**并退出 → `MyMsgBox` 的 `(int)null` + 跨线程 `DispatcherFrame`（坑 28 / 29）
+  - **选择档案界面一个账号都没有** → `ItemsControl` 缺模板（坑 25）+ `*` 行塌陷（坑 26）
+  - "开始重置"按钮变**方角** → `ElementName` 指向根 `x:Name` 的绑定失效（坑 32）
+  - 点**工具**选项卡只切栏不换内容 → `PageTools` 属暂缓功能（预期）
+- ⚠️ **仍未修（需继续排查）**：账号头像不显示（皮肤头缓存未生成，见下）、启动游戏时界面元素重合、启动按钮偶发卡在"正在加载"、实例选择左侧文件夹列表左键无法切换文件夹
+- ⚠️ **正版登录**需要 `PCL_MS_CLIENT_ID` 环境变量（Debug 构建）或构建期密钥库（Release）；仓库不含该密钥，属设计如此
 - ❌ 未做：Linux 真机测试（**本机 `wsl.exe` 被安全策略拉黑**，只能交给用户 VM）
 - ❌ 暂缓功能（用户指定 8 项）：CrashAnalysis / ModMusic / ModVideoBack / ModLink / ModSkin / PageTools / ClipboardInterceptor / LazyLoadBehavior
 
 ## 下一步（按序）
 
-1. 用户复测：左侧列表项/标题栏选项卡/最小化/关闭/返回按钮可点；实例设置按钮文字正常；滚轮速度正常；点「实例选择」不崩。
-2. Linux 真机测试：把 `dist/linux-x64/`（含 `run.sh`）拷到 Linux VM，`chmod +x PCL run.sh && ./run.sh`。WSL 在本机被安全策略拉黑，无法代跑。
-3. 暂缓功能移植（优先级问用户，PageTools 大概率优先）。
-4. 清理：根目录 errs*.txt/err_*.txt/build_full.txt 为历史调试产物；`src\PCL.Neo.Core`/`PCL.Neo.UI` 废弃骨架待用户决定删除。
+1. 用户复测本轮 13 项（重点：下载/设置选项卡不再崩、档案列表能列出账号、弹窗按钮可点、方角恢复圆角）。
+2. 继续排查：账号头像（`pathTemp\Cache\Skin\Head\*.png` 缓存只在打开皮肤页时生成）、启动页元素重合、启动按钮状态、文件夹列表左键。
+3. Linux 真机测试：`dist/linux-x64/`（含 `run.sh`）拷到 Linux VM，`chmod +x PCL run.sh && ./run.sh`。
+4. 暂缓功能移植（优先级问用户，PageTools 大概率优先）。
 
 ## 快速排雷（Avalonia ↔ WPF 语义差异，HANDOVER §7 有完整清单）
 
 | 症状 | 根因 |
 |---|---|
-| 控件可见但**点击无反应** | 同一事件多个 Tunnel 处理器**逆序**执行（坑 19） |
-| 标题栏按钮点不动、有动画 | `IsMouseDirectlyOver` → 误用 `IsPointerOver`，拖动抢指针（坑 20） |
-| 文字空白/被压没 | `TextBlock.Padding` 超过可用尺寸（坑 22） |
+| **数据有、界面空**（列表一项都不显示） | 控件模板缺失（本应用无主题，模板全靠手写）→ 坑 25 |
+| 控件可见但**点击无反应** | 同一事件多个 Tunnel 处理器**逆序**执行 → 坑 19 |
+| 标题栏/弹窗按钮点不动、有动画 | `IsMouseDirectlyOver` → 误用 `IsPointerOver`，拖动抢指针 → 坑 20 |
+| 弹窗点了没结果就崩 | `(int)object?` 强转 null → 坑 28；跨线程 `DispatcherFrame` → 坑 29 |
+| 右键菜单一出现就崩 | `BoxShadow` 用了逗号分隔 → 坑 27 |
+| 切某页即崩 | 该页 `Loaded` 里的输入验证/模板部件 → 坑 30 / 31 |
+| 文字空白/被压没 | `TextBlock.Padding` 超过可用尺寸 → 坑 22 |
+| 按钮变方角 | `ElementName` 指向根 `x:Name` 的绑定失效 → 坑 32 |
 | 页面能编译、一打开就崩 | 根元素 `x:Name`（坑 12）、集合属性缺 `<x:Array>` 等价物（坑 13）、`[Content]` 路由（坑 14） |
 | 运行期 `FieldAccessException` | `*Property` 字段非 public（坑 15） |
 | 显示 `!key!` | 非 UI 线程取本地化（坑 16） |
 | 整站配色偏暗 | scRGB 当 sRGB 用（坑 17） |
 | 图片加载失败 | `avares://` 大小写、pack URI 残留、旧配置路径（坑 18） |
-| 崩溃在某 `.Text` 上 | WPF `TextBlock.Text` 默认 `""`，Avalonia 默认 `null`（坑 21） |
+| 崩溃在某 `.Text` 上 | WPF `TextBlock.Text`/`TextBox.Text` 默认 `""`，Avalonia 默认 `null`（坑 21 / 31） |
 | 滚动异常慢 | 滚轮量纲 ±120 vs ±1（坑 23） |
-| 模板部件取到 null | `Template.FindName` 垫片不可靠，改用 `e.NameScope`（坑 24） |
+| 模板部件取到 null | `Template.FindName` 垫片不可靠，改用 `e.NameScope`（坑 24 / 30） |
 
 **遇到"能编译但一打开/一点就崩或没反应"时，先跑 `PCL.exe --pagetest`**（HANDOVER §12），不要靠猜。
 

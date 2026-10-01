@@ -286,6 +286,31 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
 
 ---
 
+25. **应用没有引入 Avalonia 主题，模板全靠手写（漏一个控件就整块空白，2026-10-01 修复）** — `Application.axaml` 里手写了 MyScrollBar / MyScrollViewer / MyTextBox / MyComboBox / ToggleButton / ComboBoxItem / ContextMenu / MyMenuItem / Calendar 等模板，但**漏了 `ItemsControl`**。`ItemsControl` 是 `TemplatedControl`，没有模板就不会实例化 `ItemsPresenter` → 一个子项都不渲染。
+    - 实测：档案列表 `ItemCount=4`，但 `ItemsControl` 的**视觉子树为 0**，界面完全空白（对应"选择档案界面一个账号都没有"）。
+    - **修法**：补上等价模板 `<Style Selector="ItemsControl">` + `<ControlTemplate><ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" /></ControlTemplate>`（`ItemsPanel` 有内置默认值 StackPanel，无需再设）。
+    - **排查提示**：凡是"数据有、界面空"的列表，先确认对应控件模板是否存在于 `Application.axaml`。
+
+26. **`Grid` 的 `*` 行在"可用高度无限"时 Avalonia 算 0，WPF 按内容撑开（2026-10-01）** — `PageLoginProfile` 的滚动列表行是 `*`，而它被放进 `PageLaunchLeft.PanLogin`（`VerticalAlignment="Center"`，按内容自适应高度）→ 无约束 → `*` 塌成 0 → `MyScrollViewer` 高 0 → 列表不渲染。已把该行改为 `Auto`（该页宿主本就按内容自适应，`*` 无实际作用）。
+    - **判据**：页面高度恰好等于"固定行之和"、`*` 行内容不可见，就是这个坑。
+
+27. **`BoxShadow` 是空格分隔，逗号只分隔"多个阴影"（崩溃级，2026-10-01 修复）** — `Application.axaml` 写成 `BoxShadow="0 2 4 0, #66000000"`，被当成两个阴影；第一个 `0 2 4 0` 只有 4 个 token，按 `offsetX offsetY blur color` 解析时把末位 `0` 当颜色 → `FormatException: Invalid color string: '0'`。
+    - 该模板在**首次弹出 ContextMenu** 时实例化 → "右键菜单一出现就崩溃"。
+    - 正确写法：`offsetX offsetY [blur] [spread] color`（3~6 个 token，空格分隔），如 `0 2 4 0 #66000000`。
+
+28. **`(int)converter.Result` 在结果为 null 时抛 NRE（崩溃级，2026-10-01 修复）** — `ModMain.MyMsgBox` / `MyMsgBoxMarkdown` 直接 `return (int)converter.Result;`。`Result` 是 `object`，当弹窗没能产生结果时（关闭流程中 `PushFrame` 直接返回、后台线程投递失败）为 null，`(int)(object)null` 抛 `NullReferenceException` → FTL → 强制关闭。改为 `converter.Result is int r ? r : 0`。（`MyMsgBoxSelect` 用 `(int?)`、`MyMsgBoxInput` 用 `?.ToString()`，天然安全。）
+    - **排查提示**：日志里 `普通弹框返回：null` 紧跟 FTL，就是这个。
+
+29. **`DispatcherFrame` 构造函数会 `VerifyAccess`（跨线程弹窗必崩，2026-10-01 修复）** — `MyMsgBoxConverter.WaitFrame = new(true)` 是**字段初始化器**。WPF 的 `DispatcherFrame` 绑定"当前线程"的 Dispatcher、构造不校验；Avalonia 的会执行 `Dispatcher.VerifyAccess()` → 任何**后台线程**调用 `MyMsgBox`（MS 登录、下载报错）都在 `new MyMsgBoxConverter` 这一步就崩。
+    - 另：后台线程调用时原实现也不会执行 `MyMsgBoxTick()`（弹窗永不显示），且 `Dispatcher.UIThread.PushFrame` 本身就要求 UI 线程。
+    - **修法**：`WaitFrame` 改为惰性创建；新增 `PumpMsgBoxFrame(converter)`，非 UI 线程时把"创建弹窗 + 泵送模态帧"整体投递到 UI 线程（`RunInUiWait`），调用线程阻塞等待弹窗关闭。
+
+30. **`MyComboBox` / `MyMenuItem` 的模板部件同样取不到（2026-10-01 修复，坑 24 的扩展）** — 都走 `Template.FindName` 垫片。`MyComboBox.OnApplyTemplate` 的 NRE 会以 Feedback 级日志弹出消息框 → 连带触发弹窗系统 → 表现为"点设置选项卡后整个 UI 冻结"。统一改为缓存 `e.NameScope` 并从中取部件。
+
+31. **`MyTextBox.GetValidateResult` 给 FluentValidation 传 null 模型（崩溃级，2026-10-01 修复，坑 21 的扩展）** — `rule.Validate(Text)`，`Text` 为 null（Avalonia 的 `TextBox.Text` 默认 null）→ `Cannot pass a null model to Validate`。**点下载选项卡约 1 秒后崩溃**就是这条（`PageDownloadInstall.Init()` 设置 `ValidateRules`）。改为 `Text ?? string.Empty`。
+
+32. **`ElementName` 指向"根元素 x:Name"的绑定取不到值（2026-10-01 修复，坑 12 的扩展）** — `MyExtraTextButton` 用 `CornerRadius="{Binding Bounds.Height, ..., ElementName=PanBack, Mode=OneWay}"`；`ElementName` 指向根元素 `x:Name` 在 Avalonia 下解析不到 → 转换器拿到非数值返回 0 → **按钮变方角**。`$parent[local:类型]` 与 `ReflectionBinding` 实测也无效。该模板高度是固定值 `Height="52"`，上游 `ActualHeight * 0.4` 恒为 `20.8`，故直接写常量（渲染结果与上游一致）。**排查提示**：凡 `ElementName=` 指向本文件根元素 `x:Name` 的绑定都要怀疑。
+
 ## 8. 暂缓功能清单（用户指定，文件保留在仓库）
 
 `DeferredExcludes`（见 §5.1）：崩溃分析(CrashAnalysis)、音乐(ModMusic)、视频背景(ModVideoBack)、联机(ModLink)、换皮肤(ModSkin)、工具页(PageTools)、剪贴板行为(ClipboardInterceptor)、LazyLoadBehavior。
