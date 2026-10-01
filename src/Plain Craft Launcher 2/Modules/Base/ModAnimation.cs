@@ -29,6 +29,9 @@ public static partial class ModAnimation
     /// <summary>
     ///     开始动画执行。
     /// </summary>
+    // [port][TEMP] 诊断用时间戳，见动画循环内说明
+    private static long _aniProbeLastTick;
+
     public static void AniStart()
     {
         // 初始化计时器
@@ -68,6 +71,15 @@ public static partial class ModAnimation
                         }
 
                         aniFPSCounter += 2;
+                    }
+
+                    // [port][TEMP] 诊断：动画组数量若无限增长，说明动画添加后从未被移除，
+                    //              会导致每帧 AniTimer 越来越慢并把 UI 线程堵死。排查完应删除。
+                    if (aniLastTick - _aniProbeLastTick >= 2000d)
+                    {
+                        _aniProbeLastTick = aniLastTick;
+                        var probeNames = string.Join(", ", aniGroups.Keys.Take(8));
+                        Console.Error.WriteLine($"[AniProbe] 动画组数={aniGroups.Count}, 前几个=[{probeNames}], FPS上限={Config.System.AnimationFpsLimit}");
                     }
 
                     // 执行动画
