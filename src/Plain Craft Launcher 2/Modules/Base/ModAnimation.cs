@@ -31,6 +31,7 @@ public static partial class ModAnimation
     /// </summary>
     // [port][TEMP] 诊断用时间戳，见动画循环内说明
     private static long _aniProbeLastTick;
+    private static int _aniProbeFrames;
 
     public static void AniStart()
     {
@@ -38,6 +39,8 @@ public static partial class ModAnimation
         aniLastTick = TimeUtils.GetTimeTick();
         aniFPSTimer = aniLastTick;
         aniRunning = true; // 标记动画执行开始
+        // [port][TEMP]
+        Console.Error.WriteLine($"[AniProbe] AniStart() 被调用，FPS上限={Config.System.AnimationFpsLimit}");
 
         var minFrameGap = 1000d / (Config.System.AnimationFpsLimit + 1) / 2;
 
@@ -75,7 +78,8 @@ public static partial class ModAnimation
 
                     // [port][TEMP] 诊断：动画组数量若无限增长，说明动画添加后从未被移除，
                     //              会导致每帧 AniTimer 越来越慢并把 UI 线程堵死。排查完应删除。
-                    if (aniLastTick - _aniProbeLastTick >= 2000d)
+                    _aniProbeFrames++;
+                    if (_aniProbeFrames <= 3 || aniLastTick - _aniProbeLastTick >= 2000d)
                     {
                         _aniProbeLastTick = aniLastTick;
                         var probeNames = string.Join(", ", aniGroups.Keys.Take(8));
