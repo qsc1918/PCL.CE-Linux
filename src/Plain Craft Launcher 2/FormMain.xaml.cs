@@ -1942,14 +1942,24 @@ public partial class FormMain : Window
         {
             // 这一坨乱七八糟的，别改，改了指不定就炸了，自己电脑还复现不出来
             // [port] WPF Visibility.Visible → Avalonia IsVisible=true
+            // [port][TEMP] 逐条埋点，定位卡死的具体一句
+            Console.Error.WriteLine("[TopProbe] a IsVisible 前");
             IsVisible = true;
+            Console.Error.WriteLine("[TopProbe] b ShowInTaskbar 前");
             ShowInTaskbar = true;
+            Console.Error.WriteLine("[TopProbe] c WindowState 前");
             WindowState = WindowState.Normal;
+            Console.Error.WriteLine("[TopProbe] d Hidden 前");
             Hidden = false;
+            Console.Error.WriteLine("[TopProbe] e Topmost=true 前");
             Topmost = true; // 偶尔 SetForegroundWindow 失效
+            Console.Error.WriteLine("[TopProbe] f Topmost=false 前");
             Topmost = false;
+            Console.Error.WriteLine("[TopProbe] g SetForegroundWindow 前");
             ModMain.SetForegroundWindow(ModBase.frmHandle);
+            Console.Error.WriteLine("[TopProbe] h Focus 前");
             Focus();
+            Console.Error.WriteLine("[TopProbe] i Focus 完成");
             ModBase.Log($"[System] 窗口已置顶，位置：({Position.X}, {Position.Y}), {Width} x {Height}");
         });
     }
