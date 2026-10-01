@@ -76,6 +76,15 @@ public partial class FormMain : Window
 
     public FormMain()
     {
+        // [port] 上游 Window 的 Background="{x:Null}" 是配合 WPF AllowsTransparency="False" 用的 ——
+        //        那时窗口底由系统提供，始终不透明。Avalonia 下 Window.Background 为 null 意味着
+        //        客户区真的透明，在 Linux（无合成器/无 alpha 通道）上整个窗口会变成透明的一片。
+        //        非 Windows 平台补一个跟随主题的不透明背景，Windows 保持原样不受影响。
+        if (!OperatingSystem.IsWindows())
+            Background = this.TryFindResource("ColorBrushBackground", out var bg) && bg is IBrush brush
+                ? brush
+                : new SolidColorBrush(Color.FromRgb(0x2E, 0x2E, 0x2E));
+
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
         // 刷新主题
         // ThemeCheckAll(False)
