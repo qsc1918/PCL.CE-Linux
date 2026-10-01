@@ -3635,9 +3635,20 @@ public static class ModBase
     }
 
     // 反馈
+    // [port][TEMP] 诊断计数：Feedback() 被反复调用时会刷爆日志，这里只记录前 5 次调用栈
+    private static int _feedbackProbeCount;
+
     public static void Feedback(bool showMsgbox = true, bool forceOpenLog = false)
     {
         // On Error Resume Next
+        // [port][TEMP] Linux 上实测 /proc/meminfo 被每秒数百次读取，说明本方法在循环里被调用。
+        //              这里打印调用栈以定位调用方，排查完应删除。
+        if (_feedbackProbeCount < 5)
+        {
+            _feedbackProbeCount++;
+            LogWrapper.Warn($"[FeedbackProbe] 第 {_feedbackProbeCount} 次调用 Feedback()，"
+                            + $"showMsgbox={showMsgbox}, forceOpenLog={forceOpenLog}\n{Environment.StackTrace}");
+        }
         FeedbackInfo();
         var currentDate = DateTime.Now.ToString("yyyy-M-dd", CultureInfo.InvariantCulture);
 
