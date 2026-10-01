@@ -687,6 +687,41 @@ public partial class FormMain : Window
                 if (v is T t) yield return t;
         }
 
+        // [port][TEMP] --logintest：用当前配置的 MS_CLIENT_ID 真跑一遍正版登录代码路径，
+        // 用于验证客户端 ID 是否被读到、设备码请求是否成功、以及登录弹窗路径是否会崩。
+        if (Basics.CommandLineArguments.Contains("--logintest"))
+        {
+            var loginProbe = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(6d) };
+            loginProbe.Tick += (_, _) =>
+            {
+                loginProbe.Stop();
+                var cid = PCL.Core.App.Secrets.MSOAuthClientId;
+                ModBase.Log($"[LoginTest] 读到的客户端 ID = " +
+                            $"{(string.IsNullOrEmpty(cid) ? "（空！未设置环境变量 PCL_MS_CLIENT_ID）" : cid[..8] + "…")}");
+                try
+                {
+                    ModLaunch.mcLoginMsLoader.Start(new ModLaunch.McLoginMs(), true);
+                    ModBase.Log("[LoginTest] 已启动正版登录加载器");
+                }
+                catch (Exception ex)
+                {
+                    ModBase.Log(ex, "[LoginTest] 启动登录失败");
+                }
+            };
+            loginProbe.Start();
+
+            var loginCheck = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(22d) };
+            loginCheck.Tick += (_, _) =>
+            {
+                loginCheck.Stop();
+                ModBase.Log($"[LoginTest] 结果：加载器状态={ModLaunch.mcLoginMsLoader.State}, " +
+                            $"进度={ModLaunch.mcLoginMsLoader.Progress}, " +
+                            $"等待弹窗={ModMain.WaitingMyMsgBox.Count}, " +
+                            $"PanMsg 子项={ModMain.frmMain?.PanMsg?.Children.Count}");
+            };
+            loginCheck.Start();
+        }
+
         FormMain_SizeChanged();
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
         // [port] WPF WindowInteropHelper 句柄在 Avalonia 不可用（Win32），注释掉；ModBase.frmHandle 保持默认值
