@@ -687,3 +687,11 @@ core-build*.log
 m-build*.log
 dist-smoke.log
 fabric-probe.log
+
+### 本项目开发期产物（移植调试用，勿入库）###
+err*.txt
+errs*.txt
+build_full.txt
+docs/current-errors.txt
+docs/g4-*.txt
+docs/g5-*.txt

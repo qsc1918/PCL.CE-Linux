@@ -48,10 +48,13 @@
 需要 **.NET 10 SDK**。
 
 ```bash
-# Windows
+# 构建整个解决方案
+dotnet build PCL.CE-Linux.slnx
+
+# 或只构建主工程
 dotnet build "src/Plain Craft Launcher 2/Plain Craft Launcher 2.csproj"
 
-# Linux（自包含发布）
+# Linux 自包含发布
 dotnet publish "src/Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" \
   -c Release -r linux-x64 --self-contained true -o dist/linux-x64
 ```

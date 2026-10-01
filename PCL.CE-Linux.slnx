@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PCL.Core.SourceGenerators/PCL.Core.SourceGenerators.csproj" />
+    <Project Path="src/PCL.Core/PCL.Core.csproj" />
+    <Project Path="src/Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" />
+  </Folder>
+</Solution>
