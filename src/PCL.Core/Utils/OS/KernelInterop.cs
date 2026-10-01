@@ -227,6 +227,9 @@ public static partial class KernelInterop
     /// <summary>
     /// 获取系统可用物理内存 (<c>ullAvailPhys</c>) 和总物理内存 (<c>ullTotalPhys</c>) 的字节数
     /// </summary>
+    // [port][TEMP] 诊断计数，见 GetPhysicalMemoryBytes 内说明
+    private static int _memProbeCount;
+
     public static (ulong Total, ulong Available) GetPhysicalMemoryBytes()
     {
         // [port] GlobalMemoryStatusEx 是 kernel32 的 API，Linux 上加载 kernel32.dll 会抛
@@ -235,6 +238,14 @@ public static partial class KernelInterop
         //        Linux 下改从 /proc/meminfo 读取（MemTotal / MemAvailable，单位为 KB）。
         if (!OperatingSystem.IsWindows())
         {
+            // [port][TEMP] 诊断：Linux 上实测 /proc/meminfo 被每秒数百次读取，说明本方法在循环里被调用。
+            //              打印前 5 次调用栈以定位调用方，排查完应删除。
+            if (_memProbeCount < 5)
+            {
+                _memProbeCount++;
+                Console.Error.WriteLine($"[MemProbe] 第 {_memProbeCount} 次 GetPhysicalMemoryBytes()\n{Environment.StackTrace}");
+            }
+
             ulong total = 0, available = 0;
             try
             {
