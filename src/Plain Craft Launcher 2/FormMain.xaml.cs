@@ -1956,7 +1956,10 @@ public partial class FormMain : Window
             Console.Error.WriteLine("[TopProbe] f Topmost=false 前");
             Topmost = false;
             Console.Error.WriteLine("[TopProbe] g SetForegroundWindow 前");
-            ModMain.SetForegroundWindow(ModBase.frmHandle);
+            // [port] 上面的 ModMain.ShowWindowToTop 在非 Windows 下是空操作（Win32 API），
+            //        这里改用 Avalonia 自带的 Activate() 承担"把窗口带到前台"的语义。
+            if (!OperatingSystem.IsWindows()) Activate();
+            else ModMain.SetForegroundWindow(ModBase.frmHandle);
             Console.Error.WriteLine("[TopProbe] h Focus 前");
             Focus();
             Console.Error.WriteLine("[TopProbe] i Focus 完成");
