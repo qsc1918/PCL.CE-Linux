@@ -73,17 +73,37 @@ dotnet publish "src/Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" \
 1. 在 [Azure 门户](https://portal.azure.com) 注册应用，账户类型选「仅限个人帐户」，重定向 URI 留空；
 2. 在「身份验证」页底部把 **「允许公共客户端流」设为「是」**；
 3. 按 Mojang 的 [Java 版 API 应用审批流程](https://aka.ms/mce-reviewappid) 提交审批，**通过后**才能访问 Minecraft API；
-4. 通过环境变量提供客户端 ID 后启动：
+4. 在**构建时**把客户端 ID 注入程序（见下）。
+
+### 客户端 ID 的注入方式
+
+**Debug 构建**直接读环境变量：
 
 ```powershell
-setx PCL_MS_CLIENT_ID "<你的客户端 ID>"   # Windows，重开终端生效
+$env:PCL_MS_CLIENT_ID = "<你的客户端 ID>"   # 同一个终端窗口里启动 PCL.exe
 ```
 
-```bash
-export PCL_MS_CLIENT_ID="<你的客户端 ID>"  # Linux
+**Release 构建**不读环境变量，必须在编译期注入 —— 源生成器
+`PCL.Core.SourceGenerators.EnvironmentInteropGenerator` 在编译时读取环境变量：
+只要设置了 `PCL_WRITE_SECRET`，所有 `PCL_` 开头的变量都会去掉前缀写入 `SecretDictionary`。
+
+```powershell
+# 手动注入（注意：必须先关掉编译服务器，否则它复用旧环境，注入不生效）
+dotnet build-server shutdown
+$env:PCL_WRITE_SECRET = "1"
+$env:PCL_MS_CLIENT_ID = "<你的客户端 ID>"
+dotnet publish "src/Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" -c Release -r win-x64 --self-contained true -o dist/win-x64
 ```
 
-> Release 构建不读取环境变量，需要在构建期注入密钥。
+或者直接用仓库里的脚本（会读取环境变量或 `.secrets/ms_client_id.txt`，并自动校验注入结果）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/build-release.ps1            # 全部平台
+powershell -ExecutionPolicy Bypass -File tools/build-release.ps1 -Target linux
+```
+
+**密钥安全**：客户端 ID 只存在于你的环境变量或 `.secrets/ms_client_id.txt`（已在 `.gitignore` 中），
+不会进入仓库。请勿把它写进源码或提交到 git。
 
 ## 许可证
 

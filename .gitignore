@@ -695,3 +695,8 @@ build_full.txt
 docs/current-errors.txt
 docs/g4-*.txt
 docs/g5-*.txt
+
+### 本地密钥（切勿提交）###
+.secrets/
+*.local.props
+Directory.Build.local.props
