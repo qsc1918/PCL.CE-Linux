@@ -90,8 +90,10 @@ public partial class Application : Avalonia.Application
                     }
 
             // 初始化文件结构
-            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Pictures"));
-            Directory.CreateDirectory(System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics"));
+            // [port] 用 Paths.Data 而非 exePath + "PCL"：Linux 上可执行文件就叫 PCL，
+            //        <exe目录>/PCL/Pictures 会撞上它本身而抛 IOException（实测 WSL 启动失败）。
+            Directory.CreateDirectory(System.IO.Path.Combine(PCL.Core.App.Paths.Data, "Pictures"));
+            Directory.CreateDirectory(System.IO.Path.Combine(PCL.Core.App.Paths.Data, "Musics"));
             Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Cache"));
             Directory.CreateDirectory(System.IO.Path.Combine(ModBase.pathTemp, "Download"));
             Directory.CreateDirectory(ModBase.pathAppdata);

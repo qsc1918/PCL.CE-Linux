@@ -196,7 +196,6 @@ public partial class FormMain : Window
         Lifecycle.When(LifecycleState.WindowCreated, FormMain_Loaded);
     }
 
-    // [port][TEMP] 页面实例化自检（移植期诊断用；仅在 --pagetest 时执行，不影响正常流程）。
     // 覆盖三层，全部在 UI 线程上执行，逐项 try/catch 并写日志（[PageTest] 前缀）：
     //   1) 直接构造各页面的 Left/Right 控件 —— 捕捉 XAML 填充期异常
     //      （命名字段为 null、集合属性 MyListItem.Buttons 填充、AvaloniaProperty 字段可见性等）；
@@ -404,7 +403,6 @@ public partial class FormMain : Window
         }
     }
 
-    // [port][TEMP] 交互链路诊断（配合 --pagetest）：验证"列表项点击"是否真的能走通。
     // 直接构造并投递一次合成的 PointerPressed + PointerReleased，检查子页面是否切换，
     // 用于定位"控件可见但点击无反应"（事件路由 / 处理器顺序 / 命中测试）。
     // 注意：不要用 InputHitTest 判断可点性——实测它对 PanForm / PanTitleMain 等子树会误报"不可达"，
@@ -762,18 +760,13 @@ public partial class FormMain : Window
             heart.Start();
         }
 
-        // [port][TEMP] 定位 Loaded 卡点
-        Console.Error.WriteLine("[LoadedProbe] 1 进入 Loaded 主体");
         FormMain_SizeChanged();
         ModBase.applicationStartTick = TimeUtils.GetTimeTick();
         // [port] WPF WindowInteropHelper 句柄在 Avalonia 不可用（Win32），注释掉；ModBase.frmHandle 保持默认值
         // ModBase.frmHandle = new WindowInteropHelper(this).Handle;
         // 读取设置
-        Console.Error.WriteLine("[LoadedProbe] 2 即将 BackgroundRefresh");
         PageSetupUI.BackgroundRefresh(false, true);
-        Console.Error.WriteLine("[LoadedProbe] 3 BackgroundRefresh 完成");
         ModMusic.MusicRefreshPlay(false, true);
-        Console.Error.WriteLine("[LoadedProbe] 4 MusicRefreshPlay 完成");
         // 扩展按钮
         BtnExtraUpdateRestart.showCheck = BtnExtraUpdateRestart_ShowCheck;
         BtnExtraDownload.showCheck = BtnExtraDownload_ShowCheck;
@@ -794,12 +787,8 @@ public partial class FormMain : Window
                 "M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M83,6.5 a10,11.5 180 1 0 0,18 M48,2.5 v24.5 h13.5");
         // 加载窗口
 
-        Console.Error.WriteLine("[LoadedProbe] 6 即将 ThemeRefresh");
         ThemeManager.ThemeRefresh();
-        Console.Error.WriteLine("[LoadedProbe] 7 ThemeRefresh 完成");
-        Console.Error.WriteLine("[LoadedProbe] 8 即将 ApplyAll");
         ModSetup.ApplyAll();
-        Console.Error.WriteLine("[LoadedProbe] 9 ApplyAll 完成");
         Lifecycle.CurrentApplication.Resources["BlurSamplingRate"] = Config.Preference.Blur.SamplingRate * 0.01d;
         Lifecycle.CurrentApplication.Resources["BlurType"] = Config.Preference.Blur.KernelType;
         if (Config.Preference.Blur.IsEnabled)
@@ -819,9 +808,7 @@ public partial class FormMain : Window
         // Top = (GetWPFSize(My.Computer.Screen.WorkingArea.Height) - Height) / 2
         // Left = (GetWPFSize(My.Computer.Screen.WorkingArea.Width) - Width) / 2
         isSizeSaveable = true;
-        Console.Error.WriteLine("[LoadedProbe] 10 即将 ShowWindowToTop");
         ShowWindowToTop();
-        Console.Error.WriteLine("[LoadedProbe] 11 ShowWindowToTop 完成");
         // [port] WPF HwndSource 钩子（PresentationSource.FromVisual/HwndSource.AddHook(WndProc)）在 Avalonia 不可用（Win32），注释掉；WndProc 亦在下方 #if WINDOWS 保留
         // var hwndSource = (HwndSource)PresentationSource.FromVisual(this);
         // hwndSource.AddHook(WndProc);
@@ -842,10 +829,8 @@ public partial class FormMain : Window
                     $"[System] DPI：{ModBase.dpi}，系统版本：{Environment.OSVersion.VersionString}，PCL 位置：{Basics.ExecutablePath}");
             }, after: true)
         }, "Form Show");
-        Console.Error.WriteLine("[LoadedProbe] 13 即将 AniStart()");
         // Timer 启动
         ModAnimation.AniStart();
-        Console.Error.WriteLine("[LoadedProbe] 14 AniStart() 完成");
         ModMain.TimerMainStart();
         // 特殊版本提示
         ModBase.RunInNewThread(() =>
@@ -1942,27 +1927,17 @@ public partial class FormMain : Window
         {
             // 这一坨乱七八糟的，别改，改了指不定就炸了，自己电脑还复现不出来
             // [port] WPF Visibility.Visible → Avalonia IsVisible=true
-            // [port][TEMP] 逐条埋点，定位卡死的具体一句
-            Console.Error.WriteLine("[TopProbe] a IsVisible 前");
             IsVisible = true;
-            Console.Error.WriteLine("[TopProbe] b ShowInTaskbar 前");
             ShowInTaskbar = true;
-            Console.Error.WriteLine("[TopProbe] c WindowState 前");
             WindowState = WindowState.Normal;
-            Console.Error.WriteLine("[TopProbe] d Hidden 前");
             Hidden = false;
-            Console.Error.WriteLine("[TopProbe] e Topmost=true 前");
             Topmost = true; // 偶尔 SetForegroundWindow 失效
-            Console.Error.WriteLine("[TopProbe] f Topmost=false 前");
             Topmost = false;
-            Console.Error.WriteLine("[TopProbe] g SetForegroundWindow 前");
             // [port] 上面的 ModMain.ShowWindowToTop 在非 Windows 下是空操作（Win32 API），
             //        这里改用 Avalonia 自带的 Activate() 承担"把窗口带到前台"的语义。
             if (!OperatingSystem.IsWindows()) Activate();
             else ModMain.SetForegroundWindow(ModBase.frmHandle);
-            Console.Error.WriteLine("[TopProbe] h Focus 前");
             Focus();
-            Console.Error.WriteLine("[TopProbe] i Focus 完成");
             ModBase.Log($"[System] 窗口已置顶，位置：({Position.X}, {Position.Y}), {Width} x {Height}");
         });
     }

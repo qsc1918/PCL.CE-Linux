@@ -859,9 +859,9 @@ public static class ModMain
     public static void ShowWindowToTop(nint handle)
     {
         // [port] PostMessage / SetForegroundWindow 都是 user32 的 Win32 API，Linux 上没有 user32。
-        //        实测：这一步在 Linux 单文件版里**会卡住不返回**（埋点显示 [TopProbe] g 之后
-        //        再无任何输出），导致 FormMain_Loaded 中断、UI 线程被彻底堵死 —— 窗口空白、
-        //        日志停止、后续 AniStart()/TimerMainStart() 全部没执行。
+        //        实测：这一步在 Linux 上会卡住不返回（逐步埋点确认调用之后不再有任何输出），
+        //        导致 FormMain_Loaded 中断、UI 线程被彻底堵死 —— 窗口空白、日志停止、
+        //        后续的 AniStart() / TimerMainStart() 全部没执行。
         //        另外传入的 handle 在 Avalonia/Linux 下也不是 Win32 句柄，本来就没意义。
         //        因此非 Windows 直接跳过；置顶由 Avalonia 的 Window.Activate() 负责。
         if (!OperatingSystem.IsWindows()) return;
