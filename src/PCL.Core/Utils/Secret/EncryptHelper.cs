@@ -157,16 +157,26 @@ public static class EncryptHelper
             {
                 1 => ProtectedData.Unprotect(data.Data, Key, DataProtectionScope.CurrentUser),
                 2 => CngProtectedData.Unprotect(data.Data, Key, CngDataProtectionScope.CurrentUser),
+                // [port] 版本 3：非 Windows 下无 DPAPI/CNG，密钥本身即文件内的原始字节（见下方说明）
+                3 => data.Data,
                 _ => throw new NotSupportedException("Unsupported key version")
             };
         }
 
         var randomKey = new byte[32];
         RandomNumberGenerator.Fill(randomKey);
+
+        // [port] Windows 用 CngProtectedData（DPAPI/CNG）保护密钥；Linux 没有对应的系统级保护 API，
+        //        CngProtectedData 会抛 PlatformNotSupportedException，导致配置加解密整体不可用
+        //        （日志里 "[Config] 无法处理加解密"）。这里对非 Windows 改用版本 3：密钥直接存放，
+        //        并把文件权限收紧为仅当前用户可读写（0600），这是 Linux 上的常规做法。
+        var isWindows = OperatingSystem.IsWindows();
         var storeData = EncryptionData.ToBytes(new EncryptionData
         {
-            Version = 2,
-            Data = CngProtectedData.Protect(randomKey, Key, CngDataProtectionScope.CurrentUser)
+            Version = isWindows ? (byte)2 : (byte)3,
+            Data = isWindows
+                ? CngProtectedData.Protect(randomKey, Key, CngDataProtectionScope.CurrentUser)
+                : randomKey
         });
 
         var tmpFile = $"{keyFile}.tmp{RandomUtils.NextInt(10000, 99999)}";
@@ -177,6 +187,19 @@ public static class EncryptHelper
         }
 
         File.Move(tmpFile, keyFile, true);
+
+        // [port] 版本 3 的密钥没有系统级保护，收紧文件权限作为补偿（仅 owner 可读写）
+        if (!isWindows)
+        {
+            try
+            {
+                File.SetUnixFileMode(keyFile, System.IO.UnixFileMode.UserRead | System.IO.UnixFileMode.UserWrite);
+            }
+            catch
+            {
+                /* 权限设置失败不致命，忽略 */
+            }
+        }
 
         return randomKey;
     }
