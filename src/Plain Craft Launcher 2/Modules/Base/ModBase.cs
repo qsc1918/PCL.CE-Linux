@@ -3635,7 +3635,6 @@ public static class ModBase
     }
 
     // 反馈
-    // [port][TEMP] 诊断计数：Feedback() 被反复调用时会刷爆日志，这里只记录前 5 次调用栈
     private static int _feedbackProbeCount;
 
     public static void Feedback(bool showMsgbox = true, bool forceOpenLog = false)
@@ -3646,7 +3645,6 @@ public static class ModBase
         if (_feedbackProbeCount < 5)
         {
             _feedbackProbeCount++;
-            LogWrapper.Warn($"[FeedbackProbe] 第 {_feedbackProbeCount} 次调用 Feedback()，"
                             + $"showMsgbox={showMsgbox}, forceOpenLog={forceOpenLog}\n{Environment.StackTrace}");
         }
         FeedbackInfo();

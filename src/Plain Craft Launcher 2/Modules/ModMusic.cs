@@ -164,7 +164,8 @@ public static class ModMusic
             if (musicAllList is null)
             {
                 musicAllList = new List<string>();
-                var musicDir = System.IO.Path.Combine(ModBase.exePath, "PCL", "Musics");
+                // [port] 同 Application.xaml.cs：避免与可执行文件 PCL 撞名
+                var musicDir = System.IO.Path.Combine(PCL.Core.App.Paths.Data, "Musics");
                 Directory.CreateDirectory(musicDir);
                 foreach (var file in ModBase.EnumerateFiles(musicDir))
                 {

@@ -38,7 +38,11 @@ public class LogService : ILifecycleLogService
     public Task StartAsync()
     {
         Context.Trace("正在初始化 Logger 实例");
-        var config = new LoggerConfiguration(Path.Combine(Basics.ExecutableDirectory, "PCL", "Log"));
+        // [port] 原实现用 Path.Combine(ExecutableDirectory, "PCL", "Log")。
+        //        Linux 上可执行文件没有扩展名、就叫 PCL，于是 "PCL/Log" 无法创建
+        //        （实测 WSL 里报 DirectoryNotFoundException，日志服务随之 NullReferenceException 致命退出）。
+        //        改用 Paths.Data —— 它已经在与可执行文件撞名时退让为 PCL-Data。
+        var config = new LoggerConfiguration(Path.Combine(Paths.Data, "Log"));
         _logger = new Logger(config);
         Context.Trace("正在注册日志事件");
         LogWrapper.OnLog += _OnWrapperLog;
