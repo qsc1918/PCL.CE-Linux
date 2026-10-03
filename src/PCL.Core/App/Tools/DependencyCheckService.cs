@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -53,6 +54,11 @@ public sealed partial class DependencyCheckService
 
     private static async Task<bool> _CheckPackageAsync(string id)
     {
+        // [port] 依赖检查走 Windows 的 Appx 包查询命令，Linux 上没有相应程序
+        //        （日志里 Win32Exception: ... start process）。
+        //        非 Windows 视为无需检查，直接返回"已满足"，避免服务启动失败。
+        if (!OperatingSystem.IsWindows()) return true;
+
         var command = $"Get-AppxPackage -Name *{id}* | ConvertTo-Json";
 
         var psi = new ProcessStartInfo()

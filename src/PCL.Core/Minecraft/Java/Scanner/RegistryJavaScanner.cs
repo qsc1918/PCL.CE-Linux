@@ -25,6 +25,11 @@ public class RegistryJavaScanner : IJavaScanner
 
     public void Scan(ICollection<string> results)
     {
+        // [port] 本扫描器完全依赖 Windows 注册表，Linux 上 Registry 不可用（会抛异常，
+        //        日志里表现为 "[Java] 注册表扫描失败"）。非 Windows 直接跳过；
+        //        Linux 上另有目录扫描（见日志"对下列目录进行广度关键词搜索"）。
+        if (!OperatingSystem.IsWindows()) return;
+
         try
         {
             _ScanJavaSoftRegistry(results);

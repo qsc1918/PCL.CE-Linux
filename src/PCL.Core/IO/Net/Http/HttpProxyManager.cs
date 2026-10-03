@@ -106,6 +106,10 @@ public class HttpProxyManager : IWebProxy, IDisposable
     /// <summary>刷新系统代理设置</summary>
     public void RefreshSystemProxy()
     {
+        // [port] 读取系统代理靠 Windows 注册表，Linux 上 Registry 抛 PlatformNotSupportedException
+        //        （日志里 "[Proxy] 获取系统代理时出现异常"）。非 Windows 直接跳过。
+        if (!OperatingSystem.IsWindows()) return;
+
         lock (_lock)
         {
             try
