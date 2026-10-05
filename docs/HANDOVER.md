@@ -1,14 +1,252 @@
 # PCL-CE → Avalonia/Linux 移植 · 交接文档（HANDOVER）
 
-> 写于 2026-09-27 深夜，交接给下一位接手的 AI。
-> 上一阶段成果：**编译 0 错误（C# 10564→0，XAML AVLN 792→0）+ Windows 运行时零异常**，程序可启动、主窗口稳定存活、本地化生效（zh-CN）。
-> 最新 commit：`a07dfb8`（工作树干净）。
+> **最新更新：2026-10-05** ｜ 当前 commit：`24e597a`（工作树含未提交的诊断代码，见 §0.7）
+> **一句话现状**：编译 0 错误、Windows 运行正常、**Linux 能启动但主窗口全黑**（唯一阻塞）。
 >
-> 配套文档（都在本仓库 docs/ 下）：
+> 📌 **新代理请先读 §0**（最新状态与当前唯一阻塞），再按需查阅后面章节。
+>
+> 配套文档（都在本仓库 `docs/` 下）：
+> - `LINUX-BLANK-WINDOW.md` — **Linux 全黑窗口专项排查档案**（含真机截图证据，与 §0 互补，细节更全）
 > - `av12-notes.txt` — Avalonia 12 实测 API 更正（权威，与 A11 指南不同）
 > - `PORTING-MAPPING.md` — 转换规则表（**GBK 编码**，读取需 `Encoding.GetEncoding(936)`）
 > - `FEATURES.md` — 功能清单与 P1/P2/P3 优先级（待用户确认）
 > - `port-mapping-g4.md` — 早期分批移植的作业说明
+> - `img/` — 真机截图证据（修复前后对比）
+
+---
+
+# 0. 最新状态与当前唯一阻塞（2026-10-05）
+
+## 0.1 状态总览
+
+| 项目 | 状态 |
+|---|---|
+| C# / XAML 编译错误 | ✅ **0**（C# 从 10564 清零，XAML 从 792 清零） |
+| Windows 运行 | ✅ 主窗口稳定、无 FTL/ERR |
+| **Linux 启动** | ✅ **能启动**（窗口创建成功、900x550、标题 `PCL CE Linux`、`Map State: IsViewable`、日志 0 FTL/0 ERR） |
+| **Linux 显示** | ❌ **主窗口客户区全黑**（← **当前唯一阻塞**，见 §0.3） |
+| Linux 内存/CPU | ❌ 泄漏：CPU 86~115%，内存涨到 **8.1 GB**（约 150 MB/s） |
+| 暂缓功能 | ❌ 用户指定的 8 项未移植（见 §8） |
+
+## 0.2 已经做完的 Linux 攻坚（都有 commit）
+
+按时间顺序，从"完全跑不起来"到"能启动"：
+
+| commit | 修复内容 |
+|---|---|
+| `37bcd32` | 弹窗 NRE、跨线程 `DispatcherFrame`、ContextMenu `BoxShadow`、缺 `ItemsControl` 模板 |
+| `68483ed` | 模板部件查找、null `Text` 校验、按钮方角 |
+| `b1f6cb7` | `PageLoginProfile` 的 `*` 行放宽为 `Auto` |
+| `90efa3a` | 致命退出路径可用；启动失败时暴露真实原因 |
+| `697897e` | 阻止两个 Windows 专属调用在 Linux 上杀死启动 |
+| `06cbfc1` | 又三个启动阻塞点；程序改名 `PCL CE Linux` |
+| `4909bf3` | 非 Windows 下给窗口补不透明背景（上游 `Background="{x:Null}"` 在 Linux 会全透明） |
+| `4b70583` | 启动路径用平台分隔符 |
+| **`6f7aaa3`** | **不再在非 Windows 调用 Win32 置顶 API**（← 修掉了"启动即卡死"） |
+| `2748494` `af004b6` | 跳过三个 Windows 专属启动步骤 |
+| `8187b4d` `7c316e2` | 非 Windows 下配置文件密钥不用 DPAPI |
+| `24e597a` | 本地发布脚本，编译期注入 OAuth client id |
+
+**⚠️ 一个重要教训（见 §7 坑 36）**：这些修复是**交替**的 —— 中间有几轮我误判了病因（以为是内存泄漏/动画泄漏），
+加探针 → 排除 → 再修。所以历史里有若干 `diag:` 提交和"探针清理"提交，属正常过程。
+
+## 0.3 ⭐ 当前唯一阻塞：Linux 主窗口全黑
+
+### 现象（真机截图实测）
+
+窗口**能创建、能显示、标题正常**，但**客户区一个像素都不画**：
+
+| 观测项 | 数值 |
+|---|---|
+| 窗口 | 900x550，`0x140000f "PCL CE Linux"`，`Map State: IsViewable` |
+| 客户区内容 | **颜色数=1，采样像素 `gray(0)`（纯黑）** |
+| 标题栏 | 正常（**由 mutter 画的，不是 Avalonia 画的**） |
+| CPU / 内存 | 86~115% / 涨到 8.1 GB |
+
+截图证据：`docs/img/linux-blank-window-before.png`
+
+### 根因（已确认并验证）
+
+`src/Plain Craft Launcher 2/FormMain.xaml.cs` 构造函数里有：
+
+```csharp
+Opacity = 0d;     // ← 窗口创建时完全透明
+```
+
+透明度靠 `FormMain_Loaded` 里的 **"Form Show" 动画组**拉回来：
+
+```csharp
+ModAnimation.AniStart(new[]
+{
+    ModAnimation.AaCode(() => ModAnimation.AniControlEnabled -= 1, 50),
+    ModAnimation.AaOpacity(this, Config.Preference.Theme.WindowOpacity / 1000d + 0.4d, 250, 100),
+    ModAnimation.AaDouble(i => TransformPos.Y += i, -TransformPos.Y, 600, 100),
+    ModAnimation.AaRotateTransform(i => TransformRotate.Angle += i, -TransformRotate.Angle, 800, 100),
+    ...
+}, "Form Show");
+```
+
+**这个动画组在 Linux 上从未生效** ⇒ `Opacity` 停在 0 ⇒ 窗口整体透明 ⇒ 看起来一片黑。
+（同一动画组还负责归零 `TransformPos.Y`=60 和 `TransformRotate.Angle`=-4°，所以即使强行给透明度，画面也是**倾斜+下移**的。）
+
+### 验证（决定性）
+
+加临时开关 `--opacity1` 跳过 `Opacity = 0d`，其余代码不动：
+
+| 条件 | 颜色数 | 中心像素 | 结果 |
+|---|---|---|---|
+| 原样 | 1 | `gray(0)` | 全黑 |
+| `--opacity1` | **3290** | `srgb(209,209,209)` | **界面正常渲染** |
+
+截图：`docs/img/linux-ui-renders-with-opacity1.png`（能看到蓝色标题栏、"启动/下载/设置/工具"四标签、"正在加载版本列表"）
+
+### 更深一层的原因（已定位到这一层，但未修）
+
+用文件版看门狗（`--uidump`，输出到 `<程序目录>/uidump.txt`）拿到：
+
+```
+[P1]~[P9] 全部打印            ← 启动路径完整跑完（构造→Loaded→ShowWindowToTop→AniStart→末尾）
+[UiDump #1] 动画组=1  等待弹窗=1  AniControlEnabled=1  线程数=36
+[UiDump] >>> UI 线程任务被执行了!    ← 从未出现
+```
+
+**推论链**：
+
+| 环节 | 状态 |
+|---|---|
+| `FormMain_Loaded` 执行完 | ✅ 正常 |
+| 动画线程 `RunInUiWait(AniTimer)` | ❌ 卡住（`Dispatcher.Invoke` 无响应） |
+| 主时钟线程 `RunInUiWait(TimerMain)` | ❌ 同样卡住 |
+| `Dispatcher.UIThread.InvokeAsync(...)` 投递 | ❌ **从未被执行** |
+| 后果 | `AniControlEnabled` 恒=1；弹窗队列不清空；动画不生效；窗口停在透明 |
+
+⇒ **UI 线程回到了消息循环，却不响应任何来自其他线程的 Dispatcher 投递。**
+
+**注意**：窗口**能渲染**（`--opacity1` 下 3290 色）⇒ Avalonia 的**渲染线程是独立的、在正常跑**，
+卡住的只是 UI 线程本身。怀疑 UI 线程卡在消息循环内部的某个同步操作（布局循环？）。
+
+### 下一步排查建议
+
+1. 在真机装 `gdb` 附加取 UI 线程原生栈（`apt-get install gdb`，sudo 密码见 §0.5）
+2. 或在 Avalonia 的布局/渲染入口加探针，确认 UI 线程当前在哪个调用里
+3. 参考 `docs/LINUX-BLANK-WINDOW.md` 的完整排查记录（含所有已排除项）
+
+### ⚠️ 修正一条早期错误结论
+
+**`ModMain.TimerMain` 不是 `DispatcherTimer`**，而是后台线程：
+```csharp
+while (true) { ModBase.RunInUiWait(TimerMain); Thread.Sleep(49); }
+```
+所以"嵌套消息泵不跑 DispatcherTimer"这条**是错的**。真正的问题更基础：
+**UI 线程根本不响应跨线程 Dispatcher 投递**。
+
+## 0.4 临时诊断开关（已加在代码里，**修好后应清理**）
+
+这些开关都在 `FormMain.xaml.cs`，用 `Basics.CommandLineArguments.Contains(...)` 判断，标记为 `[port][TEMP]`：
+
+| 开关 | 作用 |
+|---|---|
+| `--opacity1` | 跳过 `Opacity = 0d`（验证用，可让界面显示出来） |
+| `--skip-eula` | 跳过 EULA 阻塞弹窗（验证用，**已验证不足以解决问题**） |
+| `--uidump` | 启动 UI 线程看门狗，每 3 秒把状态/调用栈写到 `<程序目录>/uidump.txt` |
+| `--pagetest` | 页面实例化自检（见 §12，Windows 期就在用） |
+| `--logintest` | 正版登录链路自检（见 §12） |
+
+另：`FormMain.xaml.cs` 里还有 `[P1]`~`[P9]` 顺序探针（`Console.Error.WriteLine`），
+用于定位启动路径卡点。**这些是临时脚手架，问题修复后请一并删除。**
+
+## 0.5 测试环境（关键，能省很多时间）
+
+### 真机（用户的 VMware Linux VM）—— 推荐用这个
+
+```bash
+# 从 WSL 连接（WSL 默认网关 = Windows 宿主）
+H=172.22.192.1
+ssh abc@$H -p 62222          # 密码 abc
+# sudo 密码：abc（注意：不是 root！root 用户的密码才是 root）
+```
+
+WSL 里已装 `sshpass`，标准写法：
+
+```bash
+H=172.22.192.1; export SSHPASS=abc
+sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 62222 abc@$H "<命令>"
+sshpass -e scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 62222 <本地> abc@$H:/tmp/
+```
+
+**真机环境**：Ubuntu 24.04、**GNOME + Wayland**（`mutter` 合成器，`Xwayland :0 -rootless`）、无 .NET SDK。
+已装工具：`imagemagick`（`import`）、`x11-utils`（`xwininfo`）。
+
+### 部署 + 运行 + 截图（已验证的完整流程）
+
+```bash
+# 1. 本地打包
+cd D:/a/j/PCL.CE-Linux/dist && tar czf /d/a/j/pcl-flat.tgz linux-x64-flat
+
+# 2. 传到真机（本地网络很快，55MB 约 1.5 秒）
+#    scp 到 /tmp，解压，chmod +x linux-x64-flat/PCL
+
+# 3. 运行（环境变量必须对，少了 XAUTHORITY 连不上 X）
+export DISPLAY=:0
+export XAUTHORITY=$(ls /run/user/1000/.mutter-Xwaylandauth.* | head -1)
+./PCL &
+sleep 18
+
+# 4. 截图（找内层真正的 PCL 窗口 —— 外层是 mutter 装饰框架，尺寸 928x616 不是 900x550）
+WID=$(xwininfo -root -tree | grep '"PCL' | grep -v mutter | awk '{print $1}' | head -1)
+import -window $WID /tmp/shot.png
+convert /tmp/shot.png -format "尺寸=%wx%h 颜色数=%[colors]" info:   # 颜色数=1 就是全黑
+```
+
+### 本地 WSL 快速复现（不用真机，迭代更快）
+
+```bash
+Xvfb :99 -screen 0 1280x800x24 &
+xcompmgr -c &              # ← 必须！否则窗口全黑，会把"缺合成器"误当成根因
+DISPLAY=:99 ./PCL &
+import -window root shot.png
+```
+
+### 踩坑记录（环境相关）
+
+- `echo root | sudo -S` 与 `bash -s` 会**抢同一个 stdin** → 报 "no password was provided"。
+  改用 `SUDO_ASKPASS`（写个脚本输出密码，`SUDO_ASKPASS=... sudo -A ...`）
+- 截图一定要抓**内层窗口**，外层是 mutter 装饰框架
+- **诊断输出必须直接写文件**（`File.AppendAllText`）。stdout 重定向到文件 + SIGKILL 会丢缓冲，
+  表现为"探针明明执行了却没有输出" —— 这个坑让我浪费了一整轮
+- `sudo -S` 的密码在 WSL 里是 `root`，在真机 `abc` 用户下是 `abc`
+
+## 0.6 构建与发布命令（权威）
+
+```bash
+# 完整构建（唯一权威的错误检查方式）
+dotnet build PCL.CE-Linux.slnx -v q -nologo --no-incremental
+
+# 发布 Linux（两种产物）
+#   单文件（给用户）：-o dist/linux-x64
+#   非单文件（便于排查）：-p:PublishSingleFile=false -o dist/linux-x64-flat
+dotnet publish "src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj" \
+  -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=false -o dist/linux-x64-flat
+
+# 给用户/真机部署时记得 chmod +x
+chmod +x dist/linux-x64-flat/PCL
+```
+
+`dist/` 已在 `.gitignore`（125MB，勿入库）。
+
+## 0.7 工作树状态（交接时）
+
+- HEAD = `24e597a`，与 `origin/master` 同步
+- **未提交**：`FormMain.xaml.cs` 的诊断开关与探针（§0.4）、`docs/LINUX-BLANK-WINDOW.md`、`docs/img/`
+- 用户要求：**可以做本地 git 操作，但 push 会弹账号选择框，需用户在场**
+
+## 0.8 建议的接手顺序
+
+1. 读 §0.3 + `docs/LINUX-BLANK-WINDOW.md`，理解当前阻塞
+2. 按 §0.5 在真机上跑一遍，亲眼看到全黑 + 用 `--opacity1` 看到界面
+3. 按 §0.3「下一步排查建议」查 UI 线程卡在哪
+4. 修复后：清理 §0.4 的临时开关 → 跑 §12 的 `--pagetest` 回归 → commit
+5. 之后再考虑 §9 的暂缓功能移植
 
 ---
 
@@ -31,6 +269,10 @@
 
 ## 2. 当前状态总览
 
+> ⚠️ **本节是 2026-09-27 的历史快照**，仅记录"编译清零 + Windows 运行"阶段的成果。
+> **最新状态请看 §0.1**。下面表格里所有"待用户 VM 实测"的项目**已经在 2026-10-04/05 完成**，
+> 结论是：Linux 能启动但窗口全黑（§0.3）。
+
 | 项目 | 状态 |
 |---|---|
 | C# 编译错误 | ✅ 0（从 10564 清零） |
@@ -45,8 +287,9 @@
 | 配色整体偏暗 | ✅ **已修（2026-09-28）** — scRGB/sRGB 混淆（坑 17）；离屏渲染采样与上游窗口一致 |
 | 内嵌图片加载 | ✅ **已修（2026-09-28）** — avares 大小写 + AssetLoader 取流（坑 18） |
 | 已知未修 | ⚠️ `设置→更新`页（上游缺 `Tahoe.png`，见坑 18）；`联机`页（暂缓功能） |
-| Linux 发布产物 | ✅ **已产出并静态校验**（commit 32985f3）— `dist/linux-x64/PCL`（ELF x86-64 单文件 120MB）+ `dist/linux-x64-flat/`（非单文件 125MB）；WSL 被安全策略拉黑，真机实测待用户 VM |
-| Linux 冒烟测试 | ❌ 未做（WSL headless → self-contained publish → 用户 VM） |
+| Linux 发布产物 | ✅ 已产出 — `dist/linux-x64/PCL`（单文件）+ `dist/linux-x64-flat/`（非单文件） |
+| **Linux 启动** | ✅ **已完成（2026-10-04/05）** — 能启动，0 FTL/0 ERR |
+| **Linux 显示** | ❌ **未解决** — 窗口全黑，见 §0.3 |
 | 暂缓功能 | ❌ 用户指定的 8 项暂未移植（见 §8） |
 
 **Git 提交历史（最新在前）**：
@@ -309,6 +552,37 @@ Get-Process PCL | Select-Object Id, Responding, MainWindowTitle
 
 32. **`ElementName` 指向"根元素 x:Name"的绑定取不到值（2026-10-01 修复，坑 12 的扩展）** — `MyExtraTextButton` 用 `CornerRadius="{Binding Bounds.Height, ..., ElementName=PanBack, Mode=OneWay}"`；`ElementName` 指向根元素 `x:Name` 在 Avalonia 下解析不到 → 转换器拿到非数值返回 0 → **按钮变方角**。`$parent[local:类型]` 与 `ReflectionBinding` 实测也无效。该模板高度是固定值 `Height="52"`，上游 `ActualHeight * 0.4` 恒为 `20.8`，故直接写常量（渲染结果与上游一致）。**排查提示**：凡 `ElementName=` 指向本文件根元素 `x:Name` 的绑定都要怀疑。
 
+33. **非 Windows 下调用 Win32 置顶 API 会让启动永久卡死（2026-10-04 修复，commit `6f7aaa3`）** — `FormMain.ShowWindowToTop()` 直接调 `ModMain.SetForegroundWindow(ModBase.frmHandle)`（P/Invoke `user32.dll`）。Linux 上该调用**不抛异常、直接挂住 UI 线程**，表现为"程序启动后卡在 4 秒处、日志停止、窗口空白"。
+    - **修法**：`if (!OperatingSystem.IsWindows()) Activate(); else ModMain.SetForegroundWindow(...)`。
+    - **教训**：**所有 P/Invoke 在非 Windows 上都可能是"静默挂起"而不是抛异常**。排查启动卡死时优先怀疑它们。
+
+34. **上游 `Window.Background="{x:Null}"` 在 Linux 上是"真透明"（2026-10-04 修复，commit `4909bf3`）** — 上游这是配合 WPF `AllowsTransparency="False"` 用的，那时窗口底由系统提供。Avalonia 下 `Background=null` 意味着客户区**真的不画底**，Linux（无 alpha 合成）上整个窗口变成透明一片。
+    - **修法**：构造函数里给非 Windows 补一个跟随主题的不透明背景。
+
+35. **配置文件密钥用 DPAPI 会让 Linux 启动失败（2026-10-04 修复，commit `8187b4d`/`7c316e2`）** — DPAPI 是 Windows 专属。非 Windows 下改为明文存储密钥。
+
+36. **⚠️ 排查方法论：别急着下结论，尤其是"内存泄漏"（2026-10-04 血泪）** — 这轮排查中我**连续误判了三次**病因：
+    - 先以为是**动画泄漏**（`aniGroups` 无限增长）→ 加探针 → 排除
+    - 又以为是**内存泄漏** → 加探针 → 排除
+    - 再以为是 **`/proc/meminfo` 被死循环读** → 加探针 → 发现那是 .NET GC 在 Linux 上的正常行为，**是结果不是原因**
+    - 最后才定位到：**UI 线程卡住 → 动画在嵌套消息泵里空转 → 才导致 CPU/内存暴涨**
+    **可复用的排查手法（按顺序）**：
+    1. **`strace -f -p <pid> -e trace=openat,read,write,futex`** —— 系统调用几乎为零 = 纯用户态空转，不是 I/O 问题
+    2. **`/proc/<pid>/task/*/stat` 排序找最忙线程**，比对 `tid == pid` 判断是不是主线程
+    3. **在可疑位置打 `Environment.StackTrace`** —— 拿到调用栈就能一击定位（本轮靠它找到 `PumpMsgBoxFrame`）
+    4. **用顺序探针（`[P1]`~`[P9]`）二分定位卡点**，比读代码猜快得多
+    5. **⚠️ 诊断输出必须直接写文件**（`File.AppendAllText`）。stdout 重定向到文件 + `SIGKILL` 会**丢缓冲**，
+       表现为"探针明明执行了却没输出" —— 这个坑让我白跑了一整轮（以为探针没执行，其实是被 kill 时丢了）
+    6. **对照实验**：先用一个已知正常的 X 程序（如 `xclock`）验证截图链路本身没问题，
+       再怀疑被测程序 —— 否则会把"环境问题"和"程序问题"混在一起
+    7. **环境变量要对**：Xvfb 里不装合成器（`xcompmgr`）时窗口全黑，会把"缺合成器"误判成根因
+
+37. **Git Bash 下 `tar -f D:/path` 会把路径当远程主机（2026-10-04）** — 报 `Cannot connect to D: resolve failed`。
+    改用 `/d/a/j/...` 形式，或加 `--force-local`。
+
+38. **shell 会解释反引号（2026-10-04）** — 用 `python3 -c "...`反引号`..."` 写含 Markdown 反引号的文本时，
+    shell 会先做命令替换导致语法错误。**含反引号/特殊字符的文本一律用 Write 工具写文件**，不要走 `python3 -c`。
+
 ## 8. 暂缓功能清单（用户指定，文件保留在仓库）
 
 `DeferredExcludes`（见 §5.1）：崩溃分析(CrashAnalysis)、音乐(ModMusic)、视频背景(ModVideoBack)、联机(ModLink)、换皮肤(ModSkin)、工具页(PageTools)、剪贴板行为(ClipboardInterceptor)、LazyLoadBehavior。
@@ -319,20 +593,21 @@ MySkin 和 MyMsgMarkdown **已重新启用**（不在排除清单里）。
 
 ## 9. 下一步任务（优先级排序）
 
-1. **验证透明窗口问题**（✅ 2026-09-28 已闭环）— 用户已确认窗口正常显示；离屏渲染（`--pagetest` 第 8 项）也正常。原"透明窗口"是崩溃前的瞬时状态。
-2. **用户报告的一批缺陷**（✅ 2026-09-28 已修）— 实例设置崩溃、实例选择无响应、本地化 `!key!`、整站配色偏暗、内嵌图片加载。详见 §7 坑 13~18 与 §12。
-   待用户复测：`PCL.exe` 点「实例选择」「实例设置」「下载→Mod」应均不崩；启动 MC 时步骤名与成功提示应为中文。
-3. **WSL headless 冒烟** — `dotnet publish -r linux-x64 --self-contained`，在 WSL 里无头跑，确认 Linux 上能起来（X11/Wayland 或 headless 检查日志）。
-   - ⚠️ **本机 `wsl.exe` 被安全策略拉黑**（Program Blacklist，无法授权/绕过）→ 冒烟只能交给用户 VM。本机可做的替代校验（已验证通过）：
-     1. 单文件：`dotnet publish "src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj" -c Release -r linux-x64 --self-contained true -o dist/linux-x64` → 产出 `dist/linux-x64/PCL`（ELF x86-64，120MB，`OutputType=WinExe` + `PublishSingleFile` 使其无 `.exe` 后缀）。
-     2. 非单文件（便于 VM 上排查、可用 `DOTNET_` 环境变量）：追加 `-p:PublishSingleFile=false -o dist/linux-x64-flat`。**注意**：不要用 `-p:OutputType=Exe` 全局覆盖，会把 `PCL.Core.SourceGenerators` 也改成 Exe → `CS5001 程序不包含入口点`。
-     3. 静态校验（已通过）：`PCL` 与 `libSkiaSharp.so`/`libHarfBuzzSharp.so`/`libe_sqlite3.so` 全为 ELF machine=62（x86-64）；bundle 内可见 `Avalonia.FreeDesktop`、`Avalonia.Skia`、`PCL.Core.dll`、`App/Localization/Languages/zh-CN.xaml`。
-     4. 入口 `Program.Main` 用 `UsePlatformDetect()` → Linux 上自动选 FreeDesktop 后端，无需改代码。
-   - `dist/` 已入 `.gitignore`（116MB，勿入库）。给用户的目录内含 `run.sh`（`LC_ALL=zh_CN.UTF-8` + `exec ./PCL`）。
-3. **Linux 真机测试** — self-contained publish 交给用户 VM 验证。
-4. **暂缓功能移植**（用户确认优先级后）— PageTools（工具页）大概率是下一个大块。
-5. ~~清理~~ — ✅ 已完成（2026-10-01）：`src/PCL.Neo.Core`、`src/PCL.Neo.UI` 废弃骨架、
-   `STATUS.md`、`docs/PORTING-STATUS.md` 以及全部历史调试产物（`errs*.txt`、`g4-*.txt`、`g5-*.txt`）均已删除。
+> ⚠️ **本节的 1~4 项已在 2026-10-01 ~ 10-05 完成**（Linux 冒烟、真机测试都做了），
+> **当前唯一阻塞是 §0.3 的 Linux 全黑窗口**。下面保留历史记录供追溯。
+
+0. **🔴 当前最优先：修 Linux 全黑窗口** —— 见 §0.3。修完后清理 §0.4 的临时诊断开关，
+   再跑 §12 的 `--pagetest` 做回归。
+1. ~~验证透明窗口问题~~（✅ 2026-09-28 已闭环）
+2. ~~用户报告的一批缺陷~~（✅ 2026-09-28 已修）— 实例设置崩溃、实例选择无响应、本地化 `!key!`、整站配色偏暗、内嵌图片加载。详见 §7 坑 13~18 与 §12。
+3. ~~WSL headless 冒烟~~（✅ 已完成）— **注意**：本机 WSL 当时被安全策略拉黑，但后来恢复了，现在 WSL 可用（见 §0.5）。
+   - 单文件：`dotnet publish ... -o dist/linux-x64` → `dist/linux-x64/PCL`（ELF x86-64，120MB）
+   - 非单文件：追加 `-p:PublishSingleFile=false -o dist/linux-x64-flat`
+   - **注意**：不要用 `-p:OutputType=Exe` 全局覆盖，会把 `PCL.Core.SourceGenerators` 也改成 Exe → `CS5001 程序不包含入口点`
+4. ~~Linux 真机测试~~（✅ 已完成，2026-10-04）— 已接入用户 VMware VM（SSH 见 §0.5），
+   复现并定位了全黑窗口问题
+5. **暂缓功能移植**（用户确认优先级后）— PageTools（工具页）大概率是下一个大块
+6. ~~清理~~（✅ 2026-10-01 已完成）
 
 ## 10. 待用户确认的问题（攒批问）
 
