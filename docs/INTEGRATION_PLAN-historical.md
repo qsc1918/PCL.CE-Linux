@@ -94,3 +94,14 @@
 - 新仓库名称（用户：回来再定；本地目录现为 PCL.Cross 占位，改名零成本）
 - Neo main Core 依赖 Avalonia 11 包 → ✅ 已解决（2 处引用拆除，Core 现为纯 .NET）
 - WebView2 相关功能（登录/公告页）在 Linux 的替代方案（CefGlue? 内置浏览器视图? 纯 API 登录?）
+
+---
+
+## 附：当时涉及的代码库（供追溯）
+
+| 代码库 | 远程地址 | 说明 |
+|---|---|---|
+| PCL-CE | `https://github.com/qsc1918/PCL-CE.git` | **本项目的上游基线**，固定 `eaed9d80`（分支 dev） |
+| PCL.Neo | `https://github.com/PCL-Community/PCL.Neo.git` | 早期设想的资产来源（MIT），**未采用** |
+| PCL.Neo next | 同上（同仓库另一分支/目录） | 早期设想的基座，**未采用** |
+| PCL.Cross / PCL-cross | （无远程，本地目录） | 早期实验，**未采用** |
