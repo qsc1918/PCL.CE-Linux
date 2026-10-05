@@ -1,7 +1,19 @@
 # AGENTS.md — PCL-CE → Avalonia/Linux 移植项目
 
-> 本文件是新 AI 代理的**第一入口**。完整交接文档：**`docs/HANDOVER.md`**（必读，含全部踩坑记录与文件清单）。
-> Avalonia 12 实测 API 笔记（权威，比 A11 指南新）：`docs/av12-notes.txt`。早期评估报告（A/B/C 分类）：`PORTING_PLAN.md`。功能清单：`docs/FEATURES.md`。
+> 本文件是新 AI 代理的**第一入口**。完整交接文档：**`docs/HANDOVER.md`**（必读，§0 是最新状态，§7 是全部踩坑记录）。
+>
+> **文档索引**：
+> | 文档 | 内容 |
+> |---|---|
+> | `docs/HANDOVER.md` | **主交接文档**（§0 最新状态与唯一阻塞 / §7 踩坑 1~38 / §12 自检工具） |
+> | `docs/LINUX-BLANK-WINDOW.md` | **当前阻塞的专项排查档案**（含真机截图证据，细节最全） |
+> | `docs/av12-notes.txt` | Avalonia 12 实测 API 笔记（权威，比 A11 指南新） |
+> | `docs/FEATURES.md` | 功能清单与 P1/P2/P3 优先级 |
+> | `docs/PORTING-MAPPING.md` | 转换规则表（**GBK 编码**，读取需 `Encoding.GetEncoding(936)`） |
+> | `docs/INTEGRATION_PLAN-historical.md` | ⚠️ 已废弃的早期方案（仅代码库对比仍有参考价值） |
+> | `PORTING_PLAN.md` | 早期评估报告（A/B/C 分类） |
+> | `tools/linux-debug/README.md` | **真机与 Xvfb 调试脚本 + 环境踩坑**（要测 Linux 先看这个） |
+> | `docs/img/` | 真机截图证据（全黑 vs 正常渲染） |
 
 ## 项目一句话
 
@@ -11,36 +23,61 @@
 
 用户："记住目标是移植pcl ce的代码并不是重写，所以说你也要时时刻刻记着不要重写ui。要保留原有的功能逻辑和风格，这样子的话才是pcl ce启动器，而不是一个披着pcl名字重写的启动器。"
 
-1. **只做 WPF→Avalonia 的 API 名称/签名映射**；布局/颜色/文案/交互与上游一致。上游基线：`D:\a\j\PCL-CE`（逐字副本，可随时 diff 对照）。
+1. **只做 WPF→Avalonia 的 API 名称/签名映射**；布局/颜色/文案/交互与上游一致。
+   **上游基线获取方式**（重要：原开发机上的 `D:\a\j\PCL-CE` 你拿不到，请自己克隆）：
+   ```bash
+   git clone https://github.com/qsc1918/PCL-CE.git
+   cd PCL-CE && git checkout eaed9d80adfa67bb6cbdeac0b9ea72de726bcadc
+   ```
+   固定版本：**分支 `dev`，commit `eaed9d80`**（2026-08-24，`feat(i18n-banner): ... (#3560)`）。
+   本仓库所有移植决策都以这个版本为对照基准 —— **请务必 checkout 到该 commit**，不要用 `dev` 最新。
 2. 所有非纯映射的改动必须加 `// [port] <原因>` 中文注释。
 3. 编译错误只信完整构建：`dotnet build "src\Plain Craft Launcher 2\Plain Craft Launcher 2.csproj" -v q -nologo --no-incremental`。增量构建和子代理自报的"0 错误"会掩盖残留错误。
 4. **禁止用 pwsh 批量重写 .cs 文件**（曾把 `public` 写成 `uublic`）；C# 编辑用 read+edit 工具。
 5. 频繁 commit；给用户的问题攒到最后批量问。
 6. 工具约束：pwsh 读中文日志用 `[System.Text.Encoding]::GetEncoding(936)`（GBK）；`[System.IO.File]` 用绝对路径；.ps1 脚本纯 ASCII。
 
-## 当前状态（2026-10-01，第三轮缺陷修复）
+## 当前状态（2026-10-05）
 
-- ✅ 编译 0 错误；`PCL.exe --pagetest` 自检 **59 通过 / 2 失败**（2 项为已知上游缺口），**0 FTL / 0 ERR**
-- ✅ **第三轮（用户报告的 13 项，2026-10-01）**：
-  - 点**下载**选项卡约 1 秒崩溃 → `MyTextBox` 给 FluentValidation 传 null 模型（坑 31）
-  - 点**设置**选项卡整个 UI 冻结 → `MyComboBox` 模板部件 NRE + 弹窗系统损坏（坑 30 / 28 / 29）
-  - 右键菜单（实例文件夹列表）一出现就崩溃 → `BoxShadow` 语法错（坑 27）
-  - 弹窗"继续/取消"点不动、关不掉 → `PanMsg` 上的拖动抢指针（**上一轮 FormDragMove 修复已覆盖**）
-  - 点"测试游戏"/正版验证弹出**致命异常窗口**并退出 → `MyMsgBox` 的 `(int)null` + 跨线程 `DispatcherFrame`（坑 28 / 29）
-  - **选择档案界面一个账号都没有** → `ItemsControl` 缺模板（坑 25）+ `*` 行塌陷（坑 26）
-  - "开始重置"按钮变**方角** → `ElementName` 指向根 `x:Name` 的绑定失效（坑 32）
-  - 点**工具**选项卡只切栏不换内容 → `PageTools` 属暂缓功能（预期）
-- ⚠️ **仍未修（需继续排查）**：账号头像不显示（皮肤头缓存未生成，见下）、启动游戏时界面元素重合、启动按钮偶发卡在"正在加载"、实例选择左侧文件夹列表左键无法切换文件夹
-- ⚠️ **正版登录**需要 `PCL_MS_CLIENT_ID` 环境变量（Debug 构建）或构建期密钥库（Release）；仓库不含该密钥，属设计如此
-- ❌ 未做：Linux 真机测试（**本机 `wsl.exe` 被安全策略拉黑**，只能交给用户 VM）
+**一句话**：编译 0 错误、Windows 运行正常、**Linux 能启动但主窗口全黑**（唯一阻塞）。
+
+- ✅ 编译 0 错误（C# 从 10564 清零，XAML 从 792 清零）
+- ✅ Windows 运行稳定，`--pagetest` 自检 **59 通过 / 2 失败**（2 项为已知上游缺口），0 FTL / 0 ERR
+- ✅ **Linux 能启动**（窗口创建成功、900x550、标题 `PCL CE Linux`、日志 0 FTL/0 ERR）
+- ❌ **Linux 主窗口客户区全黑** ← **当前唯一阻塞，详见 §0 与 `docs/LINUX-BLANK-WINDOW.md`**
+  - 根因已验证：`FormMain` 构造函数 `Opacity = 0d;`，靠 "Form Show" 动画组拉回来，
+    而该动画组在 Linux 上**从未生效** ⇒ 窗口永远透明。加 `--opacity1` 后界面正常渲染（1 色 → 3290 色）
+  - 更深一层（已定位未修）：UI 线程跑完 `FormMain_Loaded` 后**不响应任何跨线程 Dispatcher 投递**
+- ⚠️ **仍未修**：账号头像不显示、启动页元素重合、启动按钮偶发卡在"正在加载"、实例选择文件夹列表左键
+- ⚠️ **正版登录**需要 `PCL_MS_CLIENT_ID` 环境变量（Debug）或构建期密钥库（Release）；仓库不含该密钥，属设计如此
 - ❌ 暂缓功能（用户指定 8 项）：CrashAnalysis / ModMusic / ModVideoBack / ModLink / ModSkin / PageTools / ClipboardInterceptor / LazyLoadBehavior
 
 ## 下一步（按序）
 
-1. 用户复测本轮 13 项（重点：下载/设置选项卡不再崩、档案列表能列出账号、弹窗按钮可点、方角恢复圆角）。
-2. 继续排查：账号头像（`pathTemp\Cache\Skin\Head\*.png` 缓存只在打开皮肤页时生成）、启动页元素重合、启动按钮状态、文件夹列表左键。
-3. Linux 真机测试：`dist/linux-x64/`（含 `run.sh`）拷到 Linux VM，`chmod +x PCL run.sh && ./run.sh`。
-4. 暂缓功能移植（优先级问用户，PageTools 大概率优先）。
+1. **🔴 修 Linux 全黑窗口**（唯一阻塞）
+   - 读 `docs/HANDOVER.md` §0 与 `docs/LINUX-BLANK-WINDOW.md`（后者细节更全）
+   - 在真机跑一遍亲眼确认（连接方式见下），再用 `--opacity1` 看到正常界面
+   - 下一步排查方向：真机装 `gdb` 附加取 UI 线程原生栈，或在 Avalonia 布局/渲染入口加探针
+   - **修完后必须清理临时诊断开关**（`--opacity1` / `--skip-eula` / `--uidump` + `[P1]`~`[P9]` 探针）
+2. 继续排查：账号头像、启动页元素重合、启动按钮状态、文件夹列表左键
+3. 暂缓功能移植（优先级问用户，PageTools 大概率优先）
+
+## Linux 调试环境（原开发机专属信息，务必先看）
+
+**真机是用户的 VMware Linux VM**，通过 SSH 访问（从 WSL 连，`172.22.192.1` 是 Windows 宿主）：
+
+```bash
+H=172.22.192.1
+ssh abc@$H -p 62222        # 密码 abc
+# ⚠️ sudo 密码也是 abc（不是 root！root 用户的密码才是 root）
+```
+
+WSL 里已装 `sshpass`；真机已装 `imagemagick`（`import`）+ `x11-utils`（`xwininfo`）。
+
+**完整流程、脚本与踩坑见 `tools/linux-debug/README.md`**，要点：
+- 运行前必须 `export XAUTHORITY=$(ls /run/user/1000/.mutter-Xwaylandauth.* | head -1)`，否则连不上 X
+- 截图要抓**内层窗口**（外层是 mutter 装饰框架，928x616）；判据：`convert ... -format "%[colors]"` **=1 就是全黑**
+- **诊断输出必须直接写文件**，不要靠 stdout（重定向到文件 + SIGKILL 会丢缓冲，这个坑白跑过一整轮）
 
 ## 快速排雷（Avalonia ↔ WPF 语义差异，HANDOVER §7 有完整清单）
 

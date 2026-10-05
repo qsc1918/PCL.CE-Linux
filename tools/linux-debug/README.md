@@ -28,6 +28,27 @@ sshpass -e ssh -p 62222 abc@$H "bash /tmp/vm-run-and-shot.sh --opacity1 --skip-e
 
 同上的简化版，固定带 `--opacity1 --skip-eula --uidump`，并打印 `uidump.txt`（UI 线程看门狗输出）。
 
+### `vm-thread-analysis.sh`
+
+分析 PCL 各线程的累计 CPU 与状态，用来判断"是不是主线程在空转"。
+判据：最忙线程的 `tid == pid` 就是 UI 线程；状态 `R` = 运行中，`S` = 睡眠。
+
+### `measure-cpu-mem.sh`
+
+按时间采样 CPU / 内存 / 线程数。**判据：内存每秒涨 100MB+ 就是命中了泄漏问题**
+（正常应该稳定）。用法：`bash measure-cpu-mem.sh [总秒数] [采样间隔]`
+
+### `vm-render-mode-test.sh`
+
+切换 Avalonia 渲染模式（默认 / 软件）跑并截图，用来排除"GL 渲染失败"。
+配合程序里的 `PCL_FORCE_SOFTWARE_RENDER=1` 环境变量使用。
+
+### `vm-sudo-askpass.sh`
+
+真机上装包用的 sudo 免交互脚本。**为什么需要它**：`echo 密码 | sudo -S` 和 `bash -s`
+会抢同一个 stdin，报 "no password was provided"。用 `SUDO_ASKPASS` 绕开。
+（真机 `abc` 用户的 sudo 密码是 `abc`，不是 `root`）
+
 ## 本地 WSL 快速复现
 
 ### `xvfb-shot.sh`
@@ -35,6 +56,11 @@ sshpass -e ssh -p 62222 abc@$H "bash /tmp/vm-run-and-shot.sh --opacity1 --skip-e
 用 Xvfb 虚拟显示跑 PCL 并截图。**迭代比真机快得多**，适合快速验证改动。
 
 > ⚠️ 脚本里会启动 `xcompmgr`。**不加合成器时窗口必然全黑**，会把"缺合成器"误判成程序 bug。
+
+## 相关
+
+- `tools/av-api-probe/` —— 一个极简 Avalonia 程序，用来实测某个 API 的行为
+  （比翻文档快，比在 PCL 里猜准）。用法：`dotnet run --project tools/av-api-probe`
 
 ## 部署流程
 

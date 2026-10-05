@@ -317,12 +317,27 @@ D:\a\j\PCL.CE-Linux\          ← 本仓库（移植工作区）
 │   ├── PCL.Core\                 ← 核心库（EnableDefaultItems=false, 手动 Include）
 │   └── PCL.Core.SourceGenerators\← 原样保留
 ├── docs\                         ← 本文档所在地
-├── tools\                        ← 批量修复脚本
-└── 上游基线：PCL-CE 仓库（verbatim 副本，git 根提交 6a525ab）
+├── tools\                        ← 批量修复脚本 + linux-debug/（真机与 Xvfb 调试脚本）
+└── 上游基线：见下方「如何获取上游」
 
 构建输出：src\Plain Craft Launcher 2\bin\Debug\net10.0\PCL.exe (+ PCL.dll 5.0MB)
 运行日志：同目录 PCL\Log\Launch-*.log（**GBK 编码**）
 ```
+
+### 如何获取上游基线（重要）
+
+原开发机上的 `D:\a\j\PCL-CE` 是**本地克隆**，接手的人拿不到。请自己克隆并**固定到同一个 commit**：
+
+```bash
+git clone https://github.com/qsc1918/PCL-CE.git
+cd PCL-CE
+git checkout eaed9d80adfa67bb6cbdeac0b9ea72de726bcadc
+```
+
+- 仓库：`https://github.com/qsc1918/PCL-CE.git`，分支 `dev`
+- 固定版本：**`eaed9d80`**（2026-08-24，`feat(i18n-banner): 在语言设置横幅中添加翻译平台入口 (#3560)`）
+- ⚠️ **务必 checkout 到该 commit**，不要用 `dev` 最新 —— 本仓库所有移植决策都以这个版本为对照基准。
+  用别的版本做 diff 会看到大量无关差异。
 
 ---
 
