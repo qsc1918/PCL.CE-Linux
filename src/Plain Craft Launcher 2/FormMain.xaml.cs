@@ -76,6 +76,8 @@ public partial class FormMain : Window
 
     public FormMain()
     {
+        Console.Error.WriteLine("[P1] ctor 开始");
+        Console.Error.WriteLine("[P1] ctor 开始");
         // [port] 上游 Window 的 Background="{x:Null}" 是配合 WPF AllowsTransparency="False" 用的 ——
         //        那时窗口底由系统提供，始终不透明。Avalonia 下 Window.Background 为 null 意味着
         //        客户区真的透明，在 Linux（无合成器/无 alpha 通道）上整个窗口会变成透明的一片。
@@ -140,7 +142,15 @@ public partial class FormMain : Window
         }
         // [port] XAML 上已移除 Activated 属性（Avalonia Window 的激活事件由 WindowBase.Activated 承载），改在此处重新接线
         Activated += FormMain_Activated;
-        Opacity = 0d;
+        Console.Error.WriteLine("[P2] ctor 即将设置 Opacity=0");
+        // [port][TEMP][诊断] --opacity1：跳过 Opacity=0，验证"窗口全透明导致全黑"的判断
+        if (!Basics.CommandLineArguments.Contains("--opacity1"))
+            Console.Error.WriteLine("[P2] ctor 即将设置 Opacity=0");
+        // [port][TEMP][诊断] --opacity1：跳过 Opacity=0，验证"窗口全透明导致全黑"的判断
+        if (!Basics.CommandLineArguments.Contains("--opacity1"))
+            Opacity = 0d;
+        Console.Error.WriteLine("[P3] ctor Opacity 处理完毕");
+        Console.Error.WriteLine("[P3] ctor Opacity 处理完毕");
         try
         {
             Height = States.UI.WindowHeight;
@@ -461,6 +471,8 @@ public partial class FormMain : Window
 
     private void FormMain_Loaded() // (sender As Object, e As RoutedEventArgs) Handles Me.Loaded
     {
+        Console.Error.WriteLine("[P8] FormMain_Loaded 进入");
+        Console.Error.WriteLine("[P8] FormMain_Loaded 进入");
         // [port][TEMP] --pagetest：延迟到界面稳定后在 UI 线程跑页面实例化自检
         if (Basics.CommandLineArguments.Contains("--pagetest"))
         {
@@ -696,6 +708,59 @@ public partial class FormMain : Window
 
         // [port][TEMP] --logintest：用当前配置的 MS_CLIENT_ID 真跑一遍正版登录代码路径，
         // 用于验证客户端 ID 是否被读到、设备码请求是否成功、以及登录弹窗路径是否会崩。
+        // [port][TEMP][诊断] --uidump：每 3 秒把 UI 线程的调用栈打到 stderr。
+        // 关键点：Dispatcher.InvokeAsync 排入的任务在**嵌套消息泵里也会被执行**（动画就是这么跑的），
+        // 所以这个探针在"UI 线程被卡住"时依然能出结果，能看出当前卡在哪个嵌套帧里。
+        if (Basics.CommandLineArguments.Contains("--uidump"))
+        {
+            var dumpPath = System.IO.Path.Combine(Basics.ExecutableDirectory, "uidump.txt");
+            void Dump(string msg)
+            {
+                try { System.IO.File.AppendAllText(dumpPath, msg + "\n"); } catch { }
+            }
+
+            var dumpThread = new Thread(() =>
+            {
+                Dump("[UiDump] 看门狗线程已启动");
+                for (var n = 1; n <= 6; n++)
+                {
+                    Thread.Sleep(3000);
+                    try
+                    {
+                        Dump($"[UiDump #{n}] 后台线程={Environment.CurrentManagedThreadId} " +
+                             $"动画组={ModAnimation.aniGroups.Count} " +
+                             $"等待弹窗={ModMain.WaitingMyMsgBox.Count} " +
+                             $"AniControlEnabled={ModAnimation.AniControlEnabled} " +
+                             $"线程数={System.Diagnostics.Process.GetCurrentProcess().Threads.Count}");
+                        var ran = false;
+                        var posted = Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            ran = true;
+                            Dump($"[UiDump #{n}] >>> UI 线程任务被执行了! " +
+                                 $"线程={Environment.CurrentManagedThreadId} " +
+                                 $"窗口Opacity={Opacity} 可见={IsVisible} " +
+                                 $"尺寸={Bounds.Width}x{Bounds.Height} " +
+                                 $"动画组={ModAnimation.aniGroups.Count} " +
+                                 $"AniControlEnabled={ModAnimation.AniControlEnabled}");
+                            var st = Environment.StackTrace ?? "";
+                            foreach (var fr in st.Split('\n')
+                                         .Where(l => l.Contains("at PCL.") || l.Contains("PushFrame") ||
+                                                     l.Contains("MainLoop") || l.Contains("RunLoop"))
+                                         .Take(7))
+                                Dump("    " + fr.Trim());
+                        });
+                        posted.Wait(TimeSpan.FromMilliseconds(2000));
+                        if (!ran) Dump($"[UiDump #{n}] UI 线程 2 秒内没执行该任务（UI 线程卡住或没泵消息）");
+                    }
+                    catch (Exception ex)
+                    {
+                        Dump($"[UiDump #{n}] 投递失败: {ex.GetType().Name}: {ex.Message}");
+                    }
+                }
+            }) { IsBackground = true, Name = "UiDumpProbe" };
+            dumpThread.Start();
+        }
+
         if (Basics.CommandLineArguments.Contains("--logintest"))
         {
             var loginProbe = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(6d) };
@@ -808,7 +873,11 @@ public partial class FormMain : Window
         // Top = (GetWPFSize(My.Computer.Screen.WorkingArea.Height) - Height) / 2
         // Left = (GetWPFSize(My.Computer.Screen.WorkingArea.Width) - Width) / 2
         isSizeSaveable = true;
+        Console.Error.WriteLine("[P4] 即将 ShowWindowToTop");
+        Console.Error.WriteLine("[P4] 即将 ShowWindowToTop");
         ShowWindowToTop();
+        Console.Error.WriteLine("[P5] ShowWindowToTop 返回");
+        Console.Error.WriteLine("[P5] ShowWindowToTop 返回");
         // [port] WPF HwndSource 钩子（PresentationSource.FromVisual/HwndSource.AddHook(WndProc)）在 Avalonia 不可用（Win32），注释掉；WndProc 亦在下方 #if WINDOWS 保留
         // var hwndSource = (HwndSource)PresentationSource.FromVisual(this);
         // hwndSource.AddHook(WndProc);
@@ -830,7 +899,11 @@ public partial class FormMain : Window
             }, after: true)
         }, "Form Show");
         // Timer 启动
+        Console.Error.WriteLine("[P6] 即将 AniStart");
+        Console.Error.WriteLine("[P6] 即将 AniStart");
         ModAnimation.AniStart();
+        Console.Error.WriteLine("[P7] AniStart 返回, Opacity=" + Opacity);
+        Console.Error.WriteLine("[P7] AniStart 返回, Opacity=" + Opacity);
         ModMain.TimerMainStart();
         // 特殊版本提示
         ModBase.RunInNewThread(() =>
@@ -863,6 +936,9 @@ public partial class FormMain : Window
 
 #endif
                 // EULA 提示
+                // [port][TEMP][方案B验证] 跳过 EULA 阻塞弹窗，用于快速验证"是不是只有这一个问题"
+                if (Basics.CommandLineArguments.Contains("--skip-eula"))
+                    States.System.LauncherEula = true;
                 if (!States.System.LauncherEula)
                     switch (ModMain.MyMsgBox(Lang.Text("Main.Eula.Message"), Lang.Text("Main.Eula.Title"), Lang.Text("Common.Action.Agree"), Lang.Text("Common.Action.Decline"), Lang.Text("Main.Eula.View"),
                                 button3Action: () => ModBase.OpenWebsite("https://shimo.im/docs/rGrd8pY8xWkt6ryW")))
@@ -916,6 +992,8 @@ public partial class FormMain : Window
             }
         }, "Start Loader", ThreadPriority.BelowNormal);
 
+        Console.Error.WriteLine("[P9] FormMain_Loaded 即将结束");
+        Console.Error.WriteLine("[P9] FormMain_Loaded 即将结束");
         ModBase.Log($"[Start] 第三阶段加载用时：{TimeUtils.GetTimeTick() - ModBase.applicationStartTick} ms");
     }
 
