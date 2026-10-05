@@ -700,3 +700,7 @@ docs/g5-*.txt
 .secrets/
 *.local.props
 Directory.Build.local.props
+
+# 提交信息草稿等临时文件
+_commit_msg.txt
+_*.txt
