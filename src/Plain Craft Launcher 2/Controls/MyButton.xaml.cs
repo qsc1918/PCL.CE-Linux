@@ -92,28 +92,50 @@ public partial class MyButton : Border
     //        Avalonia 的 TextBlock 在同样情况下内容区高度被压成 0，文字完全不绘制
     //        → 表现为"按钮文字整块空白"。
     //        这里保留请求值，但按控件实际可用尺寸收敛后再应用到 LabText，使文字始终可见且居中。
+    //
+    // [port] 死循环修复：改 LabText.Padding 会改变 LabText 的期望尺寸，进而可能改变 MyButton 的尺寸，
+    //        于是 SizeChanged 再次触发本方法 —— 形成"测量风暴"。实测在 Linux 上稳定复现：
+    //        UI 线程 100%+ 占用卡在 Measure → TextBlock.MeasureOverride → PerformTextWrapping，
+    //        堆里累积数百万个 TextLineImpl，动画线程被彻底堵死、窗口永不绘制。
+    //        两道防护：① 重入保护；② 算出的值与上次相同就不再写回（打破不动点上的重复下发）。
+    private bool _applyingTextPadding;
+    private Thickness _lastAppliedTextPadding = new(double.NaN);
+
     private void ApplyTextPadding()
     {
-        if (LabText is null)
+        if (LabText is null || _applyingTextPadding)
             return;
 
-        // 至少给文字留出 1.5 倍字号的高度，否则会被内边距压没
-        var minText = LabText.FontSize * 1.5d;
-        var width = Bounds.Width;
-        var height = Bounds.Height;
+        _applyingTextPadding = true;
+        try
+        {
+            // 至少给文字留出 1.5 倍字号的高度，否则会被内边距压没
+            var minText = LabText.FontSize * 1.5d;
+            var width = Bounds.Width;
+            var height = Bounds.Height;
 
-        var maxHorizontal = width > 0d && double.IsFinite(width)
-            ? Math.Max(0d, (width - minText) / 2d)
-            : double.PositiveInfinity;
-        var maxVertical = height > 0d && double.IsFinite(height)
-            ? Math.Max(0d, (height - minText) / 2d)
-            : double.PositiveInfinity;
+            var maxHorizontal = width > 0d && double.IsFinite(width)
+                ? Math.Max(0d, (width - minText) / 2d)
+                : double.PositiveInfinity;
+            var maxVertical = height > 0d && double.IsFinite(height)
+                ? Math.Max(0d, (height - minText) / 2d)
+                : double.PositiveInfinity;
 
-        LabText.Padding = new Thickness(
-            Math.Min(_textPadding.Left, maxHorizontal),
-            Math.Min(_textPadding.Top, maxVertical),
-            Math.Min(_textPadding.Right, maxHorizontal),
-            Math.Min(_textPadding.Bottom, maxVertical));
+            var target = new Thickness(
+                Math.Min(_textPadding.Left, maxHorizontal),
+                Math.Min(_textPadding.Top, maxVertical),
+                Math.Min(_textPadding.Right, maxHorizontal),
+                Math.Min(_textPadding.Bottom, maxVertical));
+
+            if (target.Equals(_lastAppliedTextPadding))
+                return;
+            _lastAppliedTextPadding = target;
+            LabText.Padding = target;
+        }
+        finally
+        {
+            _applyingTextPadding = false;
+        }
     }
 
     public ColorState ColorType
