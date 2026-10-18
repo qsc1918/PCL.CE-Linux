@@ -89,3 +89,43 @@ sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 62
   `xwininfo -root -tree | grep '"PCL' | grep -v mutter`
 - 运行前必须设 `XAUTHORITY=$(ls /run/user/1000/.mutter-Xwaylandauth.* | head -1)`，否则连不上 X。
 - **诊断输出直接写文件**，不要靠 stdout：重定向到文件 + `SIGKILL` 会丢缓冲。
+
+---
+
+## 一键构建（新增 2026-10-18）
+
+构建脚本在 `tools/build-release.sh`（Git Bash / WSL / Linux）和
+`tools/build-release.cmd`（Windows 双击）。
+
+```bash
+# 全部目标：Linux 单文件 + Linux 平面 + Windows 单文件 + Windows 平面
+tools/build-release.sh
+
+# 只发 Linux 单文件版
+tools/build-release.sh --linux --single
+
+# 只发 Windows 单文件版
+tools/build-release.sh --windows --single
+
+# 排查用（平面版，方便替换单个 DLL）
+tools/build-release.sh --flat
+```
+
+产物：
+
+| 路径 | 用途 |
+|---|---|
+| `dist/linux-x64-single/PCL` | Linux 单文件，约 120MB，解压即用（发版） |
+| `dist/win-x64-single/PCL.exe` | Windows 单文件，约 120MB |
+| `dist/linux-x64-flat/`、`dist/win-x64-flat/` | 平面版，约 125MB / 228MB，排查时用 |
+| `dist/release/PCL-Linux-x64-single.tar.gz` | 打好包的 Linux 发布件（含 `run.sh` 和 `README.md`） |
+
+Linux 单文件目录里自带 `run.sh`（强制 `LC_ALL=zh_CN.UTF-8`，避免中文异常），
+用户下载后 `chmod +x PCL && ./run.sh` 即可。
+
+**构建时的两个坑**（脚本已规避）：
+
+1. 不要把 `dotnet publish` 的输出管道接 `grep`/`head` —— `head` 提前关管道会
+   SIGPIPE 杀掉构建，产物不完整（运行时报
+   `The application to execute does not exist`）。脚本统一写 `dist/_build.log`。
+2. Windows 单文件发布时 `.pdb` 要单独删（脚本已处理）。
