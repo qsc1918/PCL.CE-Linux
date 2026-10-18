@@ -1,5 +1,92 @@
 # Linux 上窗口全黑 / CPU 内存暴涨 —— 排查档案
 
+> **状态**：✅ **已修复并推送**（commit `6baef60`，2026-10-18）。
+> **真根因与本节之前的所有结论都不同** —— 前几节（透明度、嵌套消息泵、动画、消息框、滚动条振荡）
+> 都是**症状链上的一环或误判**，不要照着它们改代码。直接看下面的「⭐ 最终结论」。
+> **建档原因**：这是移植过程中最难的一个问题，跨了 4 个会话、3 任 AI，教训比结论更值钱。
+> 最后更新：2026-10-18
+
+---
+
+# ⭐ 最终结论（2026-10-18，真根因）
+
+## 一句话
+
+**Linux 上窗口全黑/全透明 + CPU ~120% + 内存 ~200MB/s 暴涨，全部是同一个原因的连锁反应：
+应用的字体链在 Linux 上解析失败，中文排版产出「零长度文本行」，卡死了 Avalonia 的
+`TextLayout.CreateTextLines()`，UI 线程从此再也不回到消息循环。**
+
+## 证据链（每一步都有真机/转储验证）
+
+1. **托管转储（`createdump` 全堆 + `dotnet-dump`）显示主线程栈**：
+   `MediaContext.Render → ExecuteQueuedLayoutPass → ExecuteMeasurePass →
+   LayoutManager.Measure(裸 TextBlock) → TextBlock.MeasureOverride →
+   PerformTextWrapping → CreateEmptyTextLine → TextLineImpl.FinalizeLine →
+   CreateLineMetrics → GlyphRunImpl..ctor → GlyphRunImpl.CreateFont`
+   —— 每一轮循环都**新建一个字形、新建一个 SKFont**，这就是「原生内存泄漏」的真相：
+   不是泄漏，是单次 `Measure` 里的**无界分配**。
+2. **读 Avalonia 12.0.4 源码**确认死循环条件：`CreateTextLines` 是 `while (true)`，
+   退出只依赖 `textLine is null` / `TextEndOfParagraph` / `MaxLines`，
+   **不检查 `textLine.Length`**。当 `PerformTextWrapping` 因 `measuredLength == 0` 走
+   `CreateEmptyTextLine`（长度 0、`TextLineBreak == null`）时，
+   `_textSourceLength += 0` 永不推进 ⇒ 无限循环。
+3. **用 `du <string地址+0xC>` 读出栈上那个 TextBlock 的文本**：正是
+   `Launch.Right.CommunityHint.Message`（`PageLaunchRight.LabHint1`，170 字符中文）。
+   → 中文排版是触发条件，不是空格文本（此前误判）。
+4. **决定性对照实验**（探针把 `LabHint1` 换成打印约束的 TextBlock 子类）：
+   约束 = `482.001 x ∞`（宽度带 .001 小数、高度无限），**测量本身不死**；
+   但把 `LabHint1.FontFamily` 显式改成 `FontFamily.Default` 后**风暴立刻消失**
+   ⇒ 触发条件是**字体**，不是文本、不是容器、不是动画、不是弹窗。
+5. **Windows 不复现的原因**：默认字体链
+   `avares://PCL/Resources/Font.ttf#PCL English, Microsoft YaHei UI, Segoe UI`
+   中的 `Microsoft YaHei UI` 在 Windows 上存在 ⇒ 中文有真实字形 ⇒ 不会产出零宽度 run。
+   Linux 上它和 Segoe UI 都不存在，链首内嵌字体「PCL English」又只含拉丁字形
+   （读 TTF name 表确认家族名匹配、无 CJK 覆盖）⇒ 中文回退到产出零宽度字形 ⇒ 死循环。
+
+## 附带发现的两个真 bug
+
+- `new FontFamily(baseUri, names)` 会给**每一个**字体名加基址，把 `"Microsoft YaHei UI"`
+  变成不存在的资产 URI `avares://PCL/Microsoft YaHei UI`，整条链必挂。
+  已改为：内嵌字体写全 URI、系统字体保持纯名称（与 XAML 一致）。
+- `MyScrollViewer` 模板移植时丢了 `<Grid.ColumnDefinitions>`，导致
+  `PART_VerticalScrollBar` 的 `Grid.Column="1"` 指向不存在的列，滚动条与内容区重叠。
+
+## 修复内容（commit `0489c36`）
+
+| 文件 | 改动 |
+|---|---|
+| `PCL.Core/App/Localization/LocalizationFontService.cs` | 去掉 `new FontFamily(baseUri, ...)`；内嵌英文字体**仅在 Windows** 置于链首；其余平台链首用系统中文字体，并追加真实存在的 CJK 回退（Noto Sans CJK SC / Source Han Sans / WenQuanYi / AR PL UMing / Droid Sans Fallback） |
+| `Plain Craft Launcher 2/Application.axaml` | 初始 `LaunchFontFamily` 改为 Linux 安全链；补回 `MyScrollViewer` 模板缺失的列定义 |
+| `Plain Craft Launcher 2/Modules/ModMain.cs` | `PumpMsgBoxFrame` 不再在 UI 线程 `PushFrame`（嵌套泵导致后续全被拖死），改为只投递创建 + 轮询 `volatile IsExited` |
+| `Plain Craft Launcher 2/FormMain.xaml.cs` | `PanTitle_SizeChanged` 加幂等缓存，切断 SizeChanged→MaxWidth→SizeChanged 回路 |
+
+## 验收数据
+
+- **Linux 真机**（Ubuntu/XWayland，删掉 `.minecraft` 让「文件夹不存在」弹窗也触发）：
+  48 秒内存 260→262MB、CPU 52%→21.8%、线程 28→21、`Opacity=1`、0 异常，窗口完整渲染
+  （截图 `docs/img/linux-window-renders-fixed.png`）。
+- **Windows 回归**：10 秒出窗口，内存稳定 ~335MB，CPU 1~4%，`Responding=True`。
+
+## ⚠️ 给下一个人的方法论教训（这轮最值钱的部分）
+
+1. **症状离根因隔了 4 层**：透明窗口 ← 动画没跑 ← UI 线程不响应 ← 单次 Measure 死循环 ← 字体链。
+   每一层都曾被我（和前人）当成根因。**没有转储就不要下结论。**
+2. **必须 `createdump` 全堆 + `dotnet-dump`**：只靠 `clrstack`（triage 转储）读不到对象，
+   `dumpheap -stat` 在 1.5GB 转储上会跑 10 分钟以上（放后台）。
+3. **读字符串要用 `du <objaddr+0xC>`**：`dumpobj` 只打印前几个字符，
+   上一任 AI 因此把 204 字符的异常堆栈误读成「一个空格」，白跑了一整轮。
+4. **`git diff HEAD origin` 的反向要看清楚**：`git diff A B` 是 A→B 的改动，
+   我曾把「远程没有我的修复」误读成「远程领先」。
+5. **`dotnet build/publish ... | grep ... | head -2` 会 SIGPIPE 杀掉构建**，
+   产物不完整（`PCL.dll` 缺失 → 运行时报「application to execute does not exist」）。
+   管道后不能接 `head`。
+6. **每个文件的换行符约定不同**（有的 CRLF 有的 LF），`core.autocrlf=false` 且无
+   `.gitattributes`。用编辑工具改文件后必须核对，否则产生整文件 diff。
+
+---
+
+
+
 > **状态**：**根因已找到并验证**（见第六节）。修复方案待实施。
 > **建档原因**：这是移植过程中的核心阻塞问题，信息量大，需跨会话保留。
 > 最后更新：2026-10-04

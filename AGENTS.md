@@ -37,28 +37,33 @@
 5. 频繁 commit；给用户的问题攒到最后批量问。
 6. 工具约束：pwsh 读中文日志用 `[System.Text.Encoding]::GetEncoding(936)`（GBK）；`[System.IO.File]` 用绝对路径；.ps1 脚本纯 ASCII。
 
-## 当前状态（2026-10-05）
+## 当前状态（2026-10-18）
 
-**一句话**：编译 0 错误、Windows 运行正常、**Linux 能启动但主窗口全黑**（唯一阻塞）。
+**一句话**：编译 0 错误、Windows 运行正常、**Linux 能启动且主窗口完整渲染**（原唯一阻塞已修复）。
 
 - ✅ 编译 0 错误（C# 从 10564 清零，XAML 从 792 清零）
 - ✅ Windows 运行稳定，`--pagetest` 自检 **59 通过 / 2 失败**（2 项为已知上游缺口），0 FTL / 0 ERR
-- ✅ **Linux 能启动**（窗口创建成功、900x550、标题 `PCL CE Linux`、日志 0 FTL/0 ERR）
-- ❌ **Linux 主窗口客户区全黑** ← **当前唯一阻塞，详见 §0 与 `docs/LINUX-BLANK-WINDOW.md`**
-  - 根因已验证：`FormMain` 构造函数 `Opacity = 0d;`，靠 "Form Show" 动画组拉回来，
-    而该动画组在 Linux 上**从未生效** ⇒ 窗口永远透明。加 `--opacity1` 后界面正常渲染（1 色 → 3290 色）
-  - 更深一层（已定位未修）：UI 线程跑完 `FormMain_Loaded` 后**不响应任何跨线程 Dispatcher 投递**
+- ✅ **Linux 完全可用**（2026-10-18 修复，commit `0489c36`）：
+  窗口 900x550、标题 `PCL CE Linux`、`Opacity=1`、**48 秒内存恒定 ~260MB**、
+  CPU 52%→21.8%、0 异常，界面完整渲染（截图 `docs/img/linux-window-renders-fixed.png`）
+- ✅ **原阻塞「全黑窗口 + CPU 120% + 内存 200MB/s 暴涨」根因已查明**：
+  字体链在 Linux 上解析失败 → 中文排版产出零长度文本行 → 卡死
+  `TextLayout.CreateTextLines()` → UI 线程永不回消息循环 → 动画跑不了 → `Opacity` 停在 0。
+  **详见 `docs/LINUX-BLANK-WINDOW.md` 顶部的「⭐ 最终结论」**（该文档前半部分是症状链/误判，别照着改）
 - ⚠️ **仍未修**：账号头像不显示、启动页元素重合、启动按钮偶发卡在"正在加载"、实例选择文件夹列表左键
 - ⚠️ **正版登录**需要 `PCL_MS_CLIENT_ID` 环境变量（Debug）或构建期密钥库（Release）；仓库不含该密钥，属设计如此
 - ❌ 暂缓功能（用户指定 8 项）：CrashAnalysis / ModMusic / ModVideoBack / ModLink / ModSkin / PageTools / ClipboardInterceptor / LazyLoadBehavior
 
 ## 下一步（按序）
 
-1. **🔴 修 Linux 全黑窗口**（唯一阻塞）
-   - 读 `docs/HANDOVER.md` §0 与 `docs/LINUX-BLANK-WINDOW.md`（后者细节更全）
-   - 在真机跑一遍亲眼确认（连接方式见下），再用 `--opacity1` 看到正常界面
-   - 下一步排查方向：真机装 `gdb` 附加取 UI 线程原生栈，或在 Avalonia 布局/渲染入口加探针
-   - **修完后必须清理临时诊断开关**（`--opacity1` / `--skip-eula` / `--uidump` + `[P1]`~`[P9]` 探针）
+1. **Linux 功能回归**：窗口已能渲染且稳定，接下来逐项验证基础功能
+   （版本列表加载、下载、启动游戏、设置页、切换标签不崩）。
+2. **Windows 回归**已做（内存 ~335MB 稳定、CPU 1~4%），改动未破坏 Windows。
+3. 修上面「仍未修」的 4 项 Windows/Linux 通用缺陷。
+4. 暂缓功能移植（优先级问用户，PageTools 大概率优先）。
+5. **字体相关注意**：`LocalizationFontService` 现在按平台分支，
+   若以后加自定义字体（FontSelector）务必保证链上至少有一个**当前平台真实存在**的中文能力字体，
+   否则会重新触发 Avalonia 的排版死循环（见 `docs/LINUX-BLANK-WINDOW.md`）。
 2. 继续排查：账号头像、启动页元素重合、启动按钮状态、文件夹列表左键
 3. 暂缓功能移植（优先级问用户，PageTools 大概率优先）
 
