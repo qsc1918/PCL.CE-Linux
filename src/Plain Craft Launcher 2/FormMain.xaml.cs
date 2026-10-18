@@ -1332,13 +1332,19 @@ public partial class FormMain : Window
     }
 
     // 标题栏改变大小
+    // [port] PanTitle_SizeChanged 幂等性缓存：值没变就不写回，
+    //        避免"写 MaxWidth → 自身尺寸变化 → SizeChanged → 再写"的无谓布局往返
+    private double _lastPanTitleLeftMaxWidth = double.NaN;
+
     private void PanTitle_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         // [port] WPF ColumnDefinition.Bounds.Width → Avalonia ColumnDefinition.ActualWidth（无 Bounds）
-        if (PanTitleMain.ColumnDefinitions[0].ActualWidth - 30 <= 0)
-            PanTitleLeft.ColumnDefinitions[0].MaxWidth = 0;
-        else
-            PanTitleLeft.ColumnDefinitions[0].MaxWidth = PanTitleMain.ColumnDefinitions[0].ActualWidth - 30;
+        var available = PanTitleMain.ColumnDefinitions[0].ActualWidth - 30;
+        var target = available <= 0 ? 0d : available;
+        if (target.Equals(_lastPanTitleLeftMaxWidth))
+            return;
+        _lastPanTitleLeftMaxWidth = target;
+        PanTitleLeft.ColumnDefinitions[0].MaxWidth = target;
     }
 
     // 最小化

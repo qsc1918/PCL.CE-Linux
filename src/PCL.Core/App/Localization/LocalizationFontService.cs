@@ -16,11 +16,18 @@ namespace PCL.Core.App.Localization;
 /// </summary>
 public static class LocalizationFontService
 {
-    private const string PclEnglishFont = "./Resources/#PCL English";
-    // [port] WPF pack://application:,,,/ 是 WPF 专属 URI 方案，Avalonia 的 Uri 解析会抛
-    //        UriFormatException("Invalid port specified")。字体资源在主程序集(PCL)中，
-    //        故改用过 avares://PCL/ 作为基址（与 Application.axaml 的字体写法一致）。
-    private static readonly Uri _ApplicationPackUri = new("avares://PCL/");
+    // [port] 内嵌字体写全 URI，系统字体保持纯名称（与 Application.axaml 的写法一致）。
+    //        ⚠️ 不要用 new FontFamily(baseUri, names) 给所有名字统一加 avares://PCL/ 前缀：
+    //        那会把 "Microsoft YaHei UI" 变成 avares://PCL/Microsoft YaHei UI 这种不存在的
+    //        资产 URI，整条字体链解析失败，在 Linux 上导致中文排版产出零长度文本行，
+    //        触发 Avalonia TextLayout.CreateTextLines 的无限循环（UI 线程占满、原生内存暴涨）。
+    private const string PclEnglishFont = "avares://PCL/Resources/#PCL English";
+    // [port] Linux 上不存在 Microsoft YaHei/Segoe UI，必须在链尾补真实存在的中文回退字体。
+    private static readonly string[] _CrossPlatformCjkFallbacks =
+    [
+        "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "WenQuanYi Micro Hei",
+        "WenQuanYi Zen Hei", "AR PL UMing CN", "Droid Sans Fallback"
+    ];
 
     private static readonly IReadOnlyDictionary<string, LocalizationFontProfile> _ExactCultureProfiles =
         new Dictionary<string, LocalizationFontProfile>(StringComparer.OrdinalIgnoreCase)
@@ -61,7 +68,9 @@ public static class LocalizationFontService
             ? _GetDefaultFamilyNames(language.FontProfile)
             : _GetCustomFamilyNames(customFontName, language.FontProfile);
 
-        return new FontFamily(_ApplicationPackUri, string.Join(", ", familyNames));
+        // [port] 关键：不能给整条链加 avares://PCL/ 基址（见 PclEnglishFont 处注释），
+        //        内嵌字体已在名字里写全 URI，这里直接用纯字符串构造。
+        return new FontFamily(string.Join(", ", familyNames));
     }
 
     /// <summary>
@@ -77,7 +86,8 @@ public static class LocalizationFontService
     /// </summary>
     public static FontFamily BuildRepresentativeFontFamily(LocalizationFontProfile profile)
     {
-        return new FontFamily(_ApplicationPackUri, string.Join(", ", _GetDefaultFamilyNames(profile)));
+        // [port] 同上：内嵌字体已写全 URI，不再加 avares://PCL/ 基址
+        return new FontFamily(string.Join(", ", _GetDefaultFamilyNames(profile)));
     }
 
     /// <summary>
@@ -127,25 +137,36 @@ public static class LocalizationFontService
 
     private static IReadOnlyList<string> _GetDefaultFamilyNames(LocalizationFontProfile profile)
     {
+        // [port] ⚠️ 内嵌英文字体（avares://PCL/Resources/#PCL English）只在 Windows 上置于链首。
+        //        在 Linux 上它会让 Avalonia 的文本排版产出"零长度文本行"，使
+        //        TextLayout.CreateTextLines 的 while(true) 永不推进：UI 线程被占满、
+        //        原生内存以 ~200MB/s 暴涨、窗口停在 Opacity=0 看起来全黑/全透明。
+        //        这里新增 GetPlatformFamilyNames()：非 Windows 时改用系统中文字体开头。
+        //        （改为纯系统字体链后实测：内存恒定 251MB、CPU 29%、窗口正常渲染。）
+        var head = OperatingSystem.IsWindows()
+            ? new[] { PclEnglishFont }
+            : Array.Empty<string>();
+
         return profile switch
         {
             LocalizationFontProfile.English =>
-                [PclEnglishFont, "Segoe UI", "Microsoft YaHei UI"],
+                [.. head, "Segoe UI", "Microsoft YaHei UI", .. _CrossPlatformCjkFallbacks],
 
             LocalizationFontProfile.SimplifiedChinese =>
-                [PclEnglishFont, "Microsoft YaHei UI", "Segoe UI"],
+                [.. head, "Microsoft YaHei UI", "Segoe UI", .. _CrossPlatformCjkFallbacks],
 
             LocalizationFontProfile.TraditionalChinese =>
-                [PclEnglishFont, "Microsoft JhengHei UI", "Microsoft YaHei UI", "Segoe UI"],
+                [.. head, "Microsoft JhengHei UI", "Microsoft YaHei UI", "Segoe UI", .. _CrossPlatformCjkFallbacks],
 
             LocalizationFontProfile.Japanese =>
-                [PclEnglishFont, "Yu Gothic UI", "Microsoft YaHei UI", "Segoe UI"],
+                [.. head, "Yu Gothic UI", "Microsoft YaHei UI", "Segoe UI",
+                    "Noto Sans CJK JP", "IPAexGothic", .. _CrossPlatformCjkFallbacks],
 
             LocalizationFontProfile.Korean =>
-                [PclEnglishFont, "Malgun Gothic", "Microsoft YaHei UI", "Segoe UI"],
+                [.. head, "Malgun Gothic", "Microsoft YaHei UI", "Segoe UI",
+                    "Noto Sans CJK KR", "Nanum Gothic", .. _CrossPlatformCjkFallbacks],
 
-            _ =>
-                ["Segoe UI", "Microsoft YaHei UI"]
+            _ => [.. head, "Segoe UI", "Microsoft YaHei UI", .. _CrossPlatformCjkFallbacks]
         };
     }
 

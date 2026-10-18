@@ -27,7 +27,9 @@
             <localization:LocalizationFormatConverter x:Key="LocalizationFormatConverter" />
 
             <!--字体-->
-            <FontFamily x:Key="LaunchFontFamily">avares://PCL/Resources/Font.ttf#PCL English, Microsoft YaHei UI, Segoe UI</FontFamily>
+            <!-- [port] 链尾补 Linux/macOS 上真实存在的中文回退字体：否则在非 Windows 上整条链都解析失败，
+             中文排版会产出零长度文本行，触发 Avalonia CreateTextLines 无限循环。 -->
+            <FontFamily x:Key="LaunchFontFamily">Microsoft YaHei UI, Segoe UI, Noto Sans CJK SC, Source Han Sans SC, Source Han Sans CN, WenQuanYi Micro Hei, WenQuanYi Zen Hei, AR PL UMing CN, Droid Sans Fallback</FontFamily>
 
             <!-- 颜色表 -->
             <SolidColorBrush x:Key="ColorBrush1">#343d4a</SolidColorBrush>
@@ -191,7 +193,14 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid>
-                        <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                        <!-- [port] 补回缺失的列定义：原移植遗漏了 ColumnDefinitions，
+                             导致 PART_VerticalScrollBar 的 Grid.Column="1" 指向不存在的列，
+                             滚动条与内容区重叠，在 Linux 上引发持续的测量/排版振荡 -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="0" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollContentPresenter x:Name="PART_ContentPresenter" Grid.Column="0"
                                                 Content="{TemplateBinding Content}"
                                                 ContentTemplate="{TemplateBinding ContentTemplate}"
                                                 Margin="{TemplateBinding Padding}" />

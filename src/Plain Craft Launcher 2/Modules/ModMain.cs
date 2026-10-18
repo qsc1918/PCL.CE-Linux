@@ -281,7 +281,8 @@ public static class ModMain
         /// <summary>
         ///     弹窗是否已经关闭。
         /// </summary>
-        public bool IsExited = false;
+        // [port] 后台线程弹窗时由 PumpMsgBoxFrame 轮询此字段判断弹窗是否已关闭，需跨线程可见
+        public volatile bool IsExited = false;
 
         public bool IsWarn;
 
@@ -351,20 +352,43 @@ public static class ModMain
             return;
         }
 
-        ModBase.RunInUiWait(() =>
+        // [port] 关键修复：调用方是后台线程时，绝不在 UI 线程上 PushFrame。
+        //
+        //        旧实现把"创建弹窗 + 泵送模态帧"整体投递到 UI 线程并阻塞当前线程。问题在于
+        //        UI 线程一旦进入 DispatcherFrame.Run 这个嵌套消息泵就再也不回来了：
+        //          · 渲染/布局在这个泵里空转（CPU 100%+、内存持续暴涨），
+        //          · "Form Show" 动画得不到执行窗口，Window.Opacity 停在构造时的 0d，
+        //          · 弹窗建出来了但窗口透明，用户看不见也点不到，
+        //          · 于是 WaitFrame.Continue 永远不被置 false —— 死锁。
+        //
+        //        现在改为：只把"创建弹窗"异步投递到 UI 线程，UI 线程立刻回到正常消息循环；
+        //        当前（后台）线程通过轮询 converter.IsExited 等待弹窗关闭。
+        //        这样窗口能正常完成启动动画并显示出来，用户也点得到按钮。
+        ModBase.RunInUi(() =>
         {
             try
             {
                 MyMsgBoxTick();
                 frmMain?.DragStop();
-                Dispatcher.UIThread.PushFrame(converter.WaitFrame);
             }
             catch (Exception ex)
             {
                 ModBase.Log(ex, "后台线程显示弹窗失败");
-                converter.WaitFrame.Continue = false;
+                converter.IsExited = true;
             }
         });
+
+        // 后台线程等待弹窗关闭；加超时兜底，避免极端情况下永久挂起
+        var waited = 0;
+        while (!converter.IsExited && waited < 600_000)
+        {
+            Thread.Sleep(50);
+            waited += 50;
+        }
+        if (!converter.IsExited)
+        {
+            ModBase.Log("[MsgBox] 后台线程等待弹窗关闭超时（10 分钟），放弃等待");
+        }
     }
 
     private static string GetDefaultConfirmText() => Lang.Text("Common.Action.Confirm");
