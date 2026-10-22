@@ -92,40 +92,54 @@ sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 62
 
 ---
 
-## 一键构建（新增 2026-10-18）
+## 一键构建 / 打包（2026-10-22 更新）
 
-构建脚本在 `tools/build-release.sh`（Git Bash / WSL / Linux）和
-`tools/build-release.cmd`（Windows 双击）。
+脚本：`tools/build-release.sh`（Git Bash / WSL / Linux）、`tools/build-release.cmd`（Windows 双击，
+检测到 bash 会自动转调，没有 bash 也能跑）、`tools/zipdir.py`（打包用，Git Bash 没有 zip 命令）。
 
 ```bash
-# 全部目标：Linux 单文件 + Linux 平面 + Windows 单文件 + Windows 平面
-tools/build-release.sh
-
-# 只发 Linux 单文件版
-tools/build-release.sh --linux --single
-
-# 只发 Windows 单文件版
-tools/build-release.sh --windows --single
-
-# 排查用（平面版，方便替换单个 DLL）
-tools/build-release.sh --flat
+tools/build-release.sh                    # 全部 4 个版本 + 四合一 zip（发版用）
+tools/build-release.sh --linux --single   # 只出 Linux 单文件
+tools/build-release.sh --windows          # 只出 Windows（单文件 + 平面）
+tools/build-release.sh --no-bundle        # 构建但不打 zip
+tools/build-release.sh --clean            # 先清空输出目录再构建
 ```
 
 产物：
 
-| 路径 | 用途 |
+| 路径 | 说明 |
 |---|---|
-| `dist/linux-x64-single/PCL` | Linux 单文件，约 120MB，解压即用（发版） |
+| `dist/release/PCL-CE-<版本>-all.zip` | **四合一发布包**：`windows-x64-single/`、`windows-x64-flat/`、`linux-x64-single/`、`linux-x64-flat/` + 总 README |
+| `dist/linux-x64-single/PCL` | Linux 单文件，约 120MB |
 | `dist/win-x64-single/PCL.exe` | Windows 单文件，约 120MB |
-| `dist/linux-x64-flat/`、`dist/win-x64-flat/` | 平面版，约 125MB / 228MB，排查时用 |
-| `dist/release/PCL-Linux-x64-single.tar.gz` | 打好包的 Linux 发布件（含 `run.sh` 和 `README.md`） |
+| `dist/linux-x64-flat/`、`dist/win-x64-flat/` | 平面版，排查时用（可单独替换某个 DLL） |
 
-Linux 单文件目录里自带 `run.sh`（强制 `LC_ALL=zh_CN.UTF-8`，避免中文异常），
-用户下载后 `chmod +x PCL && ./run.sh` 即可。
+每个版本目录里都有 `README.md`（各自说明数据目录和运行方式），Linux 版还带 `run.sh`
+（强制 `LC_ALL=zh_CN.UTF-8`）。
 
-**构建时的两个坑**（脚本已规避）：
+### ⚠️ 数据目录（写文档时别再搞错）
 
-1. 不要把 `dotnet publish` 的输出管道接 `grep`/`head` —— `head` 提前关管道会
-   SIGPIPE 杀掉构建，产物不完整（运行时报
-   `The application to execute does not exist`）。脚本统一写 `dist/_build.log`。
-2. Windows 单文件发布时 `.pdb` 要单独删（脚本已处理）。
+`PCL.Core/App/Paths.cs` 的规则：
+
+```csharp
+_data = Path.Combine(DefaultDirectory, "PCL");
+// 仅非 Windows 且 <程序目录>/PCL 是「文件」时（可执行文件就叫 PCL），才退让为 PCL-Data
+if (!OperatingSystem.IsWindows() && File.Exists(_data))
+    _data = Path.Combine(DefaultDirectory, "PCL-Data");
+```
+
+| 系统 | 数据目录 | 原因 |
+|---|---|---|
+| Windows | `<程序目录>\PCL\` | exe 叫 `PCL.exe`，不与目录名冲突 |
+| Linux | `<程序目录>/PCL-Data/` | 可执行文件就叫 `PCL`，同名目录会冲突 |
+
+### ⚠️ 构建时的坑（脚本已规避）
+
+1. **不要把 `dotnet publish` 的输出管道接 `grep`/`head`** —— `head` 提前关管道会 SIGPIPE
+   杀掉构建，产物不完整（运行时报 `The application to execute does not exist`）。
+   脚本统一写 `dist/_build.log`。
+2. **默认不 `rm -rf` 输出目录**，靠 `dotnet publish` 原地覆盖。平面版目录有 300+ 文件，
+   `rm -rf` 会触发沙箱/IDE 的批量删除保护而中断构建。要彻底干净用 `--clean`。
+3. **Windows 单文件发布残留 `.pdb`**，脚本已删。
+4. **从 Windows 打 zip 会丢 Linux 可执行位**（NTFS 没有真正的 POSIX 权限位），
+   `tools/zipdir.py` 对 `PCL` / `run.sh` 显式写 0755。
